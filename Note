@@ -1,2 +1,7 @@
 Note những thứ cần chỉnh:
 
+NhaThuoc_AnDam
+cài đặt null ở HamLuong, DonViHamLuong, MaDuocLy.
+
+db_NhaThuoc
+Bảng LoaiHang sửa TenNH -> TenLH

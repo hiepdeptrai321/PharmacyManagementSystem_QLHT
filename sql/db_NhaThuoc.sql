@@ -1,22 +1,22 @@
-﻿use master
-CREATE DATABASE QuanLyNhaThuoc;
-GO
+﻿--use master
+--CREATE DATABASE QuanLyNhaThuoc;
+--GO
 
-USE QuanLyNhaThuoc;
-GO
+--USE QuanLyNhaThuoc;
+--GO
 
 -- =========================
 -- Bảng KhachHang
 -- =========================
 CREATE TABLE KhachHang (
     MaKH       VARCHAR(10) PRIMARY KEY,
-    TenKH      VARCHAR(50) NOT NULL,
+    TenKH      NVARCHAR(50) NOT NULL,
     SDT        VARCHAR(15) NOT NULL,
     Email      VARCHAR(50),
     NgaySinh   DATE,
-    GioiTinh   VARCHAR(5) NOT NULL,
-    DiaChi     VARCHAR(50),
-    TrangThai  VARCHAR(10) NOT NULL
+    GioiTinh   NVARCHAR(5) NOT NULL,
+    DiaChi     NVARCHAR(50),
+    TrangThai  NVARCHAR(10) NOT NULL
 );
 INSERT INTO KhachHang (MaKH, TenKH, SDT, Email, NgaySinh, GioiTinh, DiaChi, TrangThai) VALUES
 ('KH001', N'Nguyễn Văn An', '0905123456', 'an.nguyen@gmail.com', '1990-05-12', N'Nam', N'Hà Nội', N'Hoạt động'),
@@ -35,13 +35,13 @@ INSERT INTO KhachHang (MaKH, TenKH, SDT, Email, NgaySinh, GioiTinh, DiaChi, Tran
 -- =========================
 CREATE TABLE NhanVien (
     MaNV       VARCHAR(10) PRIMARY KEY,
-    TenNV      VARCHAR(50) NOT NULL,
+    TenNV      NVARCHAR(50) NOT NULL,
     SDT        VARCHAR(15) NOT NULL,
     Email      VARCHAR(50),
     NgaySinh   DATE NOT NULL,
-    GioiTinh   VARCHAR(5) NOT NULL,
-    DiaChi     VARCHAR(50),
-    TrangThai  VARCHAR(10) NOT NULL,
+    GioiTinh   NVARCHAR(5) NOT NULL,
+    DiaChi     NVARCHAR(50),
+    TrangThai  NVARCHAR(30) NOT NULL,
     TaiKhoan   VARCHAR(50) NOT NULL,
     MatKhau    VARCHAR(50) NOT NULL
 );
@@ -59,7 +59,7 @@ CREATE TABLE LuongNhanVien (
     DenNgay    DATE NOT NULL,
     LuongCoBan FLOAT NOT NULL,
     PhuCap     FLOAT NOT NULL,
-    GhiChu     VARCHAR(255) NOT NULL,
+    GhiChu     NVARCHAR(255) NOT NULL,
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV)
 );
 INSERT INTO LuongNhanVien (MaLNV, TuNgay, DenNgay, LuongCoBan, PhuCap, GhiChu, MaNV) VALUES
@@ -73,12 +73,12 @@ INSERT INTO LuongNhanVien (MaLNV, TuNgay, DenNgay, LuongCoBan, PhuCap, GhiChu, M
 CREATE TABLE NhaCungCap (
     MaNCC      VARCHAR(10) PRIMARY KEY,
     TenNCC     VARCHAR(50) NOT NULL,
-    DiaChi     VARCHAR(100),
+    DiaChi     NVARCHAR(100),
     SDT        VARCHAR(20) NOT NULL,
     Email      VARCHAR(50),
 	GPKD       VARCHAR(50),
-    GhiChu     VARCHAR(255),
-    TenCongTy  VARCHAR(50),
+    GhiChu     NVARCHAR(255),
+    TenCongTy  NVARCHAR(50),
     MSThue     VARCHAR(20)
 );
 
@@ -87,8 +87,8 @@ CREATE TABLE NhaCungCap (
 -- =========================
 CREATE TABLE LoaiHang (
     MaLH       VARCHAR(10) PRIMARY KEY,
-    TenLH      VARCHAR(50),
-    MoTa       VARCHAR(255)
+    TenLH      NVARCHAR(50),
+    MoTa       NVARCHAR(255)
 );
 INSERT INTO LoaiHang (MaLH, TenLH, MoTa) VALUES
 ('LH01', N'Thuốc Tây', N'Thuốc kê đơn, thuốc không kê đơn, thuốc điều trị bệnh lý thông thường...'),
@@ -102,8 +102,8 @@ INSERT INTO LoaiHang (MaLH, TenLH, MoTa) VALUES
 -- =========================
 CREATE TABLE NhomDuocLy (
     MaNDL      VARCHAR(10) PRIMARY KEY,
-    TenNDL     VARCHAR(50),
-    MoTa       VARCHAR(255)
+    TenNDL     NVARCHAR(50),
+    MoTa       NVARCHAR(255)
 );
 -- 1. Tác dụng lên hệ thần kinh trung ương
 INSERT INTO NhomDuocLy (MaNDL, TenNDL, MoTa) VALUES
@@ -171,14 +171,14 @@ INSERT INTO NhomDuocLy (MaNDL, TenNDL, MoTa) VALUES
 -- =========================
 CREATE TABLE Thuoc_SanPham (
     MaThuoc    VARCHAR(10) PRIMARY KEY,
-    TenThuoc   VARCHAR(100),
+    TenThuoc   NVARCHAR(100),
     HamLuong   INT,
     DonViHL    VARCHAR(20),
-    DuongDung  VARCHAR(20),
-    QuyCachDongGoi VARCHAR(20),
+    DuongDung  NVARCHAR(20),
+    QuyCachDongGoi NVARCHAR(20),
     SDK_GPNK   VARCHAR(20),
-    HangSX     VARCHAR(20),
-    NuocSX     VARCHAR(20),
+    HangSX     NVARCHAR(20),
+    NuocSX     NVARCHAR(20),
     HinhAnh    VARCHAR(50),
 	MaLH       VARCHAR(10) FOREIGN KEY REFERENCES LoaiHang(MaLH),
     MaNDL      VARCHAR(10) FOREIGN KEY REFERENCES NhomDuocLy(MaNDL)
@@ -191,8 +191,8 @@ CREATE TABLE Thuoc_SanPham (
 CREATE TABLE PhieuNhap (
     MaPN       VARCHAR(10) PRIMARY KEY,
     NgayNhap   DATE NOT NULL,
-    TrangThai  VARCHAR(10) NOT NULL,
-    GhiChu     VARCHAR(255),
+    TrangThai  NVARCHAR(10) NOT NULL,
+    GhiChu     NVARCHAR(255),
     MaNCC      VARCHAR(10) FOREIGN KEY REFERENCES NhaCungCap(MaNCC),
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV)
 );
@@ -232,7 +232,7 @@ CREATE TABLE HoaDon (
     MaHD       VARCHAR(10) PRIMARY KEY,
     TongHD     FLOAT NOT NULL,
     NgayLap    DATE NOT NULL,
-    TrangThai  VARCHAR(10) NOT NULL,
+    TrangThai  NVARCHAR(10) NOT NULL,
 	MaKH       VARCHAR(10) FOREIGN KEY REFERENCES KhachHang(MaKH),
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV)
 );
@@ -258,8 +258,8 @@ CREATE TABLE HoatDong (
     LoaiHD     VARCHAR(20),
     ThoiGian   DATE NOT NULL,
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV),
-    BangDL    VARCHAR(20),
-	GhiChu     VARCHAR(255)
+    BangDL	   VARCHAR(20),
+	GhiChu     NVARCHAR(255)
 );
 
 
@@ -269,8 +269,8 @@ CREATE TABLE HoatDong (
 CREATE TABLE PhieuDoiHang (
     MaPD       VARCHAR(10) PRIMARY KEY,
     NgayLap    DATE NOT NULL,
-    LyDoDoi    DATE NOT NULL,
-    GhiChu     VARCHAR(255),
+    LyDoDoi    NVARCHAR(255) NOT NULL,
+    GhiChu     NVARCHAR(255),
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV),
     MaKH       VARCHAR(10) FOREIGN KEY REFERENCES KhachHang(MaKH),
     MaHD       VARCHAR(10) FOREIGN KEY REFERENCES HoaDon(MaHD)
@@ -292,10 +292,10 @@ CREATE TABLE ChiTietPhieuDoiHang (
 -- Bảng PhieuTraHang
 -- =========================
 CREATE TABLE PhieuTraHang (
-    MaPT       INT PRIMARY KEY,
+    MaPT       VARCHAR(10) PRIMARY KEY,
     NgayLap    DATE NOT NULL,
-    LyDoTra    VARCHAR(20) NOT NULL,
-    GhiChu     VARCHAR(255),
+    LyDoTra    NVARCHAR(20) NOT NULL,
+    GhiChu     NVARCHAR(255),
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV),
     MaHD       VARCHAR(10) FOREIGN KEY REFERENCES HoaDon(MaHD),
     MaKH       VARCHAR(10) FOREIGN KEY REFERENCES KhachHang(MaKH)
@@ -306,7 +306,7 @@ CREATE TABLE PhieuTraHang (
 -- =========================
 CREATE TABLE ChiTietPhieuTraHang (
     MaLH       VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SP_TheoLo(MaLH),
-    MaPT       INT NOT NULL FOREIGN KEY REFERENCES PhieuTraHang(MaPT),
+    MaPT       VARCHAR(10) NOT NULL FOREIGN KEY REFERENCES PhieuTraHang(MaPT),
     SoLuong    INT NOT NULL,
     DonGia     FLOAT NOT NULL,
     GiamGia    FLOAT NOT NULL,
@@ -318,7 +318,7 @@ CREATE TABLE ChiTietPhieuTraHang (
 -- =========================
 CREATE TABLE HoatChat (
     MaHoatChat VARCHAR(10) PRIMARY KEY,
-    TenHoatChat VARCHAR(50) NOT NULL
+    TenHoatChat NVARCHAR(50) NOT NULL
 );
 INSERT INTO HoatChat (MaHoatChat, TenHoatChat) VALUES
 ('HC001','Paracetamol'),
@@ -447,8 +447,8 @@ CREATE TABLE ChiTietDonViTinh (
 -- =========================
 CREATE TABLE LoaiKhuyenMai (
     MaLoai     VARCHAR(10) PRIMARY KEY,
-    TenLoai    VARCHAR(50),
-    MoTa       VARCHAR(255)
+    TenLoai    NVARCHAR(50),
+    MoTa       NVARCHAR(255)
 );
 
 -- =========================
@@ -456,12 +456,12 @@ CREATE TABLE LoaiKhuyenMai (
 -- =========================
 CREATE TABLE KhuyenMai (
     MaKM       VARCHAR(10) PRIMARY KEY,
-    TenKM      VARCHAR(50) NOT NULL,
+    TenKM      NVARCHAR(50) NOT NULL,
     GiaTriKM   FLOAT NOT NULL,
     LoaiGiaTri  VARCHAR(10) NOT NULL,
     NgayBatDau DATE NOT NULL,
     NgayKetThuc DATE NOT NULL,
-    MoTa       VARCHAR(255),
+    MoTa       NVARCHAR(255),
     MaLoai     VARCHAR(10) FOREIGN KEY REFERENCES LoaiKhuyenMai(MaLoai)
 );
 
@@ -475,7 +475,6 @@ CREATE TABLE ChiTietKhuyenMai (
     SLToiDa    INT NOT NULL,
     PRIMARY KEY (MaThuoc, MaKM)
 );
-
 
 -- =========================
 -- Bảng Thuoc_SP_TangKem

@@ -279,8 +279,8 @@ CREATE TABLE LoaiKhuyenMai (
 CREATE TABLE KhuyenMai (
     MaKM       VARCHAR(10) PRIMARY KEY,
     TenKM      VARCHAR(50) NOT NULL,
-    GiaTriKM   FLOAT NOT NULL,
-    LoaiGiaTri  VARCHAR(10) NOT NULL,
+    GiaTriKM   FLOAT,
+    LoaiGiaTri  VARCHAR(10),
     NgayBatDau DATE NOT NULL,
     NgayKetThuc DATE NOT NULL,
     MoTa       VARCHAR(255),
@@ -308,6 +308,15 @@ CREATE TABLE Thuoc_SP_TangKem (
     SoLuong    INT NOT NULL,
     PRIMARY KEY (MaKM, MaThuocTangKem)
 );
+
+
+
+
+
+
+
+
+
 INSERT INTO KhachHang (MaKH, TenKH, SDT, Email, NgaySinh, GioiTinh, DiaChi, TrangThai) VALUES
 ('KH001', N'Nguyễn Văn An', '0905123456', 'an.nguyen@gmail.com', '1990-05-12', N'Nam', N'Hà Nội', N'Hoạt động'),
 ('KH002', N'Lê Thị Hoa', '0905789456', 'hoa.le@gmail.com', '1995-08-21', N'Nữ', N'Hải Phòng', N'Hoạt động'),
@@ -654,6 +663,54 @@ VALUES
 -- LH05: mỹ phẩm
 ('LH00015','PN010','TS556',70,'2025-02-10','2027-02-10'),
 ('LH00016','PN010','TS560',50,'2025-03-20','2027-03-20');
+
+
+
+-- Thêm dữ liệu vào bảng LoaiKhuyenMai
+INSERT INTO LoaiKhuyenMai (MaLoai, TenLoai, MoTa)
+VALUES
+('LKM001', 'Mua sản phẩm tặng sản phẩm', 'Khi khách hàng mua sản phẩm nhất định sẽ được tặng kèm thêm sản phẩm khác'),
+('LKM002', 'Giảm giá trực tiếp', 'Giảm trực tiếp một số tiền nhất định trên tổng hóa đơn hoặc sản phẩm'),
+('LKM003', 'Giảm giá phần trăm', 'Khách hàng được giảm theo tỷ lệ phần trăm trên giá trị sản phẩm hoặc hóa đơn');
+
+
+-- Khuyến mãi cho 10 sản phẩm
+INSERT INTO KhuyenMai (MaKM, TenKM, GiaTriKM, LoaiGiaTri, NgayBatDau, NgayKetThuc, MoTa, MaLoai)
+VALUES
+('KM011', 'Paracetamol giảm 10%', 10, '%', '2025-10-01', '2025-10-31', 'Giảm 10% cho Paracetamol 500mg', 'LKM003'),
+('KM012', 'Amoxicillin giảm 20k', 20000, 'VND', '2025-10-05', '2025-10-25', 'Giảm 20.000đ khi mua Amoxicillin 500mg', 'LKM002'),
+('KM013', 'Cefuroxime giảm 15%', 15, '%', '2025-10-01', '2025-10-20', 'Giảm 15% cho Cefuroxime 250mg', 'LKM003'),
+('KM014', 'Vitamin C tặng Ibu + Para', NULL, NULL, '2025-10-01', '2025-10-31', 'Mua Vitamin C 1000mg tặng Ibuprofen 400mg và Paracetamol 500mg', 'LKM001'),
+('KM015', 'Ibuprofen giảm 10k', 10000, 'VND', '2025-10-10', '2025-11-10', 'Giảm 10.000đ cho Ibuprofen 400mg', 'LKM002'),
+('KM016', 'Ginkgo giảm 12%', 12, '%', '2025-10-01', '2025-10-31', 'Giảm 12% cho Ginkgo Biloba 120mg', 'LKM003'),
+('KM017', 'C + Zinc tặng Ginkgo + Gluco', NULL, NULL, '2025-10-05', '2025-11-05', 'Mua Vitamin C + Zinc tặng Ginkgo Biloba 120mg và Glucosamine 1500mg', 'LKM001'),
+('KM018', 'Glucosamine giảm 50k', 50000, 'VND', '2025-10-01', '2025-11-15', 'Giảm 50.000đ cho Glucosamine 1500mg', 'LKM002'),
+('KM019', 'Nhiệt kế giảm 5%', 5, '%', '2025-10-01', '2025-12-01', 'Giảm 5% cho Nhiệt kế điện tử', 'LKM003'),
+('KM020', 'Máy đo HA giảm 100k', 100000, 'VND', '2025-10-01', '2025-12-31', 'Giảm 100.000đ cho Máy đo huyết áp bắp tay', 'LKM002');
+
+
+INSERT INTO ChiTietKhuyenMai (MaThuoc, MaKM, SLApDung, SLToiDa)
+VALUES
+('TS001', 'KM011', 1, 50),  -- Paracetamol giảm %
+('TS002', 'KM012', 1, 50),  -- Amoxicillin giảm tiền
+('TS003', 'KM013', 1, 50),  -- Cefuroxime giảm %
+('TS004', 'KM014', 2, 20),  -- Vitamin C mua 2 tặng 1 (áp dụng tối đa 20 lần / hóa đơn)
+('TS005', 'KM015', 1, 50),  -- Ibuprofen giảm tiền
+('TS343', 'KM016', 1, 50),  -- Ginkgo giảm %
+('TS344', 'KM017', 2, 15),  -- Vitamin C + Zinc mua 2 tặng 1 (áp dụng tối đa 15 lần)
+('TS345', 'KM018', 1, 50),  -- Glucosamine giảm tiền
+('TS446', 'KM019', 1, 30),  -- Nhiệt kế điện tử giảm %
+('TS447', 'KM020', 1, 30);  -- Máy đo huyết áp giảm tiền
+
+
+INSERT INTO Thuoc_SP_TangKem (MaKM, MaThuocTangKem, SoLuong)
+VALUES
+('KM014', 'TS005', 1),   -- Tặng 1 Ibuprofen 400mg
+('KM014', 'TS001', 1),   -- Tặng 1 Paracetamol 500mg
+('KM017', 'TS343', 1),   -- Tặng 1 Ginkgo Biloba 120mg
+('KM017', 'TS345', 1);   -- Tặng 1 Glucosamine 1500mg
+
+
 
 --------Hóa đơn
 INSERT INTO HoaDon (MaHD, TongHD, NgayLap, TrangThai, MaKH, MaNV)

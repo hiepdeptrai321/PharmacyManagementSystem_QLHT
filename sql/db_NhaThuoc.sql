@@ -1,9 +1,9 @@
-﻿use master
-CREATE DATABASE QuanLyNhaThuoc;
-GO
+﻿--use master
+--CREATE DATABASE QuanLyNhaThuoc;
+--GO
 
-USE QuanLyNhaThuoc;
-GO
+--USE QuanLyNhaThuoc;
+--GO
 
 -- =========================
 -- Bảng KhachHang
@@ -478,6 +478,15 @@ INSERT INTO HoatChat (MaHoatChat, TenHoatChat) VALUES
 
 
 
+-- =========================
+-- Data DonViTinh
+
+
+
+-- =========================
+-- Data LoaiKhuyenMai
+
+
 
 INSERT INTO NhaCungCap (MaNCC, TenNCC, DiaChi, SDT, Email, GPKD, GhiChu, TenCongTy, MSThue)
 VALUES
@@ -654,6 +663,23 @@ VALUES
 -- LH05: mỹ phẩm
 ('LH00015','PN010','TS556',70,'2025-02-10','2027-02-10'),
 ('LH00016','PN010','TS560',50,'2025-03-20','2027-03-20');
+
+
+
+-- =========================
+-- Data ChiTietDonViTinh
+
+
+-- =========================
+-- Data KhuyenMai
+
+
+-- =========================
+-- Data ChiTietKhuyenMai
+
+
+-- =========================
+-- Data Thuoc_SP_Tang_Kem
 
 --------Hóa đơn
 INSERT INTO HoaDon (MaHD, TongHD, NgayLap, TrangThai, MaKH, MaNV)

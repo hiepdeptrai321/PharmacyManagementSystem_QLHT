@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="427.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox layoutX="10.0" layoutY="14.0">
+         <children>
+            <Label alignment="TOP_CENTER" prefHeight="35.0" prefWidth="762.0" text="Tìm Kiếm Thuốc">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="NONE" />
+               </cursor>
+            </Label>
+            <HBox prefHeight="42.0" prefWidth="782.0">
+               <children>
+                  <VBox fx:id="tknangcao">
+                     <children>
+                        <TextField prefHeight="32.0" prefWidth="149.0" promptText="Tìm theo mã, tên thuốc">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </TextField>
+                        <VBox fx:id="tknangcao" visible="false">
+                           <children>
+                              <RadioButton mnemonicParsing="false" selected="true" text="Theo mã, tên thuốc">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="nangcao" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" prefHeight="17.0" prefWidth="134.0" text="Theo hàm lượng" toggleGroup="$nangcao" />
+                              <RadioButton mnemonicParsing="false" text="Theo SDK_GPNK" toggleGroup="$nangcao" />
+                              <RadioButton mnemonicParsing="false" text="Theo hoạt chất" toggleGroup="$nangcao" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  <Button fx:id="bt1" mnemonicParsing="false" onAction="#morong" text="▼">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+                  <Button defaultButton="true" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" text="Tìm">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <ScrollPane>
+               <content>
+                  <TableView prefHeight="278.0" prefWidth="780.0">
+                    <columns>
+                      <TableColumn prefWidth="64.0" text="Mã thuốc" />
+                      <TableColumn minWidth="0.0" prefWidth="224.0" text="Tên Thuốc" />
+                        <TableColumn minWidth="6.0" prefWidth="161.0" text="Hoạt chất" />
+                        <TableColumn prefWidth="130.0" text="Hàm lượng" />
+                        <TableColumn prefWidth="100.0" text="SDK_GPNK" />
+                        <TableColumn prefWidth="100.0" text="Hãng SX" />
+                    </columns>
+                  </TableView>
+               </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+   </children>
+</Pane>

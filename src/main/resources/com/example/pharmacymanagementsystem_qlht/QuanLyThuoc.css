@@ -1,0 +1,27 @@
+#btntim{
+    -fx-background-color: rgba(0, 123, 255, 0.8);   /* trong suốt nền */
+    -fx-border-color: transparent;       /* bỏ viền */
+    -fx-font-size: 14px;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-graphic-text-gap: 8;
+    -fx-min-width: 60px;
+    -fx-min-height: 32px;
+    -fx-pref-width: 40px;
+    -fx-pref-height: 20px;
+}
+#lbtitle{
+    -fx-border-color: transparent transparent #ccc transparent;
+    -fx-border-width: 0 0 1px 0;
+    -fx-text-fill: blue;
+}
+#btnthemthuoc{
+    -fx-background-color: green;   /* trong suốt nền */
+    -fx-border-color: transparent;       /* bỏ viền */
+    -fx-font-size: 14px;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-graphic-text-gap: 8;
+    -fx-min-height: 32px;
+    -fx-border-radius: 6;
+}

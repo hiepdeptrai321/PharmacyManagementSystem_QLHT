@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-public class DangNhap_GUI extends Application {
+public class DangNhap_Ctrl extends Application {
     public CheckBox checkdn;
     public Label lbhotline;
     public TextField tfmk;

@@ -1,4 +1,4 @@
 package com.example.pharmacymanagementsystem_qlht.controller;
 
-public class LapPhieuTraHang_GUI {
+public class NhaCungCap_Ctrl {
 }

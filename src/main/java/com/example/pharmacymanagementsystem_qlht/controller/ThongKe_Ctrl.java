@@ -1,5 +1,4 @@
 package com.example.pharmacymanagementsystem_qlht.controller;
 
-public class keHang_GUI {
-
+public class ThongKe_Ctrl {
 }

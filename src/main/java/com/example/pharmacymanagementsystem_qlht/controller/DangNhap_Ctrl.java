@@ -8,10 +8,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-public class DangNhap_GUI extends Application {
+public class DangNhap_Ctrl extends Application {
     public CheckBox checkdn;
     public Label lbhotline;
-
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/DangNhap_GUI.fxml"));

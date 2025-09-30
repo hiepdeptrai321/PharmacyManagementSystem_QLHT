@@ -8,7 +8,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.pharmacymanagementsystem_qlht.controller.NhaCungCap_GUI"
+            fx:controller="com.example.pharmacymanagementsystem_qlht.MyApp.controller.NhaCungCap_GUI"
             prefHeight="400.0" prefWidth="600.0">
 
 </AnchorPane>

@@ -1,4 +1,0 @@
-package com.example.pharmacymanagementsystem_qlht.dao;
-
-public class Thuoc_SP_TangKem_Dao {
-}

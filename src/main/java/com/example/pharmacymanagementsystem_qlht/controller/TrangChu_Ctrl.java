@@ -1,13 +1,17 @@
 package com.example.pharmacymanagementsystem_qlht.controller;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class TrangChu_Ctrl extends Application {
+    public Pane pnlChung;
+
     @Override
     public void start (Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/TrangChu_GUI.fxml"));
@@ -17,7 +21,18 @@ public class TrangChu_Ctrl extends Application {
         primaryStage.show();
     }
 
+
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public void LapHoaDon(ActionEvent actionEvent) {
+        pnlChung.getChildren().clear();
+        try {
+            Pane pane = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/LapHoaDon_GUI.fxml"));
+            pnlChung.getChildren().add(pane);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -14,19 +14,18 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <VBox layoutX="10.0" layoutY="14.0">
             <children>
             <HBox prefHeight="46.0" prefWidth="782.0">
                <children>
-                      <Label id="lbTimKiem" ellipsisString="" prefHeight="35.0" prefWidth="194.0" styleClass="title" text="Tìm Kiếm Thuốc">
+                      <Label id="lbTimKiem" ellipsisString="" prefHeight="53.0" prefWidth="285.0" styleClass="title" text="Tìm Kiếm Thuốc">
                           <font>
-                              <Font size="24.0" />
+                              <Font size="36.0" />
                           </font>
                           <cursor>
                               <Cursor fx:constant="NONE" />
@@ -34,7 +33,7 @@
                       </Label>
                   <Label>
                      <graphic>
-                        <ImageView fitHeight="38.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="48.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@img/pills-3941.png" />
                            </image>
@@ -44,14 +43,14 @@
                </children>
             </HBox>
                 <Separator prefWidth="200.0" />
-                <HBox prefHeight="42.0" prefWidth="782.0">
+                <HBox prefHeight="42.0" prefWidth="1179.0">
                     <children>
                         <ComboBox fx:id="cboTimKiem" prefWidth="150.0" promptText="Tìm kiếm theo">
                             <HBox.margin>
                                 <Insets right="5.0" top="10.0" />
                             </HBox.margin>
                         </ComboBox>
-                        <TextField prefHeight="18.0" prefWidth="149.0" promptText="Tìm theo mã, tên thuốc">
+                        <TextField prefHeight="48.0" prefWidth="149.0" promptText="Tìm theo mã, tên thuốc">
                             <HBox.margin>
                                 <Insets top="10.0" />
                             </HBox.margin>
@@ -61,7 +60,7 @@
                                 <Insets />
                             </opaqueInsets>
                             <HBox.margin>
-                                <Insets top="15.0" />
+                                <Insets left="8.0" top="15.0" />
                             </HBox.margin>
                         </Label>
                         <TextField prefHeight="25.0" prefWidth="86.0" promptText="min">
@@ -79,10 +78,9 @@
                                 <Insets top="10.0" />
                             </HBox.margin>
                         </TextField>
-                        <Region prefHeight="42.0" prefWidth="89.0" />
                         <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" prefHeight="28.0" prefWidth="63.0" text="Tìm">
                             <HBox.margin>
-                                <Insets top="10.0" />
+                                <Insets left="8.0" top="10.0" />
                             </HBox.margin>
                             <graphic>
                                 <ImageView fitHeight="20.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
@@ -97,12 +95,12 @@
                         </Button>
                         <Button id="btnhuy" mnemonicParsing="false" prefHeight="21.0" prefWidth="52.0">
                             <HBox.margin>
-                                <Insets left="5.0" top="10.0" />
+                                <Insets left="8.0" top="10.0" />
                             </HBox.margin>
                             <graphic>
                                 <ImageView fitHeight="20.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@img/trash-can-10416.png" />
+                                        <Image url="@img/refresh-3104.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -114,14 +112,14 @@
                 </HBox>
                 <ScrollPane>
                     <content>
-                        <TableView prefHeight="330.0" prefWidth="780.0">
+                        <TableView prefHeight="625.0" prefWidth="1177.0">
                             <columns>
-                                <TableColumn prefWidth="64.0" text="Mã thuốc" />
-                                <TableColumn minWidth="0.0" prefWidth="224.0" text="Tên Thuốc" />
-                                <TableColumn minWidth="6.0" prefWidth="161.0" text="Hoạt chất" />
-                                <TableColumn prefWidth="130.0" text="Hàm lượng" />
-                                <TableColumn prefWidth="100.0" text="SDK_GPNK" />
-                                <TableColumn prefWidth="100.0" text="Hãng SX" />
+                                <TableColumn prefWidth="149.0" text="Mã thuốc" />
+                                <TableColumn minWidth="0.0" prefWidth="262.0" text="Tên Thuốc" />
+                                <TableColumn minWidth="6.0" prefWidth="289.0" text="Hoạt chất" />
+                                <TableColumn prefWidth="141.0" text="Hàm lượng" />
+                                <TableColumn prefWidth="179.0" text="SDK_GPNK" />
+                                <TableColumn prefWidth="156.0" text="Hãng SX" />
                             </columns>
                         </TableView>
                     </content>

@@ -16,11 +16,11 @@ public class TimKiemNhanVien_GUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(TimKiemThuocController.class.getResource("/com/example/pharmacymanagementsystem_qlht/TKNhanVien_GUI.fxml"));
+        FXMLLoader loader = new FXMLLoader(TimKiemNhanVien_GUI.class.getResource("/com/example/pharmacymanagementsystem_qlht/TKNhanVien_GUI.fxml"));
         TimKiemNhanVien_ctrl timkiemNhanVien_ctrl = new TimKiemNhanVien_ctrl();
         loader.setController(timkiemNhanVien_ctrl);
         Pane root = loader.load();
-        Scene scene = new Scene(root, 800, 440);
+        Scene scene = new Scene(root, 1200, 750);
         scene.getStylesheets().add(
                 getClass().getResource("/com/example/pharmacymanagementsystem_qlht/TimKiemNhanVien.css").toExternalForm()
         );

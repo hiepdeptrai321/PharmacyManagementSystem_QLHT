@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox layoutX="14.0" layoutY="14.0">
+         <children>
+            <VBox prefHeight="725.0" prefWidth="240.0">
+               <children>
+                  <Label text="Báo cáo bán hàng">
+                     <font>
+                        <Font size="28.0" />
+                     </font>
+                  </Label>
+                  <Separator prefWidth="200.0" />
+                  <Label prefHeight="27.0" prefWidth="221.0" text="Kiểu hiển thị">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER">
+                     <children>
+                        <Button fx:id="btnBang" layoutX="117.0" layoutY="10.0" mnemonicParsing="false" onAction="#hienThiBang" prefHeight="25.0" prefWidth="63.0" text="Bảng">
+                           <HBox.margin>
+                              <Insets left="40.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="btnBieuDo" mnemonicParsing="false" onAction="#hienThiBieuDo" prefHeight="25.0" prefWidth="63.0" text="Biểu đồ">
+                           <HBox.margin>
+                              <Insets left="30.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <Label layoutX="10.0" layoutY="53.0" prefHeight="27.0" prefWidth="243.0" text="Mối quan tâm">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <ComboBox prefHeight="25.0" prefWidth="230.0" promptText="Lợi nhuận">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </ComboBox>
+                  <Label layoutX="10.0" layoutY="53.0" prefHeight="27.0" prefWidth="221.0" text="Thời gian">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <RadioButton mnemonicParsing="false">
+                     <graphic>
+                        <ComboBox prefHeight="25.0" prefWidth="215.0" promptText="Hôm nay" />
+                     </graphic>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="date" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton mnemonicParsing="false" toggleGroup="$date">
+                     <graphic>
+                        <DatePicker prefHeight="25.0" prefWidth="215.0" />
+                     </graphic>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </RadioButton>
+                  <Label text="Xuất file">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <ComboBox prefHeight="25.0" prefWidth="241.0" promptText="Excel" />
+                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="241.0" text="Xuất File 💾">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="934.0" text="Doanh thu">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <TableView fx:id="tableDoanhThu" prefHeight="400.0" prefWidth="934.0">
+                    <columns>
+                      <TableColumn prefWidth="75.0" text="C1" />
+                      <TableColumn prefWidth="75.0" text="C2" />
+                    </columns>
+                  </TableView>
+                  <AreaChart fx:id="chartDoanhThu" prefHeight="400.0" prefWidth="934.0" visible="false">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                  </AreaChart>
+                  <Label prefHeight="17.0" prefWidth="898.0" text="Top 5 sản phẩm bán chạy🔥" textFill="#c63131">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TableView prefHeight="246.0" prefWidth="934.0">
+                    <columns>
+                      <TableColumn prefWidth="98.0" text="Mã thuốc" />
+                      <TableColumn prefWidth="475.0" text="Tên thuốc" />
+                        <TableColumn minWidth="0.0" prefWidth="88.0" text="Số lượng" />
+                        <TableColumn prefWidth="262.0" text="Thành tiền" />
+                    </columns>
+                  </TableView>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</Pane>

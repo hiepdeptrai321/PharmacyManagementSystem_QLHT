@@ -19,7 +19,7 @@ public class TimKiemThuoc_GUI extends Application {
             TimKiemThuocController timkiemThuocController = new TimKiemThuocController();
             loader.setController(timkiemThuocController);
             Pane root = loader.load();
-            Scene scene = new Scene(root, 800, 440);
+            Scene scene = new Scene(root, 1200, 750);
         scene.getStylesheets().add(
                 getClass().getResource("/com/example/pharmacymanagementsystem_qlht/TimKiemThuoc.css").toExternalForm()
         );

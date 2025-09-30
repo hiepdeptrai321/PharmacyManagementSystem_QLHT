@@ -1,53 +1,257 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Point3D?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<Pane prefHeight="800.0" prefWidth="1200.0" stylesheets="@TrangChu.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.TrangChu_Ctrl">
+<Pane id="main" prefHeight="800.0" prefWidth="1200.0" stylesheets="@TrangChu.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.TrangChu_Ctrl">
    <children>
-      <AnchorPane prefHeight="800.0" prefWidth="1200.0">
+      <AnchorPane layoutY="2.0" prefHeight="800.0" prefWidth="1214.0">
          <children>
-            <MenuBar id="menuBar" layoutY="70.0" prefHeight="25.0" prefWidth="1200.0">
+            <MenuBar id="menuBar" layoutY="70.0" prefHeight="25.0" prefWidth="1200.0" styleClass="menu">
               <menus>
                 <Menu id="menu" mnemonicParsing="false" text="Tìm kiếm">
                   <items>
                     <MenuItem mnemonicParsing="false" text="About" />
                   </items>
                 </Menu>
-                  <Menu id="menu" mnemonicParsing="false" text="Quản lý">
+                  <Menu id="menu" mnemonicParsing="false" styleClass="menu" text="Quản lý">
                      <items>
                         <MenuItem mnemonicParsing="false" text="Delete" />
                         <MenuItem mnemonicParsing="false" text="Delete" />
                      </items>
                   </Menu>
-                <Menu id="menu" mnemonicParsing="false" text="Thống kê">
+                <Menu id="menu" mnemonicParsing="false" styleClass="menu" text="Thống kê">
                      <items>
                         <MenuItem mnemonicParsing="false" text="Delete" />
                         <MenuItem mnemonicParsing="false" text="Delete" />
                      </items>
                 </Menu>
-                <Menu id="menu" mnemonicParsing="false" text="Bán hàng">
+                <Menu mnemonicParsing="false" styleClass="menu" text="Bán hàng">
                      <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
+                    <MenuItem mnemonicParsing="false" onAction="#LapHoaDon" text="Lập hóa đơn" />
                      </items>
                 </Menu>
-                  <Menu id="menu" mnemonicParsing="false" text="Nhập hàng">
+                  <Menu mnemonicParsing="false" styleClass="menu" text="Nhập hàng">
                      <items>
                         <MenuItem mnemonicParsing="false" text="Delete" />
                      </items>
                   </Menu>
               </menus>
             </MenuBar>
-            <ImageView fitHeight="70.0" fitWidth="154.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="89.0" fitWidth="241.0" layoutY="-11.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@img/LogoNgang.png" />
+                  <Image url="@img/logo.png" />
                </image>
             </ImageView>
+            <Pane fx:id="pnlChung" layoutY="98.0" prefHeight="704.0" prefWidth="1200.0">
+               <children>
+                  <GridPane id="pnlGrid" prefHeight="705.0" prefWidth="1200.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="832.0" minWidth="10.0" prefWidth="796.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="595.0" minWidth="10.0" prefWidth="404.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="507.0" minHeight="10.0" prefHeight="240.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="479.0" minHeight="0.0" prefHeight="464.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <rotationAxis>
+                        <Point3D />
+                     </rotationAxis>
+                     <children>
+                        <Pane prefHeight="241.0" prefWidth="575.0" GridPane.columnIndex="1">
+                           <children>
+                              <Pane id="paneMain" layoutX="14.0" layoutY="27.0" prefHeight="200.0" prefWidth="355.0">
+                                 <children>
+                                    <Label layoutX="87.0" layoutY="101.0" text="35℃">
+                                       <font>
+                                          <Font name="System Bold" size="30.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="241.0" layoutY="101.0" text="50%">
+                                       <font>
+                                          <Font name="System Bold" size="30.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="52.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/nhietDo.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="178.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/DoAm.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label layoutX="64.0" layoutY="31.0" text="Điều kiện bảo quản">
+                                       <font>
+                                          <Font name="System Bold" size="25.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="464.0" prefWidth="809.0" GridPane.rowIndex="1">
+                           <children>
+                              <Pane id="paneMain" layoutX="26.0" layoutY="27.0" prefHeight="410.0" prefWidth="750.0">
+                                 <children>
+                                    <Label layoutX="192.0" layoutY="26.0" text="Doanh thu bán hàng tháng này" textAlignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="25.0" />
+                                       </font>
+                                    </Label>
+                                    <LineChart layoutX="29.0" layoutY="71.0" prefHeight="303.0" prefWidth="692.0">
+                                      <xAxis>
+                                        <CategoryAxis side="BOTTOM" />
+                                      </xAxis>
+                                      <yAxis>
+                                        <NumberAxis side="LEFT" />
+                                      </yAxis>
+                                    </LineChart>
+                                    <Label layoutX="15.0" layoutY="197.0" rotate="-90.0" text="VND">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label layoutX="356.0" layoutY="364.0" text="Ngày">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <Pane id="paneMain" layoutX="14.0" layoutY="27.0" prefHeight="410.0" prefWidth="355.0">
+                                 <children>
+                                    <Label layoutX="96.0" layoutY="36.0" text="Cảnh báo hàng hóa">
+                                       <font>
+                                          <Font name="System Bold" size="25.0" />
+                                       </font>
+                                    </Label>
+                                    <TableView layoutX="18.0" layoutY="110.0" prefHeight="121.0" prefWidth="326.0">
+                                      <columns>
+                                        <TableColumn prefWidth="107.0" text="Mã thuốc" />
+                                        <TableColumn prefWidth="104.0" text="Tên thuốc" />
+                                          <TableColumn prefWidth="114.0" text="Hạn sử dụng" />
+                                      </columns>
+                                    </TableView>
+                                    <TableView layoutX="18.0" layoutY="267.0" prefHeight="121.0" prefWidth="326.0">
+                                       <columns>
+                                          <TableColumn prefWidth="107.0" text="Mã thuốc" />
+                                          <TableColumn prefWidth="104.0" text="Tên thuốc" />
+                                          <TableColumn prefWidth="114.0" text="Hạn sử dụng" />
+                                       </columns>
+                                    </TableView>
+                                    <Label fx:id="lbl_SoLuongHangHetHan" layoutX="18.0" layoutY="89.0" text="Hàng hết hạn: 0">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="lbl_SoLuongHangSapHetHan" layoutX="18.0" layoutY="246.0" text="Hàng sắp hết hạn: 0">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView fitHeight="59.0" fitWidth="70.0" layoutX="26.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/canhBao.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </Pane>
+                        <GridPane>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Pane prefHeight="200.0" prefWidth="200.0">
+                                 <children>
+                                    <Pane id="paneMain" layoutX="27.0" layoutY="27.0" prefHeight="200.0" prefWidth="355.0">
+                                       <children>
+                                          <Label layoutX="108.0" layoutY="31.0" text="Doanh thu">
+                                             <font>
+                                                <Font name="System Bold" size="25.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="42.0" layoutY="90.0" text="Tháng trước: 10 VND">
+                                             <font>
+                                                <Font name="System Bold" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="42.0" layoutY="132.0" text="Tháng này: 15VND">
+                                             <font>
+                                                <Font name="System Bold" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="29.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="29.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@img/Tien.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </Pane>
+                                 </children>
+                              </Pane>
+                              <Pane prefHeight="241.0" prefWidth="382.0" GridPane.columnIndex="1">
+                                 <children>
+                                    <Pane id="paneMain" layoutX="22.0" layoutY="27.0" prefHeight="200.0" prefWidth="355.0">
+                                       <children>
+                                          <Label layoutX="124.0" layoutY="31.0" text="Hóa đơn">
+                                             <font>
+                                                <Font name="System Bold" size="25.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="43.0" layoutY="132.0" text="Tháng này: 10 hóa đơn">
+                                             <font>
+                                                <Font name="System Bold" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="43.0" layoutY="90.0" text="Tháng trước: 10 hóa đơn">
+                                             <font>
+                                                <Font name="System Bold" size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <ImageView fitHeight="59.0" fitWidth="59.0" layoutX="43.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@img/hoaDon.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </Pane>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </GridPane>
+                     </children>
+                  </GridPane>
+               </children>
+            </Pane>
          </children>
       </AnchorPane>
    </children>

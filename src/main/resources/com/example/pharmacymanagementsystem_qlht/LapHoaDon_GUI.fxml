@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.pharmacymanagementsystem_qlht.controller.LapHoaDon_GUI"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="565.0" prefWidth="761.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.LapHoaDon_control">
+   <children>
+      <HBox layoutX="281.0" layoutY="233.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox prefHeight="565.0" prefWidth="670.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <TextField fx:id="txtTimThuoc" prefHeight="26.0" prefWidth="255.0" />
+                  <TableView fx:id="tblCTHT" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0">
+                    <columns>
+                      <TableColumn prefWidth="36.0" text="STT" />
+                      <TableColumn prefWidth="141.0" text="Tên sản phẩm" />
+                        <TableColumn minWidth="0.0" prefWidth="65.0" text="Số lượng" />
+                        <TableColumn prefWidth="64.0" text="Đơn vị" />
+                        <TableColumn prefWidth="75.0" text="Đơn giá" />
+                        <TableColumn prefWidth="75.0" text="Chiết khấu" />
+                        <TableColumn prefWidth="75.0" text="Thành tiền" />
+                    </columns>
+                  </TableView>
+               </children>
+            </VBox>
+            <VBox prefHeight="565.0" prefWidth="365.0" HBox.hgrow="SOMETIMES" />
+         </children>
+      </HBox>
+   </children>
 </AnchorPane>

@@ -2,6 +2,7 @@ module com.example.pharmacymanagementsystem_qlht {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
+    requires javafx.graphics;
 
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
@@ -11,5 +12,7 @@ module com.example.pharmacymanagementsystem_qlht {
     requires eu.hansolo.tilesfx;
 
     opens com.example.pharmacymanagementsystem_qlht to javafx.fxml;
-    exports com.example.pharmacymanagementsystem_qlht;
+    opens com.example.pharmacymanagementsystem_qlht.controller to javafx.fxml;
+    exports com.example.pharmacymanagementsystem_qlht.controller;
+    uses com.example.pharmacymanagementsystem_qlht.LapHoaDon_control;
 }

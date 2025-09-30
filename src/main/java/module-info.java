@@ -11,5 +11,5 @@ module com.example.pharmacymanagementsystem_qlht {
     requires eu.hansolo.tilesfx;
 
     opens com.example.pharmacymanagementsystem_qlht to javafx.fxml;
-    exports com.example.pharmacymanagementsystem_qlht.MyApp.controller;
+    exports com.example.pharmacymanagementsystem_qlht.controller;
 }

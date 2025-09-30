@@ -11,9 +11,6 @@ module com.example.pharmacymanagementsystem_qlht {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
 
-    opens com.example.pharmacymanagementsystem_qlht to javafx.fxml;
-    exports com.example.pharmacymanagementsystem_qlht.controller;
     opens com.example.pharmacymanagementsystem_qlht.controller to javafx.fxml;
     exports com.example.pharmacymanagementsystem_qlht.controller;
-    uses com.example.pharmacymanagementsystem_qlht.LapHoaDon_control;
 }

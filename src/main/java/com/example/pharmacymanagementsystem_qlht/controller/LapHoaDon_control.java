@@ -10,14 +10,13 @@ public class LapHoaDon_control extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(com/example/pharmacymanagementsystem_qlht/LapHoaDon_GUI.fxml));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/LapHoaDon_GUI.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         stage.setTitle("Lập Hóa Đơn");
+
         stage.setScene(scene);
         stage.show();
     }
-    public static void main(String[] args) {
-        launch(args);
-    }
+
 }

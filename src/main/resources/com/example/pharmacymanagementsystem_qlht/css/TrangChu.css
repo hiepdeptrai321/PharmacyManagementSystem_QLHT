@@ -1,15 +1,32 @@
 #menuBar{
     -fx-background-color: #1e90ff;
 }
-#menu > .label {
+.menu > .label {
     -fx-text-fill: white;
     -fx-font-size: 14px;
 }
-#menu:hover{
+.menu .label:hover {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
     -fx-background-color: #003cff;
 }
-#menu > .label:selected {
+.menu:hover{
     -fx-background-color: #003cff;
-    -fx-text-fill: #fff;
-    -fx-font-weight: bold;
+}
+.menu:showing{
+    -fx-background-color: #003cff;
+}
+.menu.active {
+    -fx-background-color: #003cff;
+}
+#pnlGrid{
+    -fx-background-color: #efefef;
+}
+
+#paneMain{
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20px;
+}
+.table-view {
+    -fx-focus-traversable: false;
 }

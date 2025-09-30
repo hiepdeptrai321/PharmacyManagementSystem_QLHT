@@ -22,9 +22,9 @@
     <children>
         <VBox layoutX="10.0" layoutY="14.0">
             <children>
-            <HBox prefHeight="46.0" prefWidth="782.0">
+            <HBox>
                <children>
-                      <Label id="lbTimKiem" ellipsisString="" prefHeight="35.0" prefWidth="194.0" styleClass="title" text="Tìm Kiếm Thuốc">
+                      <Label id="lbTimKiem" ellipsisString="" prefHeight="35.0" prefWidth="246.0" styleClass="title" text="Tìm Kiếm Nhân Viên">
                           <font>
                               <Font size="24.0" />
                           </font>
@@ -34,9 +34,9 @@
                       </Label>
                   <Label>
                      <graphic>
-                        <ImageView fitHeight="38.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="34.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@img/pills-3941.png" />
+                              <Image url="@img/search-employee-8969.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -51,35 +51,12 @@
                                 <Insets right="5.0" top="10.0" />
                             </HBox.margin>
                         </ComboBox>
-                        <TextField prefHeight="18.0" prefWidth="149.0" promptText="Tìm theo mã, tên thuốc">
+                        <TextField prefHeight="18.0" prefWidth="149.0" promptText="Tìm...">
                             <HBox.margin>
                                 <Insets top="10.0" />
                             </HBox.margin>
                         </TextField>
-                        <Label prefHeight="17.0" prefWidth="77.0" style="-fx-font-weight: bold;" text="Hàm lượng:">
-                            <opaqueInsets>
-                                <Insets />
-                            </opaqueInsets>
-                            <HBox.margin>
-                                <Insets top="15.0" />
-                            </HBox.margin>
-                        </Label>
-                        <TextField prefHeight="25.0" prefWidth="86.0" promptText="min">
-                            <HBox.margin>
-                                <Insets top="10.0" />
-                            </HBox.margin>
-                        </TextField>
-                        <Label text="--">
-                            <HBox.margin>
-                                <Insets top="15.0" />
-                            </HBox.margin>
-                        </Label>
-                        <TextField prefHeight="25.0" prefWidth="88.0" promptText="max">
-                            <HBox.margin>
-                                <Insets top="10.0" />
-                            </HBox.margin>
-                        </TextField>
-                        <Region prefHeight="42.0" prefWidth="89.0" />
+                        <Region prefHeight="42.0" prefWidth="360.0" />
                         <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" prefHeight="28.0" prefWidth="63.0" text="Tìm">
                             <HBox.margin>
                                 <Insets top="10.0" />
@@ -116,12 +93,13 @@
                     <content>
                         <TableView prefHeight="330.0" prefWidth="780.0">
                             <columns>
-                                <TableColumn prefWidth="64.0" text="Mã thuốc" />
-                                <TableColumn minWidth="0.0" prefWidth="224.0" text="Tên Thuốc" />
-                                <TableColumn minWidth="6.0" prefWidth="161.0" text="Hoạt chất" />
-                                <TableColumn prefWidth="130.0" text="Hàm lượng" />
-                                <TableColumn prefWidth="100.0" text="SDK_GPNK" />
-                                <TableColumn prefWidth="100.0" text="Hãng SX" />
+                                <TableColumn prefWidth="79.0" text="Mã NV" />
+                                <TableColumn prefWidth="112.0" text="Tên" />
+                                <TableColumn minWidth="0.0" prefWidth="169.0" text="Email" />
+                                <TableColumn minWidth="6.0" prefWidth="110.0" text="SDT" />
+                                <TableColumn prefWidth="58.0" text="Giới tính" />
+                                <TableColumn minWidth="0.0" prefWidth="134.0" text="Địa chỉ" />
+                                <TableColumn prefWidth="117.0" text="Trạng thái" />
                             </columns>
                         </TableView>
                     </content>

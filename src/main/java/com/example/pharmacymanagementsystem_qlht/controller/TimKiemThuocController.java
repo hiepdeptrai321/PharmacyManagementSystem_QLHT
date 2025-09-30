@@ -1,12 +1,9 @@
 package com.example.pharmacymanagementsystem_qlht.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
-import org.kordamp.ikonli.javafx.FontIcon;
 import javafx.scene.control.ComboBox;
 
-public class TimKiemController {
+public class TimKiemThuocController {
     @FXML
     private ComboBox<String> cboTimKiem;
 

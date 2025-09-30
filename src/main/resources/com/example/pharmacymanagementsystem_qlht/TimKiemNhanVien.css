@@ -1,0 +1,9 @@
+
+#lbTimKiem {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}
+#btnhuy{
+-fx-background-color: rgb(201,26,26);
+}

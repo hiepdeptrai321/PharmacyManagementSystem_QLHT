@@ -1,0 +1,15 @@
+#menuBar{
+    -fx-background-color: #1e90ff;
+}
+#menu > .label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+#menu:hover{
+    -fx-background-color: #003cff;
+}
+#menu > .label:selected {
+    -fx-background-color: #003cff;
+    -fx-text-fill: #fff;
+    -fx-font-weight: bold;
+}

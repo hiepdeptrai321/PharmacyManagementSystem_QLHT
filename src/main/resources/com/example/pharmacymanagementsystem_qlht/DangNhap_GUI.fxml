@@ -30,7 +30,7 @@
       </CheckBox>
       <ImageView fitHeight="185.0" fitWidth="207.0" layoutX="167.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../../img/LogoDung.png" />
+            <Image url="@img/LogoDung.png" />
          </image>
       </ImageView>
    </children>

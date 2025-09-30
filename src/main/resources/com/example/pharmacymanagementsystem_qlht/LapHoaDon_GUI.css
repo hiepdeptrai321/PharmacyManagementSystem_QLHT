@@ -1,56 +1,42 @@
-/* ======================================================= */
-/* Cài đặt chung cho các thành phần */
-/* ======================================================= */
 
-/* Áp dụng Bo góc (radius) cho các Pane/Container chính */
 .pane-container {
-    -fx-background-color: white; /* Đảm bảo màu nền trắng cho các Pane */
-    -fx-background-radius: 10px; /* Độ cong 10px */
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
     -fx-border-radius: 10px;
-    -fx-border-color: #DDDDDD; /* Đường viền nhẹ */
+    -fx-border-color: #DDDDDD;
     -fx-border-width: 1px;
 }
 
-/* Áp dụng Bo góc cho các Button */
 .button {
-    -fx-background-radius: 5px; /* Bo góc nhẹ 5px */
+    -fx-background-radius: 5px;
     -fx-font-weight: bold;
-    -fx-cursor: hand; /* Biến con trỏ thành bàn tay khi rê chuột */
+    -fx-cursor: hand;
 }
 
-/* Kiểu dáng cho các nút chính (Đặt hàng, Thanh toán) */
 .button-primary {
-    -fx-background-color: #03A9F4; /* Xanh dương */
+    -fx-background-color: #03A9F4;
     -fx-text-fill: white;
     -fx-padding: 8px 20px;
 }
 
 .button-secondary {
-    -fx-background-color: #EF6C00; /* Cam/Đỏ */
+    -fx-background-color: #EF6C00;
     -fx-text-fill: white;
     -fx-padding: 8px 20px;
 }
 
-/* ======================================================= */
-/* Kiểu dáng cho Label (Tiêu đề) */
-/* ======================================================= */
 
-/* Label trong phần tóm tắt thanh toán (Font lớn hơn, đậm hơn) */
 .summary-label {
     -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
 
-/* Label Thành tiền */
 .total-label {
     -fx-font-size: 18px;
     -fx-font-weight: extra-bold;
-    -fx-text-fill: #1976D2; /* Màu xanh nổi bật */
+    -fx-text-fill: #1976D2;
 }
 
-/* ======================================================= */
-/* Kiểu dáng cho TextField/ChoiceBox/DatePicker */
-/* ======================================================= */
 .text-input, .choice-box, .date-picker {
     -fx-background-radius: 3px;
     -fx-border-radius: 3px;

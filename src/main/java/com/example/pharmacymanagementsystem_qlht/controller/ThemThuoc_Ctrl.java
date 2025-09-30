@@ -4,19 +4,13 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-import java.util.Objects;
-
-public class DangNhap_GUI extends Application {
-    public CheckBox checkdn;
-    public Label lbhotline;
+public class ThemThuoc_Ctrl extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/DangNhap_GUI.fxml")));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/ThemThuoc_GUI.fxml"));
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/DangNhap.css").toExternalForm());
         stage.setScene(scene);

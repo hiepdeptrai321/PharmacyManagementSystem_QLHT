@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="649.0" prefWidth="488.0" stylesheets="@DangNhap.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.DangNhap_Ctrl">
+<AnchorPane prefHeight="649.0" prefWidth="488.0" stylesheets="@css/DangNhap.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.DangNhap_Ctrl">
    <children>
       <TextField layoutX="92.0" layoutY="261.0" prefHeight="26.0" prefWidth="318.0" />
       <Label layoutX="90.0" layoutY="243.0" text="Tài khoản" />

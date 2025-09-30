@@ -6,7 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class Demo_GUI extends Application {
+
+public class TimKiemThuoc_GUI extends Application {
 
     public static void main(String[] args) {
         launch(args);
@@ -14,11 +15,14 @@ public class Demo_GUI extends Application {
 
     @Override
         public void start(Stage primaryStage) throws Exception {
-            FXMLLoader loader = new FXMLLoader(TimKiemController.class.getResource("/com/example/pharmacymanagementsystem_qlht/TimKiem_GUI.fxml"));
+            FXMLLoader loader = new FXMLLoader(TimKiemController.class.getResource("/com/example/pharmacymanagementsystem_qlht/TKThuoc_GUI.fxml"));
             TimKiemController timkiemController = new TimKiemController();
             loader.setController(timkiemController);
             Pane root = loader.load();
             Scene scene = new Scene(root, 800, 440);
+        scene.getStylesheets().add(
+                getClass().getResource("/com/example/pharmacymanagementsystem_qlht/TimKiemThuoc.css").toExternalForm()
+        );
             primaryStage.setTitle("Tim Kiem");
             primaryStage.setScene(scene);
             primaryStage.show();

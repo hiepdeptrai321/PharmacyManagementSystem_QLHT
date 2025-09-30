@@ -11,7 +11,7 @@ import javafx.event.ActionEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ThongKeBanHang_ctrl implements Initializable {
+public class ThongKeBanHang_Ctrl implements Initializable {
 
     @FXML
     private Button btnBang;

@@ -10,13 +10,13 @@ public class ThongKe_GUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(ThongKeBanHang_ctrl.class.getResource("/com/example/pharmacymanagementsystem_qlht/ThongKeBanHang.fxml"));
-        ThongKeBanHang_ctrl  thongkeBanHang_ctrl = new ThongKeBanHang_ctrl();
+        FXMLLoader loader = new FXMLLoader(ThongKeBanHang_Ctrl.class.getResource("/com/example/pharmacymanagementsystem_qlht/ThongKeBanHang.fxml"));
+        ThongKeBanHang_Ctrl thongkeBanHang_ctrl = new ThongKeBanHang_Ctrl();
         loader.setController(thongkeBanHang_ctrl);
         Pane root = loader.load();
         Scene scene = new Scene(root, 1200, 750);
         scene.getStylesheets().add(
-                getClass().getResource("/com/example/pharmacymanagementsystem_qlht/ThongKeBanHang.css").toExternalForm()
+                getClass().getResource("/com/example/pharmacymanagementsystem_qlht/css/ThongKeBanHang.css").toExternalForm()
        );
         primaryStage.setTitle("ThongKe");
         primaryStage.setScene(scene);

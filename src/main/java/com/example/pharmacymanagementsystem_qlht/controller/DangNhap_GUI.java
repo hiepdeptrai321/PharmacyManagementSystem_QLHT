@@ -16,7 +16,7 @@ public class DangNhap_GUI extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/DangNhap_GUI.fxml"));
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/DangNhap.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/css/DangNhap.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }

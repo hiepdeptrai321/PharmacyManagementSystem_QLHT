@@ -15,13 +15,13 @@ public class TimKiemThuoc_GUI extends Application {
 
     @Override
         public void start(Stage primaryStage) throws Exception {
-            FXMLLoader loader = new FXMLLoader(TimKiemThuocController.class.getResource("/com/example/pharmacymanagementsystem_qlht/TKThuoc_GUI.fxml"));
-            TimKiemThuocController timkiemThuocController = new TimKiemThuocController();
-            loader.setController(timkiemThuocController);
+            FXMLLoader loader = new FXMLLoader(TimKiemThuoc_Ctrl.class.getResource("/com/example/pharmacymanagementsystem_qlht/TKThuoc_GUI.fxml"));
+            TimKiemThuoc_Ctrl timkiemThuocCtrl = new TimKiemThuoc_Ctrl();
+            loader.setController(timkiemThuocCtrl);
             Pane root = loader.load();
             Scene scene = new Scene(root, 1200, 750);
         scene.getStylesheets().add(
-                getClass().getResource("/com/example/pharmacymanagementsystem_qlht/TimKiemThuoc.css").toExternalForm()
+                getClass().getResource("/com/example/pharmacymanagementsystem_qlht/css/TimKiemThuoc.css").toExternalForm()
         );
             primaryStage.setTitle("Tim Kiem");
             primaryStage.setScene(scene);

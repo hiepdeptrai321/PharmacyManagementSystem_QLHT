@@ -4,22 +4,21 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="649.0" prefWidth="488.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.DangNhap_GUI">
    <children>
       <TextField layoutX="92.0" layoutY="261.0" prefHeight="26.0" prefWidth="316.0" />
-      <TextField layoutX="92.0" layoutY="325.0" prefHeight="26.0" prefWidth="316.0" />
       <Label layoutX="92.0" layoutY="243.0" text="Tài khoản" />
-      <Label layoutX="317.0" layoutY="365.0" text="Label" />
+      <Label id="lbhotline" fx:id="lbhotline" layoutX="291.0" layoutY="365.0" text="Hotline: 1800 6868 " />
       <Label layoutX="92.0" layoutY="307.0" text="Mật khẩu" />
       <Label layoutX="217.0" layoutY="618.0" text="Label" />
-      <Button layoutX="236.0" layoutY="486.0" mnemonicParsing="false" text="Button" />
+      <Button id="btndn" fx:id="btndn" layoutX="176.0" layoutY="407.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="148.0" text="Đăng nhập" />
       <CheckBox fx:id="checkdn" graphicTextGap="2.0" layoutX="92.0" layoutY="365.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="165.0" text="Ghi nhớ đăng nhập">
          <font>
             <Font size="10.0" />
@@ -33,5 +32,6 @@
             <Image url="@img/LogoDung.png" />
          </image>
       </ImageView>
+      <PasswordField layoutX="95.0" layoutY="325.0" prefHeight="26.0" prefWidth="316.0" />
    </children>
 </AnchorPane>

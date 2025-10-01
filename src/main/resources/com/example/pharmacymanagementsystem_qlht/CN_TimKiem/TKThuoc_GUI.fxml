@@ -35,7 +35,7 @@
                      <graphic>
                         <ImageView fitHeight="48.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@img/pills-3941.png" />
+                              <Image url="@../img/pills-3941.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -85,7 +85,7 @@
                             <graphic>
                                 <ImageView fitHeight="20.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@img/free-search-icon-2911-thumb.png" />
+                                        <Image url="@../img/free-search-icon-2911-thumb.png" />
                                     </image>
                                     <cursor>
                                         <Cursor fx:constant="DEFAULT" />
@@ -100,7 +100,7 @@
                             <graphic>
                                 <ImageView fitHeight="20.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@img/refresh-3104.png" />
+                                        <Image url="@../img/refresh-3104.png" />
                                     </image>
                                 </ImageView>
                             </graphic>

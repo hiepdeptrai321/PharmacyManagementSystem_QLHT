@@ -10,7 +10,7 @@ public class ThongKe_GUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(ThongKeBanHang_Ctrl.class.getResource("/com/example/pharmacymanagementsystem_qlht/ThongKeBanHang.fxml"));
+        FXMLLoader loader = new FXMLLoader(ThongKeBanHang_Ctrl.class.getResource("/com/example/pharmacymanagementsystem_qlht/CN_ThongKe/ThongKeBanHang.fxml"));
         ThongKeBanHang_Ctrl thongkeBanHang_ctrl = new ThongKeBanHang_Ctrl();
         loader.setController(thongkeBanHang_ctrl);
         Pane root = loader.load();

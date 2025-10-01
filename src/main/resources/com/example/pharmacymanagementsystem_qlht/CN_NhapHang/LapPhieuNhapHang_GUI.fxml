@@ -16,7 +16,7 @@
    <children>
       <AnchorPane prefHeight="750.0" prefWidth="1200.0">
          <children>
-            <GridPane id="pnlGrid" prefHeight="750.0" prefWidth="1200.0" stylesheets="@css/LapPhieuNhapHang.css">
+            <GridPane id="pnlGrid" prefHeight="750.0" prefWidth="1200.0" stylesheets="@../css/LapPhieuNhapHang.css">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -57,7 +57,7 @@
                               </Label>
                               <ImageView fitHeight="40.0" fitWidth="22.0" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@img/logoExcel.svg.png" />
+                                    <Image url="@../img/logoExcel.svg.png" />
                                  </image>
                               </ImageView>
                            </children>

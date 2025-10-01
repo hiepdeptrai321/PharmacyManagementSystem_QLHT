@@ -13,14 +13,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" stylesheets="@css/ThemThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.ThemThuoc_Ctrl">
+<AnchorPane prefHeight="608.0" prefWidth="1004.0" stylesheets="@css/ThemThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.ThemThuoc_Ctrl">
    <children>
-      <Label id="lbtitle" layoutX="14.0" layoutY="8.0" prefHeight="31.0" prefWidth="990.0" text="Thông tin chung">
+      <Label id="lbtitle" layoutX="14.0" layoutY="8.0" prefHeight="31.0" prefWidth="990.0" text="Thêm thuốc">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <VBox layoutX="14.0" layoutY="36.0" prefHeight="547.0" prefWidth="977.0">
+      <VBox layoutX="14.0" layoutY="36.0" prefHeight="522.0" prefWidth="977.0">
          <children>
             <Pane prefHeight="121.0" prefWidth="956.0">
                <children>
@@ -75,7 +75,7 @@
             </Pane>
             <Pane prefHeight="184.0" prefWidth="970.0" styleClass="pnlthongtin">
                <children>
-                  <Button id="btnchonanh" layoutX="798.0" layoutY="115.0" minHeight="30.0" minWidth="92.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="92.0" text="Chọn ảnh" />
+                  <Button id="btnchonanh" layoutX="800.0" layoutY="124.0" minHeight="30.0" minWidth="92.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="92.0" text="Chọn ảnh" />
                   <Label layoutX="4.0" layoutY="31.0" prefHeight="16.0" prefWidth="77.0" text="Hàm lượng">
                      <font>
                         <Font size="11.0" />
@@ -149,7 +149,7 @@
             </Pane>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <TableView prefHeight="200.0" prefWidth="970.0">
+                  <TableView prefHeight="205.0" prefWidth="977.0">
                     <columns>
                       <TableColumn prefWidth="148.5" text="Đơn vị tính" />
                         <TableColumn prefWidth="141.5" text="Kí hiệu" />
@@ -162,5 +162,15 @@
             </VBox>
          </children>
       </VBox>
+      <Button id="btnluu" layoutX="922.0" layoutY="570.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="69.0" styleClass="btnthemhuy" text="Lưu" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Button id="btnhuy" layoutX="840.0" layoutY="570.0" minHeight="20.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="62.0" styleClass="btnthemhuy" text="Hủy" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

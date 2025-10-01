@@ -20,7 +20,7 @@ public class ThongKeXNT extends Application {
         ThongKeXNT_ctrl thongkeXNT_ctrl = new ThongKeXNT_ctrl();
         loader.setController(thongkeXNT_ctrl);
         Pane root = loader.load();
-        Scene scene = new Scene(root, 1200, 750);
+        Scene scene = new Scene(root, 1200, 704);
         scene.getStylesheets().add(
                getClass().getResource("/com/example/pharmacymanagementsystem_qlht/css/ThongKeBanHang.css").toExternalForm()
         );

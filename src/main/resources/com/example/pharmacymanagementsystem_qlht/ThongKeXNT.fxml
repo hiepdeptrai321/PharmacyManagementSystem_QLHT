@@ -11,6 +11,8 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -20,13 +22,29 @@
     <children>
         <HBox layoutX="14.0" layoutY="14.0">
             <children>
-                <VBox prefHeight="725.0" prefWidth="240.0">
+                <VBox prefHeight="726.0" prefWidth="250.0">
                     <children>
-                        <Label text="Xuất-Nhập-Tồn">
-                            <font>
-                                <Font size="28.0" />
-                            </font>
+                  <HBox>
+                     <children>
+                              <Label text="Xuất-Nhập-Tồn">
+                                  <font>
+                                      <Font size="28.0" />
+                                  </font>
+                              </Label>
+                        <Label prefHeight="38.0" prefWidth="30.0">
+                           <graphic>
+                              <ImageView fitHeight="41.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@img/boxes-11430.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <HBox.margin>
+                              <Insets left="10.0" />
+                           </HBox.margin>
                         </Label>
+                     </children>
+                  </HBox>
                         <Separator prefWidth="200.0" />
                   <Label text="Tìm nhanh">
                      <font>

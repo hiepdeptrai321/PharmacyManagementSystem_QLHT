@@ -13,6 +13,8 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -22,13 +24,26 @@
    <children>
       <HBox layoutX="14.0" layoutY="14.0">
          <children>
-            <VBox prefHeight="1126.0" prefWidth="266.0">
+            <VBox prefHeight="1126.0" prefWidth="282.0">
                <children>
-                  <Label text="Báo cáo bán hàng 📊">
-                     <font>
-                        <Font size="28.0" />
-                     </font>
-                  </Label>
+                  <HBox>
+                     <children>
+                        <Label text="Báo cáo bán hàng ">
+                           <font>
+                              <Font size="28.0" />
+                           </font>
+                        </Label>
+                        <Label>
+                           <graphic>
+                              <ImageView fitHeight="33.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@img/bar-chart.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
+                     </children>
+                  </HBox>
                   <Separator prefWidth="200.0" />
                   <Label prefHeight="27.0" prefWidth="221.0" text="Kiểu hiển thị">
                      <font>

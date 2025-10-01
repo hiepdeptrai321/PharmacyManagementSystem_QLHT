@@ -14,7 +14,7 @@ public class ThongKe_GUI extends Application {
         ThongKeBanHang_Ctrl thongkeBanHang_ctrl = new ThongKeBanHang_Ctrl();
         loader.setController(thongkeBanHang_ctrl);
         Pane root = loader.load();
-        Scene scene = new Scene(root, 1200, 750);
+        Scene scene = new Scene(root, 1200, 704);
         scene.getStylesheets().add(
                 getClass().getResource("/com/example/pharmacymanagementsystem_qlht/css/ThongKeBanHang.css").toExternalForm()
         );

@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class TimKiemNhanVien_GUI extends Application {
+public class TimKiemKhachHang_GUI extends Application {
 
     public static void main(String[] args) {
         launch(args);
@@ -14,8 +14,8 @@ public class TimKiemNhanVien_GUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(TimKiemNhanVien_GUI.class.getResource("/com/example/pharmacymanagementsystem_qlht/TKNhanVien_GUI.fxml"));
-        TimKiemNhanVien_Ctrl timkiemNhanVien_ctrl = new TimKiemNhanVien_Ctrl();
+        FXMLLoader loader = new FXMLLoader(TimKiemKhachHang_GUI.class.getResource("/com/example/pharmacymanagementsystem_qlht/TKKhachHang_GUI.fxml"));
+        TimKiemKhachHang_Ctrl timkiemNhanVien_ctrl = new TimKiemKhachHang_Ctrl();
         loader.setController(timkiemNhanVien_ctrl);
         Pane root = loader.load();
         Scene scene = new Scene(root, 1200, 750);

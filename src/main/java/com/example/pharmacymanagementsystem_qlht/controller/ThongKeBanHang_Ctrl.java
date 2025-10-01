@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
 
@@ -20,7 +21,16 @@ public class ThongKeBanHang_Ctrl implements Initializable {
     private Button btnBieuDo;
 
     @FXML
-    private AreaChart<String, Number> chartDoanhThu;
+    private ComboBox<String> cboMQT;
+
+    @FXML
+    private ComboBox<String> cboThoiGian;
+
+    @FXML
+    private ComboBox<String> cboXuatfile;
+
+    @FXML
+    private AreaChart<?, ?> chartDoanhThu;
 
     @FXML
     private ToggleGroup date;
@@ -33,6 +43,25 @@ public class ThongKeBanHang_Ctrl implements Initializable {
         // managed sẽ ràng buộc theo visible
         chartDoanhThu.managedProperty().bind(chartDoanhThu.visibleProperty());
         tableDoanhThu.managedProperty().bind(tableDoanhThu.visibleProperty());
+        cboMQT.getItems().addAll(
+                "Lợi nhuận",
+                "Bán hàng",
+                "Nhân viên",
+                "Khách hàng"
+
+        );
+        cboThoiGian.getItems().addAll(
+                "Hôm nay",
+                "Tuần này",
+                "Tháng này",
+                "Quý này"
+
+        );
+        cboXuatfile.getItems().addAll(
+                "Excel",
+                "PDF"
+
+        );
     }
 
 

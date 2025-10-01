@@ -2,7 +2,7 @@ package com.example.pharmacymanagementsystem_qlht.controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 
-public class TimKiemNhanVien_Ctrl {
+public class TimKiemKhachHang_Ctrl {
 
     @FXML
     private ComboBox<String> cboTimKiem;
@@ -10,7 +10,7 @@ public class TimKiemNhanVien_Ctrl {
     @FXML
     public void initialize() {
         cboTimKiem.getItems().addAll(
-                "Theo mã, tên nhân viên",
+                "Theo mã, tên khách hàng",
                 "Theo email",
                 "Theo SDT"
 

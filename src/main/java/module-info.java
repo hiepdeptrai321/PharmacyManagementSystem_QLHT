@@ -4,13 +4,14 @@ module com.example.pharmacymanagementsystem_qlht {
     requires javafx.web;
 
     requires org.controlsfx.controls;
-    requires com.dlsc.formsfx;
     requires net.synedra.validatorfx;
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires javafx.graphics;
-
-    opens com.example.pharmacymanagementsystem_qlht to javafx.fxml;
+    requires java.desktop;
+    opens com.example.pharmacymanagementsystem_qlht.controller to javafx.fxml;
     exports com.example.pharmacymanagementsystem_qlht.controller;
+    opens com.example.pharmacymanagementsystem_qlht to javafx.fxml;
+
 }

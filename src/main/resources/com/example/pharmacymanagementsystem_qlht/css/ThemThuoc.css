@@ -26,3 +26,14 @@
     -fx-pref-height: 20px;
     -fx-text-fill: white; /* Màu chữ trắng */
 }
+.btnthemhuy{
+    -fx-min-height: 32px;
+    -fx-pref-height: 20px;
+    -fx-min-width: 44px;
+}
+#btnluu{
+    -fx-background-color: green;
+}
+#btnhuy{
+    -fx-background-color: red;
+}

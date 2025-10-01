@@ -3,26 +3,9 @@
     -fx-text-fill: red;
 }
 #btndn {
-    -fx-background-color: rgba(0, 123, 255, 0.8); /* Màu nền xanh dương với độ trong suốt */
     -fx-text-fill: white; /* Màu chữ trắng */
     -fx-font-size: 14px;
     -fx-padding: 10px 20px;
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
-}
-
-#btnanmk {
-    -fx-background-color: transparent;   /* trong suốt nền */
-    -fx-border-color: transparent;       /* bỏ viền */
-    -fx-padding: 0;                       /* bỏ khoảng trống dư thừa */
-    -fx-cursor: hand;                 /* con trỏ chuột khi hovSer */
-    -fx-min-width: 20px;
-    -fx-min-height: 20px;
-    -fx-pref-width: 20px;
-    -fx-pref-height: 20px;
-    -fx-text-fill: black;
-}
-
-.root {
-    -fx-background-color: rgba(255, 255, 200, 0.9);
 }

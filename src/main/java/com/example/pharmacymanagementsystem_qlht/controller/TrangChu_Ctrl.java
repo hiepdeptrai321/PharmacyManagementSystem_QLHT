@@ -29,7 +29,7 @@ public class TrangChu_Ctrl extends Application {
     public void LapHoaDon(ActionEvent actionEvent) {
         pnlChung.getChildren().clear();
         try {
-            Pane pane = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_BanHang/CN_LapHoaDon/LapHoaDon_GUI.fxml"));
+            Pane pane = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_BanHang/LapHoaDon/LapHoaDon_GUI.fxml"));
             pnlChung.getChildren().add(pane);
         } catch (Exception e) {
             e.printStackTrace();

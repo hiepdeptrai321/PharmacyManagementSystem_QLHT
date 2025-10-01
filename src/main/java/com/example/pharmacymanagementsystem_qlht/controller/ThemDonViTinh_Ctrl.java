@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 public class ThemDonViTinh_Ctrl extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/ThemDonViTinh_GUI.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_QuanLy/CN_QLThuoc/ThietLapDonViTinh_GUI.fxml"));
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/css/ThemDonViTinh.css").toExternalForm());
         stage.setScene(scene);

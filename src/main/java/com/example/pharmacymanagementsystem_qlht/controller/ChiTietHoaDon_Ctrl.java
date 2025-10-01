@@ -6,13 +6,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class ThemThuoc_Ctrl extends Application {
-
+public class ChiTietHoaDon_Ctrl extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_QuanLy/CN_QLThuoc/ThemThuoc_GUI.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/ChiTietHoaDon_GUI.fxml"));
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/DangNhap.css").toExternalForm());
+
         stage.setScene(scene);
         stage.show();
     }

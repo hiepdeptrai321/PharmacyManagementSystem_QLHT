@@ -13,9 +13,7 @@ public class LapHoaDon_Ctrl extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/LapHoaDon_GUI.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
-        stage.setTitle("Lập Hóa Đơn");
-
-        stage.setScene(scene);
+        scene.getStylesheets().add(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/css/LapHoaDon.css").toExternalForm());        stage.setScene(scene);
         stage.show();
     }
 

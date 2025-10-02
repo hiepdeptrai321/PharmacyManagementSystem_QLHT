@@ -1,0 +1,88 @@
+
+.pane-container {
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #DDDDDD;
+    -fx-border-width: 1px;
+}
+
+.button {
+    -fx-background-radius: 5px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.button-primary {
+    -fx-background-color: #03A9F4;
+    -fx-text-fill: white;
+    -fx-padding: 8px 20px;
+}
+
+.button-secondary {
+    -fx-background-color: #EF6C00;
+    -fx-text-fill: white;
+    -fx-padding: 8px 20px;
+}
+
+
+.summary-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.total-label {
+    -fx-font-size: 18px;
+    -fx-font-weight: extra-bold;
+    -fx-text-fill: #1976D2;
+}
+.text-input, .choice-box, .date-picker {
+    -fx-background-radius: 3px;
+    -fx-border-radius: 3px;
+    -fx-border-color: #CCCCCC;
+}
+
+.toggle-switch {
+    /* Thiết lập kích thước và bo góc */
+    -fx-background-radius: 15; /* Bo góc tròn */
+    -fx-border-radius: 15;
+    -fx-padding: 0; /* Loại bỏ padding mặc định */
+    -fx-pref-width: 45px; /* Chiều rộng tổng thể */
+    -fx-pref-height: 20px; /* Chiều cao tổng thể */
+}
+
+/* Kiểu dáng khi nút KHÔNG được chọn (Hóa đơn không kê đơn) */
+.toggle-switch:unselected {
+    -fx-background-color: #CCCCCC; /* Màu xám */
+    -fx-border-color: #AAAAAA;
+}
+
+/* Kiểu dáng khi nút ĐÃ được chọn (Hóa đơn kê đơn) */
+.toggle-switch:selected {
+    -fx-background-color: #4CAF50; /* Màu xanh lá nổi bật (hoặc màu xanh dương #03A9F4) */
+}
+
+/* Tạo dấu chấm đen (Giao diện của Toggle Button) */
+.toggle-switch .thumb {
+    /* Đặt kích thước, bo góc cho 'dấu chấm' */
+    -fx-background-color: white;
+    -fxbackground-insets: 0;
+    -fx-background-radius: 15;
+    -fx-padding: 10px;
+}
+
+/* Điều chỉnh vị trí của dấu chấm khi KHÔNG được chọn */
+.toggle-switch:unselected .thumb {
+    -fx-translateX: -12px; /* Dấu chấm nằm bên trái */
+}
+
+/* Điều chỉnh vị trí của dấu chấm khi ĐÃ được chọn */
+.toggle-switch:selected .thumb {
+    -fx-translateX: 12px; /* Dấu chấm nằm bên phải */
+}
+
+/* Loại bỏ hiệu ứng nhấn mặc định */
+.toggle-switch:pressed {
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}

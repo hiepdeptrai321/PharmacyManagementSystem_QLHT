@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" stylesheets="@ChiTietHoaDon.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.ChiTietHoaDon_Ctrl">
+
+<SplitPane dividerPositions="0.65" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+    <AnchorPane minHeight="0.0" minWidth="0.0">
+         <Pane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+
+                  <HBox alignment="CENTER_LEFT" style="-fx-border-color: lightgray; -fx-padding: 10;">
+                   <Label style="-fx-font-weight: bold;" text="Mã hóa đơn: " />
+                   <Label fx:id="lblMaHoaDonValue" style="-fx-padding: 0 20 0 5;" text="HD012345" />
+                   <Label style="-fx-font-weight: bold; -fx-padding: 0 10 0 20;" text="Ngày lập: " />
+                   <Label fx:id="lblNgayLapValue" text="01/10/2025" />
+               </HBox>
+
+                  <Label layoutY="40.0" style="-fx-font-weight: bold; -fx-padding: 10;" text="DANH SÁCH SẢN PHẨM" />
+               <TableView fx:id="tblChiTietHoaDon" layoutY="78.0" prefHeight="619.0" prefWidth="774.0">
+                   <columns>
+                       <TableColumn fx:id="colNSTT" prefWidth="50.0" text="STT" />
+                       <TableColumn fx:id="colNTen" prefWidth="250.0" text="Tên sản phẩm/Hoạt chất" />
+                       <TableColumn fx:id="colNSL" prefWidth="100.0" text="Số lượng" />
+                       <TableColumn prefWidth="100.0" text="Đơn vị" />
+                       <TableColumn prefWidth="100.0" text="Đơn giá" />
+                       <TableColumn prefWidth="100.79995117187502" text="Thành tiền" />
+                   </columns>
+                   <columnResizePolicy>
+                       <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                   </columnResizePolicy>
+               </TableView>
+            </children>
+         </Pane>
+    </AnchorPane>
+
+    <AnchorPane minHeight="0.0" minWidth="0.0" style="-fx-background-color: #f4f4f4;">
+         <Pane layoutX="27.2" layoutY="10.399999618530273" prefWidth="379.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <children>
+
+                  <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="THÔNG TIN HÓA ĐƠN" />
+               <Pane layoutY="40.79999923706055" prefHeight="160.0" style="-fx-border-color: #DDDDDD; -fx-border-width: 1px; -fx-padding: 10;">
+                   <Label layoutX="5.0" layoutY="5.0" style="-fx-font-weight: bold;" text="Tên nhân viên:" />
+                   <Label fx:id="lblTenNhanVienValue" layoutX="140.0" layoutY="5.0" />
+
+                      <Label layoutX="5.0" layoutY="35.0" style="-fx-font-weight: bold;" text="Tên khách hàng:" />
+                   <Label fx:id="lblTenKhachHangValue" layoutX="140.0" layoutY="35.0" />
+
+                      <Label layoutX="5.0" layoutY="65.0" style="-fx-font-weight: bold;" text="SĐT Khách hàng:" />
+                   <Label fx:id="lblSDTKhachHangValue" layoutX="140.0" layoutY="65.0" />
+
+                      <Label layoutX="5.0" layoutY="95.0" style="-fx-font-weight: bold;" text="Ghi chú:" />
+                   <Label fx:id="lblGhiChuValue" layoutX="140.0" layoutY="95.0" prefWidth="250.0" text="Không có." wrapText="true" />
+               </Pane>
+
+                  <Separator layoutY="216.0" />
+
+                  <Label layoutY="234.39999389648438" style="-fx-font-weight: bold; -fx-font-size: 16px;" text="TÓM TẮT THANH TOÁN" />
+               <Pane layoutY="275.20001220703125" prefHeight="280.0" style="-fx-border-color: #DDDDDD; -fx-border-width: 1px; -fx-padding: 10;">
+
+                      <Label layoutX="5.0" layoutY="5.0" text="Tổng tiền hàng (trước CK/VAT):" />
+                   <Label fx:id="lblTongTienHangValue" layoutX="240.0" layoutY="5.0" style="-fx-font-weight: bold;" text="0 VNĐ" />
+
+                      <Label layoutX="5.0" layoutY="30.0" text="Chiết khấu Hóa đơn:" />
+                   <Label fx:id="lblChietKhauHDValue" layoutX="240.0" layoutY="30.0" style="-fx-text-fill: red; -fx-font-weight: bold;" text="0 VNĐ" />
+
+                      <Label layoutX="5.0" layoutY="55.0" text="Thuế (VAT):" />
+                   <Label fx:id="lblThueVATValue" layoutX="240.0" layoutY="55.0" style="-fx-font-weight: bold;" text="0 VNĐ" />
+
+                      <Separator layoutY="85.0" prefWidth="380.0" />
+
+                      <Label layoutX="5.0" layoutY="100.0" style="-fx-font-weight: bold; -fx-font-size: 16px;" text="TỔNG THANH TOÁN:" />
+                   <Label fx:id="lblThanhToanValue" layoutX="240.0" layoutY="100.0" style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #E91E63;" text="0 VNĐ" />
+
+                      <Separator layoutY="130.0" prefWidth="380.0" />
+
+                      <Label layoutX="5.0" layoutY="150.0" text="Phương thức thanh toán:" />
+                   <Label fx:id="lblPTTTValue" layoutX="240.0" layoutY="150.0" style="-fx-font-weight: bold;" text="Tiền mặt" />
+
+                      <Label layoutX="5.0" layoutY="175.0" text="Số tiền khách đưa:" />
+                   <Label fx:id="lblTienKhachDuaValue" layoutX="240.0" layoutY="175.0" style="-fx-font-weight: bold;" text="0 VNĐ" />
+
+                      <Label layoutX="5.0" layoutY="210.0" style="-fx-font-weight: bold;" text="Tiền thừa trả lại:" />
+                   <Label fx:id="lblTienThuaValue" layoutX="240.0" layoutY="210.0" style="-fx-font-weight: extra-bold; -fx-text-fill: #008000;" text="0 VNĐ" />
+               </Pane>
+
+                  <VBox alignment="BOTTOM_CENTER" layoutY="570.4000244140625">
+                  <Pane prefHeight="110.0" prefWidth="399.0">
+                     <children>
+                          <Button fx:id="btnInHoaDon" layoutX="39.0" layoutY="24.0" prefHeight="47.0" prefWidth="132.0" style="-fx-background-color: #03A9F4; -fx-text-fill: white; -fx-padding: 8px 20px; -fx-background-radius: 5px;" text="In Hóa Đơn">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Button>
+                          <Button fx:id="btnDong" layoutX="248.0" layoutY="24.0" prefHeight="47.0" prefWidth="118.0" style="-fx-background-color: #AAAAAA; -fx-text-fill: white; -fx-padding: 8px 20px; -fx-background-radius: 5px;" text="Đóng">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Button>
+                     </children>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color red="0.6631578803062439" green="0.6410526037216187" blue="0.6410526037216187" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Pane>
+               </VBox>
+            </children>
+         </Pane>
+    </AnchorPane>
+</SplitPane>
+</AnchorPane>

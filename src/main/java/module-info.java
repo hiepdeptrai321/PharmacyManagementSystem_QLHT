@@ -2,6 +2,7 @@ module com.example.pharmacymanagementsystem_qlht {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
+    requires javafx.graphics;
 
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
@@ -11,6 +12,22 @@ module com.example.pharmacymanagementsystem_qlht {
     requires eu.hansolo.tilesfx;
     requires javafx.graphics;
 
-    opens com.example.pharmacymanagementsystem_qlht to javafx.fxml;
+    opens com.example.pharmacymanagementsystem_qlht.controller to javafx.fxml;
     exports com.example.pharmacymanagementsystem_qlht.controller;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLThuoc;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLHoatDong;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLKeHang;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLKhachHang;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLKhuyenMai;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLNhaCungCap;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLNhanVien;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_BanHang.LapHoaDon;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_BanHang.LapPhieuDatHang;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_BanHang.LapPhieuDoi;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_BanHang.LapPhieuTra;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_NhapHang;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_ThongKe;
+    opens com.example.pharmacymanagementsystem_qlht to javafx.fxml;
+
 }

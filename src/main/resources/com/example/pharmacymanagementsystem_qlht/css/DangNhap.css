@@ -1,0 +1,11 @@
+#lbhotline {
+    -fx-font-size: 14px;
+    -fx-text-fill: red;
+}
+#btndn {
+    -fx-text-fill: white; /* Màu chữ trắng */
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}

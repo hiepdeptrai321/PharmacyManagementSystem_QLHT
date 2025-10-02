@@ -1,0 +1,82 @@
+
+* {
+    -fx-font-family: "Segoe UI", "Tahoma", sans-serif;
+    -fx-font-size: 13px;
+}
+
+/* Màu nền cho cột bên phải (Tóm tắt) */
+.right-panel {
+    -fx-background-color: #F8F8F8; /* Màu xám nhạt tinh tế */
+}
+
+
+.data-container {
+    -fx-background-color: white;
+    -fx-background-radius: 8px; /* Bo góc mềm mại */
+    -fx-border-radius: 8px;
+    -fx-border-color: #E0E0E0; /* Viền mỏng */
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 8, 0, 0, 2); /* Đổ bóng nhẹ */
+    -fx-padding: 10px;
+}
+
+.section-header {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+.data-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #555555;
+}
+
+/* Label chứa Giá trị dữ liệu (ví dụ: Nguyễn Văn A) */
+.data-value {
+    -fx-font-weight: normal;
+    -fx-text-fill: #222222;
+}
+
+/* Label Tổng tiền (Tiêu đề và Giá trị) */
+.total-summary {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 5px 0 5px 0;
+}
+
+/* Giá trị Tổng Thanh Toán */
+.grand-total-value {
+    -fx-font-size: 18px;
+    -fx-font-weight: extra-bold;
+    -fx-text-fill: #E91E63; /* Màu hồng nổi bật */
+}
+
+/* Giá trị Tiền Thừa */
+.change-due-value {
+    -fx-font-weight: extra-bold;
+    -fx-text-fill: #008000; /* Màu xanh lá (thể hiện sự tích cực) */
+}
+
+.button {
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-padding: 8px 20px;
+}
+
+.button-print {
+    -fx-background-color: #03A9F4; /* Xanh dương */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.button-close {
+    -fx-background-color: #AAAAAA; /* Xám */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+.table-view {
+    -fx-border-color: #BDBDBD; /* Light gray border */
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+}

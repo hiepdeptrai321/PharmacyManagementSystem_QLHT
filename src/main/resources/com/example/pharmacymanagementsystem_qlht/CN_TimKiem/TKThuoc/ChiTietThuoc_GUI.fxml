@@ -69,7 +69,7 @@
                         </VBox>
                         <ImageView fitHeight="222.0" fitWidth="227.0" layoutX="729.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@img/noimage.jpg" />
+                                <Image url="@../../img/noimage.jpg" />
                             </image>
                         </ImageView>
                     </children>
@@ -175,6 +175,6 @@
         </Button>
     </children>
    <stylesheets>
-      <URL value="@css/ThemThuoc.css" />
+      <URL value="@../../css/ThemThuoc.css" />
    </stylesheets>
 </AnchorPane>

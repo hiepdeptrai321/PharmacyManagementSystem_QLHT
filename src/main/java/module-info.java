@@ -9,7 +9,8 @@ module com.example.pharmacymanagementsystem_qlht {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
+    requires javafx.graphics;
 
     opens com.example.pharmacymanagementsystem_qlht to javafx.fxml;
-    exports com.example.pharmacymanagementsystem_qlht;
+    exports com.example.pharmacymanagementsystem_qlht.controller;
 }

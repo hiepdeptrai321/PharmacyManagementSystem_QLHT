@@ -1,4 +1,6 @@
 package com.example.pharmacymanagementsystem_qlht.controller;
 
-public class HoaDon_GUI {
+import javafx.scene.Parent;
+
+public class HoaDon_GUI extends Parent {
 }

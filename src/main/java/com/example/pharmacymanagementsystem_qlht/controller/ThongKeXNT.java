@@ -16,7 +16,7 @@ public class ThongKeXNT extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(ThongKeXNT_ctrl.class.getResource("/com/example/pharmacymanagementsystem_qlht/ThongKeXNT.fxml"));
+        FXMLLoader loader = new FXMLLoader(ThongKeXNT_ctrl.class.getResource("/com/example/pharmacymanagementsystem_qlht/CN_ThongKe/ThongKeXNT.fxml"));
         ThongKeXNT_ctrl thongkeXNT_ctrl = new ThongKeXNT_ctrl();
         loader.setController(thongkeXNT_ctrl);
         Pane root = loader.load();

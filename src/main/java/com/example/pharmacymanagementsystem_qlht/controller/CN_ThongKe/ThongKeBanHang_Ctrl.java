@@ -1,4 +1,4 @@
-package com.example.pharmacymanagementsystem_qlht.controller.ThongKe;
+package com.example.pharmacymanagementsystem_qlht.controller.CN_ThongKe;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

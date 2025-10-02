@@ -13,7 +13,5 @@ module com.example.pharmacymanagementsystem_qlht {
 
 
     opens com.example.pharmacymanagementsystem_qlht to javafx.fxml;
-    exports com.example.pharmacymanagementsystem_qlht.controller;
-
 
 }

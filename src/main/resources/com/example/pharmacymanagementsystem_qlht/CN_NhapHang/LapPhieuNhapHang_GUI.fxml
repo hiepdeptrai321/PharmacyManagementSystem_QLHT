@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<Pane prefHeight="750.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.LapPhieuNhapHang_Ctrl">
+<Pane prefHeight="750.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_NhapHang.LapPhieuNhapHang_Ctrl">
    <children>
       <AnchorPane prefHeight="750.0" prefWidth="1200.0">
          <children>

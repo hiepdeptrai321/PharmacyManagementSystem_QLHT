@@ -11,13 +11,24 @@ module com.example.pharmacymanagementsystem_qlht {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
 
-
     opens com.example.pharmacymanagementsystem_qlht.controller to javafx.fxml;
     exports com.example.pharmacymanagementsystem_qlht.controller;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLThuoc;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLHoatDong;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLKeHang;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLKhachHang;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLKhuyenMai;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLNhaCungCap;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLNhanVien;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_BanHang.LapHoaDon;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_BanHang.LapPhieuDatHang;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_BanHang.LapPhieuDoi;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_BanHang.LapPhieuTra;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_NhapHang;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_ThongKe;
     opens com.example.pharmacymanagementsystem_qlht to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLThuoc to javafx.fxml;
-    exports com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLThuoc;
     opens com.example.pharmacymanagementsystem_qlht.CN_NhapHang to javafx.fxml;
-    exports com.example.pharmacymanagementsystem_qlht.controller.CN_NhapHang;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_NhapHang to javafx.fxml;
 }

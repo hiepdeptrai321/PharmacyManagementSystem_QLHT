@@ -12,7 +12,6 @@ public class ThemThuoc_Ctrl extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_QuanLy/QLThuoc/ThemThuoc_GUI.fxml"));
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/css/ThemThuoc.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }

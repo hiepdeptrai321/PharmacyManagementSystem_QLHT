@@ -11,7 +11,6 @@ public class ChiTietHoaDon_Ctrl extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_QuanLy/CN_QLHoaDon/ChiTietHoaDon_GUI.fxml"));
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("").toExternalForm());
         stage.setScene(scene);
         stage.show();
     }

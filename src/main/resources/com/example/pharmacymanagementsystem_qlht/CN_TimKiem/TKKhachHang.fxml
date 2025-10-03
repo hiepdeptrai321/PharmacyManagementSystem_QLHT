@@ -22,27 +22,27 @@
     <children>
         <VBox layoutX="10.0" layoutY="14.0">
             <children>
-            <HBox prefHeight="62.0" prefWidth="1170.0">
-               <children>
-                      <Label id="lbTimKiem" ellipsisString="" prefHeight="53.0" prefWidth="360.0" styleClass="title" text="Tìm Kiếm Nhân Viên">
-                          <font>
-                              <Font size="36.0" />
-                          </font>
-                          <cursor>
-                              <Cursor fx:constant="NONE" />
-                          </cursor>
-                      </Label>
-                  <Label />
-                  <ImageView fitHeight="53.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/search-employee-8969.png" />
-                     </image>
-                     <HBox.margin>
-                        <Insets top="5.0" />
-                     </HBox.margin>
-                  </ImageView>
-               </children>
-            </HBox>
+                <HBox prefHeight="62.0" prefWidth="1170.0">
+                    <children>
+                        <Label id="lbTimKiem" ellipsisString="" prefHeight="53.0" prefWidth="382.0" styleClass="title" text="Tìm Kiếm Khách Hàng">
+                            <font>
+                                <Font size="36.0" />
+                            </font>
+                            <cursor>
+                                <Cursor fx:constant="NONE" />
+                            </cursor>
+                        </Label>
+                        <Label />
+                        <ImageView fitHeight="53.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../img/search-employee-8969.png" />
+                            </image>
+                            <HBox.margin>
+                                <Insets top="5.0" />
+                            </HBox.margin>
+                        </ImageView>
+                    </children>
+                </HBox>
                 <Separator prefWidth="200.0" />
                 <HBox prefHeight="42.0" prefWidth="782.0">
                     <children>
@@ -93,8 +93,8 @@
                     <content>
                         <TableView prefHeight="611.0" prefWidth="1168.0">
                             <columns>
-                                <TableColumn prefWidth="101.0" text="Mã NV" />
-                                <TableColumn prefWidth="177.0" text="Tên" />
+                                <TableColumn prefWidth="101.0" text="Mã KH" />
+                                <TableColumn prefWidth="177.0" text="Tên khách hàng" />
                                 <TableColumn minWidth="0.0" prefWidth="180.0" text="Email" />
                                 <TableColumn minWidth="6.0" prefWidth="176.0" text="SDT" />
                                 <TableColumn prefWidth="79.0" text="Giới tính" />

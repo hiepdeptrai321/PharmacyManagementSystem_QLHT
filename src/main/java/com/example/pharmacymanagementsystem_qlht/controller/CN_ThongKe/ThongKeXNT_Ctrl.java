@@ -1,15 +1,31 @@
-package com.example.pharmacymanagementsystem_qlht.controller.ThongKe;
+package com.example.pharmacymanagementsystem_qlht.controller.CN_ThongKe;
 
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class ThongKeXNT extends Application {
+public class ThongKeXNT_Ctrl extends Application {
+    @FXML
+    private ComboBox<String> btnMQT;
+
+    @FXML
+    private ComboBox<String> btnNhomHang;
+
+    @FXML
+    private ComboBox<String> btnThoiGian;
+
+    @FXML
+    private ComboBox<String> btnXuatFile;
+
+    @FXML
+    private ToggleGroup date;
 
     public static void main(String[] args) {
         launch(args);

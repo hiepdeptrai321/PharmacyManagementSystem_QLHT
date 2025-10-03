@@ -1,4 +1,4 @@
-package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem;
+package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKThuoc;
 
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -15,7 +15,7 @@ public class TimKiemThuoc_Ctrl extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKThuoc_Ctrl.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKThuoc/TKThuoc_Ctrl.fxml"));
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/css/TimKiemThuoc.css").toExternalForm());
         primaryStage.setScene(scene);

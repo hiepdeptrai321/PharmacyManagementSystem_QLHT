@@ -32,13 +32,7 @@
     -fx-box-shadow: none;
     -fx-effect: none;
 }
-#timKiemThuocC{
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 5px;
-    -fx-border-width: 0;
-    -fx-box-shadow: none;
-    -fx-effect: none;
-}
+
 #listViewTimKiemThuoc{
     -fx-background-color: #ffffff;
     -fx-border-width: 1px 0 0 0;
@@ -64,11 +58,11 @@
     -fx-background-radius: 5px;
 }
 #btnXacNhan{
-    -fx-background-color: #1e90ff;
+    -fx-background-color: green;
     -fx-background-radius: 5px;
 }
 #btnXacNhan:pressed{
-    -fx-background-color: #003cff;
+    -fx-background-color: #006600;
 }
 #btnHuy{
     -fx-background-color: #ff0000;
@@ -79,7 +73,4 @@
 }
 #lblTrang{
     -fx-text-fill: white;
-}
-.table-view {
-    -fx-focus-traversable: false;
 }

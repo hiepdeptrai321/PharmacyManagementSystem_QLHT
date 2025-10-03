@@ -1,0 +1,18 @@
+#NutHuy {
+    -fx-background-color: #FF0000;
+    -fx-background-radius: 5px;
+}
+#NutHuy:pressed {
+    -fx-background-color: #b30000;
+}
+#txtTrang_Bold{
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+#nutThem{
+    -fx-background-color: green;
+    -fx-background-radius: 5px;
+}
+#nutThem:pressed{
+    -fx-background-color: #006600;
+}

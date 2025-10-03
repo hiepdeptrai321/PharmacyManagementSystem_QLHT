@@ -20,18 +20,6 @@ public class Thuoc_SP_TheoLo {
         this.thuoc = thuoc;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Thuoc_SP_TheoLo that = (Thuoc_SP_TheoLo) o;
-        return Objects.equals(maLH, that.maLH);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(maLH);
-    }
-
     public String getMaLH() {
         return maLH;
     }
@@ -78,6 +66,18 @@ public class Thuoc_SP_TheoLo {
 
     public void setThuoc(Thuoc_SanPham thuoc) {
         this.thuoc = thuoc;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Thuoc_SP_TheoLo that = (Thuoc_SP_TheoLo) o;
+        return Objects.equals(maLH, that.maLH);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(maLH);
     }
 
     @Override

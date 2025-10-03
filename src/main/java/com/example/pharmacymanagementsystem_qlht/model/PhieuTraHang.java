@@ -22,18 +22,6 @@ public class PhieuTraHang {
         this.hoaDon = hoaDon;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        PhieuTraHang that = (PhieuTraHang) o;
-        return Objects.equals(maPT, that.maPT);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(maPT);
-    }
-
     public String getMaPT() {
         return maPT;
     }
@@ -88,6 +76,18 @@ public class PhieuTraHang {
 
     public void setHoaDon(HoaDon hoaDon) {
         this.hoaDon = hoaDon;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        PhieuTraHang that = (PhieuTraHang) o;
+        return Objects.equals(maPT, that.maPT);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(maPT);
     }
 
     @Override

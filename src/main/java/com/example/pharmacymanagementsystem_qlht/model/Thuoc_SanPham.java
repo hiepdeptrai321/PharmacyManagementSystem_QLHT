@@ -31,18 +31,6 @@ public class Thuoc_SanPham {
         this.hinhAnh = hinhAnh;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Thuoc_SanPham that = (Thuoc_SanPham) o;
-        return Objects.equals(maThuoc, that.maThuoc);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(maThuoc);
-    }
-
     public String getMaThuoc() {
         return maThuoc;
     }
@@ -121,6 +109,18 @@ public class Thuoc_SanPham {
 
     public void setHinhAnh(String hinhAnh) {
         this.hinhAnh = hinhAnh;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Thuoc_SanPham that = (Thuoc_SanPham) o;
+        return Objects.equals(maThuoc, that.maThuoc);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(maThuoc);
     }
 
     @Override

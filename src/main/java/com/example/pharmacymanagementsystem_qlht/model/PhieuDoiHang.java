@@ -23,18 +23,6 @@ public class PhieuDoiHang {
         this.hoaDon = hoaDon;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        PhieuDoiHang that = (PhieuDoiHang) o;
-        return Objects.equals(maPD, that.maPD);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(maPD);
-    }
-
     public String getMaPD() {
         return maPD;
     }
@@ -89,6 +77,18 @@ public class PhieuDoiHang {
 
     public void setHoaDon(HoaDon hoaDon) {
         this.hoaDon = hoaDon;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        PhieuDoiHang that = (PhieuDoiHang) o;
+        return Objects.equals(maPD, that.maPD);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(maPD);
     }
 
     @Override

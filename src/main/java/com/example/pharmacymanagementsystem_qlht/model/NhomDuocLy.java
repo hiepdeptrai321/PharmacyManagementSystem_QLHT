@@ -11,18 +11,6 @@ public class NhomDuocLy {
         return maNDL;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        NhomDuocLy that = (NhomDuocLy) o;
-        return Objects.equals(maNDL, that.maNDL) && Objects.equals(tenNDL, that.tenNDL);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(maNDL, tenNDL);
-    }
-
     public NhomDuocLy(String maNDL, String tenNDL, String moTa) {
         this.maNDL = maNDL;
         this.tenNDL = tenNDL;
@@ -47,6 +35,18 @@ public class NhomDuocLy {
 
     public void setMoTa(String moTa) {
         this.moTa = moTa;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        NhomDuocLy that = (NhomDuocLy) o;
+        return Objects.equals(maNDL, that.maNDL) && Objects.equals(tenNDL, that.tenNDL);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(maNDL, tenNDL);
     }
 
     @Override

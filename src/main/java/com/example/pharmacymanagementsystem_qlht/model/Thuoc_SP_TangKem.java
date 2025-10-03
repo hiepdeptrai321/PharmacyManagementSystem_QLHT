@@ -13,18 +13,6 @@ public class Thuoc_SP_TangKem {
         this.soLuong = soLuong;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Thuoc_SP_TangKem that = (Thuoc_SP_TangKem) o;
-        return Objects.equals(maThuocTangKem, that.maThuocTangKem) && Objects.equals(khuyenmai, that.khuyenmai);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(maThuocTangKem, khuyenmai);
-    }
-
     public String getMaThuocTangKem() {
         return maThuocTangKem;
     }
@@ -47,6 +35,18 @@ public class Thuoc_SP_TangKem {
 
     public void setSoLuong(int soLuong) {
         this.soLuong = soLuong;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Thuoc_SP_TangKem that = (Thuoc_SP_TangKem) o;
+        return Objects.equals(maThuocTangKem, that.maThuocTangKem) && Objects.equals(khuyenmai, that.khuyenmai);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(maThuocTangKem, khuyenmai);
     }
 
     @Override

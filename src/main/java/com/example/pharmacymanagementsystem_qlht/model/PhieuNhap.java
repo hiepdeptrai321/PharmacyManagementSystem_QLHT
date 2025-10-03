@@ -20,18 +20,6 @@ public class PhieuNhap {
         this.ghiChu = ghiChu;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        PhieuNhap phieuNhap = (PhieuNhap) o;
-        return Objects.equals(maPN, phieuNhap.maPN);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(maPN);
-    }
-
     public String getMaPN() {
         return maPN;
     }
@@ -70,6 +58,18 @@ public class PhieuNhap {
 
     public void setGhiChu(String ghiChu) {
         this.ghiChu = ghiChu;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        PhieuNhap phieuNhap = (PhieuNhap) o;
+        return Objects.equals(maPN, phieuNhap.maPN);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(maPN);
     }
 
     @Override

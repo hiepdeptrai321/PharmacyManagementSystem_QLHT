@@ -18,18 +18,6 @@ public class PhieuDatHang {
         this.khachHang = khachHang;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        PhieuDatHang that = (PhieuDatHang) o;
-        return Objects.equals(maPDat, that.maPDat);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(maPDat);
-    }
-
     public String getMaPDat() {
         return maPDat;
     }
@@ -68,6 +56,18 @@ public class PhieuDatHang {
 
     public void setKhachHang(KhachHang khachHang) {
         this.khachHang = khachHang;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        PhieuDatHang that = (PhieuDatHang) o;
+        return Objects.equals(maPDat, that.maPDat);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(maPDat);
     }
 
     @Override

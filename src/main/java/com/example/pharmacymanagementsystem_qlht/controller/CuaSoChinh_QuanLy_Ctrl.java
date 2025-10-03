@@ -38,7 +38,17 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
     public void GiaoDienQuanLyThuoc(ActionEvent actionEvent) {
         pnlChung.getChildren().clear();
         try{
-            Pane pane = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_QuanLy/CN_QLThuoc/QuanLyThuoc_GUI.fxml"));
+            Pane pane = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_QuanLy/QLThuoc/QuanLyThuoc_GUI.fxml"));
+            pnlChung.getChildren().add(pane);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void lapPhieuNhapHang_GUI(ActionEvent actionEvent) {
+        pnlChung.getChildren().clear();
+        try{
+            Pane pane = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_NhapHang/LapPhieuNhapHang_GUI.fxml"));
             pnlChung.getChildren().add(pane);
         }catch (Exception e){
             e.printStackTrace();

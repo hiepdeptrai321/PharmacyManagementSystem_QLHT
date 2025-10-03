@@ -35,7 +35,7 @@
                         <Label />
                         <ImageView fitHeight="53.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../img/search-employee-8969.png" />
+                                <Image url="@../../img/search-employee-8969.png" />
                             </image>
                             <HBox.margin>
                                 <Insets top="5.0" />
@@ -64,7 +64,7 @@
                             <graphic>
                                 <ImageView fitHeight="20.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../img/free-search-icon-2911-thumb.png" />
+                                        <Image url="@../../img/free-search-icon-2911-thumb.png" />
                                     </image>
                                     <cursor>
                                         <Cursor fx:constant="DEFAULT" />
@@ -79,7 +79,7 @@
                             <graphic>
                                 <ImageView fitHeight="20.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../img/trash-can-10416.png" />
+                                        <Image url="@../../img/trash-can-10416.png" />
                                     </image>
                                 </ImageView>
                             </graphic>

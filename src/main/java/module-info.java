@@ -11,7 +11,6 @@ module com.example.pharmacymanagementsystem_qlht {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_ThongKe to javafx.fxml;
-    opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller to javafx.fxml;
     exports com.example.pharmacymanagementsystem_qlht.controller;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLThuoc;
@@ -26,7 +25,6 @@ module com.example.pharmacymanagementsystem_qlht {
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_BanHang.LapPhieuDoi;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_BanHang.LapPhieuTra;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_NhapHang;
-    exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_ThongKe;
     requires javafx.base;
     requires java.sql;
@@ -36,4 +34,11 @@ module com.example.pharmacymanagementsystem_qlht {
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLThuoc to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.CN_NhapHang to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_NhapHang to javafx.fxml;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLKhuyenMai to javafx.fxml;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKThuoc;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKThuoc to javafx.fxml;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang to javafx.fxml;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoaDon;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoaDon to javafx.fxml;
 }

@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Point3D?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
@@ -79,7 +80,7 @@
                         </Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0">
                            <children>
-                              <ComboBox layoutX="14.0" layoutY="29.0" prefHeight="30.0" prefWidth="227.0" styleClass="nenTrangComponent" />
+                              <ComboBox layoutX="14.0" layoutY="29.0" prefHeight="30.0" prefWidth="227.0" />
                               <Label layoutX="14.0" layoutY="10.0" styleClass="lblChinh" text="Nhà cung cấp:" />
                               <Pane layoutX="243.0" layoutY="29.0" prefHeight="30.0" prefWidth="30.0" styleClass="btnThem">
                                  <children>
@@ -90,20 +91,11 @@
                                     </Label>
                                  </children>
                               </Pane>
-                              <TextField layoutX="309.0" layoutY="29.0" prefHeight="30.0" prefWidth="259.0" styleClass="nenTrangComponent" />
-                              <TextField layoutX="603.0" layoutY="29.0" prefHeight="30.0" prefWidth="227.0" styleClass="nenTrangComponent" />
-                              <Pane layoutX="832.0" layoutY="29.0" prefHeight="30.0" prefWidth="30.0" styleClass="btnThem">
-                                 <children>
-                                    <Label alignment="CENTER" prefHeight="30.0" prefWidth="30.0" text="📅">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </Pane>
+                              <TextField layoutX="309.0" layoutY="29.0" prefHeight="30.0" prefWidth="259.0" />
+                              <Pane layoutX="832.0" layoutY="29.0" prefHeight="30.0" prefWidth="30.0" styleClass="btnThem" />
                               <Label layoutX="309.0" layoutY="10.0" styleClass="lblChinh" text="Mã phiếu nhập:" />
                               <Label layoutX="603.0" layoutY="10.0" styleClass="lblChinh" text="Ngày nhập:" />
-                              <TextField id="timKiemThuocC" fx:id="timKiemThuocC" layoutX="14.0" layoutY="82.0" prefHeight="30.0" prefWidth="394.0" />
+                              <TextField fx:id="timKiemThuocC" layoutX="14.0" layoutY="82.0" prefHeight="30.0" prefWidth="394.0" />
                               <Label layoutX="14.0" layoutY="67.0" styleClass="lblChinh" text="Thuốc:" />
                               <Pane layoutX="410.0" layoutY="82.0" prefHeight="30.0" prefWidth="30.0" styleClass="btnThem">
                                  <children>
@@ -114,12 +106,13 @@
                                     </Label>
                                  </children>
                               </Pane>
-                              <ListView id="listViewTimKiemThuoc" fx:id="listViewThuoc" layoutX="14.0" layoutY="110.0" prefHeight="255.0" prefWidth="394.0" />
+                              <ListView id="listViewTimKiemThuoc" fx:id="listViewThuoc" layoutX="14.0" layoutY="109.0" prefHeight="255.0" prefWidth="394.0" />
+                              <DatePicker layoutX="603.0" layoutY="29.0" prefHeight="30.0" prefWidth="259.0" />
                            </children>
                         </Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
                            <children>
-                              <TextArea layoutX="12.0" layoutY="30.0" prefHeight="135.0" prefWidth="300.0" styleClass="nenTrangComponent" wrapText="true" />
+                              <TextArea layoutX="12.0" layoutY="30.0" prefHeight="135.0" prefWidth="300.0" wrapText="true" />
                               <Label layoutX="12.0" layoutY="10.0" styleClass="lblChinh" text="Ghi chú:" />
                            </children>
                         </Pane>
@@ -127,10 +120,22 @@
                            <children>
                               <Pane id="paneTienHang" layoutX="14.0" layoutY="14.0" prefHeight="455.0" prefWidth="300.0">
                                  <children>
-                                    <Pane layoutX="14.0" layoutY="60.0" prefHeight="30.0" prefWidth="227.0" styleClass="nenTrangComponent" />
-                                    <Pane layoutX="14.0" layoutY="120.0" prefHeight="30.0" prefWidth="227.0" styleClass="nenTrangComponent" />
-                                    <Pane layoutX="14.0" layoutY="180.0" prefHeight="30.0" prefWidth="227.0" styleClass="nenTrangComponent" />
-                                    <Pane layoutX="14.0" layoutY="240.0" prefHeight="30.0" prefWidth="227.0" styleClass="nenTrangComponent" />
+                                    <Pane layoutX="14.0" layoutY="60.0" prefHeight="30.0" prefWidth="227.0" styleClass="nenTrangComponent">
+                                       <children>
+                                          <Label layoutX="15.0" layoutY="6.0" text="0.0" />
+                                       </children></Pane>
+                                    <Pane layoutX="14.0" layoutY="120.0" prefHeight="30.0" prefWidth="227.0" styleClass="nenTrangComponent">
+                                       <children>
+                                          <Label layoutX="15.0" layoutY="5.0" text="0.0" />
+                                       </children></Pane>
+                                    <Pane layoutX="14.0" layoutY="180.0" prefHeight="30.0" prefWidth="227.0" styleClass="nenTrangComponent">
+                                       <children>
+                                          <Label layoutX="15.0" layoutY="5.0" text="0.0" />
+                                       </children></Pane>
+                                    <Pane layoutX="14.0" layoutY="240.0" prefHeight="30.0" prefWidth="227.0" styleClass="nenTrangComponent">
+                                       <children>
+                                          <Label layoutX="15.0" layoutY="5.0" text="0.0" />
+                                       </children></Pane>
                                     <Label layoutX="101.0" layoutY="8.0" prefHeight="30.0" prefWidth="98.0" text="Tổng tiền">
                                        <font>
                                           <Font name="System Bold" size="20.0" />

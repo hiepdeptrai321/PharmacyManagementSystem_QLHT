@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="571.0" prefWidth="1004.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.ChiTietThuoc_Ctrl">
+<AnchorPane prefHeight="571.0" prefWidth="1004.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKThuoc.ChiTietThuoc_Ctrl">
     <children>
         <Label id="lbtitle" layoutX="14.0" layoutY="8.0" prefHeight="31.0" prefWidth="990.0" text="Thông tin chung">
             <font>
@@ -68,7 +68,7 @@
                         </VBox>
                         <ImageView fitHeight="270.0" fitWidth="266.0" layoutX="685.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@img/noimage.jpg" />
+                                <Image url="@../../img/noimage.jpg" />
                             </image>
                         </ImageView>
                     </children>
@@ -162,6 +162,6 @@
         </VBox>
     </children>
    <stylesheets>
-      <URL value="@css/ThemThuoc.css" />
+      <URL value="@../../css/ThemThuoc.css" />
    </stylesheets>
 </AnchorPane>

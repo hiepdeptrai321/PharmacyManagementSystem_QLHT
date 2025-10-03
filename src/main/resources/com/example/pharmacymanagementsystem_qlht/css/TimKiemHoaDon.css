@@ -53,10 +53,10 @@
 }
 
 .btntim{
-    -fx-min-height: 35px;
+    -fx-min-height: 37px;
 }
 .tftim{
-    -fx-min-height: 35px;
+    -fx-min-height: 37px;
 }
 .icontime{
     -fx-translate-x: 300px;

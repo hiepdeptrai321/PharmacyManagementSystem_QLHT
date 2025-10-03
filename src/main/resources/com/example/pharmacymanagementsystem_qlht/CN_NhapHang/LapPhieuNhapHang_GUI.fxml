@@ -61,14 +61,14 @@
                      <children>
                         <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                            <children>
-                              <TableView layoutX="14.0" layoutY="14.0" prefHeight="455.0" prefWidth="848.0">
+                              <TableView layoutX="14.0" layoutY="-52.0" prefHeight="521.0" prefWidth="848.0">
                                 <columns>
                                   <TableColumn prefWidth="31.0" text="STT" />
                                   <TableColumn prefWidth="83.0" text="Mã thuốc" />
                                     <TableColumn prefWidth="157.0" text="Tên thuốc" />
                                     <TableColumn prefWidth="66.0" text="Số lô" />
-                                    <TableColumn prefWidth="81.0" text="HSD" />
-                                    <TableColumn prefWidth="72.0" text="Số lượng" />
+                                    <TableColumn prefWidth="79.0" text="HSD" />
+                                    <TableColumn prefWidth="74.0" text="Số lượng" />
                                     <TableColumn prefWidth="127.0" text="Giá nhập" />
                                     <TableColumn prefWidth="104.0" text="Chiết khấu" />
                                     <TableColumn prefWidth="97.0" text="Thuế" />

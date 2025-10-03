@@ -1,0 +1,34 @@
+package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem;
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+
+public class TimKiemKhachHang_GUI extends Application {
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+<<<<<<<< HEAD:src/main/java/com/example/pharmacymanagementsystem_qlht/controller/TimKiemKhachHang_GUI.java
+        FXMLLoader loader = new FXMLLoader(TimKiemKhachHang_GUI.class.getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKKhachHang_GUI.fxml"));
+        TimKiemKhachHang_Ctrl timkiemNhanVien_ctrl = new TimKiemKhachHang_Ctrl();
+========
+        FXMLLoader loader = new FXMLLoader(TimKiemNhanVien_GUI.class.getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKNhanVien/TKNhanVien_GUI.fxml"));
+        TimKiemNhanVien_Ctrl timkiemNhanVien_ctrl = new TimKiemNhanVien_Ctrl();
+>>>>>>>> main:src/main/java/com/example/pharmacymanagementsystem_qlht/controller/CN_TimKiem/TimKiemNhanVien_GUI.java
+        loader.setController(timkiemNhanVien_ctrl);
+        Pane root = loader.load();
+        Scene scene = new Scene(root, 1200, 704);
+        scene.getStylesheets().add(
+                getClass().getResource("/com/example/pharmacymanagementsystem_qlht/css/TimKiemNhanVien.css").toExternalForm()
+        );
+        primaryStage.setTitle("Tim Kiem");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+}

@@ -12,6 +12,12 @@ module com.example.pharmacymanagementsystem_qlht {
     requires eu.hansolo.tilesfx;
 
 
+    opens com.example.pharmacymanagementsystem_qlht.controller to javafx.fxml;
+    exports com.example.pharmacymanagementsystem_qlht.controller;
     opens com.example.pharmacymanagementsystem_qlht to javafx.fxml;
-
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLThuoc to javafx.fxml;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLThuoc;
+    opens com.example.pharmacymanagementsystem_qlht.CN_NhapHang to javafx.fxml;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_NhapHang;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_NhapHang to javafx.fxml;
 }

@@ -27,6 +27,7 @@ module com.example.pharmacymanagementsystem_qlht {
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_NhapHang;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_ThongKe;
     requires javafx.base;
+    requires java.sql;
 
 
     opens com.example.pharmacymanagementsystem_qlht to javafx.fxml;

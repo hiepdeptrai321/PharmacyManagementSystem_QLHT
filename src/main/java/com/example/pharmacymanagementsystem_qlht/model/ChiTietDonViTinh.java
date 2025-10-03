@@ -6,4 +6,7 @@ public class ChiTietDonViTinh {
     private int heSoQuyDoi;
     private double giaNhap;
     private double giaBan;
+
+    public ChiTietDonViTinh() {
+    }
 }

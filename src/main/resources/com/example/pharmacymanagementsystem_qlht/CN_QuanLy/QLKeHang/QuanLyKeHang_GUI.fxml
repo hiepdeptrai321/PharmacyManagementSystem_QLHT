@@ -11,7 +11,7 @@
 <AnchorPane prefHeight="750.0" prefWidth="1200.0" stylesheets="@../../css/QuanLyKe.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLKeHang.KeHang_Ctrl">
     <children>
         <TextField layoutX="8.0" layoutY="28.0" prefHeight="27.0" prefWidth="353.0" promptText="Tìm theo mã, tên kệ" />
-        <Button id="btntim" layoutX="376.0" layoutY="26.0" minWidth="35.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="69.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" />
+        <Button id="btntim" layoutX="376.0" layoutY="26.0" minWidth="35.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="69.0" stylesheets="@../../css/QuanLyKeHang.css" text="🔍 Tìm" />
         <Label id="lbtitle" layoutX="7.0" layoutY="5.0" prefHeight="18.0" prefWidth="600.0" text="Quản lý kệ hàng">
             <font>
                 <Font size="9.0" />

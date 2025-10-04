@@ -13,14 +13,14 @@ public class Thuoc_SanPham {
     private String hangSX;
     private String nuocSX;
     private NhomDuocLy nhomDuocLy;
-    private Thuoc_SP_TheoLo loHang;
+    private LoaiHang loaiHang;
     private String hinhAnh;
     private KeHang vitri;
 
     public Thuoc_SanPham(){
     }
 
-    public Thuoc_SanPham(String maThuoc, String tenThuoc, int hamLuong, String donViHamLuong, String duongDung, String quyCachDongGoi, String SDK_GPNK, String hangSX, String nuocSX, NhomDuocLy nhomDuocLy, Thuoc_SP_TheoLo loHang, String hinhAnh, KeHang vitri) {
+    public Thuoc_SanPham(String maThuoc, String tenThuoc, int hamLuong, String donViHamLuong, String duongDung, String quyCachDongGoi, String SDK_GPNK, String hangSX, String nuocSX, NhomDuocLy nhomDuocLy, LoaiHang loaiHang, String hinhAnh, KeHang vitri) {
         this.maThuoc = maThuoc;
         this.tenThuoc = tenThuoc;
         this.hamLuong = hamLuong;
@@ -31,7 +31,7 @@ public class Thuoc_SanPham {
         this.hangSX = hangSX;
         this.nuocSX = nuocSX;
         this.nhomDuocLy = nhomDuocLy;
-        this.loHang = loHang;
+        this.loaiHang = loaiHang;
         this.hinhAnh = hinhAnh;
         this.vitri = vitri;
     }
@@ -116,12 +116,12 @@ public class Thuoc_SanPham {
         this.nhomDuocLy = nhomDuocLy;
     }
 
-    public Thuoc_SP_TheoLo getLoHang() {
-        return loHang;
+    public LoaiHang getLoaiHang() {
+        return loaiHang;
     }
 
-    public void setLoHang(Thuoc_SP_TheoLo loHang) {
-        this.loHang = loHang;
+    public void setLoaiHang(LoaiHang loaiHang) {
+        this.loaiHang = loaiHang;
     }
 
     public String getHinhAnh() {
@@ -165,7 +165,7 @@ public class Thuoc_SanPham {
                 ", hangSX='" + hangSX + '\'' +
                 ", nuocSX='" + nuocSX + '\'' +
                 ", nhomDuocLy=" + nhomDuocLy +
-                ", loHang=" + loHang +
+                ", loaiHang=" + loaiHang +
                 ", hinhAnh='" + hinhAnh + '\'' +
                 ", vitri=" + vitri +
                 '}';

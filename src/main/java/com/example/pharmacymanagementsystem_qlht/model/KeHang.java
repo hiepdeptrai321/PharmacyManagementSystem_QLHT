@@ -8,7 +8,6 @@ public class KeHang {
 
     public KeHang() {
     }
-
     public KeHang(String maKe, String tenKe) {
         this.maKe = maKe;
         this.tenKe = tenKe;

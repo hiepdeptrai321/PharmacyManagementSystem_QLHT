@@ -12,6 +12,9 @@ public class PhieuTraHang {
     private String ghiChu;
     private HoaDon hoaDon;
 
+    public PhieuTraHang() {
+    }
+
     public PhieuTraHang(String maPT, NhanVien nhanVien, KhachHang khachHang, Timestamp ngayLap, String lyDoTra, String ghiChu, HoaDon hoaDon) {
         this.maPT = maPT;
         this.nhanVien = nhanVien;

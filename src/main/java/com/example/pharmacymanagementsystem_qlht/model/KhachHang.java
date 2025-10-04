@@ -14,7 +14,6 @@ public class KhachHang {
 
     public KhachHang() {
     }
-
     public KhachHang(String maKH, String tenKH, String sdt, String email, Timestamp ngaySinh, Boolean gioiTinh, String diaChi) {
         this.maKH = maKH;
         this.tenKH = tenKH;

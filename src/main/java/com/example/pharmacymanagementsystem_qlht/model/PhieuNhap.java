@@ -8,7 +8,7 @@ public class PhieuNhap {
     private NhaCungCap nhaCungCap;
     private Timestamp ngayNhap;
     private Boolean trangThai;
-    private String ghiChu;
+    private String ghiChu; ....
 //    private String maNV;
 
 

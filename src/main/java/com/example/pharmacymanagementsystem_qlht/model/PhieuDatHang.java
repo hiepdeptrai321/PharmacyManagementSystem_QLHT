@@ -6,7 +6,7 @@ import java.util.Objects;
 public class PhieuDatHang {
     private String maPDat;
     private Timestamp ngayLap;
-    private int soTienCoc;
+    private int soTienCoc;...
     private String ghiChu;
     private KhachHang khachHang;
 

@@ -30,9 +30,7 @@ public class KhuyenMai {
         return maKM;
     }
 
-    public void setMaKM(String maKM) {
-        this.maKM = maKM;
-    }
+    public void setMaKM(String maKM) {this.maKM = maKM; }
 
     public LoaiKhuyenMai getLoaiKM() {
         return loaiKM;

@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KhuyenMai_Dao implements DaoInterface<KhuyenMai>{
-    private final String INSERT_SQL = "INSERT INTO KhuyenMai (maKM, loaiKM, tenKM, giaTriKM, ngayBatDau, ngayKetThuc, moTa) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private final String INSERT_SQL = "INSERT INTO KhuyenMai (loaiKM, tenKM, giaTriKM, ngayBatDau, ngayKetThuc, moTa) VALUES ( ?, ?, ?, ?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE KhuyenMai SET loaiKM=?, tenKM=?, giaTriKM=?, ngayBatDau=?, ngayKetThuc=?, moTa=? WHERE maKM=?";
     private final String DELETE_BY_ID_SQL = "DELETE FROM KhuyenMai WHERE maKM=?";
     private final String SELECT_BY_ID_SQL = "SELECT maKM, loaiKM, tenKM, giaTriKM, ngayBatDau, ngayKetThuc, moTa FROM LoaiKhuyenMai WHERE maLoaiKM = ?";
     private final String SELECT_ALL_SQL = "SELECT maKM, loaiKM, tenKM, giaTriKM, ngayBatDau, ngayKetThuc, moTa FROM LoaiKhuyenMai";
     @Override
     public void insert(KhuyenMai e) {
-        ConnectDB.update(INSERT_SQL, e.getMaKM(), e.getLoaiKM(), e.getTenKM(), e.getGiaTriKM(), e.getNgayBatDau(), e.getNgayKetThuc(), e.getMoTa());
+        ConnectDB.update(INSERT_SQL, e.getLoaiKM(), e.getTenKM(), e.getGiaTriKM(), e.getNgayBatDau(), e.getNgayKetThuc(), e.getMoTa());
     }
 
     @Override
@@ -42,6 +42,7 @@ public class KhuyenMai_Dao implements DaoInterface<KhuyenMai>{
             while(rs.next()){
                 KhuyenMai khuyenMai = new KhuyenMai();
                 khuyenMai.setMaKM(rs.getString("maKM"));
+//                khuyenMai.setMaKM(rs.getStatement().getGeneratedKeys().getString(1));
                 khuyenMai.setLoaiKM(new LoaiKhuyenMai_Dao().selectById(rs.getString("loaiKM")));
                 khuyenMai.setTenKM(rs.getString("tenKM"));
                 khuyenMai.setGiaTriKM(rs.getFloat("giaTriKM"));

@@ -9,20 +9,18 @@ public class KhuyenMai {
     private LoaiKhuyenMai loaiKM;
     private String tenKM;
     private float giaTriKM;
-    private String loaiGiaTri;
-    private Timestamp ngayBatDau;
-    private Timestamp ngayKetThuc;
+    private Date ngayBatDau;
+    private Date ngayKetThuc;
     private String moTa;
 
     public KhuyenMai() {
     }
 
-    public KhuyenMai(String maKM, LoaiKhuyenMai loaiKM, String tenKM, float giaTriKM, String loaiGiaTri, Timestamp ngayBatDau, Timestamp ngayKetThuc, String moTa) {
+    public KhuyenMai(String maKM, LoaiKhuyenMai loaiKM, String tenKM, float giaTriKM, Date ngayBatDau, Date ngayKetThuc, String moTa) {
         this.maKM = maKM;
         this.loaiKM = loaiKM;
         this.tenKM = tenKM;
         this.giaTriKM = giaTriKM;
-        this.loaiGiaTri = loaiGiaTri;
         this.ngayBatDau = ngayBatDau;
         this.ngayKetThuc = ngayKetThuc;
         this.moTa = moTa;
@@ -32,9 +30,7 @@ public class KhuyenMai {
         return maKM;
     }
 
-    public void setMaKM(String maKM) {
-        this.maKM = maKM;
-    }
+    public void setMaKM(String maKM) {this.maKM = maKM; }
 
     public LoaiKhuyenMai getLoaiKM() {
         return loaiKM;
@@ -60,27 +56,19 @@ public class KhuyenMai {
         this.giaTriKM = giaTriKM;
     }
 
-    public String getLoaiGiaTri() {
-        return loaiGiaTri;
-    }
-
-    public void setLoaiGiaTri(String loaiGiaTri) {
-        this.loaiGiaTri = loaiGiaTri;
-    }
-
-    public Timestamp getNgayBatDau() {
+    public Date getNgayBatDau() {
         return ngayBatDau;
     }
 
-    public void setNgayBatDau(Timestamp ngayBatDau) {
+    public void setNgayBatDau(Date ngayBatDau) {
         this.ngayBatDau = ngayBatDau;
     }
 
-    public Timestamp getNgayKetThuc() {
+    public Date getNgayKetThuc() {
         return ngayKetThuc;
     }
 
-    public void setNgayKetThuc(Timestamp ngayKetThuc) {
+    public void setNgayKetThuc(Date ngayKetThuc) {
         this.ngayKetThuc = ngayKetThuc;
     }
 
@@ -111,7 +99,6 @@ public class KhuyenMai {
                 ", loaiKM=" + loaiKM +
                 ", tenKM='" + tenKM + '\'' +
                 ", giaTriKM=" + giaTriKM +
-                ", loaiGiaTri='" + loaiGiaTri + '\'' +
                 ", ngayBatDau=" + ngayBatDau +
                 ", ngayKetThuc=" + ngayKetThuc +
                 ", moTa='" + moTa + '\'' +

@@ -29,7 +29,7 @@ public class HoaDon_Dao implements DaoInterface<HoaDon>{
             + "INNER JOIN KhachHang ON HoaDon.idKH = KhachHang.idKH "
             + "WHERE idHD = ? "
             + "ORDER BY HoaDon.thoiGian ";
-    
+
     @Override
     public void insert(HoaDon e) {
 

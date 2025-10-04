@@ -1,19 +1,76 @@
 #pnlGrid{
     -fx-background-color: #efefef;
 }
-#WhitePane{
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 20px;
-}
-#WhitePane_BoNheGoc{
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 5px;
-}
 #btnExcel{
     -fx-background-color: #ffffff;
     -fx-background-radius: 5px;
-    -fx-border-color: #ffffff;
     -fx-text-fill: black;
-    -fx-text-alignment: CENTER_RIGHT;
+}
+#btnExcel:pressed{
+    -fx-background-color: #ececec;
+}
+#lbtitle{
+    -fx-border-color: transparent transparent #ccc transparent;
+    -fx-border-width: 0 0 1px 0;
+    -fx-background-color: #efefef;
+}
+.lblChinh{
+    -fx-font-size: 13px;
+    -fx-text-fill: black;
+}
+.btnThem{
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 5px;
+}
+.btnThem:pressed{
+    -fx-background-color: #ececec;
+}
+.nenTrangComponent{
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 5px;
+    -fx-border-width: 0;
+    -fx-box-shadow: none;
+    -fx-effect: none;
+}
 
+#listViewTimKiemThuoc{
+    -fx-background-color: #ffffff;
+    -fx-border-width: 1px 0 0 0;
+    -fx-box-shadow: none;
+    -fx-effect: none;
+    -fx-border-color: transparent;
+}
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+    -fx-effect: null;
+}
+.text-area .content {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-effect: null;
+}
+#paneTienHang{
+    -fx-background-color: #e0e0e0;
+    -fx-background-radius: 5px;
+}
+#btnXacNhan{
+    -fx-background-color: green;
+    -fx-background-radius: 5px;
+}
+#btnXacNhan:pressed{
+    -fx-background-color: #006600;
+}
+#btnHuy{
+    -fx-background-color: #ff0000;
+    -fx-background-radius: 5px;
+}
+#btnHuy:pressed{
+    -fx-background-color: #d30000;
+}
+#lblTrang{
+    -fx-text-fill: white;
 }

@@ -13,22 +13,38 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1200.0" stylesheets="@../css/ThongKeBanHang.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_ThongKe.ThongKeBanHang_Ctrl">
+
    <children>
       <HBox layoutX="14.0" layoutY="14.0">
          <children>
-            <VBox prefHeight="725.0" prefWidth="240.0">
+            <VBox prefHeight="1126.0" prefWidth="282.0">
                <children>
-                  <Label text="Báo cáo bán hàng">
-                     <font>
-                        <Font size="28.0" />
-                     </font>
-                  </Label>
+                  <HBox>
+                     <children>
+                        <Label text="Báo cáo bán hàng ">
+                           <font>
+                              <Font size="28.0" />
+                           </font>
+                        </Label>
+                        <Label>
+                           <graphic>
+                              <ImageView fitHeight="33.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../img/bar-chart.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
+                     </children>
+                  </HBox>
                   <Separator prefWidth="200.0" />
                   <Label prefHeight="27.0" prefWidth="221.0" text="Kiểu hiển thị">
                      <font>
@@ -60,7 +76,7 @@
                         <Insets top="5.0" />
                      </VBox.margin>
                   </Label>
-                  <ComboBox prefHeight="25.0" prefWidth="230.0" promptText="Lợi nhuận">
+                  <ComboBox fx:id="cboMQT" prefHeight="26.0" prefWidth="240.0" promptText="Lợi nhuận">
                      <VBox.margin>
                         <Insets top="5.0" />
                      </VBox.margin>
@@ -73,9 +89,9 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <RadioButton mnemonicParsing="false">
+                  <RadioButton mnemonicParsing="false" prefHeight="26.0" prefWidth="238.0">
                      <graphic>
-                        <ComboBox prefHeight="25.0" prefWidth="215.0" promptText="Hôm nay" />
+                        <ComboBox fx:id="cboThoiGian" prefHeight="25.0" prefWidth="222.0" promptText="Hôm nay" />
                      </graphic>
                      <VBox.margin>
                         <Insets top="10.0" />
@@ -84,9 +100,9 @@
                         <ToggleGroup fx:id="date" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton mnemonicParsing="false" toggleGroup="$date">
+                  <RadioButton mnemonicParsing="false" prefHeight="26.0" prefWidth="240.0" toggleGroup="$date">
                      <graphic>
-                        <DatePicker prefHeight="25.0" prefWidth="215.0" />
+                        <DatePicker prefHeight="25.0" prefWidth="222.0" />
                      </graphic>
                      <VBox.margin>
                         <Insets top="10.0" />
@@ -100,15 +116,15 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <ComboBox prefHeight="25.0" prefWidth="241.0" promptText="Excel" />
-                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="241.0" text="Xuất File 💾">
+                  <ComboBox fx:id="cboXuatfile" prefHeight="26.0" prefWidth="240.0" promptText="Excel" />
+                  <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="240.0" text="Xuất File 💾">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Button>
                </children>
             </VBox>
-            <VBox>
+            <VBox prefHeight="1126.0" prefWidth="885.0">
                <children>
                   <Label alignment="CENTER" prefHeight="17.0" prefWidth="934.0" text="Doanh thu">
                      <font>
@@ -134,10 +150,10 @@
                         <Font size="24.0" />
                      </font>
                      <VBox.margin>
-                        <Insets left="10.0" />
+                        <Insets bottom="8.0" left="10.0" top="8.0" />
                      </VBox.margin>
                   </Label>
-                  <TableView prefHeight="246.0" prefWidth="934.0">
+                  <TableView prefHeight="200.0" prefWidth="877.0">
                     <columns>
                       <TableColumn prefWidth="98.0" text="Mã thuốc" />
                       <TableColumn prefWidth="475.0" text="Tên thuốc" />

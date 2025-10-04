@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" stylesheets="@../css/TimKiemHoaDon.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" stylesheets="@../../css/TimKiemHoaDon.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <VBox layoutX="10.0" layoutY="14.0">
             <children>
@@ -36,7 +36,7 @@
                         <Label />
                   <ImageView fitHeight="46.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../img/bill-8854.png" />
+                        <Image url="@../../img/bill-8854.png" />
                      </image>
                   </ImageView>
                     </children>
@@ -44,7 +44,7 @@
                 <Separator prefWidth="200.0" />
                 <HBox prefHeight="51.0" prefWidth="1179.0">
                     <children>
-                        <ComboBox fx:id="cboTimKiem" prefHeight="35.0" prefWidth="150.0" promptText="Tìm kiếm theo" styleClass="btntim">
+                        <ComboBox fx:id="cboTimKiem" prefHeight="35.0" prefWidth="130.0" promptText="Tìm theo" styleClass="btntim">
                             <HBox.margin>
                                 <Insets right="5.0" top="10.0" />
                             </HBox.margin>
@@ -54,36 +54,36 @@
                                 <Insets top="10.0" />
                             </HBox.margin>
                         </TextField>
-                  <Region prefHeight="51.0" prefWidth="61.0" />
+                  <Region prefHeight="51.0" prefWidth="30.0" />
                   <ImageView fitHeight="20.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../img/time-2623.png" />
+                        <Image url="@../../img/time-2623.png" />
                      </image>
                      <HBox.margin>
                         <Insets right="4.0" top="16.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Label styleClass="tftim" text="Từ: ">
+                  <Label prefHeight="32.0" prefWidth="20.0" styleClass="tftim" text="Từ: ">
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
                   </Label>
-                  <DatePicker prefHeight="35.0" prefWidth="159.0" styleClass="tftim">
+                  <DatePicker prefHeight="35.0" prefWidth="125.0" styleClass="tftim">
                      <HBox.margin>
                         <Insets right="10.0" top="10.0" />
                      </HBox.margin>
                   </DatePicker>
-                  <Label styleClass="tftim" text="Đến: ">
+                  <Label prefHeight="34.0" prefWidth="28.0" styleClass="tftim" text="Đến: ">
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
                   </Label>
-                  <DatePicker minHeight="14.0" prefHeight="35.0" prefWidth="147.0" styleClass="tftim">
+                  <DatePicker minHeight="14.0" prefHeight="35.0" prefWidth="125.0" styleClass="tftim">
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
                   </DatePicker>
-                  <Region prefHeight="51.0" prefWidth="14.0" />
+                  <Region prefHeight="51.0" prefWidth="30.0" />
                         <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" prefHeight="28.0" prefWidth="63.0" styleClass="btntim" text="Tìm">
                             <HBox.margin>
                                 <Insets left="8.0" top="10.0" />
@@ -91,7 +91,7 @@
                             <graphic>
                                 <ImageView fitHeight="20.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../img/free-search-icon-2911-thumb.png" />
+                                        <Image url="@../../img/free-search-icon-2911-thumb.png" />
                                     </image>
                                     <cursor>
                                         <Cursor fx:constant="DEFAULT" />
@@ -106,11 +106,17 @@
                             <graphic>
                                 <ImageView fitHeight="20.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../img/refresh-3104.png" />
+                                        <Image url="@../../img/refresh-3104.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
                         </Button>
+                  <Region prefHeight="51.0" prefWidth="163.0" />
+                  <ComboBox fx:id="cboTimKiem1" prefHeight="35.0" prefWidth="146.0" promptText="⌛ Bộ lọc nhanh" styleClass="btntim">
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin>
+                  </ComboBox>
                     </children>
                     <VBox.margin>
                         <Insets bottom="5.0" />
@@ -120,12 +126,13 @@
                     <content>
                         <TableView prefHeight="560.0" prefWidth="1177.0">
                             <columns>
-                                <TableColumn minWidth="0.0" prefWidth="191.66665649414062" text="Mã hóa đơn" />
-                                <TableColumn minWidth="6.0" prefWidth="208.83334350585938" text="Ngày lập" />
-                                <TableColumn prefWidth="203.66668701171875" text="Khách hàng" />
-                                <TableColumn prefWidth="194.83331298828125" text="SĐT" />
-                                <TableColumn prefWidth="195.8333740234375" text="Nhân viên" />
-                        <TableColumn minWidth="0.0" prefWidth="179.5" text="Số lượng phiếu đổi trả" />
+                                <TableColumn minWidth="0.0" prefWidth="169.0" text="Mã hóa đơn" />
+                                <TableColumn minWidth="6.0" prefWidth="211.0" text="Ngày lập" />
+                                <TableColumn prefWidth="207.0" text="Khách hàng" />
+                                <TableColumn prefWidth="162.0" text="SĐT" />
+                                <TableColumn prefWidth="216.0" text="Nhân viên" />
+                        <TableColumn minWidth="0.0" prefWidth="157.0" text="Số lượng phiếu đổi trả" />
+                        <TableColumn minWidth="0.0" prefWidth="53.0" />
                             </columns>
                         </TableView>
                     </content>

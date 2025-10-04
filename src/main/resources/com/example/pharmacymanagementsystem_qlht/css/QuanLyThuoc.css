@@ -10,9 +10,12 @@
     -fx-pref-height: 20px;
 }
 #lbtitle{
+    -fx-font-size: 25px;
+    -fx-font-weight: bold;
+}
+#lblpaneTitle{
     -fx-border-color: transparent transparent #ccc transparent;
     -fx-border-width: 0 0 1px 0;
-    -fx-text-fill: blue;
 }
 #btnthemthuoc{
     -fx-background-color: green;   /* trong suốt nền */

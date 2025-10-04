@@ -7,14 +7,14 @@ public class NhomDuocLy {
     private String tenNDL;
     private String moTa;
 
-    public String getMaNDL() {
-        return maNDL;
-    }
-
     public NhomDuocLy(String maNDL, String tenNDL, String moTa) {
         this.maNDL = maNDL;
         this.tenNDL = tenNDL;
         this.moTa = moTa;
+    }
+
+    public String getMaNDL() {
+        return maNDL;
     }
 
     public void setMaNDL(String maNDL) {

@@ -12,6 +12,7 @@ public class PhieuNhap {
     private NhanVien nhanVien;
 
 
+
     public PhieuNhap(String maPN, NhaCungCap nhaCungCap, Timestamp ngayNhap, Boolean trangThai, String ghiChu, NhanVien nhanVien) {
         this.maPN = maPN;
         this.nhaCungCap = nhaCungCap;

@@ -15,10 +15,10 @@ public class Thuoc_SanPham {
     private NhomDuocLy nhomDuocLy;
     private Thuoc_SP_TheoLo loHang;
     private String hinhAnh;
-    private keHang vitri;
+    private KeHang vitri;
 
 
-    public Thuoc_SanPham(String maThuoc, String tenThuoc, int hamLuong, String donViHamLuong, String duongDung, String quyCachDongGoi, String SDK_GPNK, String hangSX, String nuocSX, NhomDuocLy nhomDuocLy, Thuoc_SP_TheoLo loHang, String hinhAnh, keHang vitri) {
+    public Thuoc_SanPham(String maThuoc, String tenThuoc, int hamLuong, String donViHamLuong, String duongDung, String quyCachDongGoi, String SDK_GPNK, String hangSX, String nuocSX, NhomDuocLy nhomDuocLy, Thuoc_SP_TheoLo loHang, String hinhAnh, KeHang vitri) {
         this.maThuoc = maThuoc;
         this.tenThuoc = tenThuoc;
         this.hamLuong = hamLuong;
@@ -130,11 +130,11 @@ public class Thuoc_SanPham {
         this.hinhAnh = hinhAnh;
     }
 
-    public keHang getVitri() {
+    public KeHang getVitri() {
         return vitri;
     }
 
-    public void setVitri(keHang vitri) {
+    public void setVitri(KeHang vitri) {
         this.vitri = vitri;
     }
 

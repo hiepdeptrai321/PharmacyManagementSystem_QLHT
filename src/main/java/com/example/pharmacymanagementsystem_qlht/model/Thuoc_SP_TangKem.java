@@ -7,6 +7,9 @@ public class Thuoc_SP_TangKem {
     private KhuyenMai khuyenmai;
     private int soLuong;
 
+    public Thuoc_SP_TangKem(){
+    }
+
     public Thuoc_SP_TangKem(Thuoc_SanPham thuocTangKem, KhuyenMai khuyenmai, int soLuong) {
         ThuocTangKem = thuocTangKem;
         this.khuyenmai = khuyenmai;

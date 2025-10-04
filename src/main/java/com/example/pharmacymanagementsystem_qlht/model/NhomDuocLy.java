@@ -7,6 +7,9 @@ public class NhomDuocLy {
     private String tenNDL;
     private String moTa;
 
+    public NhomDuocLy(){
+
+    }
     public NhomDuocLy(String maNDL, String tenNDL, String moTa) {
         this.maNDL = maNDL;
         this.tenNDL = tenNDL;

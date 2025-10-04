@@ -8,14 +8,14 @@ public class HoaDon {
     private String maHD;
     private NhanVien nhanVien;
     private Timestamp ngayLap;
-    private KhachHang khachHang;
-    private String trangThai;
     private List<ChiTietHoaDon> chiTietHD;
+    private KhachHang khachHang;
+    private Boolean trangThai;
 
     public HoaDon() {
     }
 
-    public HoaDon(String maHD, NhanVien maNV, Timestamp ngayLap, KhachHang maKH, String trangThai) {
+    public HoaDon(String maHD, NhanVien maNV, Timestamp ngayLap, KhachHang maKH, Boolean trangThai) {
         this.maHD = maHD;
         this.nhanVien = maNV;
         this.ngayLap = ngayLap;
@@ -72,11 +72,11 @@ public class HoaDon {
         this.khachHang = maKH;
     }
 
-    public String getTrangThai() {
+    public Boolean getTrangThai() {
         return trangThai;
     }
 
-    public void setTrangThai(String trangThai) {
+    public void setTrangThai(Boolean trangThai) {
         this.trangThai = trangThai;
     }
 

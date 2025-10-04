@@ -63,4 +63,5 @@ public class KeHang_Dao implements DaoInterface<KeHang> {
     public List selectAll() {
         return this.selectBySql(SELECT_ALL_SQL);
     }
+
 }

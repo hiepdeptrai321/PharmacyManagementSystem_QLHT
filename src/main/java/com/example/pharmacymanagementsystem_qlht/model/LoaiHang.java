@@ -3,33 +3,33 @@ package com.example.pharmacymanagementsystem_qlht.model;
 import java.util.Objects;
 
 public class LoaiHang {
-    private String maLH;
-    private String tenLH;
+    private String maLoaiHang;
+    private String tenLoaiHang;
     private String moTa;
 
     public LoaiHang() {
     }
 
-    public LoaiHang(String maLH, String tenLH, String moTa) {
-        this.maLH = maLH;
-        this.tenLH = tenLH;
+    public LoaiHang(String maLoaiHang, String tenLoaiHang, String moTa) {
+        this.maLoaiHang = maLoaiHang;
+        this.tenLoaiHang = tenLoaiHang;
         this.moTa = moTa;
     }
 
-    public String getMaLH() {
-        return maLH;
+    public String getMaLoaiHang() {
+        return maLoaiHang;
     }
 
-    public void setMaLH(String maLH) {
-        this.maLH = maLH;
+    public void setMaLoaiHang(String maLoaiHang) {
+        this.maLoaiHang = maLoaiHang;
     }
 
-    public String getTenLH() {
-        return tenLH;
+    public String getTenLoaiHang() {
+        return tenLoaiHang;
     }
 
-    public void setTenLH(String tenLH) {
-        this.tenLH = tenLH;
+    public void setTenLoaiHang(String tenLoaiHang) {
+        this.tenLoaiHang = tenLoaiHang;
     }
 
     public String getMoTa() {
@@ -44,19 +44,19 @@ public class LoaiHang {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         LoaiHang loaiHang = (LoaiHang) o;
-        return Objects.equals(maLH, loaiHang.maLH);
+        return Objects.equals(maLoaiHang, loaiHang.maLoaiHang);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(maLH);
+        return Objects.hashCode(maLoaiHang);
     }
 
     @Override
     public String toString() {
         return "LoaiHang{" +
-                "maLH='" + maLH + '\'' +
-                ", tenLH='" + tenLH + '\'' +
+                "maLoaiHang='" + maLoaiHang + '\'' +
+                ", tenLoaiHang='" + tenLoaiHang + '\'' +
                 ", moTa='" + moTa + '\'' +
                 '}';
     }

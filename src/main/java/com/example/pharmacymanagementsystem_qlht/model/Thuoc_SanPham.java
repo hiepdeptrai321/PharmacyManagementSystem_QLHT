@@ -12,13 +12,13 @@ public class Thuoc_SanPham {
     private String SDK_GPNK;
     private String hangSX;
     private String nuocSX;
-//    private String maNDL;
-//    private String maLH;
+    private NhomDuocLy nhomDuocLy;
+    private Thuoc_SP_TheoLo loHang;
     private String hinhAnh;
-//    private String vitri;
+    private keHang vitri;
 
 
-    public Thuoc_SanPham(String maThuoc, String tenThuoc, int hamLuong, String donViHamLuong, String duongDung, String quyCachDongGoi, String SDK_GPNK, String hangSX, String nuocSX, String hinhAnh) {
+    public Thuoc_SanPham(String maThuoc, String tenThuoc, int hamLuong, String donViHamLuong, String duongDung, String quyCachDongGoi, String SDK_GPNK, String hangSX, String nuocSX, NhomDuocLy nhomDuocLy, Thuoc_SP_TheoLo loHang, String hinhAnh, keHang vitri) {
         this.maThuoc = maThuoc;
         this.tenThuoc = tenThuoc;
         this.hamLuong = hamLuong;
@@ -28,7 +28,10 @@ public class Thuoc_SanPham {
         this.SDK_GPNK = SDK_GPNK;
         this.hangSX = hangSX;
         this.nuocSX = nuocSX;
+        this.nhomDuocLy = nhomDuocLy;
+        this.loHang = loHang;
         this.hinhAnh = hinhAnh;
+        this.vitri = vitri;
     }
 
     public String getMaThuoc() {
@@ -103,12 +106,36 @@ public class Thuoc_SanPham {
         this.nuocSX = nuocSX;
     }
 
+    public NhomDuocLy getNhomDuocLy() {
+        return nhomDuocLy;
+    }
+
+    public void setNhomDuocLy(NhomDuocLy nhomDuocLy) {
+        this.nhomDuocLy = nhomDuocLy;
+    }
+
+    public Thuoc_SP_TheoLo getLoHang() {
+        return loHang;
+    }
+
+    public void setLoHang(Thuoc_SP_TheoLo loHang) {
+        this.loHang = loHang;
+    }
+
     public String getHinhAnh() {
         return hinhAnh;
     }
 
     public void setHinhAnh(String hinhAnh) {
         this.hinhAnh = hinhAnh;
+    }
+
+    public keHang getVitri() {
+        return vitri;
+    }
+
+    public void setVitri(keHang vitri) {
+        this.vitri = vitri;
     }
 
     @Override
@@ -135,7 +162,10 @@ public class Thuoc_SanPham {
                 ", SDK_GPNK='" + SDK_GPNK + '\'' +
                 ", hangSX='" + hangSX + '\'' +
                 ", nuocSX='" + nuocSX + '\'' +
+                ", nhomDuocLy=" + nhomDuocLy +
+                ", loHang=" + loHang +
                 ", hinhAnh='" + hinhAnh + '\'' +
+                ", vitri=" + vitri +
                 '}';
     }
 }

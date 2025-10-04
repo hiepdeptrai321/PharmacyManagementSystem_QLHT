@@ -66,4 +66,5 @@ public class KhachHang_Dao implements DaoInterface<KhachHang> {
     public List<KhachHang> selectAll() {
         return  this.selectBySql(SELECT_ALL_SQL);
     }
+
 }

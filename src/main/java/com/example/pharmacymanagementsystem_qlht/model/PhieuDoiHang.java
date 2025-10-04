@@ -12,6 +12,8 @@ public class PhieuDoiHang {
     private String ghiChu;
     private HoaDon hoaDon;
 
+    public PhieuDoiHang() {
+    }
 
     public PhieuDoiHang(String maPD, NhanVien nhanVien, KhachHang khachHang, Timestamp ngayLap, String lyDoDoi, String ghiChu, HoaDon hoaDon) {
         this.maPD = maPD;

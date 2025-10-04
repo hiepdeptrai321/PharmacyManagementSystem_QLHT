@@ -11,6 +11,10 @@ public class Thuoc_SP_TheoLo {
     private ChiTietPhieuNhap phieuNhap;
     private Thuoc_SanPham thuoc;
 
+    public Thuoc_SP_TheoLo(){
+
+    }
+
     public Thuoc_SP_TheoLo(String maLH, int soLuongTon, Timestamp nsx, Timestamp hsd, ChiTietPhieuNhap phieuNhap, Thuoc_SanPham thuoc) {
         this.maLH = maLH;
         this.soLuongTon = soLuongTon;

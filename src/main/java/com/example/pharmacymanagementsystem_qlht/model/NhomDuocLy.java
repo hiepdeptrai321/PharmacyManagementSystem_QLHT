@@ -11,6 +11,10 @@ public class NhomDuocLy {
         return maNDL;
     }
 
+    public NhomDuocLy(){
+
+    }
+
     public NhomDuocLy(String maNDL, String tenNDL, String moTa) {
         this.maNDL = maNDL;
         this.tenNDL = tenNDL;

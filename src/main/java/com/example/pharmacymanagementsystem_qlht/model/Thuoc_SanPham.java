@@ -17,6 +17,8 @@ public class Thuoc_SanPham {
     private String hinhAnh;
     private keHang vitri;
 
+    public Thuoc_SanPham(){
+    }
 
     public Thuoc_SanPham(String maThuoc, String tenThuoc, int hamLuong, String donViHamLuong, String duongDung, String quyCachDongGoi, String SDK_GPNK, String hangSX, String nuocSX, NhomDuocLy nhomDuocLy, Thuoc_SP_TheoLo loHang, String hinhAnh, keHang vitri) {
         this.maThuoc = maThuoc;

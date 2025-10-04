@@ -10,6 +10,9 @@ public class PhieuDatHang {
     private String ghiChu;
     private KhachHang khachHang;
 
+    public PhieuDatHang() {
+    }
+
     public PhieuDatHang(String maPDat, Timestamp ngayLap, double soTienCoc, String ghiChu, KhachHang khachHang) {
         this.maPDat = maPDat;
         this.ngayLap = ngayLap;

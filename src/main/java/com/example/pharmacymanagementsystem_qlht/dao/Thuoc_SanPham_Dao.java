@@ -17,7 +17,7 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
 
     @Override
     public void insert(Thuoc_SanPham e) {
-        ConnectDB.update(INSERT_SQL, e.getMaThuoc(), e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(),e.getNhomDuocLy().getMaNDL(), e.getLoHang().getMaLH(), e.getHinhAnh(),e.getVitri().getMaKe());
+        ConnectDB.update(INSERT_SQL, e.getMaThuoc(), e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(),e.getNhomDuocLy().getMaNDL(), e.getLoaiHang().getMaLoaiHang(), e.getHinhAnh(),e.getVitri().getMaKe());
     }
 
     @Override
@@ -54,7 +54,7 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
                 sp.setNhomDuocLy(new NhomDuocLy_Dao().selectById(rs.getString("MaNDL")));
                 sp.setLoaiHang(new LoaiHang_Dao().selectById(rs.getString("MaLH")));
                 sp.setHinhAnh(rs.getString("HinhAnh"));
-                sp.setVitri(new ViTri_Dao().selectById(rs.getString("ViTri")));
+                sp.setVitri(new KeHang_Dao().selectById(rs.getString("ViTri")));
                 list.add(sp);
             }
             rs.getStatement().getConnection().close();

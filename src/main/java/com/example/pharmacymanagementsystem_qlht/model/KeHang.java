@@ -2,14 +2,14 @@ package com.example.pharmacymanagementsystem_qlht.model;
 
 import java.util.Objects;
 
-public class keHang {
+public class KeHang {
     private String maKe;
     private String tenKe;
 
-    public keHang() {
+    public KeHang() {
     }
 
-    public keHang(String maKe, String tenKe) {
+    public KeHang(String maKe, String tenKe) {
         this.maKe = maKe;
         this.tenKe = tenKe;
     }
@@ -33,7 +33,7 @@ public class keHang {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        keHang keHang = (keHang) o;
+        KeHang keHang = (KeHang) o;
         return Objects.equals(maKe, keHang.maKe);
     }
 

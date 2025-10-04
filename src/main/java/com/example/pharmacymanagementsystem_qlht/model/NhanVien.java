@@ -1,5 +1,6 @@
 package com.example.pharmacymanagementsystem_qlht.model;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -8,17 +9,17 @@ public class NhanVien {
     private String tenNV;
     private String sdt;
     private String email;
-    private Timestamp ngaySinh;
-    private Boolean gioiTinh;
+    private Date ngaySinh;
+    private boolean gioiTinh;
     private String diaChi;
-    private Boolean trangThai;
+    private boolean trangThai;
     private String taiKhoan;
     private String matKhau;
 
     public NhanVien() {
     }
 
-    public NhanVien(String maNV, String tenNV, String sdt, String email, Timestamp ngaySinh, Boolean gioiTinh, String diaChi, Boolean trangThai, String taiKhoan, String matKhau) {
+    public NhanVien(String maNV, String tenNV, String sdt, String email, Date ngaySinh, boolean gioiTinh, String diaChi, boolean trangThai, String taiKhoan, String matKhau) {
         this.maNV = maNV;
         this.tenNV = tenNV;
         this.sdt = sdt;
@@ -63,19 +64,19 @@ public class NhanVien {
         this.email = email;
     }
 
-    public Timestamp getNgaySinh() {
+    public Date getNgaySinh() {
         return ngaySinh;
     }
 
-    public void setNgaySinh(Timestamp ngaySinh) {
+    public void setNgaySinh(Date ngaySinh) {
         this.ngaySinh = ngaySinh;
     }
 
-    public Boolean getGioiTinh() {
+    public boolean getGioiTinh() {
         return gioiTinh;
     }
 
-    public void setGioiTinh(Boolean gioiTinh) {
+    public void setGioiTinh(boolean gioiTinh) {
         this.gioiTinh = gioiTinh;
     }
 
@@ -87,11 +88,11 @@ public class NhanVien {
         this.diaChi = diaChi;
     }
 
-    public Boolean getTrangThai() {
+    public boolean getTrangThai() {
         return trangThai;
     }
 
-    public void setTrangThai(Boolean trangThai) {
+    public void setTrangThai(boolean trangThai) {
         this.trangThai = trangThai;
     }
 

@@ -57,7 +57,6 @@ public class NhomDuocLy_Dao implements DaoInterface<NhomDuocLy> {
         }
         return list;
     }
-
     @Override
     public List<NhomDuocLy> selectAll() {
         return this.selectBySql(SELECT_ALL_SQL);

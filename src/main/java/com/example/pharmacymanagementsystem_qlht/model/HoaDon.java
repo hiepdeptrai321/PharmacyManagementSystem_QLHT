@@ -8,7 +8,7 @@ public class HoaDon {
     private NhanVien nhanVien;
     private double tongHD;
     private Timestamp ngayLap;
-    private KhachHang khanhHang;
+    private KhachHang khachHang;
     private Boolean trangThai;
 
     public HoaDon() {
@@ -19,7 +19,7 @@ public class HoaDon {
         this.nhanVien = maNV;
         this.tongHD = tongHD;
         this.ngayLap = ngayLap;
-        this.khanhHang = maKH;
+        this.khachHang = maKH;
         this.trangThai = trangThai;
     }
 
@@ -56,11 +56,11 @@ public class HoaDon {
     }
 
     public KhachHang getMaKH() {
-        return khanhHang;
+        return khachHang;
     }
 
     public void setMaKH(KhachHang maKH) {
-        this.khanhHang = maKH;
+        this.khachHang = maKH;
     }
 
     public Boolean getTrangThai() {
@@ -90,7 +90,7 @@ public class HoaDon {
                 ", nhanVien=" + nhanVien +
                 ", tongHD=" + tongHD +
                 ", ngayLap=" + ngayLap +
-                ", khanhHang=" + khanhHang +
+                ", khanhHang=" + khachHang +
                 ", trangThai=" + trangThai +
                 '}';
     }

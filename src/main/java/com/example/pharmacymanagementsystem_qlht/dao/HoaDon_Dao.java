@@ -11,75 +11,54 @@ import java.util.List;
 
 public class HoaDon_Dao implements DaoInterface<HoaDon>{
 
-    private final String INSERT_SQL = "INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV) VALUES (?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE HoaDon SET  NgayLap=?, TrangThai=?, MaKH=?, MaNV=? WHERE MaHD=?";
-    private final String DELETE_BY_ID = "DELETE FROM HoaDon WHERE MaHD = ?";
+    private final String INSERT_SQL = "INSERT INTO HoaDon (maHD, maNV, ngayLap, maKH, trangThai) VALUES (?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE HoaDon SET maNV=?, ngayLap=?, maKH=?, trangThai=? WHERE maHD=?";
+    private final String DELETE_SQL = "DELETE FROM HoaDon WHERE maHD=?";
+    private final String SELECT_ALL_SQL = "SELECT * FROM HoaDon";
+    private final String SELECT_BY_ID_SQL = "SELECT * FROM HoaDon WHERE maHD=?";
 
-    private final String SELECT_ALL_SQL =
-            "SELECT HoaDon.MaHD, HoaDon.NgayLap, HoaDon.TrangThai, HoaDon.MaKH, HoaDon.MaNV, "
-                    + "NhanVien.TenNV AS tenNV, NhanVien.SDT AS sdtNV, NhanVien.GioiTinh AS gioiTinhNV, NhanVien.NgaySinh, NhanVien.NgayVaoLam, "
-                    + "KhachHang.TenKH AS tenKH, KhachHang.SDT AS sdtKH, KhachHang.GioiTinh AS gioiTinhKH, KhachHang.NgaySinh AS ngaySinh "
-                    + "FROM HoaDon "
-                    + "INNER JOIN NhanVien ON HoaDon.MaNV = NhanVien.MaNV "
-                    + "LEFT JOIN KhachHang ON HoaDon.MaKH = KhachHang.MaKH";
-
-    private final String SELECT_BY_ID =
-            "SELECT HoaDon.MaHD, HoaDon.NgayLap, HoaDon.TrangThai, HoaDon.MaKH, HoaDon.MaNV, "
-                    + "NhanVien.TenNV AS tenNV, NhanVien.SDT AS sdtNV, NhanVien.GioiTinh AS gioiTinhNV, NhanVien.NgaySinh, NhanVien.NgayVaoLam, "
-                    + "KhachHang.TenKH AS tenKH, KhachHang.SDT AS sdtKH, KhachHang.GioiTinh AS gioiTinhKH, KhachHang.NgaySinh AS ngaySinh "
-                    + "FROM HoaDon "
-                    + "INNER JOIN NhanVien ON HoaDon.MaNV = NhanVien.MaNV "
-                    + "INNER JOIN KhachHang ON HoaDon.MaKH = KhachHang.MaKH "
-                    + "WHERE HoaDon.MaHD = ? "
-                    + "ORDER BY HoaDon.NgayLap";
 
 
     @Override
     public void insert(HoaDon e) {
+        ConnectDB.update(INSERT_SQL, e.getMaHD(), e.getMaNV().getMaNV(), e.getNgayLap(), e.getMaKH().getMaKH(), e.getTrangThai());
     }
 
     @Override
     public void update(HoaDon e) {
+        ConnectDB.update(UPDATE_SQL, e.getMaNV().getMaNV(), e.getNgayLap(), e.getMaKH().getMaKH(), e.getTrangThai(), e.getMaHD());
     }
 
     @Override
     public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_BY_ID, keys[0]);
+        ConnectDB.update(DELETE_SQL, keys);
     }
 
     @Override
     public HoaDon selectById(Object... keys) {
-        List<HoaDon> list = selectBySql(SELECT_BY_ID, keys[0]);
-        return list.isEmpty() ? null : list.get(0);
+        List<HoaDon> list = selectBySql(SELECT_BY_ID_SQL, keys);
+        if (list.isEmpty()) return null;
+        return list.get(0);
     }
 
     @Override
     public List<HoaDon> selectBySql(String sql, Object... args) {
         List<HoaDon> list = new ArrayList<>();
-        try (ResultSet rs = ConnectDB.query(sql, args)) {
+        try {
+            ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 HoaDon hd = new HoaDon();
-                hd.setMaHD(rs.getString("MaHD"));
-                hd.setNgayLap(rs.getTimestamp("NgayLap"));
-                hd.setTrangThai(rs.getString("TrangThai"));
-
-                NhanVien nv = new NhanVien();
-                nv.setMaNV(rs.getString("MaNV"));
-                nv.setTenNV(rs.getString("tenNV"));
-                nv.setSdt(rs.getString("SDT"));
-                nv.setGioiTinh(rs.getBoolean("GioiTinh"));
-                nv.setNgaySinh(rs.getDate("NgaySinh"));
-
-
-                KhachHang kh = new KhachHang();
-                kh.setMaKH(rs.getString("MaKH"));
-                kh.setTenKH(rs.getString("tenKH"));
-                kh.setSdt(rs.getString("sdtKH"));
-                kh.setGioiTinh(rs.getBoolean("gioiTinhKH"));
-                kh.setNgaySinh(rs.getDate("NgaySinh"));
+                hd.setMaHD(rs.getString("maHD"));
+                NhanVien nv = new NhanVien_Dao().selectById(rs.getString("maNV"));
+                KhachHang kh = new KhachHang_Dao().selectById(rs.getString("maKH"));
+                hd.setMaNV(nv);
+                hd.setMaKH(kh);
+                hd.setNgayLap(rs.getTimestamp("ngayLap"));
+                hd.setTrangThai(rs.getBoolean("trangThai"));
 
                 list.add(hd);
             }
+            rs.getStatement().getConnection().close();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

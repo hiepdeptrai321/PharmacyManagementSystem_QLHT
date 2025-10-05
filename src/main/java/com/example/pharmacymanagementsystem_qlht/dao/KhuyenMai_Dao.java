@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KhuyenMai_Dao implements DaoInterface<KhuyenMai> {
-    private final String INSERT_SQL = "INSERT INTO KhuyenMai (loaiKM, tenKM, giaTriKM, ngayBatDau, ngayKetThuc, moTa) VALUES ( ?, ?, ?, ?, ?, ?)";
+    private final String INSERT_SQL = "INSERT INTO KhuyenMai (LoaiKM, TenKM, giaTriKM, ngayBatDau, ngayKetThuc, moTa) VALUES ( ?, ?, ?, ?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE KhuyenMai SET loaiKM=?, tenKM=?, giaTriKM=?, ngayBatDau=?, ngayKetThuc=?, moTa=? WHERE maKM=?";
     private final String DELETE_BY_ID_SQL = "DELETE FROM KhuyenMai WHERE maKM=?";
     private final String SELECT_BY_ID_SQL = "SELECT maKM, loaiKM, tenKM, giaTriKM, ngayBatDau, ngayKetThuc, moTa FROM LoaiKhuyenMai WHERE maLoaiKM = ?";
-    private final String SELECT_ALL_SQL = "SELECT maKM, loaiKM, tenKM, giaTriKM, ngayBatDau, ngayKetThuc, moTa FROM LoaiKhuyenMai";
+    private final String SELECT_ALL_SQL = "SELECT MaKM, MaLoai, TenKM, GiaTriKM, NgayBatDau, NgayKetThuc, MoTa FROM KhuyenMai";
 
     @Override
     public void insert(KhuyenMai e) {
@@ -43,14 +43,13 @@ public class KhuyenMai_Dao implements DaoInterface<KhuyenMai> {
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 KhuyenMai khuyenMai = new KhuyenMai();
-                khuyenMai.setMaKM(rs.getString("maKM"));
-                khuyenMai.setMaKM(rs.getStatement().getGeneratedKeys().getString(1));
-                khuyenMai.setLoaiKM(new LoaiKhuyenMai_Dao().selectById(rs.getString("loaiKM")));
-                khuyenMai.setTenKM(rs.getString("tenKM"));
-                khuyenMai.setGiaTriKM(rs.getFloat("giaTriKM"));
-                khuyenMai.setNgayBatDau(rs.getDate("ngayBatDau"));
-                khuyenMai.setNgayKetThuc(rs.getDate("ngayKetThuc"));
-                khuyenMai.setMoTa(rs.getString("moTa"));
+                khuyenMai.setMaKM(rs.getString("MaKM"));
+                khuyenMai.setLoaiKM(new LoaiKhuyenMai_Dao().selectById(rs.getString("MaLoai")));
+                khuyenMai.setTenKM(rs.getString("TenKM"));
+                khuyenMai.setGiaTriKM(rs.getFloat("GiaTriKM"));
+                khuyenMai.setNgayBatDau(rs.getDate("NgayBatDau"));
+                khuyenMai.setNgayKetThuc(rs.getDate("NgayKetThuc"));
+                khuyenMai.setMoTa(rs.getString("MoTa"));
                 khuyenMaiList.add(khuyenMai);
             }
             rs.getStatement().close();
@@ -67,7 +66,7 @@ public class KhuyenMai_Dao implements DaoInterface<KhuyenMai> {
 
     public String generateNewMaKM() {
         String newMaKM = "KM001"; // Default value if no records exist
-        String SELECT_TOP1_SQL = "SELECT TOP 1 maKM FROM KhuyenMai ORDER BY maKM DESC";
+        String SELECT_TOP1_SQL = "SELECT TOP 1 maKM FROM KhuyenMai ORDER BY MaKM DESC";
         try {
             ResultSet rs = ConnectDB.query(SELECT_TOP1_SQL);
             if (rs.next()) {

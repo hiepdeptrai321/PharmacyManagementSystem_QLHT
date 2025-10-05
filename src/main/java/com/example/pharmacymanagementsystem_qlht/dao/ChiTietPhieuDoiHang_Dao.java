@@ -16,12 +16,12 @@ public class ChiTietPhieuDoiHang_Dao implements DaoInterface<ChiTietPhieuDoiHang
 
     @Override
     public void insert(ChiTietPhieuDoiHang e) {
-        ConnectDB.update(INSERT_SQL, e.getLoHang().getMaLo(), e.getPhieuDoiHang().getMaPD(), e.getThuoc().getMaThuoc(), e.getSoLuong(), e.getDonGia(), e.getGiamGia());
+        ConnectDB.update(INSERT_SQL, e.getLoHang().getMaLH(), e.getPhieuDoiHang().getMaPD(), e.getThuoc().getMaThuoc(), e.getSoLuong(), e.getDonGia(), e.getGiamGia());
     }
 
     @Override
     public void update(ChiTietPhieuDoiHang e) {
-        ConnectDB.update(UPDATE_SQL, e.getSoLuong(), e.getDonGia(), e.getGiamGia(), e.getLoHang().getMaLo(), e.getPhieuDoiHang().getMaPD(), e.getThuoc().getMaThuoc());
+        ConnectDB.update(UPDATE_SQL, e.getSoLuong(), e.getDonGia(), e.getGiamGia(), e.getLoHang().getMaLH(), e.getPhieuDoiHang().getMaPD(), e.getThuoc().getMaThuoc());
     }
 
     @Override

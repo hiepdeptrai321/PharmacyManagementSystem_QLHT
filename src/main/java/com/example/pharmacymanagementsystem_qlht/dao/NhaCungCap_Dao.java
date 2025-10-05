@@ -64,5 +64,5 @@ public class NhaCungCap_Dao implements DaoInterface<NhaCungCap>{
         return this.selectBySql(SELECT_ALL_SQL);
     }
 
-    
+
 }

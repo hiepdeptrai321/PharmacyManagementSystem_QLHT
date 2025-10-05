@@ -14,6 +14,7 @@ public class PhieuNhap_Dao implements DaoInterface<PhieuNhap>{
     private final String DELETE_SQL = "DELETE FROM PhieuNhap WHERE maPN = ?";
     private final String SELECT_ALL_SQL = "SELECT * FROM PhieuNhap";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM PhieuNhap WHERE maPN = ?";
+    private final String SELECT_TOP1_MAPN = "SELECT TOP 1 maPN FROM PhieuNhap ORDER BY maPN DESC";
 
     @Override
     public void insert(PhieuNhap e) {
@@ -59,5 +60,23 @@ public class PhieuNhap_Dao implements DaoInterface<PhieuNhap>{
     @Override
     public List<PhieuNhap> selectAll() {
         return this.selectBySql(SELECT_ALL_SQL);
+    }
+
+    public String generatekeyPhieuNhap() {
+        String key = null;
+        try {
+            ResultSet rs = ConnectDB.query(SELECT_TOP1_MAPN);
+            String lastKey = rs.getString("maPN");
+            if (lastKey != null) {
+                int numericPart = Integer.parseInt(lastKey.substring(2));
+                numericPart++;
+                key = String.format("PN%03d", numericPart);
+            } else {
+                key = "PN001";
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return key;
     }
 }

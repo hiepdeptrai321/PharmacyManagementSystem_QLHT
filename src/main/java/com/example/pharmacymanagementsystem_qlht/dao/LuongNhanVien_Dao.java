@@ -48,8 +48,8 @@ public class LuongNhanVien_Dao implements DaoInterface<LuongNhanVien> {
             while (rs.next()) {
                 LuongNhanVien lnv = new LuongNhanVien();
                 lnv.setMaLNV(rs.getString("maLNV"));
-                lnv.setTuNgay(rs.getTimestamp("tuNgay"));
-                lnv.setDenNgay(rs.getTimestamp("denNgay"));
+                lnv.setTuNgay(rs.getDate("tuNgay"));
+                lnv.setDenNgay(rs.getDate("denNgay"));
                 lnv.setLuongCoBan(rs.getDouble("luongCoBan"));
                 lnv.setPhuCap(rs.getDouble("phuCap"));
                 lnv.setGhiChu(rs.getString("ghiChu"));

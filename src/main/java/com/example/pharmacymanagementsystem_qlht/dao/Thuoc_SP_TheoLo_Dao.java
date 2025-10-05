@@ -55,8 +55,8 @@ public class Thuoc_SP_TheoLo_Dao implements DaoInterface<Thuoc_SP_TheoLo> {
                 Thuoc_SP_TheoLo t = new Thuoc_SP_TheoLo();
                 t.setMaLH(rs.getString("maLH"));
                 t.setSoLuongTon(rs.getInt("soLuongTon"));
-                t.setNsx(rs.getTimestamp("nsx"));
-                t.setHsd(rs.getTimestamp("hsd"));
+                t.setNsx(rs.getDate("nsx"));
+                t.setHsd(rs.getDate("hsd"));
                 t.setPhieuNhap(new ChiTietPhieuNhap_Dao().selectById(rs.getString("MaPN")));
                 t.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getString("MaThuoc")));
                 list.add(t);

@@ -17,3 +17,9 @@
     -fx-font-weight: bold;
     -fx-cursor: hand;
 }
+#btnThemtk{
+-fx-background-color: blue;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}

@@ -42,4 +42,5 @@ module com.example.pharmacymanagementsystem_qlht {
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoaDon;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoaDon to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_BanHang.LapHoaDon to javafx.fxml;
+    opens com.example.pharmacymanagementsystem_qlht.model to javafx.base;
 }

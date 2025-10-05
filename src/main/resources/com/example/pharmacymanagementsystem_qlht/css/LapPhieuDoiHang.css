@@ -1,3 +1,4 @@
+/* LapPhieuDoiHang.css - đồng bộ style với LapPhieuTraHang.css và LapHoaDon.css */
 .root, .anchor-pane {
     -fx-background-color: #f7fafd;
 }
@@ -5,7 +6,7 @@
 .title-label {
     -fx-font-size: 26px;
     -fx-font-weight: bold;
-    -fx-text-fill: #222222; /* black */
+    -fx-text-fill: #222222;
     -fx-effect: dropshadow(gaussian, #b3c6e0, 6, 0.2, 0, 2);
 }
 
@@ -84,6 +85,11 @@
     -fx-padding: 4 8 4 8;
 }
 
+.button, .primary-btn, .danger-btn, .success-btn, .print-btn {
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #bdbdbd, 6, 0.15, 0, 2);
+}
+
 .primary-btn {
     -fx-background-color: #1976D2;
     -fx-text-fill: white;
@@ -111,9 +117,4 @@
     -fx-font-weight: bold;
     -fx-background-radius: 6;
     -fx-effect: dropshadow(gaussian, #bdbdbd, 2, 0.1, 0, 1);
-}
-
-.button, .primary-btn, .danger-btn, .success-btn, .print-btn {
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, #bdbdbd, 6, 0.15, 0, 2);
 }

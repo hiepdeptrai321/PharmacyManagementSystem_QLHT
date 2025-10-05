@@ -12,7 +12,7 @@
 .section-label {
     -fx-font-size: 15px;
     -fx-font-weight: bold;
-    -fx-text-fill: #222222;
+    -fx-text-fill: #222222; /* black */
 }
 
 .hint-label {
@@ -63,12 +63,12 @@
 }
 
 .table-view .column-header-background {
-    -fx-background-color: #e0e0e0;
+    -fx-background-color: #e0e0e0; /* light gray */
 }
 
 .table-view .column-header, .table-view .filler {
-    -fx-background-color: #e0e0e0;
-    -fx-text-fill: #222222;
+    -fx-background-color: #e0e0e0; /* light gray */
+    -fx-text-fill: #222222; /* black */
     -fx-font-weight: bold;
 }
 

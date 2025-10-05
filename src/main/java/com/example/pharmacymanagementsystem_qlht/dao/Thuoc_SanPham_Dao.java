@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
-    private final String INSERT_SQL = "INSERT INTO Thuoc_SanPham (MaThuoc, TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaNDL, MaLH, HinhAnh, ViTri) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String INSERT_SQL = "INSERT INTO Thuoc_SanPham (TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaNDL, MaLH, HinhAnh, ViTri) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE Thuoc_SanPham SET TenThuoc=?, HamLuong=?, DonViHL=?, DuongDung=?, QuyCachDongGoi=?, SDK_GPNK=?, HangSX=?, NuocSX=?, HinhAnh=? WHERE MaThuoc=?";
     private final String DELETE_SQL = "DELETE FROM Thuoc_SanPham WHERE MaThuoc=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM Thuoc_SanPham";
@@ -17,7 +17,7 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
 
     @Override
     public void insert(Thuoc_SanPham e) {
-        ConnectDB.update(INSERT_SQL, e.getMaThuoc(), e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(),e.getNhomDuocLy().getMaNDL(), e.getLoaiHang().getMaLoaiHang(), e.getHinhAnh(),e.getVitri().getMaKe());
+        ConnectDB.update(INSERT_SQL, e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(),e.getNhomDuocLy().getMaNDL(), e.getLoaiHang().getMaLoaiHang(), e.getHinhAnh(),e.getVitri().getMaKe());
     }
 
     @Override
@@ -42,7 +42,6 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 Thuoc_SanPham sp = new Thuoc_SanPham();
-                sp.setMaThuoc(rs.getString("MaThuoc"));
                 sp.setTenThuoc(rs.getString("TenThuoc"));
                 sp.setHamLuong(rs.getInt("HamLuong"));
                 sp.setDonViHamLuong(rs.getString("DonViHL"));

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="704.0" prefWidth="1200.0" stylesheets="@../../css/LapPhieuTraHang.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="/com/example/pharmacymanagementsystem_qlht/controller/CN_BanHang/LapPhieuTra/LapPhieuTraHang_Ctrl">
+<AnchorPane prefHeight="704.0" prefWidth="1200.0" stylesheets="@../../css/LapPhieuTraHang.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_BanHang.LapPhieuTra.LapPhieuTraHang_Ctrl">
     <children>
         <!-- Tiêu đề -->
         <Label layoutX="40.0" layoutY="21.0" styleClass="title-label" text="LẬP PHIẾU TRẢ HÀNG" />
@@ -20,7 +20,7 @@
             <children>
                 <Label layoutX="20.0" layoutY="20.0" text="Tìm hóa đơn gốc:">
                <font>
-                  <Font size="13.0" />
+                  <Font name="System Bold" size="13.0" />
                </font></Label>
                 <TextField fx:id="txtTimHoaDon" layoutX="130.0" layoutY="15.0" prefHeight="27.0" prefWidth="391.0" promptText="Nhập mã hóa đơn hoặc tên khách hàng ..." />
                 <Button fx:id="btnTimHoaDon" layoutX="573.0" layoutY="16.0" styleClass="primary-btn" text="Tìm" />
@@ -62,26 +62,26 @@
         <!-- Thông tin phiếu trả và tổng hợp bên phải -->
         <Pane layoutX="780.0" layoutY="70.0" prefHeight="571.0" prefWidth="391.0" styleClass="info-pane">
             <children>
-                <Label layoutX="30.0" layoutY="20.0" text="Mã hóa đơn gốc:" />
-                <TextField fx:id="txtMaHoaDonGoc" editable="false" layoutX="209.0" layoutY="14.0" prefWidth="120.0" />
+                <Label layoutX="32.0" layoutY="55.0" text="Mã hóa đơn gốc:" />
+                <TextField fx:id="txtMaHoaDonGoc" editable="false" layoutX="211.0" layoutY="49.0" prefWidth="120.0" />
 
-                <Label layoutX="30.0" layoutY="60.0" text="Ngày lập hóa đơn:" />
-                <TextField fx:id="txtNgayLapHoaDon" editable="false" layoutX="209.0" layoutY="54.0" prefWidth="120.0" />
+                <Label layoutX="32.0" layoutY="95.0" text="Ngày lập hóa đơn:" />
+                <TextField fx:id="txtNgayLapHoaDon" editable="false" layoutX="211.0" layoutY="89.0" prefWidth="120.0" />
 
-                <Label layoutX="30.0" layoutY="110.0" text="Tổng tiền gốc:" />
+                <Label layoutX="32.0" layoutY="145.0" text="Tổng tiền gốc:" />
                 <Label fx:id="lblTongTienGoc" layoutX="209.0" layoutY="109.0" styleClass="value-label" text="0 VNĐ" />
 
-                <Label layoutX="30.0" layoutY="150.0" text="Tổng tiền hàng trả lại:" />
-                <Label fx:id="lblTongTienTraLai" layoutX="209.0" layoutY="149.0" styleClass="value-label" text="0 VNĐ" />
+                <Label layoutX="32.0" layoutY="185.0" text="Tổng tiền hàng trả lại:" />
+                <Label fx:id="lblTongTienTraLai" layoutX="211.0" layoutY="184.0" styleClass="value-label" text="0 VNĐ" />
 
-                <Label layoutX="30.0" layoutY="190.0" text="Thuế (VAT):" />
-                <Label fx:id="lblVAT" layoutX="209.0" layoutY="189.0" styleClass="value-label" text="0 VNĐ" />
+                <Label layoutX="31.0" layoutY="226.0" text="Thuế (VAT):" />
+                <Label fx:id="lblVAT" layoutX="211.0" layoutY="224.0" styleClass="value-label" text="0 VNĐ" />
 
-                <Label layoutX="30.0" layoutY="240.0" styleClass="bold-label" text="Số tiền trả lại:" />
-                <Label fx:id="lblSoTienTraLai" layoutX="209.0" layoutY="239.0" styleClass="main-value-label" text="0 VNĐ" />
+                <Label layoutX="32.0" layoutY="275.0" styleClass="bold-label" text="Số tiền trả lại:" />
+                <Label fx:id="lblSoTienTraLai" layoutX="211.0" layoutY="274.0" styleClass="main-value-label" text="0 VNĐ" />
 
-                <Label layoutX="30.0" layoutY="290.0" text="Ghi chú:" />
-                <TextArea fx:id="txtGhiChu" layoutX="100.0" layoutY="285.0" prefHeight="120.0" prefWidth="225.0" />
+                <Label layoutX="32.0" layoutY="325.0" text="Ghi chú:" />
+                <TextArea fx:id="txtGhiChu" layoutX="102.0" layoutY="320.0" prefHeight="120.0" prefWidth="225.0" />
 
                 <Button fx:id="btnDatHang" layoutX="61.0" layoutY="469.0" prefHeight="44.0" prefWidth="120.0" styleClass="print-btn" text="In phiếu trả">
                <font>
@@ -91,6 +91,7 @@
                <font>
                   <Font size="14.0" />
                </font></Button>
+            <Label layoutX="30.0" layoutY="14.0" styleClass="bold-label" text="THÔNG TIN PHIẾU ĐỔI HÀNG" />
             </children>
         </Pane>
     </children>

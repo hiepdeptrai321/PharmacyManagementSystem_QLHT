@@ -95,6 +95,7 @@
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 6;
+    -fx-effect: dropshadow(gaussian, #bdbdbd, 6, 0.15, 0, 2);
 }
 
 .danger-btn {
@@ -109,6 +110,7 @@
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 6;
+    -fx-effect: dropshadow(gaussian, #bdbdbd, 6, 0.15, 0, 2);
 }
 
 .print-btn {
@@ -118,4 +120,3 @@
     -fx-background-radius: 6;
     -fx-effect: dropshadow(gaussian, #bdbdbd, 2, 0.1, 0, 1);
 }
-

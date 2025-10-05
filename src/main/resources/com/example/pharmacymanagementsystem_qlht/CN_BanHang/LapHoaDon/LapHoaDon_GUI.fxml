@@ -32,7 +32,7 @@
 
         <!-- Table -->
         <Label layoutX="40.0" layoutY="150.0" styleClass="section-label" text="Chi tiết sản phẩm" />
-        <TableView fx:id="tblChiTietHoaDon" layoutX="40.0" layoutY="180.0" prefHeight="470.0" prefWidth="741.0" styleClass="main-table">
+        <TableView fx:id="tblChiTietHoaDon" layoutX="40.0" layoutY="180.0" prefHeight="506.0" prefWidth="741.0" styleClass="main-table">
             <columns>
                 <TableColumn prefWidth="50.0" text="STT" />
                 <TableColumn prefWidth="242.0" text="Tên sản phẩm/Hoạt chất" />

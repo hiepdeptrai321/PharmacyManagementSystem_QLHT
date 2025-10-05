@@ -17,15 +17,15 @@
             <Font name="System Bold" size="14.0" />
          </font></Label>
         <Button id="btnthemthuoc" fx:id="btnthemthuoc" layoutX="1025.0" layoutY="46.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="161.0" text="✚Thêm khuyến mãi" AnchorPane.topAnchor="46.0" />
-        <TableView id="tablethuoc" layoutX="12.0" layoutY="85.0" prefHeight="665.0" prefWidth="1177.0">
+        <TableView id="tablethuoc" fx:id="tbKM" layoutX="12.0" layoutY="85.0" prefHeight="665.0" prefWidth="1177.0">
             <columns>
-                <TableColumn prefWidth="48.83333206176758" text="STT" />
-                <TableColumn prefWidth="114.16667175292969" text="Mã khuyến mãi" />
-                <TableColumn prefWidth="312.0" text="Tên khuyến mãi" />
-                <TableColumn minWidth="0.0" prefWidth="144.0" text="Loại khuyến mãi" />
-                <TableColumn minWidth="0.0" prefWidth="145.0" text="Giá trị " />
-                <TableColumn minWidth="0.0" prefWidth="188.0" text="Ngày bắt đầu" />
-                <TableColumn minWidth="0.0" prefWidth="167.0" text="Ngày kết thúc" />
+                <TableColumn fx:id="colSTT" prefWidth="48.83333206176758" text="STT" />
+                <TableColumn fx:id="colMaKM" prefWidth="114.16667175292969" text="Mã khuyến mãi" />
+                <TableColumn fx:id="colTenKM" prefWidth="312.0" text="Tên khuyến mãi" />
+                <TableColumn fx:id="colLoaiKM" minWidth="0.0" prefWidth="144.0" text="Loại khuyến mãi" />
+                <TableColumn fx:id="colGiaTri" minWidth="0.0" prefWidth="145.0" text="Giá trị " />
+                <TableColumn fx:id="colNBD" minWidth="0.0" prefWidth="188.0" text="Ngày bắt đầu" />
+                <TableColumn fx:id="colNKT" minWidth="0.0" prefWidth="167.0" text="Ngày kết thúc" />
             </columns>
         </TableView>
     </children>

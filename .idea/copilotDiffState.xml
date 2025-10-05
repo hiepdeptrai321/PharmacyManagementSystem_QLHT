@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CopilotDiffPersistence">
+    <option name="pendingDiffs">
+      <map>
+        <entry key="$PROJECT_DIR$/src/main/java/com/example/pharmacymanagementsystem_qlht/controller/CN_BanHang/LapPhieuDatHang/LapPhieuDatHang_Ctrl.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/src/main/java/com/example/pharmacymanagementsystem_qlht/controller/CN_BanHang/LapPhieuDatHang/LapPhieuDatHang_Ctrl.java" />
+              <option name="originalContent" value="package com.example.pharmacymanagementsystem_qlht.controller.CN_BanHang.LapPhieuDatHang;&#10;&#10;import javafx.application.Application;&#10;import javafx.fxml.FXMLLoader;&#10;import javafx.scene.Parent;&#10;import javafx.scene.Scene;&#10;import javafx.stage.Stage;&#10;&#10;public class LapPhieuDatHang_Ctrl extends Application {&#10;    @Override&#10;    public void start(Stage stage) throws Exception {&#10;        Parent root = FXMLLoader.load(getClass().getResource(&quot;/com/example/pharmacymanagementsystem_qlht/CN_BanHang/LapPhieuDat/LapPhieuDatHang_GUI.fxml&quot;));&#10;        stage.setScene(new Scene(root));&#10;        stage.show();&#10;    }&#10;}&#10;" />
+              <option name="updatedContent" value="package com.example.pharmacymanagementsystem_qlht.controller.CN_BanHang.LapPhieuDatHang;&#10;&#10;import javafx.application.Application;&#10;import javafx.fxml.FXMLLoader;&#10;import javafx.scene.Parent;&#10;import javafx.scene.Scene;&#10;import javafx.stage.Stage;&#10;&#10;public class LapPhieuDatHang_Ctrl extends Application {&#10;    @Override&#10;    public void start(Stage stage) throws Exception {&#10;        Parent root = FXMLLoader.load(getClass().getResource(&quot;/com/example/pharmacymanagementsystem_qlht/CN_BanHang/LapPhieuDat/LapPhieuDatHang_GUI.fxml&quot;));&#10;        stage.setScene(new Scene(root));&#10;        stage.show();&#10;    }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/com/example/pharmacymanagementsystem_qlht/controller/CN_BanHang/LapPhieuTra/LapPhieuTraHang_Ctrl.java">
+          <value>
+            <PendingDiffInfo>
+              <option name="filePath" value="$PROJECT_DIR$/src/main/java/com/example/pharmacymanagementsystem_qlht/controller/CN_BanHang/LapPhieuTra/LapPhieuTraHang_Ctrl.java" />
+              <option name="originalContent" value="package com.example.pharmacymanagementsystem_qlht.controller.CN_BanHang.LapPhieuTra;&#10;&#10;import javafx.application.Application;&#10;import javafx.fxml.FXMLLoader;&#10;import javafx.scene.Parent;&#10;import javafx.scene.Scene;&#10;import javafx.stage.Stage;&#10;&#10;public class LapPhieuTraHang_Ctrl extends Application {&#10;    @Override&#10;    public void start(Stage stage) throws Exception {&#10;        Parent root = FXMLLoader.load(getClass().getResource(&quot;/com/example/pharmacymanagementsystem_qlht/CN_BanHang/LapPhieuTra/LapPhieuTraHang_GUI.fxml&quot;));&#10;        stage.setScene(new Scene(root));&#10;        stage.show();&#10;    }&#10;}&#10;" />
+              <option name="updatedContent" value="package com.example.pharmacymanagementsystem_qlht.controller.CN_BanHang.LapPhieuTra;&#10;&#10;import javafx.application.Application;&#10;import javafx.fxml.FXMLLoader;&#10;import javafx.scene.Parent;&#10;import javafx.scene.Scene;&#10;import javafx.stage.Stage;&#10;&#10;public class LapPhieuTraHang_Ctrl extends Application {&#10;    @Override&#10;    public void start(Stage stage) throws Exception {&#10;        Parent root = FXMLLoader.load(getClass().getResource(&quot;/com/example/pharmacymanagementsystem_qlht/CN_BanHang/LapPhieuTra/LapPhieuTraHang_GUI.fxml&quot;));&#10;        stage.setScene(new Scene(root));&#10;        stage.show();&#10;    }&#10;}" />
+            </PendingDiffInfo>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

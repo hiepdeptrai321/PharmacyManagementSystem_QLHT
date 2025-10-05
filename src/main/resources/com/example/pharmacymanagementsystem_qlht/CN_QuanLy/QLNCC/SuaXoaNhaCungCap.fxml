@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="337.0" prefWidth="582.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLNhaCungCap.SuaXoaNhaCungCap_Ctrl">
+<Pane prefHeight="337.0" prefWidth="582.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLNhaCungCap.SuaXoaNhaCungCap_Ctrl">
     <children>
         <Label layoutX="13.5" layoutY="8.0" prefHeight="31.0" prefWidth="555.0" styleClass="lbtitle" text="Thêm nhà cung cấp">
             <font>
@@ -21,7 +21,7 @@
         <TextField layoutX="14.0" layoutY="119.0" prefHeight="25.0" prefWidth="142.0" />
         <Label layoutX="14.0" layoutY="102.0" text="Số điện thoại:" />
         <TextField layoutX="163.0" layoutY="119.0" prefHeight="25.0" prefWidth="225.0" />
-        <Label layoutX="163.0" layoutY="102.0" text="Emai:l" />
+        <Label layoutX="163.0" layoutY="102.0" text="Email:" />
         <TextField layoutX="394.0" layoutY="119.0" prefHeight="25.0" prefWidth="172.0" />
         <Label layoutX="394.0" layoutY="102.0" text="GPKD/SDK:" />
         <TextField layoutX="14.0" layoutY="173.0" prefHeight="25.0" prefWidth="273.0" />

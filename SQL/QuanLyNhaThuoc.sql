@@ -51,7 +51,7 @@ CREATE TABLE LuongNhanVien (
 -- =========================
 CREATE TABLE NhaCungCap (
     MaNCC      VARCHAR(10) PRIMARY KEY,
-    TenNCC     VARCHAR(50) NOT NULL,
+    TenNCC     NVARCHAR(50) NOT NULL,
     DiaChi     NVARCHAR(100),
     SDT        VARCHAR(20) NOT NULL,
     Email      VARCHAR(50),
@@ -104,7 +104,7 @@ CREATE TABLE Thuoc_SanPham (
 CREATE TABLE PhieuNhap (
     MaPN       VARCHAR(10) PRIMARY KEY,
     NgayNhap   DATE NOT NULL,
-    TrangThai  NVARCHAR(10) NOT NULL,
+    TrangThai  BIT,
     GhiChu     NVARCHAR(255),
     MaNCC      VARCHAR(10) FOREIGN KEY REFERENCES NhaCungCap(MaNCC),
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV)
@@ -624,16 +624,16 @@ INSERT INTO ChiTietHoatChat (MaHoatChat, MaThuoc, HamLuong) VALUES
 
 INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
 VALUES
-('PN001', '2025-09-01', N'Hoàn tất', N'Nhập thuốc giảm đau', 'NCC001', 'NV001'),
-('PN002', '2025-09-02', N'Hoàn tất', N'Nhập kháng sinh', 'NCC002', 'NV001'),
-('PN003', '2025-09-03', N'Hoàn tất', N'Nhập vitamin và khoáng chất', 'NCC003', 'NV001'),
-('PN004', '2025-09-04', N'Hoàn tất', N'Nhập thuốc tim mạch', 'NCC004', 'NV001'),
-('PN005', '2025-09-05', N'Hoàn tất', N'Nhập vaccine phòng bệnh', 'NCC005', 'NV001'),
-('PN006', '2025-09-06', N'Hoàn tất', N'Nhập thực phẩm chức năng', 'NCC006', 'NV001'),
-('PN007', '2025-09-07', N'Hoàn tất', N'Nhập thuốc đông y', 'NCC007', 'NV001'),
-('PN008', '2025-09-08', N'Hoàn tất', N'Nhập dụng cụ y tế', 'NCC008', 'NV001'),
-('PN009', '2025-09-09', N'Hoàn tất', N'Nhập mỹ phẩm chăm sóc da', 'NCC009', 'NV001'),
-('PN010', '2025-09-10', N'Hoàn tất', N'Nhập hỗn hợp nhiều loại sản phẩm', 'NCC010', 'NV001');
+('PN001', '2025-09-01', 1 , N'Nhập thuốc giảm đau', 'NCC001', 'NV001'),
+('PN002', '2025-09-02', 1, N'Nhập kháng sinh', 'NCC002', 'NV001'),
+('PN003', '2025-09-03', 1, N'Nhập vitamin và khoáng chất', 'NCC003', 'NV001'),
+('PN004', '2025-09-04', 1, N'Nhập thuốc tim mạch', 'NCC004', 'NV001'),
+('PN005', '2025-09-05', 1, N'Nhập vaccine phòng bệnh', 'NCC005', 'NV001'),
+('PN006', '2025-09-06', 1, N'Nhập thực phẩm chức năng', 'NCC006', 'NV001'),
+('PN007', '2025-09-07', 1, N'Nhập thuốc đông y', 'NCC007', 'NV001'),
+('PN008', '2025-09-08', 1, N'Nhập dụng cụ y tế', 'NCC008', 'NV001'),
+('PN009', '2025-09-09', 1, N'Nhập mỹ phẩm chăm sóc da', 'NCC009', 'NV001'),
+('PN010', '2025-09-10', 1, N'Nhập hỗn hợp nhiều loại sản phẩm', 'NCC010', 'NV001');
 
 INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
 VALUES

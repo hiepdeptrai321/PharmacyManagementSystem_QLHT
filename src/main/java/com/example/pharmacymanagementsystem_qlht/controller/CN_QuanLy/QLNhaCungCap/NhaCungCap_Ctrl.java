@@ -15,4 +15,7 @@ public class NhaCungCap_Ctrl extends Application {
         stage.setScene(scene);
         stage.show();
     }
+
+
+
 }

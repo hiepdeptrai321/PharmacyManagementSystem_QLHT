@@ -28,12 +28,12 @@ public class ChiTietHoaDon_Dao implements  DaoInterface<ChiTietHoaDon> {
 
     @Override
     public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_SQL, keys);
+        ConnectDB.update(DELETE_SQL, keys[0], keys[1]);
     }
 
     @Override
     public ChiTietHoaDon selectById(Object... keys) {
-        List<ChiTietHoaDon> list = selectBySql(SELECT_BY_ID_SQL, keys);
+        List<ChiTietHoaDon> list = selectBySql(SELECT_BY_ID_SQL, keys[0], keys[1]);
         return list.isEmpty() ? null : list.get(0);
     }
 

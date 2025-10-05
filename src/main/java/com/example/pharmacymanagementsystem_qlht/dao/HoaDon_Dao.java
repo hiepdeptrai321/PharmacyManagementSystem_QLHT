@@ -4,6 +4,7 @@ import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.HoaDon;
 import com.example.pharmacymanagementsystem_qlht.model.NhanVien;
 import com.example.pharmacymanagementsystem_qlht.model.KhachHang;
+import com.example.pharmacymanagementsystem_qlht.model.ChiTietHoaDon;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;

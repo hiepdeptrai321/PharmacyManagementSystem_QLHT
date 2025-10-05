@@ -50,7 +50,7 @@ public class KhachHang_Dao implements DaoInterface<KhachHang> {
                 kh.setTenKH(rs.getString("TenKH"));
                 kh.setSdt(rs.getString("SDT"));
                 kh.setEmail(rs.getString("Email"));
-                kh.setNgaySinh(rs.getTimestamp("NgaySinh"));
+                kh.setNgaySinh(rs.getDate("NgaySinh"));
                 kh.setGioiTinh(rs.getBoolean("GioiTinh"));
                 kh.setDiaChi(rs.getString("DiaChi"));
                 list.add(kh);

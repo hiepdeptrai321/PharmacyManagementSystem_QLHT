@@ -12,7 +12,6 @@ public class KeHang_Dao implements DaoInterface<KeHang> {
     private final String INSERT_SQL = "INSERT INTO KeHang VALUES (?, ?)";
     private final String UPDATE_SQL = "UPDATE KeHang SET tenKe=? WHERE maKe=?";
     private final String DELETE_BY_ID = "DELETE FROM KeHang WHERE maKe = ?";
-
     private final String SELECT_BY_ID = "SELECT * FROM KeHang WHERE MaKe=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM KeHang";
 

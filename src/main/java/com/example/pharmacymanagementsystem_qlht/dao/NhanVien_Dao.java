@@ -69,7 +69,7 @@ public class NhanVien_Dao implements DaoInterface<NhanVien> {
                 nv.setTenNV(rs.getString("tenNV"));
                 nv.setSdt(rs.getString("sdt"));
                 nv.setEmail(rs.getString("email"));
-                nv.setNgaySinh(rs.getTimestamp("ngaySinh"));
+                nv.setNgaySinh(rs.getDate("ngaySinh"));
                 nv.setGioiTinh(rs.getBoolean("gioiTinh"));
                 nv.setDiaChi(rs.getString("diaChi"));
                 nv.setTrangThai(rs.getBoolean("trangThai"));

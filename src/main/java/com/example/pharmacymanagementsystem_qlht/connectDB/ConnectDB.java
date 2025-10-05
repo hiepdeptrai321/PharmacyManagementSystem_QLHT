@@ -39,6 +39,7 @@ public class ConnectDB {
         }
     }
 
+
     public static ResultSet query(String sql, Object... args) throws Exception {
         PreparedStatement stmt = ConnectDB.getStmt(sql, args);
         return stmt.executeQuery();

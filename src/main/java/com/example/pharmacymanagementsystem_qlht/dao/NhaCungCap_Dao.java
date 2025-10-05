@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NhaCungCap_Dao implements DaoInterface<NhaCungCap>{
-    private final String INSERT_SQL = "INSERT INTO NhaCungCap (maNCC, tenNCC, diaChi, SDT, email, GPKD, ghiChu, tenCongTy, MSThue) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String INSERT_SQL = "INSERT INTO NhaCungCap (tenNCC, diaChi, SDT, email, GPKD, ghiChu, tenCongTy, MSThue) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE NhaCungCap SET tenNCC = ?, diaChi = ?, SDT = ?, email = ?, GPKD = ?, ghiChu = ?, tenCongTy = ?, MSThue = ? WHERE maNCC = ?";
     private final String DELETE_SQL = "DELETE FROM NhaCungCap WHERE maNCC = ?";
     private final String SELECT_ALL_SQL = "SELECT * FROM NhaCungCap";
@@ -41,7 +41,6 @@ public class NhaCungCap_Dao implements DaoInterface<NhaCungCap>{
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 NhaCungCap ncc = new NhaCungCap();
-                ncc.setMaNCC(rs.getString("maNCC"));
                 ncc.setTenNCC(rs.getString("tenNCC"));
                 ncc.setDiaChi(rs.getString("diaChi"));
                 ncc.setSDT(rs.getString("SDT"));

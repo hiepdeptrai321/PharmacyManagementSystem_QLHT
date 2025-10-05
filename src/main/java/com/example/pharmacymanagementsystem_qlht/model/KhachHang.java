@@ -1,5 +1,6 @@
 package com.example.pharmacymanagementsystem_qlht.model;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -8,13 +9,14 @@ public class KhachHang {
     private String tenKH;
     private String sdt;
     private String email;
-    private Timestamp ngaySinh;
+    private Date ngaySinh;
     private Boolean gioiTinh;
     private String diaChi;
 
     public KhachHang() {
     }
-    public KhachHang(String maKH, String tenKH, String sdt, String email, Timestamp ngaySinh, Boolean gioiTinh, String diaChi) {
+
+    public KhachHang(String maKH, String tenKH, String sdt, String email, Date ngaySinh, Boolean gioiTinh, String diaChi) {
         this.maKH = maKH;
         this.tenKH = tenKH;
         this.sdt = sdt;
@@ -56,11 +58,11 @@ public class KhachHang {
         this.email = email;
     }
 
-    public Timestamp getNgaySinh() {
+    public Date getNgaySinh() {
         return ngaySinh;
     }
 
-    public void setNgaySinh(Timestamp ngaySinh) {
+    public void setNgaySinh(Date ngaySinh) {
         this.ngaySinh = ngaySinh;
     }
 

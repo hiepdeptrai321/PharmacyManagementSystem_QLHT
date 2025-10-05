@@ -2,62 +2,73 @@ package com.example.pharmacymanagementsystem_qlht.dao;
 
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.HoaDon;
+import com.example.pharmacymanagementsystem_qlht.model.NhanVien;
+import com.example.pharmacymanagementsystem_qlht.model.KhachHang;
+import com.example.pharmacymanagementsystem_qlht.model.ChiTietHoaDon;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HoaDon_Dao implements DaoInterface<HoaDon>{
 
-    private final String INSERT_SQL = "INSERT INTO HoaDon values (?,?,?,?,?)";
-    private final String UPDATE_SQL = "UPDATE HoaDon SET thoiGian=?, idNV=?, idKH=?, tongTien=? WHERE idHD=?";
-    private final String DELETE_BY_ID = "DELETE from HoaDon WHERE idHD = ?";
+    private final String INSERT_SQL = "INSERT INTO HoaDon (maHD, maNV, ngayLap, maKH, trangThai) VALUES (?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE HoaDon SET maNV=?, ngayLap=?, maKH=?, trangThai=? WHERE maHD=?";
+    private final String DELETE_SQL = "DELETE FROM HoaDon WHERE maHD=?";
+    private final String SELECT_ALL_SQL = "SELECT * FROM HoaDon";
+    private final String SELECT_BY_ID_SQL = "SELECT * FROM HoaDon WHERE maHD=?";
 
-    private final String SELECT_ALL_SQL
-            = "SELECT HoaDon.idHD, HoaDon.thoiGian, HoaDon.idNV, HoaDon.idKH, HoaDon.tongTien, "
-            + "NhanVien.hoTen AS tenNV, NhanVien.sdt AS sdtNV, NhanVien.gioiTinh AS gioiTinhNV, NhanVien.namSinh, NhanVien.ngayVaoLam, "
-            + "KhachHang.hoTen AS tenKH, KhachHang.sdt AS sdtKH, KhachHang.gioiTinh AS gioiTinhKH, KhachHang.ngayThamGia "
-            + "FROM HoaDon "
-            + "INNER JOIN NhanVien ON HoaDon.idNV = NhanVien.idNV "
-            + "INNER JOIN KhachHang ON HoaDon.idKH = KhachHang.idKH "
-            + "ORDER BY HoaDon.thoiGian ";
 
-    private final String SELECT_BY_ID
-            = "SELECT HoaDon.idHD, HoaDon.thoiGian, HoaDon.idNV, HoaDon.idKH, HoaDon.tongTien, "
-            + "NhanVien.hoTen AS tenNV, NhanVien.sdt AS sdtNV, NhanVien.gioiTinh AS gioiTinhNV, NhanVien.namSinh, NhanVien.ngayVaoLam, "
-            + "KhachHang.hoTen AS tenKH, KhachHang.sdt AS sdtKH, KhachHang.gioiTinh AS gioiTinhKH, KhachHang.ngayThamGia "
-            + "FROM HoaDon "
-            + "INNER JOIN NhanVien ON HoaDon.idNV = NhanVien.idNV "
-            + "INNER JOIN KhachHang ON HoaDon.idKH = KhachHang.idKH "
-            + "WHERE idHD = ? "
-            + "ORDER BY HoaDon.thoiGian ";
 
     @Override
     public void insert(HoaDon e) {
-
+        ConnectDB.update(INSERT_SQL, e.getMaHD(), e.getMaNV().getMaNV(), e.getNgayLap(), e.getMaKH().getMaKH(), e.getTrangThai());
     }
 
     @Override
     public void update(HoaDon e) {
-
+        ConnectDB.update(UPDATE_SQL, e.getMaNV().getMaNV(), e.getNgayLap(), e.getMaKH().getMaKH(), e.getTrangThai(), e.getMaHD());
     }
 
     @Override
     public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_BY_ID, keys);
+        ConnectDB.update(DELETE_SQL, keys);
     }
 
     @Override
     public HoaDon selectById(Object... keys) {
-        return null;
+        List<HoaDon> list = selectBySql(SELECT_BY_ID_SQL, keys);
+        if (list.isEmpty()) return null;
+        return list.get(0);
     }
 
     @Override
     public List<HoaDon> selectBySql(String sql, Object... args) {
-        return List.of();
+        List<HoaDon> list = new ArrayList<>();
+        try {
+            ResultSet rs = ConnectDB.query(sql, args);
+            while (rs.next()) {
+                HoaDon hd = new HoaDon();
+                hd.setMaHD(rs.getString("maHD"));
+                NhanVien nv = new NhanVien_Dao().selectById(rs.getString("maNV"));
+                KhachHang kh = new KhachHang_Dao().selectById(rs.getString("maKH"));
+                hd.setMaNV(nv);
+                hd.setMaKH(kh);
+                hd.setNgayLap(rs.getTimestamp("ngayLap"));
+                hd.setTrangThai(rs.getBoolean("trangThai"));
+
+                list.add(hd);
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;
     }
 
     @Override
     public List<HoaDon> selectAll() {
-        return List.of();
+        return selectBySql(SELECT_ALL_SQL);
     }
 }
 

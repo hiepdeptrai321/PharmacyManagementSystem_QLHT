@@ -1,4 +1,4 @@
-package com.example.pharmacymanagementsystem_qlht.controller;
+package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoaDon;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

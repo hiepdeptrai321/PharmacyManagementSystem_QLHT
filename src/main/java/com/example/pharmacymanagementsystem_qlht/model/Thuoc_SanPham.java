@@ -12,13 +12,15 @@ public class Thuoc_SanPham {
     private String SDK_GPNK;
     private String hangSX;
     private String nuocSX;
-//    private String maNDL;
-//    private String maLH;
+    private NhomDuocLy nhomDuocLy;
+    private LoaiHang loaiHang;
     private String hinhAnh;
-//    private String vitri;
+    private KeHang vitri;
 
+    public Thuoc_SanPham(){
+    }
 
-    public Thuoc_SanPham(String maThuoc, String tenThuoc, int hamLuong, String donViHamLuong, String duongDung, String quyCachDongGoi, String SDK_GPNK, String hangSX, String nuocSX, String hinhAnh) {
+    public Thuoc_SanPham(String maThuoc, String tenThuoc, int hamLuong, String donViHamLuong, String duongDung, String quyCachDongGoi, String SDK_GPNK, String hangSX, String nuocSX, NhomDuocLy nhomDuocLy, LoaiHang loaiHang, String hinhAnh, KeHang vitri) {
         this.maThuoc = maThuoc;
         this.tenThuoc = tenThuoc;
         this.hamLuong = hamLuong;
@@ -28,7 +30,10 @@ public class Thuoc_SanPham {
         this.SDK_GPNK = SDK_GPNK;
         this.hangSX = hangSX;
         this.nuocSX = nuocSX;
+        this.nhomDuocLy = nhomDuocLy;
+        this.loaiHang = loaiHang;
         this.hinhAnh = hinhAnh;
+        this.vitri = vitri;
     }
 
     public String getMaThuoc() {
@@ -103,12 +108,36 @@ public class Thuoc_SanPham {
         this.nuocSX = nuocSX;
     }
 
+    public NhomDuocLy getNhomDuocLy() {
+        return nhomDuocLy;
+    }
+
+    public void setNhomDuocLy(NhomDuocLy nhomDuocLy) {
+        this.nhomDuocLy = nhomDuocLy;
+    }
+
+    public LoaiHang getLoaiHang() {
+        return loaiHang;
+    }
+
+    public void setLoaiHang(LoaiHang loaiHang) {
+        this.loaiHang = loaiHang;
+    }
+
     public String getHinhAnh() {
         return hinhAnh;
     }
 
     public void setHinhAnh(String hinhAnh) {
         this.hinhAnh = hinhAnh;
+    }
+
+    public KeHang getVitri() {
+        return vitri;
+    }
+
+    public void setVitri(KeHang vitri) {
+        this.vitri = vitri;
     }
 
     @Override
@@ -135,7 +164,10 @@ public class Thuoc_SanPham {
                 ", SDK_GPNK='" + SDK_GPNK + '\'' +
                 ", hangSX='" + hangSX + '\'' +
                 ", nuocSX='" + nuocSX + '\'' +
+                ", nhomDuocLy=" + nhomDuocLy +
+                ", loaiHang=" + loaiHang +
                 ", hinhAnh='" + hinhAnh + '\'' +
+                ", vitri=" + vitri +
                 '}';
     }
 }

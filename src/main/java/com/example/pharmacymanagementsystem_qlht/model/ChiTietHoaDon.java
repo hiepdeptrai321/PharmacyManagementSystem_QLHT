@@ -60,6 +60,11 @@ public class ChiTietHoaDon {
         this.giamGia = giamGia;
     }
 
+    public double tinhThanhTien() {
+        double thanhTien = this.soLuong * this.donGia - this.giamGia;
+        return thanhTien;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

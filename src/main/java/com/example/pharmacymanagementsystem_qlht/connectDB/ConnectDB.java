@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 
 public class ConnectDB {
 
-    static String url = "jdbc:sqlserver://localhost:1433;databasename=QuanLyCHTL";
+    static String url = "jdbc:sqlserver://localhost:1433;databaseName=QuanLyNhaThuoc;encrypt=true;trustServerCertificate=true";
     static String user = "sa";
     static String password = "sapassword";
 
@@ -38,6 +38,7 @@ public class ConnectDB {
             throw new RuntimeException(e);
         }
     }
+
 
     public static ResultSet query(String sql, Object... args) throws Exception {
         PreparedStatement stmt = ConnectDB.getStmt(sql, args);

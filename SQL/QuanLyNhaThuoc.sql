@@ -1,4 +1,4 @@
-﻿    use master
+use master
 CREATE DATABASE QuanLyNhaThuoc;
 GO
 
@@ -51,7 +51,7 @@ CREATE TABLE LuongNhanVien (
 -- =========================
 CREATE TABLE NhaCungCap (
     MaNCC      VARCHAR(10) PRIMARY KEY,
-    TenNCC     VARCHAR(50) NOT NULL,
+    TenNCC     NVARCHAR(50) NOT NULL,
     DiaChi     NVARCHAR(100),
     SDT        VARCHAR(20) NOT NULL,
     Email      VARCHAR(50),
@@ -104,7 +104,7 @@ CREATE TABLE Thuoc_SanPham (
 CREATE TABLE PhieuNhap (
     MaPN       VARCHAR(10) PRIMARY KEY,
     NgayNhap   DATE NOT NULL,
-    TrangThai  NVARCHAR(10) NOT NULL,
+    TrangThai  BIT,
     GhiChu     NVARCHAR(255),
     MaNCC      VARCHAR(10) FOREIGN KEY REFERENCES NhaCungCap(MaNCC),
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV)
@@ -143,7 +143,6 @@ CREATE TABLE Thuoc_SP_TheoLo (
 -- =========================
 CREATE TABLE HoaDon (
     MaHD       VARCHAR(10) PRIMARY KEY,
-    TongHD     FLOAT NOT NULL,
     NgayLap    DATE NOT NULL,
     TrangThai  NVARCHAR(10) NOT NULL,
 	MaKH       VARCHAR(10) FOREIGN KEY REFERENCES KhachHang(MaKH),
@@ -173,6 +172,30 @@ CREATE TABLE HoatDong (
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV),
     BangDL	   VARCHAR(20),
 	GhiChu     NVARCHAR(255)
+);
+
+-- =========================
+-- Bảng PhieuDatHang
+-- =========================
+CREATE TABLE PhieuDatHang (
+    MaPDat     VARCHAR(10) PRIMARY KEY,
+    NgayLap    DATE NOT NULL,
+    SoTienCoc  FLOAT,
+    GhiChu     NVARCHAR(255),
+    MaKH       VARCHAR(10) FOREIGN KEY REFERENCES KhachHang(MaKH),
+    MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV)
+);
+
+-- =========================
+-- Bảng ChiTietPhieuDatHang
+-- =========================
+CREATE TABLE ChiTietPhieuDatHang (
+    MaPDat     VARCHAR(10) FOREIGN KEY REFERENCES PhieuDatHang(MaPDat),
+    MaThuoc    VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
+    SoLuong    INT NOT NULL,
+    DonGia     FLOAT NOT NULL,
+    GiamGia    FLOAT NOT NULL DEFAULT 0,
+    PRIMARY KEY (MaPDat, MaThuoc)
 );
 
 
@@ -601,16 +624,16 @@ INSERT INTO ChiTietHoatChat (MaHoatChat, MaThuoc, HamLuong) VALUES
 
 INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
 VALUES
-('PN001', '2025-09-01', N'Hoàn tất', N'Nhập thuốc giảm đau', 'NCC001', 'NV001'),
-('PN002', '2025-09-02', N'Hoàn tất', N'Nhập kháng sinh', 'NCC002', 'NV001'),
-('PN003', '2025-09-03', N'Hoàn tất', N'Nhập vitamin và khoáng chất', 'NCC003', 'NV001'),
-('PN004', '2025-09-04', N'Hoàn tất', N'Nhập thuốc tim mạch', 'NCC004', 'NV001'),
-('PN005', '2025-09-05', N'Hoàn tất', N'Nhập vaccine phòng bệnh', 'NCC005', 'NV001'),
-('PN006', '2025-09-06', N'Hoàn tất', N'Nhập thực phẩm chức năng', 'NCC006', 'NV001'),
-('PN007', '2025-09-07', N'Hoàn tất', N'Nhập thuốc đông y', 'NCC007', 'NV001'),
-('PN008', '2025-09-08', N'Hoàn tất', N'Nhập dụng cụ y tế', 'NCC008', 'NV001'),
-('PN009', '2025-09-09', N'Hoàn tất', N'Nhập mỹ phẩm chăm sóc da', 'NCC009', 'NV001'),
-('PN010', '2025-09-10', N'Hoàn tất', N'Nhập hỗn hợp nhiều loại sản phẩm', 'NCC010', 'NV001');
+('PN001', '2025-09-01', 1 , N'Nhập thuốc giảm đau', 'NCC001', 'NV001'),
+('PN002', '2025-09-02', 1, N'Nhập kháng sinh', 'NCC002', 'NV001'),
+('PN003', '2025-09-03', 1, N'Nhập vitamin và khoáng chất', 'NCC003', 'NV001'),
+('PN004', '2025-09-04', 1, N'Nhập thuốc tim mạch', 'NCC004', 'NV001'),
+('PN005', '2025-09-05', 1, N'Nhập vaccine phòng bệnh', 'NCC005', 'NV001'),
+('PN006', '2025-09-06', 1, N'Nhập thực phẩm chức năng', 'NCC006', 'NV001'),
+('PN007', '2025-09-07', 1, N'Nhập thuốc đông y', 'NCC007', 'NV001'),
+('PN008', '2025-09-08', 1, N'Nhập dụng cụ y tế', 'NCC008', 'NV001'),
+('PN009', '2025-09-09', 1, N'Nhập mỹ phẩm chăm sóc da', 'NCC009', 'NV001'),
+('PN010', '2025-09-10', 1, N'Nhập hỗn hợp nhiều loại sản phẩm', 'NCC010', 'NV001');
 
 INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
 VALUES
@@ -713,18 +736,18 @@ VALUES
 
 
 --------Hóa đơn
-INSERT INTO HoaDon (MaHD, TongHD, NgayLap, TrangThai, MaKH, MaNV)
+INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
 VALUES
-('HD001', 34000, '2025-09-11 08:30:00', N'Hoàn tất', 'KH001', 'NV001'), -- (10*1500 + 10*1900) - Giảm 10% cho 15000 = 34000
-('HD002', 3600, '2025-09-11 09:15:00', N'Hoàn tất', 'KH002', 'NV002'),
-('HD003', 5000, '2025-09-11 10:45:00', N'Hoàn tất', NULL, 'NV003'),
-('HD004', 34000, '2025-09-12 14:00:00', N'Hoàn tất', 'KH003', 'NV001'),
-('HD005', 150000, '2025-09-12 16:30:00', N'Hoàn tất', NULL, 'NV002'),
-('HD006', 148000, '2025-09-13 11:00:00', N'Hoàn tất', 'KH004', 'NV003'),
-('HD007', 6000, '2025-09-13 15:20:00', N'Hoàn tất', NULL, 'NV001'),
-('HD008', 600000, '2025-09-14 09:40:00', N'Hoàn tất', 'KH005', 'NV002'),
-('HD009', 370000, '2025-09-14 13:00:00', N'Hoàn tất', 'KH006', 'NV003'),
-('HD010', 14000, '2025-09-15 17:00:00', N'Hoàn tất', NULL, 'NV001');
+('HD001', '2025-09-11 08:30:00', N'Hoàn tất', 'KH001', 'NV001'),
+('HD002', '2025-09-11 09:15:00', N'Hoàn tất', 'KH002', 'NV002'),
+('HD003', '2025-09-11 10:45:00', N'Hoàn tất', NULL, 'NV003'),
+('HD004', '2025-09-12 14:00:00', N'Hoàn tất', 'KH003', 'NV001'),
+('HD005', '2025-09-12 16:30:00', N'Hoàn tất', NULL, 'NV002'),
+('HD006', '2025-09-13 11:00:00', N'Hoàn tất', 'KH004', 'NV003'),
+('HD007', '2025-09-13 15:20:00', N'Hoàn tất', NULL, 'NV001'),
+('HD008', '2025-09-14 09:40:00', N'Hoàn tất', 'KH005', 'NV002'),
+('HD009', '2025-09-14 13:00:00', N'Hoàn tất', 'KH006', 'NV003'),
+('HD010', '2025-09-15 17:00:00', N'Hoàn tất', NULL, 'NV001');
 
 INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
 VALUES
@@ -763,6 +786,26 @@ VALUES
 -- HD010: Atorvastatin 20mg (4 hộp)
 ('HD010', 'LH00006', 4, 3500, 0);
 
+
+
+-- Dữ liệu mẫu cho PhieuDatHang
+INSERT INTO PhieuDatHang (MaPDat, NgayLap, SoTienCoc, GhiChu, MaKH, MaNV)
+VALUES
+('PDH001', '2025-10-01', 50000, N'Khách đặt hàng mới', 'KH001', 'NV001'),
+('PDH002', '2025-10-02', 100000, N'Đặt hàng lại lô thuốc cũ', 'KH002', 'NV002'),
+('PDH003', '2025-10-03', 0, N'Khách đặt hàng gấp', 'KH003', 'NV003');
+GO
+
+-- Dữ liệu mẫu cho ChiTietPhieuDatHang
+INSERT INTO ChiTietPhieuDatHang (MaPDat, MaThuoc, SoLuong, DonGia, GiamGia)
+VALUES
+('PDH001', 'TS001', 5, 12000, 0.05),
+('PDH001', 'TS002', 10, 8000, 0),
+('PDH002', 'TS003', 3, 15000, 0.1);
+
+
+
+-- Dữ liệu mẫu cho PhieuDoiHang
 INSERT INTO PhieuDoiHang (MaPD, NgayLap, LyDoDoi, GhiChu, MaNV, MaKH, MaHD)
 VALUES
 ('PD001', '2025-09-12 10:00:00', N'Đổi sang loại khác', N'Khách vãng lai, đổi Ibuprofen sang Aspirin', 'NV002', NULL, 'HD003'),

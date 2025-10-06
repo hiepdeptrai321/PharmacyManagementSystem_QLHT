@@ -9,15 +9,19 @@ public class PhieuNhap {
     private Timestamp ngayNhap;
     private Boolean trangThai;
     private String ghiChu;
-//    private String maNV;
+    private NhanVien nhanVien;
 
+    public PhieuNhap() {
 
-    public PhieuNhap(String maPN, NhaCungCap nhaCungCap, Timestamp ngayNhap, Boolean trangThai, String ghiChu) {
+    }
+
+    public PhieuNhap(String maPN, NhaCungCap nhaCungCap, Timestamp ngayNhap, Boolean trangThai, String ghiChu, NhanVien nhanVien) {
         this.maPN = maPN;
         this.nhaCungCap = nhaCungCap;
         this.ngayNhap = ngayNhap;
         this.trangThai = trangThai;
         this.ghiChu = ghiChu;
+        this.nhanVien = nhanVien;
     }
 
     public String getMaPN() {
@@ -60,6 +64,14 @@ public class PhieuNhap {
         this.ghiChu = ghiChu;
     }
 
+    public NhanVien getNhanVien() {
+        return nhanVien;
+    }
+
+    public void setNhanVien(NhanVien nhanVien) {
+        this.nhanVien = nhanVien;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -80,6 +92,7 @@ public class PhieuNhap {
                 ", ngayNhap=" + ngayNhap +
                 ", trangThai=" + trangThai +
                 ", ghiChu='" + ghiChu + '\'' +
+                ", nhanVien=" + nhanVien +
                 '}';
     }
 }

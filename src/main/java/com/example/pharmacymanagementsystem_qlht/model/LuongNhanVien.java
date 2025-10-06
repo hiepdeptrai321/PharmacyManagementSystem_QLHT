@@ -1,12 +1,13 @@
 package com.example.pharmacymanagementsystem_qlht.model;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 public class LuongNhanVien {
     private String maLNV;
-    private Timestamp tuNgay;
-    private Timestamp denNgay;
+    private Date tuNgay;
+    private Date denNgay;
     private double luongCoBan;
     private double phuCap;
     private String ghiChu;
@@ -15,7 +16,7 @@ public class LuongNhanVien {
     public LuongNhanVien() {
     }
 
-    public LuongNhanVien(String maLNV, Timestamp tuNgay, Timestamp denNgay, double luongCoBan, double phuCap, String ghiChu, NhanVien nhanVien) {
+    public LuongNhanVien(String maLNV, Date tuNgay, Date denNgay, double luongCoBan, double phuCap, String ghiChu, NhanVien nhanVien) {
         this.maLNV = maLNV;
         this.tuNgay = tuNgay;
         this.denNgay = denNgay;
@@ -33,19 +34,19 @@ public class LuongNhanVien {
         this.maLNV = maLNV;
     }
 
-    public Timestamp getTuNgay() {
+    public Date getTuNgay() {
         return tuNgay;
     }
 
-    public void setTuNgay(Timestamp tuNgay) {
+    public void setTuNgay(Date tuNgay) {
         this.tuNgay = tuNgay;
     }
 
-    public Timestamp getDenNgay() {
+    public Date getDenNgay() {
         return denNgay;
     }
 
-    public void setDenNgay(Timestamp denNgay) {
+    public void setDenNgay(Date denNgay) {
         this.denNgay = denNgay;
     }
 

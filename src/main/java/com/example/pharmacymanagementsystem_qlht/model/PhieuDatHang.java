@@ -6,11 +6,14 @@ import java.util.Objects;
 public class PhieuDatHang {
     private String maPDat;
     private Timestamp ngayLap;
-    private int soTienCoc;
+    private double soTienCoc;
     private String ghiChu;
     private KhachHang khachHang;
 
-    public PhieuDatHang(String maPDat, Timestamp ngayLap, int soTienCoc, String ghiChu, KhachHang khachHang) {
+    public PhieuDatHang() {
+    }
+
+    public PhieuDatHang(String maPDat, Timestamp ngayLap, double soTienCoc, String ghiChu, KhachHang khachHang) {
         this.maPDat = maPDat;
         this.ngayLap = ngayLap;
         this.soTienCoc = soTienCoc;
@@ -34,11 +37,11 @@ public class PhieuDatHang {
         this.ngayLap = ngayLap;
     }
 
-    public int getSoTienCoc() {
+    public double getSoTienCoc() {
         return soTienCoc;
     }
 
-    public void setSoTienCoc(int soTienCoc) {
+    public void setSoTienCoc(double soTienCoc) {
         this.soTienCoc = soTienCoc;
     }
 

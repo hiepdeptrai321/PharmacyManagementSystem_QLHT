@@ -1,4 +1,63 @@
 package com.example.pharmacymanagementsystem_qlht.dao;
 
-public class ChiTietPhieuDatHang_Dao {
+import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
+import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuDatHang;
+
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ChiTietPhieuDatHang_Dao implements DaoInterface<ChiTietPhieuDatHang> {
+    private final String INSERT_SQL = "INSERT INTO ChiTietPhieuDatHang (maPDat, maThuoc, soLuong, donGia, giamGia) VALUES (?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE ChiTietPhieuDatHang SET soLuong=?, donGia=?, giamGia=? WHERE maPDat=? AND maThuoc=?";
+    private final String DELETE_BY_ID_SQL = "DELETE FROM ChiTietPhieuDatHang WHERE maPDat=? AND maThuoc=?";
+    private final String SELECT_BY_ID_SQL = "SELECT * FROM ChiTietPhieuDatHang WHERE maPDat=? AND maThuoc=?";
+    private final String SELECT_ALL_SQL = "SELECT * FROM ChiTietPhieuDatHang";
+
+    @Override
+    public void insert(ChiTietPhieuDatHang e) {
+        ConnectDB.update(INSERT_SQL, e.getPhieuDatHang().getMaPDat(), e.getThuoc().getMaThuoc(), e.getSoLuong(), e.getDonGia(), e.getGiamGia());
+    }
+
+    @Override
+    public void update(ChiTietPhieuDatHang e) {
+        ConnectDB.update(UPDATE_SQL, e.getSoLuong(), e.getDonGia(), e.getGiamGia(), e.getPhieuDatHang().getMaPDat(), e.getThuoc().getMaThuoc());
+    }
+
+    @Override
+    public void deleteById(Object... keys) {
+        ConnectDB.update(DELETE_BY_ID_SQL, keys[0], keys[1]);
+    }
+
+    @Override
+    public ChiTietPhieuDatHang selectById(Object... keys) {
+        List<ChiTietPhieuDatHang> list = selectBySql(SELECT_BY_ID_SQL, keys[0], keys[1]);
+        return list.isEmpty() ? null : list.get(0);
+    }
+
+    @Override
+    public List<ChiTietPhieuDatHang> selectBySql(String sql, Object... args) {
+        List<ChiTietPhieuDatHang> list = new ArrayList<>();
+        try {
+            ResultSet rs = ConnectDB.query(sql, args);
+            while (rs.next()) {
+                ChiTietPhieuDatHang ct = new ChiTietPhieuDatHang();
+                ct.setPhieuDatHang(new PhieuDatHang_Dao().selectById(rs.getString("maPDat")));
+                ct.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getString("maThuoc")));
+                ct.setSoLuong(rs.getInt("soLuong"));
+                ct.setDonGia(rs.getDouble("donGia"));
+                ct.setGiamGia(rs.getDouble("giamGia"));
+                list.add(ct);
+            }
+            rs.getStatement().close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
+    @Override
+    public List<ChiTietPhieuDatHang> selectAll() {
+        return selectBySql(SELECT_ALL_SQL);
+    }
 }

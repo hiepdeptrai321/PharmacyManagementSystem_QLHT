@@ -1,22 +1,27 @@
 package com.example.pharmacymanagementsystem_qlht.model;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 public class Thuoc_SP_TheoLo {
     private String maLH;
     private int soLuongTon;
-    private Timestamp nsx;
-    private Timestamp hsd;
-    private ChiTietPhieuNhap phieunhap;
+    private Date nsx;
+    private Date hsd;
+    private ChiTietPhieuNhap phieuNhap;
     private Thuoc_SanPham thuoc;
 
-    public Thuoc_SP_TheoLo(String maLH, int soLuongTon, Timestamp nsx, Timestamp hsd, ChiTietPhieuNhap phieunhap, Thuoc_SanPham thuoc) {
+    public Thuoc_SP_TheoLo(){
+
+    }
+
+    public Thuoc_SP_TheoLo(String maLH, int soLuongTon, Date nsx, Date hsd, ChiTietPhieuNhap phieuNhap, Thuoc_SanPham thuoc) {
         this.maLH = maLH;
         this.soLuongTon = soLuongTon;
         this.nsx = nsx;
         this.hsd = hsd;
-        this.phieunhap = phieunhap;
+        this.phieuNhap = phieuNhap;
         this.thuoc = thuoc;
     }
 
@@ -36,28 +41,28 @@ public class Thuoc_SP_TheoLo {
         this.soLuongTon = soLuongTon;
     }
 
-    public Timestamp getNsx() {
+    public Date getNsx() {
         return nsx;
     }
 
-    public void setNsx(Timestamp nsx) {
+    public void setNsx(Date nsx) {
         this.nsx = nsx;
     }
 
-    public Timestamp getHsd() {
+    public Date getHsd() {
         return hsd;
     }
 
-    public void setHsd(Timestamp hsd) {
+    public void setHsd(Date hsd) {
         this.hsd = hsd;
     }
 
-    public ChiTietPhieuNhap getPhieunhap() {
-        return phieunhap;
+    public ChiTietPhieuNhap getPhieuNhap() {
+        return phieuNhap;
     }
 
-    public void setPhieunhap(ChiTietPhieuNhap phieunhap) {
-        this.phieunhap = phieunhap;
+    public void setPhieuNhap(ChiTietPhieuNhap phieuNhap) {
+        this.phieuNhap = phieuNhap;
     }
 
     public Thuoc_SanPham getThuoc() {
@@ -87,7 +92,7 @@ public class Thuoc_SP_TheoLo {
                 ", soLuongTon=" + soLuongTon +
                 ", nsx=" + nsx +
                 ", hsd=" + hsd +
-                ", phieunhap=" + phieunhap +
+                ", phieuNhap=" + phieuNhap +
                 ", thuoc=" + thuoc +
                 '}';
     }

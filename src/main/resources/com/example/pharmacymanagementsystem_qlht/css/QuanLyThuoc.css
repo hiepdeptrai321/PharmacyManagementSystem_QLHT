@@ -56,3 +56,7 @@
 /*    -fx-border-style: solid;*/
 /*    -fx-border-radius: 0;*/
 /*}*/
+
+.a-center{
+    -fx-alignment: center;
+}

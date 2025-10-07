@@ -41,7 +41,13 @@ public class ThemKhuyenMai_Ctrl extends Application {
     }
 
     // 3. XỬ LÝ SỰ KIỆN GIAO DIỆN
-
+    public void btnHuyClick(){
+        Stage stage = (Stage) timKiemThuocC.getScene().getWindow();
+        stage.close();
+    }
+    public void btnThemClick(){
+        // TODO
+    }
 
     // 4. XỬ LÝ NGHIỆP VỤ
     public void themKhuyenMaiVaChiTiet(KhuyenMai km, List<ChiTietKhuyenMai> ct){

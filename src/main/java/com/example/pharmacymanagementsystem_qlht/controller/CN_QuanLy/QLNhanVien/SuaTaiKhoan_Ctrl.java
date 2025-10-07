@@ -14,7 +14,7 @@ public class SuaTaiKhoan_Ctrl extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_QuanLy/QLNhanVien/SuataiKhoan.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_QuanLy/QLNhanVien/SuataiKhoan_GUI.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

@@ -11,7 +11,7 @@ public class LoaiHang_Dao implements DaoInterface<LoaiHang>{
     private final String INSERT_SQL = "INSERT INTO LoaiHang VALUES (?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE LoaiHang SET tenLH=?, moTa=? WHERE maLoaiHang=?";
     private final String DELETE_BY_ID = "DELETE FROM LoaiHang WHERE maLoaiHang = ?";
-    private final String SELECT_BY_ID = "SELECT * FROM LoaiHang WHERE maLoaiHang=?";
+    private final String SELECT_BY_ID = "SELECT * FROM LoaiHang WHERE MaLH=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM LoaiHang";
 
     @Override
@@ -45,9 +45,9 @@ public class LoaiHang_Dao implements DaoInterface<LoaiHang>{
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 LoaiHang lh = new LoaiHang();
-                lh.setMaLoaiHang(rs.getString("maLoaiHang"));
-                lh.setTenLoaiHang(rs.getString("tenLH"));
-                lh.setMoTa(rs.getString("moTa"));
+                lh.setMaLoaiHang(rs.getString("MaLH"));
+                lh.setTenLoaiHang(rs.getString("TenLH"));
+                lh.setMoTa(rs.getString("MoTa"));
                 list.add(lh);
             }
             rs.getStatement().getConnection().close();

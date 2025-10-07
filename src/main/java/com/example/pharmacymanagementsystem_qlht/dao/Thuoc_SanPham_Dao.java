@@ -42,6 +42,7 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 Thuoc_SanPham sp = new Thuoc_SanPham();
+                sp.setMaThuoc(rs.getString("MaThuoc"));
                 sp.setTenThuoc(rs.getString("TenThuoc"));
                 sp.setHamLuong(rs.getInt("HamLuong"));
                 sp.setDonViHamLuong(rs.getString("DonViHL"));

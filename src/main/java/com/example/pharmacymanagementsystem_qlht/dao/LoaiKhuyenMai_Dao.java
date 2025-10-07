@@ -10,7 +10,7 @@ import java.util.List;
 
 public class LoaiKhuyenMai_Dao implements DaoInterface<LoaiKhuyenMai> {
 
-    private final String SELECT_BY_ID_SQL = "SELECT maLoai, tenLoai, moTa FROM LoaiKhuyenMai WHERE maLoai = ?";
+    private final String SELECT_BY_ID_SQL = "SELECT MaLoai, TenLoai, MoTa FROM LoaiKhuyenMai WHERE MaLoai = ?";
     @Override
     public void insert(LoaiKhuyenMai e) {
     }

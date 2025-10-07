@@ -40,3 +40,7 @@
 #btnhuy{
     -fx-text-fill: black;
 }
+
+.btn:hover{
+    -fx-opacity: 0.9;
+}

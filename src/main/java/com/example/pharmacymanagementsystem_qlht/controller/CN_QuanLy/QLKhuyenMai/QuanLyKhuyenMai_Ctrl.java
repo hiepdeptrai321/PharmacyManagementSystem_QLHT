@@ -1,5 +1,6 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLKhuyenMai;
 
+import com.example.pharmacymanagementsystem_qlht.dao.ChiTietKhuyenMai_Dao;
 import com.example.pharmacymanagementsystem_qlht.dao.KhuyenMai_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.KhuyenMai;
 import javafx.application.Application;
@@ -90,14 +91,16 @@ public class QuanLyKhuyenMai_Ctrl extends Application {
     public void btnChiTietClick(KhuyenMai km) {
         try {
             Stage stage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_QuanLy/QLKhuyenMai/SuaXoaKhuyenMai_GUI.fxml"));
+            FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_QuanLy/QLKhuyenMai/SuaXoaKhuyenMai_GUI.fxml"));
+            Parent root = loader.load();
             Scene scene = new Scene(root);
 
             this.getClass();
-            SuaXoaKhuyenMai_Ctrl ctrl = new SuaXoaKhuyenMai_Ctrl();
+            SuaXoaKhuyenMai_Ctrl ctrl = loader.getController();
+            ctrl.loadData(km);
+            ctrl.loadDatatbCTKM(new ChiTietKhuyenMai_Dao().selectByMaKM(km.getMaKM()));
             stage.setScene(scene);
             stage.show();
-            ctrl.loadData(km);
         } catch (Exception e) {
             e.printStackTrace();
         }

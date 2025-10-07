@@ -549,7 +549,7 @@ VALUES
 ('KE005', N'Kệ mỹ phẩm và chăm sóc da');
 
 INSERT INTO Thuoc_SanPham
-(MaThuoc, TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, HinhAnh, MaLH, MaNDL,KeHang)
+(MaThuoc, TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, HinhAnh, MaLH, MaNDL,ViTri)
 VALUES
 -- Thuốc tân dược
 ('TS001',N'Paracetamol 500mg',500,'mg',N'Uống',N'Hộp 10 vỉ x 10 viên','VN-2345-19','DHG Pharma',N'Việt Nam','t001.jpg','LH01','NDL016','KE001'),
@@ -734,7 +734,10 @@ INSERT INTO ChiTietKhuyenMai (MaThuoc, MaKM, SLApDung, SLToiDa)
 VALUES
 ('TS001', 'KM011', 1, 50),  -- Paracetamol giảm %
 ('TS002', 'KM012', 1, 50),  -- Amoxicillin giảm tiền
+('TS007', 'KM012', 1, 50),  -- Amoxicillin giảm tiền
+('TS015', 'KM012', 1, 50),  -- Amoxicillin giảm tiền
 ('TS003', 'KM013', 1, 50),  -- Cefuroxime giảm %
+('TS005', 'KM013', 1, 50),  -- 
 ('TS004', 'KM014', 2, 20),  -- Vitamin C mua 2 tặng 1 (áp dụng tối đa 20 lần / hóa đơn)
 ('TS005', 'KM015', 1, 50),  -- Ibuprofen giảm tiền
 ('TS343', 'KM016', 1, 50),  -- Ginkgo giảm %

@@ -80,6 +80,14 @@ CREATE TABLE NhomDuocLy (
 );
 
 -- =========================
+-- Bảng KeHang
+-- =========================
+CREATE TABLE KeHang (
+    MaKe      VARCHAR(10) PRIMARY KEY,
+    TenKe     NVARCHAR(50)
+);
+
+-- =========================
 -- Bảng Thuoc_SanPham
 -- =========================
 CREATE TABLE Thuoc_SanPham (
@@ -94,7 +102,8 @@ CREATE TABLE Thuoc_SanPham (
     NuocSX     NVARCHAR(20),
     HinhAnh    VARCHAR(50),
 	MaLH       VARCHAR(10) FOREIGN KEY REFERENCES LoaiHang(MaLH),
-    MaNDL      VARCHAR(10) FOREIGN KEY REFERENCES NhomDuocLy(MaNDL)
+    MaNDL      VARCHAR(10) FOREIGN KEY REFERENCES NhomDuocLy(MaNDL),
+	ViTri	   VARCHAR(10) FOREIGN KEY REFERENCES KeHang(MaKe)
 );
 
 
@@ -340,6 +349,8 @@ CREATE TABLE Thuoc_SP_TangKem (
 
 
 
+
+
 INSERT INTO KhachHang (MaKH, TenKH, SDT, Email, NgaySinh, GioiTinh, DiaChi, TrangThai) VALUES
 ('KH001', N'Nguyễn Văn An', '0905123456', 'an.nguyen@gmail.com', '1990-05-12', N'Nam', N'Hà Nội', N'Hoạt động'),
 ('KH002', N'Lê Thị Hoa', '0905789456', 'hoa.le@gmail.com', '1995-08-21', N'Nữ', N'Hải Phòng', N'Hoạt động'),
@@ -529,75 +540,82 @@ VALUES
 -- Công ty chuyên mỹ phẩm
 ('NCC010', N'Công ty TNHH Mỹ phẩm Sài Gòn', N'TP.HCM, Việt Nam', '02837778888', 'saigoncosmetics@saigoncosmetics.com.vn', 'GPKD-010', N'Mỹ phẩm chăm sóc da', N'Saigon Cosmetics', '03001010');
 
+INSERT INTO KeHang (MaKe, TenKe)
+VALUES
+('KE001', N'Kệ thuốc cảm sốt'),
+('KE002', N'Kệ vitamin và thực phẩm chức năng'),
+('KE003', N'Kệ thuốc kháng sinh'),
+('KE004', N'Kệ thuốc giảm đau'),
+('KE005', N'Kệ mỹ phẩm và chăm sóc da');
 
 INSERT INTO Thuoc_SanPham
-(MaThuoc, TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, HinhAnh, MaLH, MaNDL)
+(MaThuoc, TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, HinhAnh, MaLH, MaNDL,KeHang)
 VALUES
 -- Thuốc tân dược
-('TS001',N'Paracetamol 500mg',500,'mg',N'Uống',N'Hộp 10 vỉ x 10 viên','VN-2345-19','DHG Pharma',N'Việt Nam','t001.jpg','LH01','NDL016'),
-('TS002',N'Amoxicillin 500mg',500,'mg',N'Uống',N'Hộp 2 vỉ x 10 viên','VN-2134-19','Traphaco',N'Việt Nam','t002.jpg','LH01','NDL017'),
-('TS003',N'Cefuroxime 250mg',250,'mg',N'Uống',N'Hộp 2 vỉ x 10 viên','VN-3241-19','GSK',N'Anh','t003.jpg','LH01','NDL017'),
-('TS004',N'Vitamin C 1000mg',1000,'mg',N'Uống',N'Hộp 10 ống','VN-1232-19','Bayer',N'Đức','t004.jpg','LH01','NDL030'),
-('TS005',N'Ibuprofen 400mg',400,'mg',N'Uống',N'Hộp 1 vỉ x 10 viên','VN-5675-19','Mekophar',N'Việt Nam','t005.jpg','LH01','NDL014'),
-('TS006',N'Aspirin 81mg',81,'mg',N'Uống',N'Hộp 3 vỉ x 10 viên','VN-8678-19','Sanofi',N'Pháp','t006.jpg','LH01','NDL014'),
-('TS007',N'Loratadine 10mg',10,'mg',N'Uống',N'Hộp 1 vỉ x 10 viên','VN-4564-21','DHG Pharma',N'Việt Nam','t007.jpg','LH01','NDL009'),
-('TS008',N'Omeprazole 20mg',20,'mg',N'Uống',N'Hộp 2 vỉ x 7 viên','VN-2344-21','Traphaco',N'Việt Nam','t008.jpg','LH01','NDL027'),
-('TS009',N'Metformin 500mg',500,'mg',N'Uống',N'Hộp 3 vỉ x 10 viên','VN-4569-21','Mekophar',N'Việt Nam','t009.jpg','LH01','NDL022'),
-('TS010',N'Atorvastatin 20mg',20,'mg',N'Uống',N'Hộp 2 vỉ x 10 viên','VN-8254-21','Bayer',N'Đức','t010.jpg','LH01','NDL010'),
-('TS011',N'Paracetamol 650mg',650,'mg',N'Uống',N'Hộp 10 vỉ x 10 viên','VN-8542-21','GSK','Anh','t011.jpg','LH01','NDL016'),
-('TS012',N'Amoxicillin 250mg',250,'mg',N'Uống',N'Hộp 1 vỉ x 10 viên','VN-6258-21','Sanofi',N'Pháp','t012.jpg','LH01','NDL017'),
-('TS013',N'Cefuroxime 500mg',500,'mg',N'Uống',N'Hộp 2 vỉ x 10 viên','VN-8345-21','DHG Pharma',N'Việt Nam','t013.jpg','LH01','NDL017'),
-('TS014',N'Vitamin C 500mg',500,'mg',N'Uống',N'Hộp 10 ống','VN-8351-21','Traphaco',N'Việt Nam','t014.jpg','LH01','NDL030'),
-('TS015',N'Ibuprofen 200mg',200,'mg',N'Uống',N'Hộp 1 vỉ x 10 viên','VN-7242-21','Mekophar',N'Việt Nam','t015.jpg','LH01','NDL014'),
-('TS016',N'Aspirin 500mg',500,'mg',N'Uống',N'Hộp 3 vỉ x 10 viên','VN-8462-22','Bayer',N'Đức','t016.jpg','LH01','NDL014'),
-('TS017',N'Loratadine 5mg',5,'mg',N'Uống',N'Hộp 1 vỉ x 10 viên','VN-7834-22','GSK',N'Anh','t017.jpg','LH01','NDL009'),
-('TS018',N'Omeprazole 40mg',40,'mg',N'Uống',N'Hộp 2 vỉ x 7 viên','VN-4264-22','Sanofi',N'Pháp','t018.jpg','LH01','NDL027'),
-('TS019',N'Metformin 850mg',850,'mg',N'Uống',N'Hộp 3 vỉ x 10 viên','VN-7834-22','DHG Pharma',N'Việt Nam','t019.jpg','LH01','NDL022'),
-('TS020',N'Atorvastatin 40mg',40,'mg',N'Uống',N'Hộp 2 vỉ x 10 viên','VN-6354-22','Traphaco',N'Việt Nam','t020.jpg','LH01','NDL010'),
+('TS001',N'Paracetamol 500mg',500,'mg',N'Uống',N'Hộp 10 vỉ x 10 viên','VN-2345-19','DHG Pharma',N'Việt Nam','t001.jpg','LH01','NDL016','KE001'),
+('TS002',N'Amoxicillin 500mg',500,'mg',N'Uống',N'Hộp 2 vỉ x 10 viên','VN-2134-19','Traphaco',N'Việt Nam','t002.jpg','LH01','NDL017','KE001'),
+('TS003',N'Cefuroxime 250mg',250,'mg',N'Uống',N'Hộp 2 vỉ x 10 viên','VN-3241-19','GSK',N'Anh','t003.jpg','LH01','NDL017','KE001'),
+('TS004',N'Vitamin C 1000mg',1000,'mg',N'Uống',N'Hộp 10 ống','VN-1232-19','Bayer',N'Đức','t004.jpg','LH01','NDL030','KE001'),
+('TS005',N'Ibuprofen 400mg',400,'mg',N'Uống',N'Hộp 1 vỉ x 10 viên','VN-5675-19','Mekophar',N'Việt Nam','t005.jpg','LH01','NDL014','KE001'),
+('TS006',N'Aspirin 81mg',81,'mg',N'Uống',N'Hộp 3 vỉ x 10 viên','VN-8678-19','Sanofi',N'Pháp','t006.jpg','LH01','NDL014','KE001'),
+('TS007',N'Loratadine 10mg',10,'mg',N'Uống',N'Hộp 1 vỉ x 10 viên','VN-4564-21','DHG Pharma',N'Việt Nam','t007.jpg','LH01','NDL009','KE001'),
+('TS008',N'Omeprazole 20mg',20,'mg',N'Uống',N'Hộp 2 vỉ x 7 viên','VN-2344-21','Traphaco',N'Việt Nam','t008.jpg','LH01','NDL027','KE001'),
+('TS009',N'Metformin 500mg',500,'mg',N'Uống',N'Hộp 3 vỉ x 10 viên','VN-4569-21','Mekophar',N'Việt Nam','t009.jpg','LH01','NDL022','KE001'),
+('TS010',N'Atorvastatin 20mg',20,'mg',N'Uống',N'Hộp 2 vỉ x 10 viên','VN-8254-21','Bayer',N'Đức','t010.jpg','LH01','NDL010','KE001'),
+('TS011',N'Paracetamol 650mg',650,'mg',N'Uống',N'Hộp 10 vỉ x 10 viên','VN-8542-21','GSK','Anh','t011.jpg','LH01','NDL016','KE001'),
+('TS012',N'Amoxicillin 250mg',250,'mg',N'Uống',N'Hộp 1 vỉ x 10 viên','VN-6258-21','Sanofi',N'Pháp','t012.jpg','LH01','NDL017','KE001'),
+('TS013',N'Cefuroxime 500mg',500,'mg',N'Uống',N'Hộp 2 vỉ x 10 viên','VN-8345-21','DHG Pharma',N'Việt Nam','t013.jpg','LH01','NDL017','KE001'),
+('TS014',N'Vitamin C 500mg',500,'mg',N'Uống',N'Hộp 10 ống','VN-8351-21','Traphaco',N'Việt Nam','t014.jpg','LH01','NDL030','KE001'),
+('TS015',N'Ibuprofen 200mg',200,'mg',N'Uống',N'Hộp 1 vỉ x 10 viên','VN-7242-21','Mekophar',N'Việt Nam','t015.jpg','LH01','NDL014','KE001'),
+('TS016',N'Aspirin 500mg',500,'mg',N'Uống',N'Hộp 3 vỉ x 10 viên','VN-8462-22','Bayer',N'Đức','t016.jpg','LH01','NDL014','KE001'),
+('TS017',N'Loratadine 5mg',5,'mg',N'Uống',N'Hộp 1 vỉ x 10 viên','VN-7834-22','GSK',N'Anh','t017.jpg','LH01','NDL009','KE001'),
+('TS018',N'Omeprazole 40mg',40,'mg',N'Uống',N'Hộp 2 vỉ x 7 viên','VN-4264-22','Sanofi',N'Pháp','t018.jpg','LH01','NDL027','KE001'),
+('TS019',N'Metformin 850mg',850,'mg',N'Uống',N'Hộp 3 vỉ x 10 viên','VN-7834-22','DHG Pharma',N'Việt Nam','t019.jpg','LH01','NDL022','KE001'),
+('TS020',N'Atorvastatin 40mg',40,'mg',N'Uống',N'Hộp 2 vỉ x 10 viên','VN-6354-22','Traphaco',N'Việt Nam','t020.jpg','LH01','NDL010','KE001'),
 -- Đông y
-('TS226',N'Hoạt huyết dưỡng não',250,'mg',N'Uống',N'Hộp 3 vỉ x 10 viên','VD-0001-23','Traphaco',N'Việt Nam','ts301.jpg','LH03',null),
-('TS227',N'Boganic',null,null,N'Uống',N'Hộp 3 vỉ x 10 viên','VD-0002-23','Traphaco',N'Việt Nam','ts302.jpg','LH03',null),
-('TS228',N'Ích mẫu',250,'mg',N'Uống',N'Hộp 2 vỉ x 10 viên','VD-0003-23','DHG Pharma',N'Việt Nam','ts303.jpg','LH03',null),
-('TS229',N'Siro ho Bảo Thanh',10,'ml',N'Uống',N'Chai 125 ml','VD-0004-23',N'Nam Dược',N'Việt Nam','ts304.jpg','LH03',null),
-('TS230',N'Viên ngậm Strepsils thảo dược',null,null,N'Ngậm',N'Hộp 2 vỉ x 12 viên','VD-0005-23','Reckitt',N'Anh','ts305.jpg','LH03',null),
-('TS231',N'Cao ích mẫu',250,'mg',N'Uống',N'Lọ 100 viên','VD-0006-23','Traphaco',N'Việt Nam','ts306.jpg','LH03',null),
-('TS232',N'Sâm bổ chính khí',null,null,N'Uống',N'Lọ 30 viên','VD-0007-23',N'Công ty Dược OPC',N'Việt Nam','ts307.jpg','LH03',null),
-('TS233',N'Kim tiền thảo',null,null,N'Uống',N'Hộp 3 vỉ x 10 viên','VD-0008-23',N'Mekophar',N'Việt Nam','ts308.jpg','LH03',null),
-('TS234',N'Nhất nhất thống phong',null,null,N'Uống',N'Hộp 3 vỉ x 10 viên','VD-0009-23',N'Dược Nhất Nhất',N'Việt Nam','ts309.jpg','LH03',null),
-('TS235',N'Hoàng liên giải độc hoàn',null,null,N'Uống',N'Lọ 60 viên','VD-0010-23',N'Trung Quốc Dược',N'Trung Quốc','ts310.jpg','LH03',null),
+('TS226',N'Hoạt huyết dưỡng não',250,'mg',N'Uống',N'Hộp 3 vỉ x 10 viên','VD-0001-23','Traphaco',N'Việt Nam','ts301.jpg','LH03',null,'KE001'),
+('TS227',N'Boganic',null,null,N'Uống',N'Hộp 3 vỉ x 10 viên','VD-0002-23','Traphaco',N'Việt Nam','ts302.jpg','LH03',null,'KE001'),
+('TS228',N'Ích mẫu',250,'mg',N'Uống',N'Hộp 2 vỉ x 10 viên','VD-0003-23','DHG Pharma',N'Việt Nam','ts303.jpg','LH03',null,'KE001'),
+('TS229',N'Siro ho Bảo Thanh',10,'ml',N'Uống',N'Chai 125 ml','VD-0004-23',N'Nam Dược',N'Việt Nam','ts304.jpg','LH03',null,'KE001'),
+('TS230',N'Viên ngậm Strepsils thảo dược',null,null,N'Ngậm',N'Hộp 2 vỉ x 12 viên','VD-0005-23','Reckitt',N'Anh','ts305.jpg','LH03',null,'KE001'),
+('TS231',N'Cao ích mẫu',250,'mg',N'Uống',N'Lọ 100 viên','VD-0006-23','Traphaco',N'Việt Nam','ts306.jpg','LH03',null,'KE001'),
+('TS232',N'Sâm bổ chính khí',null,null,N'Uống',N'Lọ 30 viên','VD-0007-23',N'Công ty Dược OPC',N'Việt Nam','ts307.jpg','LH03',null,'KE001'),
+('TS233',N'Kim tiền thảo',null,null,N'Uống',N'Hộp 3 vỉ x 10 viên','VD-0008-23',N'Mekophar',N'Việt Nam','ts308.jpg','LH03',null,'KE001'),
+('TS234',N'Nhất nhất thống phong',null,null,N'Uống',N'Hộp 3 vỉ x 10 viên','VD-0009-23',N'Dược Nhất Nhất',N'Việt Nam','ts309.jpg','LH03',null,'KE001'),
+('TS235',N'Hoàng liên giải độc hoàn',null,null,N'Uống',N'Lọ 60 viên','VD-0010-23',N'Trung Quốc Dược',N'Trung Quốc','ts310.jpg','LH03',null,'KE001'),
 -- Thực phẩm chức năng
-('TS336',N'Vitamin D3 1000IU',1000,'IU',N'Uống',N'Lọ 100 viên','TPCN-0001-23','Nature Made',N'Mỹ','ts201.jpg','LH04',null),
-('TS337',N'Omega-3 Fish Oil 1000mg',1000,'mg',N'Uống',N'Lọ 120 viên','TPCN-0002-23','Blackmores',N'Úc','ts202.jpg','LH04',null),
-('TS338',N'Calcium + Vitamin D',500,'mg',N'Uống',N'Lọ 60 viên','TPCN-0003-23','Traphaco',N'Việt Nam','ts203.jpg','LH04',null),
-('TS339',N'Collagen Type II',40,'mg',N'Uống',N'Lọ 30 viên','TPCN-0004-23','Neocell',N'Mỹ','ts204.jpg','LH04',null),
-('TS340',N'Probiotic 10 strains',10,'tỷ CFU',N'Uống',N'Hộp 30 gói','TPCN-0005-23','Yakult',N'Nhật Bản','ts205.jpg','LH04',null),
-('TS341',N'Multivitamin Daily',1,'viên',N'Uống',N'Lọ 100 viên','TPCN-0006-23','Centrum',N'Mỹ','ts206.jpg','LH04',null),
-('TS342',N'Sâm Ngọc Linh Extract',500,'mg',N'Uống',N'Lọ 30 viên','TPCN-0007-23',N'Sâm Ngọc Linh Quảng Nam',N'Việt Nam','ts207.jpg','LH04',null),
-('TS343',N'Ginkgo Biloba 120mg',120,'mg',N'Uống',N'Lọ 60 viên','TPCN-0008-23','Pharmaton',N'Thụy Sĩ','ts208.jpg','LH04',null),
-('TS344',N'Vitamin C + Zinc',1000,'mg',N'Uống',N'Lọ 20 viên sủi','TPCN-0009-23','DHG Pharma',N'Việt Nam','ts209.jpg','LH04',null),
-('TS345',N'Glucosamine 1500mg',1500,'mg',N'Uống',N'Lọ 60 viên','TPCN-0010-23','Puritan''s Pride',N'Mỹ','ts210.jpg','LH04',null),
+('TS336',N'Vitamin D3 1000IU',1000,'IU',N'Uống',N'Lọ 100 viên','TPCN-0001-23','Nature Made',N'Mỹ','ts201.jpg','LH04',null,'KE001'),
+('TS337',N'Omega-3 Fish Oil 1000mg',1000,'mg',N'Uống',N'Lọ 120 viên','TPCN-0002-23','Blackmores',N'Úc','ts202.jpg','LH04',null,'KE001'),
+('TS338',N'Calcium + Vitamin D',500,'mg',N'Uống',N'Lọ 60 viên','TPCN-0003-23','Traphaco',N'Việt Nam','ts203.jpg','LH04',null,'KE001'),
+('TS339',N'Collagen Type II',40,'mg',N'Uống',N'Lọ 30 viên','TPCN-0004-23','Neocell',N'Mỹ','ts204.jpg','LH04',null,'KE001'),
+('TS340',N'Probiotic 10 strains',10,'tỷ CFU',N'Uống',N'Hộp 30 gói','TPCN-0005-23','Yakult',N'Nhật Bản','ts205.jpg','LH04',null,'KE001'),
+('TS341',N'Multivitamin Daily',1,'viên',N'Uống',N'Lọ 100 viên','TPCN-0006-23','Centrum',N'Mỹ','ts206.jpg','LH04',null,'KE001'),
+('TS342',N'Sâm Ngọc Linh Extract',500,'mg',N'Uống',N'Lọ 30 viên','TPCN-0007-23',N'Sâm Ngọc Linh Quảng Nam',N'Việt Nam','ts207.jpg','LH04',null,'KE001'),
+('TS343',N'Ginkgo Biloba 120mg',120,'mg',N'Uống',N'Lọ 60 viên','TPCN-0008-23','Pharmaton',N'Thụy Sĩ','ts208.jpg','LH04',null,'KE001'),
+('TS344',N'Vitamin C + Zinc',1000,'mg',N'Uống',N'Lọ 20 viên sủi','TPCN-0009-23','DHG Pharma',N'Việt Nam','ts209.jpg','LH04',null,'KE001'),
+('TS345',N'Glucosamine 1500mg',1500,'mg',N'Uống',N'Lọ 60 viên','TPCN-0010-23','Puritan''s Pride',N'Mỹ','ts210.jpg','LH04',null,'KE001'),
 -- Dụng cụ y tế
-('TS446',N'Nhiệt kế điện tử',null,null,N'Đo',N'Hộp 1 cái','DM-0001-23','Omron',N'Nhật Bản','ts401.jpg','LH05',null),
-('TS447',N'Máy đo huyết áp bắp tay',null,null,N'Đo',N'Hộp 1 cái','DM-0002-23','Microlife',N'Thụy Sĩ','ts402.jpg','LH05',null),
-('TS448',N'Máy đo đường huyết',null,null,N'Đo',N'Hộp 1 cái + que thử','DM-0003-23','Accu-Chek',N'Đức','ts403.jpg','LH05',null),
-('TS449',N'Ống nghe y tế',null,null,N'Khám',N'Hộp 1 cái','DM-0004-23','3M Littmann',N'Mỹ','ts404.jpg','LH05',null),
-('TS450',N'Khẩu trang y tế 3 lớp',null,null,N'Đeo',N'Hộp 50 cái','DM-0005-23',N'Bảo Thạch',N'Việt Nam','ts405.jpg','LH05',null),
-('TS451',N'Găng tay y tế',null,null,N'Đeo',N'Hộp 100 cái','DM-0006-23','Top Glove','Malaysia','ts406.jpg','LH05',null),
-('TS452',N'Bơm tiêm dùng một lần 5ml',null,null,N'Tiêm',N'Hộp 100 cái','DM-0007-23','Vinahankook',N'Việt Nam','ts407.jpg','LH05',null),
-('TS453',N'Kháng khuẩn rửa tay nhanh',null,null,N'Sát khuẩn',N'Chai 500ml','DM-0008-23','Lifebuoy',N'Việt Nam','ts408.jpg','LH05',null),
-('TS454',N'Máy xông khí dung',null,null,N'Hít',N'Hộp 1 cái','DM-0009-23','Omron',N'Nhật Bản','ts409.jpg','LH05',null),
-('TS455',N'Miếng dán nhiệt',null,null,N'Dán',N'Hộp 10 miếng','DM-0010-23','Kobayashi',N'Nhật Bản','ts410.jpg','LH05',null),
+('TS446',N'Nhiệt kế điện tử',null,null,N'Đo',N'Hộp 1 cái','DM-0001-23','Omron',N'Nhật Bản','ts401.jpg','LH05',null,'KE001'),
+('TS447',N'Máy đo huyết áp bắp tay',null,null,N'Đo',N'Hộp 1 cái','DM-0002-23','Microlife',N'Thụy Sĩ','ts402.jpg','LH05',null,'KE001'),
+('TS448',N'Máy đo đường huyết',null,null,N'Đo',N'Hộp 1 cái + que thử','DM-0003-23','Accu-Chek',N'Đức','ts403.jpg','LH05',null,'KE001'),
+('TS449',N'Ống nghe y tế',null,null,N'Khám',N'Hộp 1 cái','DM-0004-23','3M Littmann',N'Mỹ','ts404.jpg','LH05',null,'KE001'),
+('TS450',N'Khẩu trang y tế 3 lớp',null,null,N'Đeo',N'Hộp 50 cái','DM-0005-23',N'Bảo Thạch',N'Việt Nam','ts405.jpg','LH05',null,'KE001'),
+('TS451',N'Găng tay y tế',null,null,N'Đeo',N'Hộp 100 cái','DM-0006-23','Top Glove','Malaysia','ts406.jpg','LH05',null,'KE001'),
+('TS452',N'Bơm tiêm dùng một lần 5ml',null,null,N'Tiêm',N'Hộp 100 cái','DM-0007-23','Vinahankook',N'Việt Nam','ts407.jpg','LH05',null,'KE001'),
+('TS453',N'Kháng khuẩn rửa tay nhanh',null,null,N'Sát khuẩn',N'Chai 500ml','DM-0008-23','Lifebuoy',N'Việt Nam','ts408.jpg','LH05',null,'KE001'),
+('TS454',N'Máy xông khí dung',null,null,N'Hít',N'Hộp 1 cái','DM-0009-23','Omron',N'Nhật Bản','ts409.jpg','LH05',null,'KE001'),
+('TS455',N'Miếng dán nhiệt',null,null,N'Dán',N'Hộp 10 miếng','DM-0010-23','Kobayashi',N'Nhật Bản','ts410.jpg','LH05',null,'KE001'),
 -- Mỹ phẩm
-('TS556',N'Kem chống nắng SPF50',50,'ml',N'Bôi',N'Tuýp 50ml','MP-0001-23','Anessa',N'Nhật Bản','ts501.jpg','LH05',null),
-('TS557',N'Sữa rửa mặt tạo bọt',100,'ml',N'Rửa mặt',N'Tuýp 100ml','MP-0002-23','Hada Labo',N'Nhật Bản','ts502.jpg','LH05',null),
-('TS558',N'Nước hoa hồng cân bằng da',150,'ml',N'Bôi',N'Chai 150ml','MP-0003-23','Innisfree',N'Hàn Quốc','ts503.jpg','LH05',null),
-('TS559',N'Serum Vitamin C 15%',30,'ml',N'Bôi',N'Lọ 30ml','MP-0004-23','Vichy',N'Pháp','ts504.jpg','LH05',null),
-('TS560',N'Kem dưỡng ẩm ban đêm',50,'ml',N'Bôi',N'Hũ 50ml','MP-0005-23','Laneige',N'Hàn Quốc','ts505.jpg','LH05',null),
-('TS561',N'Son dưỡng môi có màu',null,null,N'Bôi',N'Thỏi 3g','MP-0006-23','Maybelline',N'Mỹ','ts506.jpg','LH05',null),
-('TS562',N'Dầu gội thảo dược',300,'ml',N'Gội đầu',N'Chai 300ml','MP-0007-23',N'Thái Dương',N'Việt Nam','ts507.jpg','LH05',null),
-('TS563',N'Kem trị mụn',20,'g',N'Bôi',N'Tuýp 20g','MP-0008-23','La Roche-Posay',N'Pháp','ts508.jpg','LH05',null),
-('TS564',N'Mặt nạ dưỡng da Green Tea',25,'ml',N'Đắp mặt',N'Hộp 10 miếng','MP-0009-23','The Face Shop',N'Hàn Quốc','ts509.jpg','LH05',null),
-('TS565',N'Nước hoa nữ Eau de Parfum',50,'ml',N'Xịt',N'Chai 50ml','MP-0010-23','Chanel',N'Pháp','ts510.jpg','LH05',null);
+('TS556',N'Kem chống nắng SPF50',50,'ml',N'Bôi',N'Tuýp 50ml','MP-0001-23','Anessa',N'Nhật Bản','ts501.jpg','LH05',null,'KE001'),
+('TS557',N'Sữa rửa mặt tạo bọt',100,'ml',N'Rửa mặt',N'Tuýp 100ml','MP-0002-23','Hada Labo',N'Nhật Bản','ts502.jpg','LH05',null,'KE001'),
+('TS558',N'Nước hoa hồng cân bằng da',150,'ml',N'Bôi',N'Chai 150ml','MP-0003-23','Innisfree',N'Hàn Quốc','ts503.jpg','LH05',null,'KE001'),
+('TS559',N'Serum Vitamin C 15%',30,'ml',N'Bôi',N'Lọ 30ml','MP-0004-23','Vichy',N'Pháp','ts504.jpg','LH05',null,'KE001'),
+('TS560',N'Kem dưỡng ẩm ban đêm',50,'ml',N'Bôi',N'Hũ 50ml','MP-0005-23','Laneige',N'Hàn Quốc','ts505.jpg','LH05',null,'KE001'),
+('TS561',N'Son dưỡng môi có màu',null,null,N'Bôi',N'Thỏi 3g','MP-0006-23','Maybelline',N'Mỹ','ts506.jpg','LH05',null,'KE001'),
+('TS562',N'Dầu gội thảo dược',300,'ml',N'Gội đầu',N'Chai 300ml','MP-0007-23',N'Thái Dương',N'Việt Nam','ts507.jpg','LH05',null,'KE001'),
+('TS563',N'Kem trị mụn',20,'g',N'Bôi',N'Tuýp 20g','MP-0008-23','La Roche-Posay',N'Pháp','ts508.jpg','LH05',null,'KE001'),
+('TS564',N'Mặt nạ dưỡng da Green Tea',25,'ml',N'Đắp mặt',N'Hộp 10 miếng','MP-0009-23','The Face Shop',N'Hàn Quốc','ts509.jpg','LH05',null,'KE001'),
+('TS565',N'Nước hoa nữ Eau de Parfum',50,'ml',N'Xịt',N'Chai 50ml','MP-0010-23','Chanel',N'Pháp','ts510.jpg','LH05',null,'KE001');
 
 INSERT INTO ChiTietHoatChat (MaHoatChat, MaThuoc, HamLuong) VALUES
 -- Thuốc tây

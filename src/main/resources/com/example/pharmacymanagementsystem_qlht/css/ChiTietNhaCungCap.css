@@ -1,0 +1,17 @@
+#paneGachChan{
+    -fx-border-color: transparent transparent #ccc transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+#btnThoat{
+    -fx-background-color: red;
+    -fx-background-radius: 5px;
+
+}
+#lblTrang{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+#btnThoat:pressed{
+    -fx-background-color: #cc0000;
+}

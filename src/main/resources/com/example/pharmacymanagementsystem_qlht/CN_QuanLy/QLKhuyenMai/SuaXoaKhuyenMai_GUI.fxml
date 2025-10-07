@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -91,18 +92,18 @@
                 </Pane>
                 <Pane>
                     <children>
-                        <TableView layoutY="54.0" prefHeight="213.0" prefWidth="908.0">
+                        <TableView fx:id="tbDSThuoc" layoutY="54.0" prefHeight="213.0" prefWidth="908.0">
                             <columns>
-                                <TableColumn prefWidth="120.0" text="Mã thuốc" />
-                                <TableColumn prefWidth="352.0" text="Tên thuốc" />
-                                <TableColumn minWidth="0.0" prefWidth="176.0" text="Số lượng áp dụng" />
-                                <TableColumn prefWidth="202.0" text="Số lượng tối đa" />
+                                <TableColumn fx:id="colMaThuoc" prefWidth="120.0" text="Mã thuốc" />
+                                <TableColumn fx:id="colTenThuoc" prefWidth="352.0" text="Tên thuốc" />
+                                <TableColumn fx:id="colSLAP" minWidth="0.0" prefWidth="176.0" text="Số lượng áp dụng" />
+                                <TableColumn fx:id="colSLTD" prefWidth="202.0" text="Số lượng tối đa" />
                                 <TableColumn prefWidth="57.0" />
                             </columns>
                         </TableView>
                         <Pane prefHeight="62.0" prefWidth="915.0">
                             <children>
-                                <TextField id="timKiemThuocC" fx:id="timKiemThuocC" layoutX="521.0" layoutY="11.0" prefHeight="30.0" prefWidth="388.0" />
+                                <TextField id="timKiemThuocC" fx:id="tfTimThuoc" layoutX="521.0" layoutY="11.0" prefHeight="30.0" prefWidth="388.0" />
                                 <Label layoutX="452.0" layoutY="16.0" prefHeight="20.0" prefWidth="69.0" styleClass="lblChinh" text="Tìm thuốc">
                                     <font>
                                         <Font size="14.0" />
@@ -115,20 +116,32 @@
                 </Pane>
             </children>
         </VBox>
-        <Button id="btnluu" fx:id="btnLuu" layoutX="850.0" layoutY="458.0" mnemonicParsing="false" onMouseClicked="#btnLuuClick" prefHeight="32.0" prefWidth="69.0" styleClass="btnthemhuy" text="Lưu" textFill="WHITE">
+        <Button id="btnluu" fx:id="btnLuu" layoutX="850.0" layoutY="458.0" mnemonicParsing="false" onMouseClicked="#btnLuuClick" prefHeight="32.0" prefWidth="69.0" text="Lưu" textFill="WHITE">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>
+         <styleClass>
+            <String fx:value="btnthemhuy" />
+            <String fx:value="btn" />
+         </styleClass>
         </Button>
-        <Button id="btnhuy" fx:id="btnHuy" layoutX="772.0" layoutY="458.0" minHeight="20.0" mnemonicParsing="false" onMouseClicked="#btnHuyClick" prefHeight="32.0" prefWidth="69.0" styleClass="btnthemhuy" text="Hủy" textFill="WHITE">
+        <Button id="btnhuy" fx:id="btnHuy" layoutX="772.0" layoutY="458.0" minHeight="20.0" mnemonicParsing="false" onMouseClicked="#btnHuyClick" prefHeight="32.0" prefWidth="69.0" text="Hủy" textFill="WHITE">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>
+         <styleClass>
+            <String fx:value="btnthemhuy" />
+            <String fx:value="btn" />
+         </styleClass>
         </Button>
-      <Button id="btnxoa" fx:id="btnXoa" layoutX="14.0" layoutY="458.0" minHeight="20.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="69.0" styleClass="btnthemhuy" text="Xóa" textFill="WHITE">
+      <Button id="btnxoa" fx:id="btnXoa" layoutX="14.0" layoutY="458.0" minHeight="20.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="69.0" text="Xóa" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
+         <styleClass>
+            <String fx:value="btnthemhuy" />
+            <String fx:value="btn" />
+         </styleClass>
       </Button>
     </children>
 </AnchorPane>

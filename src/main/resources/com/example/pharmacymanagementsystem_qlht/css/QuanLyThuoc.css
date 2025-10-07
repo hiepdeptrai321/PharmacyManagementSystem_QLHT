@@ -60,3 +60,6 @@
 .a-center{
     -fx-alignment: center;
 }
+.btn:hover{
+    -fx-opacity: 0.9;
+}

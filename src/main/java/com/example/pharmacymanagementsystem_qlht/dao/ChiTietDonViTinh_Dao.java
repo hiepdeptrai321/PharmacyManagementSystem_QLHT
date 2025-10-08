@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChiTietDonViTinh_Dao implements DaoInterface<ChiTietDonViTinh> {
-    private final String INSERT_SQL = "INSERT INTO ChiTietDonViTinh (maThuoc, maDVT, heSoQuyDoi, giaNhap, giaBan) VALUES (?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE ChiTietDonViTinh SET heSoQuyDoi=?, giaNhap=?, giaBan=? WHERE maThuoc=? AND maDVT=?";
-    private final String DELETE_BY_ID_SQL = "DELETE FROM ChiTietDonViTinh WHERE maThuoc=? AND maDVT=?";
-    private final String SELECT_BY_ID_SQL = "SELECT maThuoc, maDVT, heSoQuyDoi, giaNhap, giaBan FROM ChiTietDonViTinh WHERE maThuoc=? AND maDVT=?";
-    private final String SELECT_ALL_SQL = "SELECT maThuoc, maDVT, heSoQuyDoi, giaNhap, giaBan FROM ChiTietDonViTinh";
+    private final String INSERT_SQL = "INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan) VALUES (?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE ChiTietDonViTinh SET HeSoQuyDoi=?, GiaNhap=?, GiaBan=? WHERE MaThuoc=? AND MaDVT=?";
+    private final String DELETE_BY_ID_SQL = "DELETE FROM ChiTietDonViTinh WHERE MaThuoc=? AND MaDVT=?";
+    private final String SELECT_BY_ID_SQL = "SELECT MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan FROM ChiTietDonViTinh WHERE MaThuoc=? AND MaDVT=?";
+    private final String SELECT_ALL_SQL = "SELECT MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan FROM ChiTietDonViTinh";
     @Override
     public void insert(ChiTietDonViTinh e) {
         ConnectDB.update(INSERT_SQL, e.getThuoc().getMaThuoc(), e.getDvt().getMaDVT(), e.getHeSoQuyDoi(), e.getGiaNhap(), e.getGiaBan());
@@ -40,11 +40,11 @@ public class ChiTietDonViTinh_Dao implements DaoInterface<ChiTietDonViTinh> {
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 ChiTietDonViTinh ct = new ChiTietDonViTinh();
-                ct.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getString("maThuoc")));
-                ct.setDvt(new DonViTinh_Dao().selectById(rs.getString("maDVT")));
-                ct.setHeSoQuyDoi(rs.getInt("heSoQuyDoi"));
-                ct.setGiaNhap(rs.getDouble("giaNhap"));
-                ct.setGiaBan(rs.getDouble("giaBan"));
+                ct.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getString("MaThuoc")));
+                ct.setDvt(new DonViTinh_Dao().selectById(rs.getString("MaDVT")));
+                ct.setHeSoQuyDoi(rs.getInt("HeSoQuyDoi"));
+                ct.setGiaNhap(rs.getDouble("GiaNhap"));
+                ct.setGiaBan(rs.getDouble("GiaBan"));
                 list.add(ct);
             }
             rs.getStatement().close();

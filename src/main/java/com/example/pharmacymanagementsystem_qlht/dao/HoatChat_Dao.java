@@ -9,10 +9,10 @@ import java.util.List;
 
 public class HoatChat_Dao implements DaoInterface<HoatChat> {
     private final String INSERT_SQL = "INSERT INTO HoatChat (TenHoatChat) VALUES (?)";
-    private final String UPDATE_SQL = "UPDATE HoatChat SET tenHoatChat = ? WHERE maHoatChat = ?";
-    private final String DELETE_SQL = "DELETE FROM HoatChat WHERE maHoatChat = ?";
+    private final String UPDATE_SQL = "UPDATE HoatChat SET TenHoatChat = ? WHERE MaHoatChat = ?";
+    private final String DELETE_SQL = "DELETE FROM HoatChat WHERE MaHoatChat = ?";
     private final String SELECT_ALL_SQL = "SELECT * FROM HoatChat";
-    private final String SELECT_BY_ID_SQL = "SELECT * FROM HoatChat WHERE maHoatChat = ?";
+    private final String SELECT_BY_ID_SQL = "SELECT * FROM HoatChat WHERE MaHoatChat = ?";
 
     @Override
     public void insert(HoatChat e) {
@@ -41,7 +41,7 @@ public class HoatChat_Dao implements DaoInterface<HoatChat> {
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 HoatChat hc = new HoatChat();
-                hc.setTenHoatChat(rs.getString("tenHoatChat"));
+                hc.setTenHoatChat(rs.getString("TenHoatChat"));
                 list.add(hc);
             }
             rs.getStatement().getConnection().close();

@@ -10,10 +10,10 @@ import java.util.List;
 
 public class HoatDong_Dao implements DaoInterface<HoatDong> {
 
-    private final String INSERT_SQL = "INSERT INTO HoatDong VALUES (?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE HoatDong SET loaiHD=?, bang=?, thoiGian=?, ghiChu=? WHERE maHD=?";
-    private final String DELETE_BY_ID = "DELETE FROM HoatDong WHERE maHD = ?";
-    private final String SELECT_BY_ID = "SELECT * FROM HoatDong WHERE maHD=?";
+    private final String INSERT_SQL = "INSERT INTO HoatDong(MaHDong, LoaiHD, ThoiGian, MaNV, BangDL, GhiChu) VALUES (?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE HoatDong SET LoaiHD=?, ThoiGian=?, MaNV=?, BangDL=?,GhiChu=? WHERE maHD=?";
+    private final String DELETE_BY_ID = "DELETE FROM HoatDong WHERE MaHDong = ?";
+    private final String SELECT_BY_ID = "SELECT * FROM HoatDong WHERE MaHDong=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM HoatDong";
 
     @Override
@@ -47,11 +47,11 @@ public class HoatDong_Dao implements DaoInterface<HoatDong> {
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 HoatDong hd = new HoatDong();
-                hd.setMaHD(rs.getString("maHD"));
-                hd.setLoaiHD(rs.getString("loaiHD"));
-                hd.setBang(rs.getString("bang"));
-                hd.setThoiGian(rs.getTimestamp("thoiGian"));
-                hd.setGhiChu(rs.getString("ghiChu"));
+                hd.setMaHD(rs.getString("MaHDong"));
+                hd.setLoaiHD(rs.getString("LoaiHD"));
+                hd.setBang(rs.getString("BangDL"));
+                hd.setThoiGian(rs.getTimestamp("ThoiGian"));
+                hd.setGhiChu(rs.getString("GhiChu"));
                 hd.setNhanVien(new NhanVien_Dao().selectById(rs.getString("MaNV")));
                 list.add(hd);
             }

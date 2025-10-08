@@ -17,9 +17,6 @@ public class TimKiemKhachHang_Ctrl extends Application {
 
     @FXML
     private Pane mainPane;
-    public static void main(String[] args) {
-        launch(args);
-    }
 
     @FXML
     public void initialize() {

@@ -15,6 +15,7 @@
 
 <AnchorPane prefHeight="700.0" prefWidth="1200.0" stylesheets="@../../css/ChiTietHoaDon.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.ChiTietHoaDon_Ctrl">
 <SplitPane dividerPositions="0.65" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
     <AnchorPane minHeight="0.0" minWidth="0.0">
          <Pane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -58,6 +59,7 @@
                    <Label layoutX="5.0" layoutY="95.0" styleClass="bold-label" text="Ghi chú:" />
                    <Label fx:id="lblGhiChuValue" layoutX="140.0" layoutY="95.0" prefWidth="250.0" styleClass="value-label" text="Không có." wrapText="true" />
                </Pane>
+
                   <Separator layoutY="216.0" />
                   <Label layoutY="234.39999389648438" styleClass="section-label" text="TÓM TẮT THANH TOÁN" />
                <Pane layoutY="275.20001220703125" prefHeight="280.0" styleClass="summary-pane">
@@ -78,6 +80,7 @@
                    <Label layoutX="5.0" layoutY="210.0" styleClass="bold-label" text="Tiền thừa trả lại:" />
                    <Label fx:id="lblTienThuaValue" layoutX="240.0" layoutY="210.0" styleClass="change-due-value bold-label value-label" text="0 VNĐ" />
                </Pane>
+
                   <VBox alignment="BOTTOM_CENTER" layoutY="570.4000244140625">
                   <Pane prefHeight="110.0" prefWidth="399.0">
                      <children>

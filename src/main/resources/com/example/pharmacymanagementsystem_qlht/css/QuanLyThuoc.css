@@ -56,3 +56,10 @@
 /*    -fx-border-style: solid;*/
 /*    -fx-border-radius: 0;*/
 /*}*/
+
+.a-center{
+    -fx-alignment: center;
+}
+.btn:hover{
+    -fx-opacity: 0.9;
+}

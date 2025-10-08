@@ -34,6 +34,13 @@
 #btnluu{
     -fx-background-color: green;
 }
-#btnhuy{
+#btnxoa{
     -fx-background-color: red;
+}
+#btnhuy{
+    -fx-text-fill: black;
+}
+
+.btn:hover{
+    -fx-opacity: 0.9;
 }

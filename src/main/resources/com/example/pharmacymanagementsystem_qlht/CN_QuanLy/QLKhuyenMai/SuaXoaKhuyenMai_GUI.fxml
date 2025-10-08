@@ -97,8 +97,8 @@
                                 <TableColumn fx:id="colMaThuoc" prefWidth="120.0" text="Mã thuốc" />
                                 <TableColumn fx:id="colTenThuoc" prefWidth="352.0" text="Tên thuốc" />
                                 <TableColumn fx:id="colSLAP" minWidth="0.0" prefWidth="176.0" text="Số lượng áp dụng" />
-                                <TableColumn fx:id="colSLTD" prefWidth="202.0" text="Số lượng tối đa" />
-                                <TableColumn prefWidth="57.0" />
+                                <TableColumn fx:id="colSLTD" prefWidth="232.5" text="Số lượng tối đa" />
+                                <TableColumn fx:id="colXoaCT" prefWidth="26.5" />
                             </columns>
                         </TableView>
                         <Pane prefHeight="62.0" prefWidth="915.0">

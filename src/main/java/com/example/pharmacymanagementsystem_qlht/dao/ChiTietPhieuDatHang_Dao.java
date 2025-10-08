@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChiTietPhieuDatHang_Dao implements DaoInterface<ChiTietPhieuDatHang> {
-    private final String INSERT_SQL = "INSERT INTO ChiTietPhieuDatHang (maPDat, maThuoc, soLuong, donGia, giamGia) VALUES (?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE ChiTietPhieuDatHang SET soLuong=?, donGia=?, giamGia=? WHERE maPDat=? AND maThuoc=?";
-    private final String DELETE_BY_ID_SQL = "DELETE FROM ChiTietPhieuDatHang WHERE maPDat=? AND maThuoc=?";
-    private final String SELECT_BY_ID_SQL = "SELECT * FROM ChiTietPhieuDatHang WHERE maPDat=? AND maThuoc=?";
+    private final String INSERT_SQL = "INSERT INTO ChiTietPhieuDatHang (MaPDat, MaThuoc, SoLuong, DonGia, GiamGia) VALUES (?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE ChiTietPhieuDatHang SET SoLuong=?, DonGia=?, GiamGia=? WHERE MaPDat=? AND MaThuoc=?";
+    private final String DELETE_BY_ID_SQL = "DELETE FROM ChiTietPhieuDatHang WHERE MaPDat=? AND MaThuoc=?";
+    private final String SELECT_BY_ID_SQL = "SELECT * FROM ChiTietPhieuDatHang WHERE MaPDat=? AND MaThuoc=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM ChiTietPhieuDatHang";
 
     @Override
@@ -42,11 +42,11 @@ public class ChiTietPhieuDatHang_Dao implements DaoInterface<ChiTietPhieuDatHang
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 ChiTietPhieuDatHang ct = new ChiTietPhieuDatHang();
-                ct.setPhieuDatHang(new PhieuDatHang_Dao().selectById(rs.getString("maPDat")));
-                ct.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getString("maThuoc")));
-                ct.setSoLuong(rs.getInt("soLuong"));
-                ct.setDonGia(rs.getDouble("donGia"));
-                ct.setGiamGia(rs.getDouble("giamGia"));
+                ct.setPhieuDatHang(new PhieuDatHang_Dao().selectById(rs.getString("MaPDat")));
+                ct.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getString("MaThuoc")));
+                ct.setSoLuong(rs.getInt("SoLuong"));
+                ct.setDonGia(rs.getDouble("DonGia"));
+                ct.setGiamGia(rs.getDouble("GiamGia"));
                 list.add(ct);
             }
             rs.getStatement().close();

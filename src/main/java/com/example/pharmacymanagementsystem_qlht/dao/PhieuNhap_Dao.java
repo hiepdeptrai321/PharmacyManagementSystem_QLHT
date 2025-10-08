@@ -10,8 +10,8 @@ import java.util.List;
 
 public class PhieuNhap_Dao implements DaoInterface<PhieuNhap>{
     private final String INSERT_SQL = "INSERT INTO PhieuNhap (MaPN, MaNCC, NgayNhap, TrangThai, GhiChu, MaNV) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE PhieuNhap SET maNCC = ?, maNV = ?, ngayNhap = ?, trangThai = ?, ghiChu = ? WHERE maPN = ?";
-    private final String DELETE_SQL = "DELETE FROM PhieuNhap WHERE maPN = ?";
+    private final String UPDATE_SQL = "UPDATE PhieuNhap SET MaNCC = ?, MaNV = ?, NgayNhap = ?, TrangThai = ?, GhiChu = ? WHERE MaPN = ?";
+    private final String DELETE_SQL = "DELETE FROM PhieuNhap WHERE MaPN = ?";
     private final String SELECT_ALL_SQL = "SELECT * FROM PhieuNhap";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM PhieuNhap WHERE MaPN = ?";
     private final String SELECT_TOP1_MAPN = "SELECT TOP 1 MaPN FROM PhieuNhap ORDER BY MaPN DESC";

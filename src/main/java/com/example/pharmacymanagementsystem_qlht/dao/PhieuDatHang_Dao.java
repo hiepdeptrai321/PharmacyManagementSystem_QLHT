@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PhieuDatHang_Dao implements DaoInterface<PhieuDatHang> {
-    private final String INSERT_SQL = "INSERT INTO PhieuDatHang (maPDat, ngayLap, soTienCoc, ghiChu, maKH) VALUES (?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE PhieuDatHang SET ngayLap=?, soTienCoc=?, ghiChu=?, maKH=? WHERE maPDat=?";
-    private final String DELETE_BY_ID_SQL = "DELETE FROM PhieuDatHang WHERE maPDat=?";
-    private final String SELECT_BY_ID_SQL = "SELECT * FROM PhieuDatHang WHERE maPDat=?";
+    private final String INSERT_SQL = "INSERT INTO PhieuDatHang (MaPDat, NgayLap, SoTienCoc, GhiChu, MaKH, MaNV) VALUES (?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE PhieuDatHang SET NgayLap=?, SoTienCoc=?, GhiChu=?, MaKH=?, MaNV=? WHERE MaPDat=?";
+    private final String DELETE_BY_ID_SQL = "DELETE FROM PhieuDatHang WHERE MaPDat=?";
+    private final String SELECT_BY_ID_SQL = "SELECT * FROM PhieuDatHang WHERE MaPDat=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM PhieuDatHang";
 
     @Override
@@ -42,11 +42,12 @@ public class PhieuDatHang_Dao implements DaoInterface<PhieuDatHang> {
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 PhieuDatHang pdh = new PhieuDatHang();
-                pdh.setMaPDat(rs.getString("maPDat"));
-                pdh.setNgayLap(rs.getTimestamp("ngayLap"));
-                pdh.setSoTienCoc(rs.getDouble("soTienCoc"));
-                pdh.setGhiChu(rs.getString("ghiChu"));
-                pdh.setKhachHang(new KhachHang_Dao().selectById(rs.getString("maKH")));
+                pdh.setMaPDat(rs.getString("MaPDat"));
+                pdh.setNgayLap(rs.getTimestamp("NgayLap"));
+                pdh.setSoTienCoc(rs.getDouble("SoTienCoc"));
+                pdh.setGhiChu(rs.getString("GhiChu"));
+                pdh.setKhachHang(new KhachHang_Dao().selectById(rs.getString("MaKH")));
+                pdh.setNhanVien(new NhanVien_Dao().selectById(rs.getString("MaNV")));
                 list.add(pdh);
             }
             rs.getStatement().close();

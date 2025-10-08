@@ -28,6 +28,7 @@ public class SuaXoaKhuyenMai_Ctrl extends Application {
     public TableColumn<ChiTietKhuyenMai,String> colTenThuoc;
     public TableColumn<ChiTietKhuyenMai,Integer> colSLAP;
     public TableColumn<ChiTietKhuyenMai,Integer> colSLTD;
+    public TableColumn<ChiTietKhuyenMai,String> colXoaCT;
     @FXML
     private TextField tfTimThuoc;
     @FXML
@@ -75,8 +76,6 @@ public class SuaXoaKhuyenMai_Ctrl extends Application {
         dpDenNgay.setValue(km.getNgayKetThuc().toLocalDate());
         tfMoTa.setText(km.getMoTa());
         ChiTietKhuyenMai_Dao ctkm_dao = new ChiTietKhuyenMai_Dao();
-//        loadDatatbCTKM(ctkm_dao.selectByMaKM(km.getMaKM()));
-
     }
 
     public void loadDatatbCTKM(List<ChiTietKhuyenMai> dsCTKM){
@@ -85,6 +84,22 @@ public class SuaXoaKhuyenMai_Ctrl extends Application {
         colTenThuoc.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getThuoc().getTenThuoc()));
         colSLAP.setCellValueFactory(new PropertyValueFactory<>("slApDung"));
         colSLTD.setCellValueFactory(new PropertyValueFactory<>("slToiDa"));
+        colXoaCT.setCellFactory(col -> new TableCell<ChiTietKhuyenMai, String>() {
+            private final Button btn = new Button("X");
+            {
+                btn.setOnAction(event -> {
+                    ChiTietKhuyenMai ctkm = getTableView().getItems().get(getIndex());
+                    getTableView().getItems().remove(ctkm);
+                });
+                btn.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+                btn.getStyleClass().add("btn");
+            }
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : btn);
+            }
+        });
         tbDSThuoc.setItems(listCTKM);
     }
 

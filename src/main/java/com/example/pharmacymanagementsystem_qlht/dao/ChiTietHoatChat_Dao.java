@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChiTietHoatChat_Dao implements DaoInterface<ChiTietHoatChat>{
-    private final String INSERT_SQL = "INSERT INTO ChiTietHoatChat (maThuoc, maHoatChat, hamLuong) VALUES (?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE ChiTietHoatChat SET hamLuong = ? WHERE maThuoc = ? AND maHoatChat = ?";
-    private final String DELETE_BY_ID = "DELETE FROM ChiTietHoatChat WHERE maThuoc = ? AND maHoatChat = ?";
-    private final String SELECT_BY_ID = "SELECT * FROM ChiTietHoatChat WHERE maThuoc = ? AND maHoatChat = ?";
+    private final String INSERT_SQL = "INSERT INTO ChiTietHoatChat (MaThuoc, MaHoatChat, HamLuong) VALUES (?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE ChiTietHoatChat SET HamLuong = ? WHERE MaThuoc = ? AND MaHoatChat = ?";
+    private final String DELETE_BY_ID = "DELETE FROM ChiTietHoatChat WHERE MaThuoc = ? AND MaHoatChat = ?";
+    private final String SELECT_BY_ID = "SELECT * FROM ChiTietHoatChat WHERE MaThuoc = ? AND MaHoatChat = ?";
     private final String SELECT_ALL_SQL = "SELECT * FROM ChiTietHoatChat";
 
     @Override
@@ -41,9 +41,9 @@ public class ChiTietHoatChat_Dao implements DaoInterface<ChiTietHoatChat>{
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 ChiTietHoatChat ct = new ChiTietHoatChat();
-                ct.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getInt("maThuoc")));
-                ct.setHoatChat(new HoatChat_Dao().selectById(rs.getString("maHoatChat")));
-                ct.setHamLuong(rs.getFloat("hamLuong"));
+                ct.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getInt("MaThuoc")));
+                ct.setHoatChat(new HoatChat_Dao().selectById(rs.getString("MaHoatChat")));
+                ct.setHamLuong(rs.getFloat("HamLuong"));
                 list.add(ct);
             }
         } catch (Exception e) {

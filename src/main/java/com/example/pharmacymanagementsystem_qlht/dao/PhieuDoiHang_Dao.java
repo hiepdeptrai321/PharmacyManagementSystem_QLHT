@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PhieuDoiHang_Dao implements DaoInterface<PhieuDoiHang> {
-    private final String INSERT_SQL = "INSERT INTO PhieuDoiHang (maPD, maNV, maKH, ngayLap, lyDoDoi, ghiChu, maHD) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE PhieuDoiHang SET maNV=?, maKH=?, ngayLap=?, lyDoDoi=?, ghiChu=?, maHD=? WHERE maPD=?";
-    private final String DELETE_BY_ID_SQL = "DELETE FROM PhieuDoiHang WHERE maPD=?";
-    private final String SELECT_BY_ID_SQL = "SELECT * FROM PhieuDoiHang WHERE maPD=?";
+    private final String INSERT_SQL = "INSERT INTO PhieuDoiHang (MaPD, MaNV, MaKH, NgayLap, LyDoDoi, GhiChu, MaHD) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE PhieuDoiHang SET MaNV=?, MaKH=?, NgayLap=?, LyDoDoi=?, GhiChu=?, MaHD=? WHERE MaPD=?";
+    private final String DELETE_BY_ID_SQL = "DELETE FROM PhieuDoiHang WHERE MaPD=?";
+    private final String SELECT_BY_ID_SQL = "SELECT * FROM PhieuDoiHang WHERE MaPD=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM PhieuDoiHang";
 
     @Override
@@ -42,13 +42,13 @@ public class PhieuDoiHang_Dao implements DaoInterface<PhieuDoiHang> {
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 PhieuDoiHang pdh = new PhieuDoiHang();
-                pdh.setMaPD(rs.getString("maPD"));
-                pdh.setNhanVien(new NhanVien_Dao().selectById(rs.getString("maNV")));
-                pdh.setKhachHang(new KhachHang_Dao().selectById(rs.getString("maKH")));
-                pdh.setNgayLap(rs.getTimestamp("ngayLap"));
-                pdh.setLyDoDoi(rs.getString("lyDoDoi"));
-                pdh.setGhiChu(rs.getString("ghiChu"));
-                pdh.setHoaDon(new HoaDon_Dao().selectById(rs.getString("maHD")));
+                pdh.setMaPD(rs.getString("MaPD"));
+                pdh.setNhanVien(new NhanVien_Dao().selectById(rs.getString("MaNV")));
+                pdh.setKhachHang(new KhachHang_Dao().selectById(rs.getString("MaKH")));
+                pdh.setNgayLap(rs.getTimestamp("NgayLap"));
+                pdh.setLyDoDoi(rs.getString("LyDoDoi"));
+                pdh.setGhiChu(rs.getString("GhiChu"));
+                pdh.setHoaDon(new HoaDon_Dao().selectById(rs.getString("MaHD")));
                 list.add(pdh);
             }
             rs.getStatement().close();

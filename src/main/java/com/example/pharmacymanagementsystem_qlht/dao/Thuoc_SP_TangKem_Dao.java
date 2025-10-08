@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Thuoc_SP_TangKem_Dao implements DaoInterface<Thuoc_SP_TangKem> {
-    private final String INSERT_SQL = "INSERT INTO Thuoc_SP_TangKem (maThuocTangKem, maKM, soLuong) VALUES (?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE Thuoc_SP_TangKem SET soLuong=? WHERE maThuocTangKem=? AND maKM=?";
-    private final String DELETE_BY_ID_SQL = "DELETE FROM Thuoc_SP_TangKem WHERE maThuocTangKem=? AND maKM=?";
-    private final String SELECT_BY_ID_SQL = "SELECT maThuocTangKem, maKM, soLuong FROM Thuoc_SP_TangKem WHERE maThuocTangKem=? AND maKM=?";
-    private final String SELECT_ALL_SQL = "SELECT maThuocTangKem, maKM, soLuong FROM Thuoc_SP_TangKem";
+    private final String INSERT_SQL = "INSERT INTO Thuoc_SP_TangKem (MaThuocTangKem, MaKM, SoLuong) VALUES (?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE Thuoc_SP_TangKem SET SoLuong=? WHERE MaThuocTangKem=? AND MaKM=?";
+    private final String DELETE_BY_ID_SQL = "DELETE FROM Thuoc_SP_TangKem WHERE MaThuocTangKem=? AND MaKM=?";
+    private final String SELECT_BY_ID_SQL = "SELECT MaThuocTangKem, MaKM, Sơ'ưoLuong FROM Thuoc_SP_TangKem WHERE MaThuocTangKem=? AND MaKM=?";
+    private final String SELECT_ALL_SQL = "SELECT MaThuocTangKem, MaKM, SoLuong FROM Thuoc_SP_TangKem";
 
     @Override
     public void insert(Thuoc_SP_TangKem e) {
@@ -42,9 +42,9 @@ public class Thuoc_SP_TangKem_Dao implements DaoInterface<Thuoc_SP_TangKem> {
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 Thuoc_SP_TangKem ct = new Thuoc_SP_TangKem();
-                ct.setThuocTangKem(new Thuoc_SanPham_Dao().selectById(rs.getString("maThuocTangKem")));
-                ct.setKhuyenmai(new KhuyenMai_Dao().selectById(rs.getString("maKM")));
-                ct.setSoLuong(rs.getInt("soLuong"));
+                ct.setThuocTangKem(new Thuoc_SanPham_Dao().selectById(rs.getString("MaThuocTangKem")));
+                ct.setKhuyenmai(new KhuyenMai_Dao().selectById(rs.getString("MaKM")));
+                ct.setSoLuong(rs.getInt("SoLuong"));
                 list.add(ct);
             }
             rs.getStatement().close();

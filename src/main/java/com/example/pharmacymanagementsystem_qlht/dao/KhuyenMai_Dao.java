@@ -15,6 +15,7 @@ public class KhuyenMai_Dao implements DaoInterface<KhuyenMai> {
     private final String DELETE_BY_ID_SQL = "DELETE FROM KhuyenMai WHERE MaKM=?";
     private final String SELECT_BY_ID_SQL = "SELECT MaKM, MaLoai, TenKM, GiaTriKM, NgayBatDau, NgayKetThuc, MoTa FROM KhuyenMai WHERE MaKM = ?";
     private final String SELECT_ALL_SQL = "SELECT MaKM, MaLoai, TenKM, GiaTriKM, NgayBatDau, NgayKetThuc, MoTa FROM KhuyenMai";
+    private final String SELECT_BY_TUKHOA_SQL = "SELECT MaKM, MaLoai, TenKM, GiaTriKM, NgayBatDau, NgayKetThuc, MoTa FROM KhuyenMai WHERE TenKM LIKE ? OR MaKM LIKE ?";
 
     @Override
     public void insert(KhuyenMai e) {
@@ -80,5 +81,9 @@ public class KhuyenMai_Dao implements DaoInterface<KhuyenMai> {
             e.printStackTrace();
         }
         return newMaKM;
+    }
+
+    public List<KhuyenMai> selectByTuKhoa(String tuKhoa){
+        return this.selectBySql(SELECT_BY_TUKHOA_SQL, "%" + tuKhoa + "%", "%" + tuKhoa + "%");
     }
 }

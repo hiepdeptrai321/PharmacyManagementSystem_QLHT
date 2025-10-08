@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PhieuTraHang_Dao implements DaoInterface<PhieuTraHang> {
-    private final String INSERT_SQL = "INSERT INTO PhieuTraHang (maPT, maNV, maKH, ngayLap, lyDoTra, ghiChu, maHD) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE PhieuTraHang SET maNV=?, maKH=?, ngayLap=?, lyDoTra=?, ghiChu=?, maHD=? WHERE maPT=?";
-    private final String DELETE_BY_ID_SQL = "DELETE FROM PhieuTraHang WHERE maPT=?";
-    private final String SELECT_BY_ID_SQL = "SELECT * FROM PhieuTraHang WHERE maPT=?";
+    private final String INSERT_SQL = "INSERT INTO PhieuTraHang (MaPT, MaNV, MaKH, NgayLap, LyDoTra, GhiChu, MaHD) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE PhieuTraHang SET MaNV=?, MaKH=?, NgayLap=?, LyDoTra=?, GhiChu=?, MaHD=? WHERE MaPT=?";
+    private final String DELETE_BY_ID_SQL = "DELETE FROM PhieuTraHang WHERE MaPT=?";
+    private final String SELECT_BY_ID_SQL = "SELECT * FROM PhieuTraHang WHERE MaPT=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM PhieuTraHang";
 
     @Override
@@ -42,13 +42,13 @@ public class PhieuTraHang_Dao implements DaoInterface<PhieuTraHang> {
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 PhieuTraHang pt = new PhieuTraHang();
-                pt.setMaPT(rs.getString("maPT"));
-                pt.setNhanVien(new NhanVien_Dao().selectById(rs.getString("maNV")));
-                pt.setKhachHang(new KhachHang_Dao().selectById(rs.getString("maKH")));
-                pt.setNgayLap(rs.getTimestamp("ngayLap"));
-                pt.setLyDoTra(rs.getString("lyDoTra"));
-                pt.setGhiChu(rs.getString("ghiChu"));
-                pt.setHoaDon(new HoaDon_Dao().selectById(rs.getString("maHD")));
+                pt.setMaPT(rs.getString("MaPT"));
+                pt.setNhanVien(new NhanVien_Dao().selectById(rs.getString("MaNV")));
+                pt.setKhachHang(new KhachHang_Dao().selectById(rs.getString("MaKH")));
+                pt.setNgayLap(rs.getTimestamp("NgayLap"));
+                pt.setLyDoTra(rs.getString("LyDoTra"));
+                pt.setGhiChu(rs.getString("GhiChu"));
+                pt.setHoaDon(new HoaDon_Dao().selectById(rs.getString("MaHD")));
                 list.add(pt);
             }
             rs.getStatement().close();

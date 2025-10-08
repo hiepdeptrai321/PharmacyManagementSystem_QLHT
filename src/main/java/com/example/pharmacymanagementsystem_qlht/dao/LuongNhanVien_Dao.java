@@ -10,10 +10,10 @@ import java.util.List;
 
 public class LuongNhanVien_Dao implements DaoInterface<LuongNhanVien> {
 
-    private final String INSERT_SQL = "INSERT INTO LuongNhanVien VALUES (?, ?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE LuongNhanVien SET tuNgay=?, denNgay=?, luongCoBan=?, phuCap=?, ghiChu=? WHERE maLNV=?";
-    private final String DELETE_BY_ID = "DELETE FROM LuongNhanVien WHERE maLNV = ?";
-    private final String SELECT_BY_ID = "SELECT * FROM LuongNhanVien WHERE maLNV=?";
+    private final String INSERT_SQL = "INSERT INTO LuongNhanVien(MaLNV, TuNgay, DenNgay, LuongCoBan, PhuCap,GhiChu, MaNV) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE LuongNhanVien SET TuNgay=?, DenNgay=?, LuongCoBan=?, PhuCap=?, GhiChu=? WHERE MaLNV=?";
+    private final String DELETE_BY_ID = "DELETE FROM LuongNhanVien WHERE MaLNV = ?";
+    private final String SELECT_BY_ID = "SELECT * FROM LuongNhanVien WHERE MaLNV=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM LuongNhanVien";
 
     @Override
@@ -47,12 +47,12 @@ public class LuongNhanVien_Dao implements DaoInterface<LuongNhanVien> {
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 LuongNhanVien lnv = new LuongNhanVien();
-                lnv.setMaLNV(rs.getString("maLNV"));
-                lnv.setTuNgay(rs.getDate("tuNgay"));
-                lnv.setDenNgay(rs.getDate("denNgay"));
-                lnv.setLuongCoBan(rs.getDouble("luongCoBan"));
-                lnv.setPhuCap(rs.getDouble("phuCap"));
-                lnv.setGhiChu(rs.getString("ghiChu"));
+                lnv.setMaLNV(rs.getString("MaLNV"));
+                lnv.setTuNgay(rs.getDate("TuNgay"));
+                lnv.setDenNgay(rs.getDate("DenNgay"));
+                lnv.setLuongCoBan(rs.getDouble("LuongCoBan"));
+                lnv.setPhuCap(rs.getDouble("PhuCap"));
+                lnv.setGhiChu(rs.getString("GhiChu"));
                 lnv.setNhanVien(new NhanVien_Dao().selectById(rs.getString("MaNV")));
                 list.add(lnv);
             }

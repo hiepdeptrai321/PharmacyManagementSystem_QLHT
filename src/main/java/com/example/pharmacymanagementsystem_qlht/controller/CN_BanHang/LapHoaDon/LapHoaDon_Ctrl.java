@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import java.util.ResourceBundle;
 import javafx.scene.control.ChoiceBox;
@@ -23,6 +24,8 @@ public class LapHoaDon_Ctrl extends Application {
 
     @FXML
     private ChoiceBox<String> cbPhuongThucTT;
+    @FXML
+    private Pane paneTienMat;
 
 //    @FXML
 //    private ToggleButton myToggleButton;
@@ -44,17 +47,33 @@ public class LapHoaDon_Ctrl extends Application {
     public void initialize() {
         if (cbPhuongThucTT != null) {
             cbPhuongThucTT.getItems().clear();
-            cbPhuongThucTT.getItems().addAll("Tiền mặt", "Chuyển khoản");
-            cbPhuongThucTT.setValue("Tiền mặt");
+            cbPhuongThucTT.getItems().addAll("Phương thức thanh toán", "Tiền mặt", "Chuyển khoản");
+            cbPhuongThucTT.setValue("Phương thức thanh toán");
+            updateTienMatFieldsVisibility("Phương thức thanh toán");
+            cbPhuongThucTT.setOnShowing(event -> {
+                cbPhuongThucTT.getItems().remove("Phương thức thanh toán");
+            });
+            cbPhuongThucTT.setOnHiding(event -> {
+                if (!cbPhuongThucTT.getItems().contains("Phương thức thanh toán")) {
+                    cbPhuongThucTT.getItems().add(0, "Phương thức thanh toán");
+                }
+            });
             cbPhuongThucTT.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+                updateTienMatFieldsVisibility(newVal);
                 if ("Chuyển khoản".equals(newVal)) {
-                    showQRCodeWindow();
+                    hienThiQR();
                 }
             });
         }
     }
 
-    private void showQRCodeWindow() {
+    private void updateTienMatFieldsVisibility(String value) {
+        if (paneTienMat != null) {
+            paneTienMat.setVisible("Tiền mặt".equals(value));
+        }
+    }
+
+    private void hienThiQR() {
         Stage qrStage = new Stage();
         VBox vbox = new VBox(10);
         vbox.setStyle("-fx-padding: 20; -fx-alignment: center;");

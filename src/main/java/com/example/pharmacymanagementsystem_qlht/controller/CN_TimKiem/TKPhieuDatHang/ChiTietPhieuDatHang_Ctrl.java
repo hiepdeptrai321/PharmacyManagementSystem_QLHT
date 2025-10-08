@@ -10,10 +10,10 @@ import java.io.IOException;
 
 public class ChiTietPhieuDatHang_Ctrl extends Application {
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage Stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuDatHang/ChiTietPhieuDatHang_GUI.fxml"));
         Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        Stage.setScene(scene);
+        Stage.show();
     }
 }

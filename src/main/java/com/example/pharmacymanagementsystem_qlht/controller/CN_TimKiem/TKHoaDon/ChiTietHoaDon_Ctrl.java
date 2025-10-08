@@ -15,3 +15,5 @@ public class ChiTietHoaDon_Ctrl extends Application {
         stage.show();
     }
 }
+
+

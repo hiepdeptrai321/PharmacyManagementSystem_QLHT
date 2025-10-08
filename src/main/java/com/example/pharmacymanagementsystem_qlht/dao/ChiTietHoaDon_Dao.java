@@ -9,12 +9,13 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChiTietHoaDon_Dao implements  DaoInterface<ChiTietHoaDon> {
+public class ChiTietHoaDon_Dao implements DaoInterface<ChiTietHoaDon> {
     private final String INSERT_SQL = "INSERT INTO ChiTietHoaDon (maHD, maLo, soLuong, donGia, giamGia) VALUES (?, ?, ?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE ChiTietHoaDon SET soLuong=?, donGia=?, giamGia=? WHERE maHD=? AND maLo=?";
-    private final String DELETE_SQL = "DELETE FROM ChiTietHoaDon WHERE maHD=? AND maLo=?";
-    private final String SELECT_ALL_SQL = "SELECT * FROM ChiTietHoaDon";
+    private final String DELETE_BY_ID_SQL = "DELETE FROM ChiTietHoaDon WHERE maHD=? AND maLo=?";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM ChiTietHoaDon WHERE maHD=? AND maLo=?";
+    private final String SELECT_ALL_SQL = "SELECT * FROM ChiTietHoaDon";
+    private final String SELECT_BY_MAHD_SQL = "SELECT * FROM ChiTietHoaDon WHERE maHD=?";
 
     @Override
     public void insert(ChiTietHoaDon e) {
@@ -28,7 +29,7 @@ public class ChiTietHoaDon_Dao implements  DaoInterface<ChiTietHoaDon> {
 
     @Override
     public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_SQL, keys[0], keys[1]);
+        ConnectDB.update(DELETE_BY_ID_SQL, keys[0], keys[1]);
     }
 
     @Override
@@ -37,17 +38,17 @@ public class ChiTietHoaDon_Dao implements  DaoInterface<ChiTietHoaDon> {
         return list.isEmpty() ? null : list.get(0);
     }
 
-    @Override
-    public List<ChiTietHoaDon> selectAll() {
-        return selectBySql(SELECT_ALL_SQL);
+    public List<ChiTietHoaDon> selectByMaHD(String maHD) {
+        return selectBySql(SELECT_BY_MAHD_SQL, maHD);
     }
 
+    @Override
     public List<ChiTietHoaDon> selectBySql(String sql, Object... args) {
         List<ChiTietHoaDon> list = new ArrayList<>();
-        try (ResultSet rs = ConnectDB.query(sql, args)) {
+        try {
+            ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 ChiTietHoaDon cthd = new ChiTietHoaDon();
-
                 HoaDon hoaDon = new HoaDon();
                 hoaDon.setMaHD(rs.getString("maHD"));
                 cthd.setHoaDon(hoaDon);
@@ -62,9 +63,15 @@ public class ChiTietHoaDon_Dao implements  DaoInterface<ChiTietHoaDon> {
 
                 list.add(cthd);
             }
+            rs.getStatement().close();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return list;
+    }
+
+    @Override
+    public List<ChiTietHoaDon> selectAll() {
+        return selectBySql(SELECT_ALL_SQL);
     }
 }

@@ -8,11 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChiTietKhuyenMai_Dao implements DaoInterface<ChiTietKhuyenMai> {
-    private final String INSERT_SQL = "INSERT INTO ChiTietKhuyenMai (maThuoc, maKM, slApDung, slToiDa) VALUES (?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE ChiTietKhuyenMai SET slApDung=?, slToiDa=? WHERE maThuoc=? AND maKM=?";
-    private final String DELETE_BY_ID_SQL = "DELETE FROM ChiTietKhuyenMai WHERE maThuoc=? AND maKM=?";
-    private final String SELECT_BY_ID_SQL = "SELECT maThuoc, maKM, slApDung, slToiDa FROM ChiTietKhuyenMai WHERE maThuoc=? AND maKM=?";
-    private final String SELECT_ALL_SQL = "SELECT maThuoc, maKM, slApDung, slToiDa FROM ChiTietKhuyenMai";
+    private final String INSERT_SQL = "INSERT INTO ChiTietKhuyenMai (MaThuoc, MaKM, SLApDung, SLToiDa) VALUES (?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE ChiTietKhuyenMai SET SLApDung=?, SLToiDa=? WHERE MaThuoc=? AND MaKM=?";
+    private final String DELETE_BY_ID_SQL = "DELETE FROM ChiTietKhuyenMai WHERE MaThuoc=? AND MaKM=?";
+    private final String SELECT_BY_ID_SQL = "SELECT MaThuoc, MaKM, SLApDung, SLToiDa FROM ChiTietKhuyenMai WHERE MaThuoc=? AND MaKM=?";
+    private final String SELECT_ALL_SQL = "SELECT MaThuoc, MaKM, SLApDung, SLToiDa FROM ChiTietKhuyenMai";
+    private final String SELECT_BY_MAKM_SQL = "SELECT MaThuoc, MaKM, SLApDung, SLToiDa FROM ChiTietKhuyenMai WHERE MaKM=?";
 
     @Override
     public void insert(ChiTietKhuyenMai e) {
@@ -35,6 +36,10 @@ public class ChiTietKhuyenMai_Dao implements DaoInterface<ChiTietKhuyenMai> {
         return list.isEmpty() ? null : list.get(0);
     }
 
+    public List<ChiTietKhuyenMai> selectByMaKM(String maKM) {
+        return selectBySql(SELECT_BY_MAKM_SQL, maKM);
+    }
+
     @Override
     public List<ChiTietKhuyenMai> selectBySql(String sql, Object... args) {
         List<ChiTietKhuyenMai> list = new ArrayList<>();
@@ -42,10 +47,10 @@ public class ChiTietKhuyenMai_Dao implements DaoInterface<ChiTietKhuyenMai> {
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 ChiTietKhuyenMai ct = new ChiTietKhuyenMai();
-                ct.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getString("maThuoc")));
-                ct.setKhuyenMai(new KhuyenMai_Dao().selectById(rs.getString("maKM")));
-                ct.setSlApDung(rs.getInt("slApDung"));
-                ct.setSlToiDa(rs.getInt("slToiDa"));
+                ct.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getString("MaThuoc")));
+                ct.setKhuyenMai(new KhuyenMai_Dao().selectById(rs.getString("MaKM")));
+                ct.setSlApDung(rs.getInt("SLApDung"));
+                ct.setSlToiDa(rs.getInt("SLToiDa"));
                 list.add(ct);
             }
             rs.getStatement().close();

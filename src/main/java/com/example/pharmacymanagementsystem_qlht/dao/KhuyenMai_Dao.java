@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KhuyenMai_Dao implements DaoInterface<KhuyenMai> {
-    private final String INSERT_SQL = "INSERT INTO KhuyenMai (LoaiKM, TenKM, giaTriKM, ngayBatDau, ngayKetThuc, moTa) VALUES ( ?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE KhuyenMai SET loaiKM=?, tenKM=?, giaTriKM=?, ngayBatDau=?, ngayKetThuc=?, moTa=? WHERE maKM=?";
-    private final String DELETE_BY_ID_SQL = "DELETE FROM KhuyenMai WHERE maKM=?";
-    private final String SELECT_BY_ID_SQL = "SELECT maKM, loaiKM, tenKM, giaTriKM, ngayBatDau, ngayKetThuc, moTa FROM LoaiKhuyenMai WHERE maLoaiKM = ?";
+    private final String INSERT_SQL = "INSERT INTO KhuyenMai (MaLoai, TenKM, GiaTriKM, NgayBatDau, NgayKetThuc, MoTa) VALUES ( ?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE KhuyenMai SET MaLoai=?, TenKM=?, GiaTriKM=?, NgayBatDau=?, NgayKetThuc=?, MoTa=? WHERE MaKM=?";
+    private final String DELETE_BY_ID_SQL = "DELETE FROM KhuyenMai WHERE MaKM=?";
+    private final String SELECT_BY_ID_SQL = "SELECT MaKM, MaLoai, TenKM, GiaTriKM, NgayBatDau, NgayKetThuc, MoTa FROM KhuyenMai WHERE MaKM = ?";
     private final String SELECT_ALL_SQL = "SELECT MaKM, MaLoai, TenKM, GiaTriKM, NgayBatDau, NgayKetThuc, MoTa FROM KhuyenMai";
 
     @Override
@@ -33,7 +33,7 @@ public class KhuyenMai_Dao implements DaoInterface<KhuyenMai> {
 
     @Override
     public KhuyenMai selectById(Object... keys) {
-        return this.selectById(SELECT_BY_ID_SQL, keys);
+        return this.selectBySql(SELECT_BY_ID_SQL, keys).get(0);
     }
 
     @Override

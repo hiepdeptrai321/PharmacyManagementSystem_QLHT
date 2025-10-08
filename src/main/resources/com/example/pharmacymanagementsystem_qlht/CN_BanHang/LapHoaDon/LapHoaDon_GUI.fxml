@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="704.0" prefWidth="1200.0" stylesheets="@../../css/LapHoaDon.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_BanHang.LapHoaDon.LapHoaDon_Ctrl">
+<AnchorPane prefHeight="704.0" prefWidth="1200.0" stylesheets="@../../css/LapHoaDon.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_BanHang.LapHoaDon.LapHoaDon_Ctrl">
     <children>
         <!-- Title -->
         <Label layoutX="40.0" layoutY="21.0" styleClass="title-label" text="LẬP HÓA ĐƠN" />
@@ -49,16 +49,14 @@
             <children>
                 <Label layoutX="30.0" layoutY="20.0" styleClass="bold-label" text="THÔNG TIN KHÁCH HÀNG" />
                 <Label layoutX="30.0" layoutY="60.0" text="Họ tên khách hàng:" />
-                <TextField fx:id="txtTenKhachHang" layoutX="170.0" layoutY="54.0" prefWidth="140.0" />
+                <TextField fx:id="txtTenKhachHang" layoutX="170.0" layoutY="54.0" prefHeight="27.0" prefWidth="140.0" />
+                <Button fx:id="btnTimKhachHang" layoutX="320.0" layoutY="54.0" onAction="#handleTimKhachHang" prefHeight="27.0" prefWidth="40.0" text="Tìm" />
 
                 <Label layoutX="30.0" layoutY="100.0" text="Số điện thoại:" />
                 <TextField fx:id="txtSoDienThoai" layoutX="170.0" layoutY="94.0" prefWidth="140.0" />
 
-                <Label layoutX="30.0" layoutY="140.0" text="Nhập mã đơn thuốc:" />
-                <TextField fx:id="txtMaDonThuoc" layoutX="170.0" layoutY="134.0" prefWidth="140.0" />
-
-                <Label layoutX="30.0" layoutY="180.0" text="Bác sĩ kê đơn:" />
-                <TextField fx:id="txtBacSi" layoutX="170.0" layoutY="174.0" prefWidth="140.0" />
+                <Label layoutX="30.0" layoutY="177.0" text="Nhập mã đơn thuốc:" />
+                <TextField fx:id="txtMaDonThuoc" layoutX="170.0" layoutY="171.0" prefWidth="140.0" />
 
                 <Label layoutX="30.0" layoutY="220.0" text="Ngày kê đơn:" />
                 <DatePicker fx:id="dpNgayKeDon" layoutX="170.0" layoutY="214.0" prefWidth="140.0" />

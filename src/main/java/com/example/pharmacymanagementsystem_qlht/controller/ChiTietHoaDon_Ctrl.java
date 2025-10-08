@@ -15,3 +15,5 @@ public class ChiTietHoaDon_Ctrl extends Application {
         stage.show();
     }
 }
+
+// Không cần chỉnh sửa gì ở file này để đồng nhất style, mọi style xử lý ở FXML/CSS.

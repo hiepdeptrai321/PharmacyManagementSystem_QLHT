@@ -37,7 +37,7 @@
                 <TableColumn prefWidth="80.0" text="Số lượng" />
                 <TableColumn prefWidth="100.0" text="Đơn giá" />
                 <TableColumn prefWidth="100.0" text="Thành tiền" />
-                <TableColumn prefWidth="59.0" text="Ghi chú" />
+                <TableColumn prefWidth="108.80001220703127" text="Ghi chú" />
             </columns>
         </TableView>
 

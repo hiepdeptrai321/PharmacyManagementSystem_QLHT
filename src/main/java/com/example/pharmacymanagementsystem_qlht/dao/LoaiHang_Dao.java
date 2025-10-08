@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LoaiHang_Dao implements DaoInterface<LoaiHang>{
-    private final String INSERT_SQL = "INSERT INTO LoaiHang VALUES (?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE LoaiHang SET tenLH=?, moTa=? WHERE maLoaiHang=?";
-    private final String DELETE_BY_ID = "DELETE FROM LoaiHang WHERE maLoaiHang = ?";
+    private final String INSERT_SQL = "INSERT INTO LoaiHang(MaLoaiHang, TenLH, MoTa) VALUES (?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE LoaiHang SET TenLH=?, MoTa=? WHERE MaLoaiHang=?";
+    private final String DELETE_BY_ID = "DELETE FROM LoaiHang WHERE MaLoaiHang = ?";
     private final String SELECT_BY_ID = "SELECT * FROM LoaiHang WHERE MaLH=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM LoaiHang";
 
@@ -45,7 +45,7 @@ public class LoaiHang_Dao implements DaoInterface<LoaiHang>{
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 LoaiHang lh = new LoaiHang();
-                lh.setMaLoaiHang(rs.getString("MaLH"));
+                lh.setMaLoaiHang(rs.getString("MaLoaiHang"));
                 lh.setTenLoaiHang(rs.getString("TenLH"));
                 lh.setMoTa(rs.getString("MoTa"));
                 list.add(lh);

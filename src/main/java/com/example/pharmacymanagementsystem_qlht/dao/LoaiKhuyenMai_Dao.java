@@ -35,9 +35,9 @@ public class LoaiKhuyenMai_Dao implements DaoInterface<LoaiKhuyenMai> {
             ResultSet rs = ConnectDB.query(sql,args);
             while(rs.next()){
                 LoaiKhuyenMai loaiKhuyenMai = new LoaiKhuyenMai();
-                loaiKhuyenMai.setMaLoai(rs.getString("maLoai"));
-                loaiKhuyenMai.setTenLoai(rs.getString("tenLoai"));
-                loaiKhuyenMai.setMoTa(rs.getString("moTa"));
+                loaiKhuyenMai.setMaLoai(rs.getString("MaLoai"));
+                loaiKhuyenMai.setTenLoai(rs.getString("TenLoai"));
+                loaiKhuyenMai.setMoTa(rs.getString("MoTa"));
                 loaiKhuyenMaiList.add(loaiKhuyenMai);
             }
             rs.getStatement().close();

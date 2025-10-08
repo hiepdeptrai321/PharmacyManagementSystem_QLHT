@@ -9,11 +9,11 @@ import java.util.List;
 
 public class DonViTinh_Dao implements DaoInterface<DonViTinh>{
 
-    private final String INSERT_SQL = "INSERT INTO DonViTinh (maDVT, tenDonViTinh, kiHieu) VALUES (?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE DonViTinh SET tenDonViTinh=?, kiHieu=? WHERE maDVT=?";
-    private final String DELETE_BY_ID_SQL = "DELETE FROM DonViTinh WHERE maDVT=?";
-    private final String SELECT_BY_ID_SQL = "SELECT maDVT, tenDonViTinh, kiHieu FROM DonViTinh WHERE maDVT = ?";
-    private final String SELECT_ALL_SQL = "SELECT maDVT, tenDonViTinh, kiHieu FROM DonViTinh";
+    private final String INSERT_SQL = "INSERT INTO DonViTinh (MaDVT, TenDonViTinh, KiHieu) VALUES (?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE DonViTinh SET TenDonViTinh=?, KiHieu=? WHERE MaDVT=?";
+    private final String DELETE_BY_ID_SQL = "DELETE FROM DonViTinh WHERE MaDVT=?";
+    private final String SELECT_BY_ID_SQL = "SELECT MaDVT, TenDonViTinh, KiHieu FROM DonViTinh WHERE MaDVT = ?";
+    private final String SELECT_ALL_SQL = "SELECT MaDVT, TenDonViTinh, KiHieu FROM DonViTinh";
 
     @Override
     public void insert(DonViTinh e) {
@@ -43,9 +43,9 @@ public class DonViTinh_Dao implements DaoInterface<DonViTinh>{
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 DonViTinh dvt = new DonViTinh();
-                dvt.setMaDVT(rs.getString("maDVT"));
-                dvt.setTenDonViTinh(rs.getString("tenDonViTinh"));
-                dvt.setKiHieu(rs.getString("kiHieu"));
+                dvt.setMaDVT(rs.getString("MaDVT"));
+                dvt.setTenDonViTinh(rs.getString("TenDonViTinh"));
+                dvt.setKiHieu(rs.getString("KiHieu"));
                 donViTinhList.add(dvt);
             }
             rs.getStatement().close();

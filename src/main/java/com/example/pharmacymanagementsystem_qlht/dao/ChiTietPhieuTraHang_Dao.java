@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChiTietPhieuTraHang_Dao implements DaoInterface<ChiTietPhieuTraHang> {
-    private final String INSERT_SQL = "INSERT INTO ChiTietPhieuTraHang (maLo, maPT, maThuoc, soLuong, donGia, giamGia) VALUES (?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE ChiTietPhieuTraHang SET soLuong=?, donGia=?, giamGia=? WHERE maLo=? AND maPT=? AND maThuoc=?";
-    private final String DELETE_BY_ID_SQL = "DELETE FROM ChiTietPhieuTraHang WHERE maLo=? AND maPT=? AND maThuoc=?";
-    private final String SELECT_BY_ID_SQL = "SELECT * FROM ChiTietPhieuTraHang WHERE maLo=? AND maPT=? AND maThuoc=?";
+    private final String INSERT_SQL = "INSERT INTO ChiTietPhieuTraHang (MaLo, MaPT, MaThuoc, SoLuong, DonGia, GiamGia) VALUES (?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE ChiTietPhieuTraHang SET SoLuong=?, DonGia=?, GiamGia=? WHERE MaLo=? AND MaPT=? AND MaThuoc=?";
+    private final String DELETE_BY_ID_SQL = "DELETE FROM ChiTietPhieuTraHang WHERE MaLo=? AND MaPT=? AND MaThuoc=?";
+    private final String SELECT_BY_ID_SQL = "SELECT * FROM ChiTietPhieuTraHang WHERE MaLo=? AND MaPT=? AND MaThuoc=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM ChiTietPhieuTraHang";
 
     @Override
@@ -42,12 +42,12 @@ public class ChiTietPhieuTraHang_Dao implements DaoInterface<ChiTietPhieuTraHang
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 ChiTietPhieuTraHang ct = new ChiTietPhieuTraHang();
-                ct.setLoHang(new Thuoc_SP_TheoLo_Dao().selectById(rs.getString("maLo")));
-                ct.setPhieuTraHang(new PhieuTraHang_Dao().selectById(rs.getString("maPT")));
-                ct.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getString("maThuoc")));
-                ct.setSoLuong(rs.getInt("soLuong"));
-                ct.setDonGia(rs.getDouble("donGia"));
-                ct.setGiamGia(rs.getDouble("giamGia"));
+                ct.setLoHang(new Thuoc_SP_TheoLo_Dao().selectById(rs.getString("MaLo")));
+                ct.setPhieuTraHang(new PhieuTraHang_Dao().selectById(rs.getString("MaPT")));
+                ct.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getString("MaThuoc")));
+                ct.setSoLuong(rs.getInt("SoLuong"));
+                ct.setDonGia(rs.getDouble("DonGia"));
+                ct.setGiamGia(rs.getDouble("GiamGia"));
                 list.add(ct);
             }
             rs.getStatement().close();

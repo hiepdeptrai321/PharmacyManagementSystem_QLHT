@@ -12,11 +12,11 @@ import java.util.List;
 
 public class HoaDon_Dao implements DaoInterface<HoaDon>{
 
-    private final String INSERT_SQL = "INSERT INTO HoaDon (maHD, maNV, ngayLap, maKH, trangThai) VALUES (?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE HoaDon SET maNV=?, ngayLap=?, maKH=?, trangThai=? WHERE maHD=?";
-    private final String DELETE_SQL = "DELETE FROM HoaDon WHERE maHD=?";
+    private final String INSERT_SQL = "INSERT INTO HoaDon (MaHD, MaNV, NgayLap, MaKH, TrangThai) VALUES (?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE HoaDon SET MaNV=?, NgayLap=?, MaKH=?, TrangThai=? WHERE MaHD=?";
+    private final String DELETE_SQL = "DELETE FROM HoaDon WHERE MaHD=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM HoaDon";
-    private final String SELECT_BY_ID_SQL = "SELECT * FROM HoaDon WHERE maHD=?";
+    private final String SELECT_BY_ID_SQL = "SELECT * FROM HoaDon WHERE MaHD=?";
 
 
 
@@ -49,13 +49,13 @@ public class HoaDon_Dao implements DaoInterface<HoaDon>{
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 HoaDon hd = new HoaDon();
-                hd.setMaHD(rs.getString("maHD"));
-                NhanVien nv = new NhanVien_Dao().selectById(rs.getString("maNV"));
-                KhachHang kh = new KhachHang_Dao().selectById(rs.getString("maKH"));
+                hd.setMaHD(rs.getString("MaHD"));
+                NhanVien nv = new NhanVien_Dao().selectById(rs.getString("MaNV"));
+                KhachHang kh = new KhachHang_Dao().selectById(rs.getString("MaKH"));
                 hd.setMaNV(nv);
                 hd.setMaKH(kh);
-                hd.setNgayLap(rs.getTimestamp("ngayLap"));
-                hd.setTrangThai(rs.getBoolean("trangThai"));
+                hd.setNgayLap(rs.getTimestamp("NgayLap"));
+                hd.setTrangThai(rs.getBoolean("TrangThai"));
 
                 list.add(hd);
             }

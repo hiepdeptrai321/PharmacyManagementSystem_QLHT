@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChiTietHoaDon_Dao implements  DaoInterface<ChiTietHoaDon> {
-    private final String INSERT_SQL = "INSERT INTO ChiTietHoaDon (maHD, maLo, soLuong, donGia, giamGia) VALUES (?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE ChiTietHoaDon SET soLuong=?, donGia=?, giamGia=? WHERE maHD=? AND maLo=?";
-    private final String DELETE_SQL = "DELETE FROM ChiTietHoaDon WHERE maHD=? AND maLo=?";
+    private final String INSERT_SQL = "INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia) VALUES (?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE ChiTietHoaDon SET SoLuong=?, DonGia=?, GiamGia=? WHERE MaHD=? AND MaLo=?";
+    private final String DELETE_SQL = "DELETE FROM ChiTietHoaDon WHERE MaHD=? AND MaLo=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM ChiTietHoaDon";
-    private final String SELECT_BY_ID_SQL = "SELECT * FROM ChiTietHoaDon WHERE maHD=? AND maLo=?";
+    private final String SELECT_BY_ID_SQL = "SELECT * FROM ChiTietHoaDon WHERE MaHD=? AND MaLo=?";
 
     @Override
     public void insert(ChiTietHoaDon e) {
@@ -49,16 +49,16 @@ public class ChiTietHoaDon_Dao implements  DaoInterface<ChiTietHoaDon> {
                 ChiTietHoaDon cthd = new ChiTietHoaDon();
 
                 HoaDon hoaDon = new HoaDon();
-                hoaDon.setMaHD(rs.getString("maHD"));
+                hoaDon.setMaHD(rs.getString("MaHD"));
                 cthd.setHoaDon(hoaDon);
 
                 Thuoc_SP_TheoLo loHang = new Thuoc_SP_TheoLo();
-                loHang.setMaLH(rs.getString("maLo"));
+                loHang.setMaLH(rs.getString("MaLo"));
                 cthd.setLoHang(loHang);
 
-                cthd.setSoLuong(rs.getInt("soLuong"));
-                cthd.setDonGia(rs.getDouble("donGia"));
-                cthd.setGiamGia(rs.getDouble("giamGia"));
+                cthd.setSoLuong(rs.getInt("SoLuong"));
+                cthd.setDonGia(rs.getDouble("DonGia"));
+                cthd.setGiamGia(rs.getDouble("GiamGia"));
 
                 list.add(cthd);
             }

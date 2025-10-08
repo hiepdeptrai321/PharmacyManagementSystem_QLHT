@@ -9,6 +9,7 @@ public class PhieuDatHang {
     private double soTienCoc;
     private String ghiChu;
     private KhachHang khachHang;
+    private NhanVien nhanVien;
 
     public PhieuDatHang() {
     }
@@ -61,6 +62,14 @@ public class PhieuDatHang {
         this.khachHang = khachHang;
     }
 
+    public NhanVien getNhanVien() {
+        return nhanVien;
+    }
+
+    public void setNhanVien(NhanVien nhanVien) {
+        this.nhanVien = nhanVien;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -81,6 +90,7 @@ public class PhieuDatHang {
                 ", soTienCoc=" + soTienCoc +
                 ", ghiChu='" + ghiChu + '\'' +
                 ", khachHang=" + khachHang +
+                ", nhanVien=" + nhanVien +
                 '}';
     }
 }

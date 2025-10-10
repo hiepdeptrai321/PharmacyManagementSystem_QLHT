@@ -50,7 +50,7 @@ public class QuanLyKhuyenMai_Ctrl extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_QuanLy/QLKhuyenMai/QuanLyKhuyenMai_GUI.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhuyenMai/QuanLyKhuyenMai_GUI.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -91,7 +91,7 @@ public class QuanLyKhuyenMai_Ctrl extends Application {
     public void btnChiTietClick(KhuyenMai km) {
         try {
             Stage stage = new Stage();
-            FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_QuanLy/QLKhuyenMai/SuaXoaKhuyenMai_GUI.fxml"));
+            FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhuyenMai/SuaXoaKhuyenMai_GUI.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
 
@@ -109,7 +109,7 @@ public class QuanLyKhuyenMai_Ctrl extends Application {
     public void btnThemKMClick() {
         try {
             Stage stage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_QuanLy/QLKhuyenMai/ThemKhuyenMai_GUI.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhuyenMai/ThemKhuyenMai_GUI.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();

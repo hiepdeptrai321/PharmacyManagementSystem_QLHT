@@ -15,7 +15,7 @@ public class ThemKe_Ctrl extends Application {
     }
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_QuanLy/QLKeHang/ThemKe.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKeHang/ThemKe.fxml"));
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/css/ThemNhaCungCap.css" + "").toExternalForm());
         stage.setScene(scene);

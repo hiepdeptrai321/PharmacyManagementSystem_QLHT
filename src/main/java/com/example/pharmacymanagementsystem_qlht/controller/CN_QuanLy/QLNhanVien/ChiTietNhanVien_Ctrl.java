@@ -14,7 +14,7 @@ public class ChiTietNhanVien_Ctrl extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_QuanLy/QLNhanVien/ChiTietNhanVien.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNhanVien/ChiTietNhanVien.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

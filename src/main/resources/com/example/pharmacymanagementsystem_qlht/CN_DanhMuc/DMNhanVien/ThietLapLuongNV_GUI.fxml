@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="342.0" prefWidth="407.0" stylesheets="@../../css/SuaXoaNhanVien.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLThuoc.ThietLapDonViTinh_Ctrl">
+<AnchorPane prefHeight="342.0" prefWidth="407.0" stylesheets="@../../css/SuaXoaNhanVien.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMThuoc.ThietLapDonViTinh_Ctrl">
     <children>
         <Label id="lbtitle" layoutX="21.0" layoutY="8.0" prefHeight="26.0" prefWidth="365.0" text="                       Thiết lập lương nhân viên" textFill="#0623ff">
             <font>

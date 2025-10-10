@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="337.0" prefWidth="582.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLNhaCungCap.SuaXoaNhaCungCap_Ctrl">
+<Pane prefHeight="337.0" prefWidth="582.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhaCungCap.SuaXoaNhaCungCap_Ctrl">
     <children>
         <Label layoutX="13.5" layoutY="8.0" prefHeight="31.0" prefWidth="555.0" styleClass="lbtitle" text="Xóa, sửa nhà cung cấp">
             <font>

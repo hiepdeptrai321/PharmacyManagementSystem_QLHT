@@ -28,7 +28,7 @@ public class ChiTietHoaDon_Dao implements  DaoInterface<ChiTietHoaDon> {
 
     @Override
     public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_SQL, keys[0], keys[1]);
+        ConnectDB.update(DELETE_BY_ID_SQL, keys[0], keys[1]);
     }
 
     @Override
@@ -37,17 +37,17 @@ public class ChiTietHoaDon_Dao implements  DaoInterface<ChiTietHoaDon> {
         return list.isEmpty() ? null : list.get(0);
     }
 
-    @Override
-    public List<ChiTietHoaDon> selectAll() {
-        return selectBySql(SELECT_ALL_SQL);
+    public List<ChiTietHoaDon> selectByMaHD(String maHD) {
+        return selectBySql(SELECT_BY_MAHD_SQL, maHD);
     }
 
+    @Override
     public List<ChiTietHoaDon> selectBySql(String sql, Object... args) {
         List<ChiTietHoaDon> list = new ArrayList<>();
-        try (ResultSet rs = ConnectDB.query(sql, args)) {
+        try {
+            ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 ChiTietHoaDon cthd = new ChiTietHoaDon();
-
                 HoaDon hoaDon = new HoaDon();
                 hoaDon.setMaHD(rs.getString("MaHD"));
                 cthd.setHoaDon(hoaDon);
@@ -62,9 +62,15 @@ public class ChiTietHoaDon_Dao implements  DaoInterface<ChiTietHoaDon> {
 
                 list.add(cthd);
             }
+            rs.getStatement().close();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return list;
+    }
+
+    @Override
+    public List<ChiTietHoaDon> selectAll() {
+        return selectBySql(SELECT_ALL_SQL);
     }
 }

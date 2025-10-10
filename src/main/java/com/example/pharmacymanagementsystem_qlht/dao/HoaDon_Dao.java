@@ -4,7 +4,6 @@ import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.HoaDon;
 import com.example.pharmacymanagementsystem_qlht.model.NhanVien;
 import com.example.pharmacymanagementsystem_qlht.model.KhachHang;
-import com.example.pharmacymanagementsystem_qlht.model.ChiTietHoaDon;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -14,11 +13,10 @@ public class HoaDon_Dao implements DaoInterface<HoaDon>{
 
     private final String INSERT_SQL = "INSERT INTO HoaDon (MaHD, MaNV, NgayLap, MaKH, TrangThai) VALUES (?, ?, ?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE HoaDon SET MaNV=?, NgayLap=?, MaKH=?, TrangThai=? WHERE MaHD=?";
-    private final String DELETE_SQL = "DELETE FROM HoaDon WHERE MaHD=?";
-    private final String SELECT_ALL_SQL = "SELECT * FROM HoaDon";
-    private final String SELECT_BY_ID_SQL = "SELECT * FROM HoaDon WHERE MaHD=?";
-
-
+    private final String DELETE_BY_ID_SQL = "DELETE FROM HoaDon WHERE MaHD=?";
+    private final String SELECT_BY_ID_SQL = "SELECT MaHD, MaNV, NgayLap, MaKH, TrangThai FROM HoaDon WHERE MaHD=?";
+    private final String SELECT_ALL_SQL = "SELECT MaHD, MaNV, NgayLap, MaKH, TrangThai FROM HoaDon";
+    private final String SELECT_BY_TUKHOA_SQL = "SELECT MaHD, MaNV, NgayLap, MaKH, TrangThai FROM HoaDon WHERE MaHD LIKE ?";
 
     @Override
     public void insert(HoaDon e) {
@@ -32,7 +30,7 @@ public class HoaDon_Dao implements DaoInterface<HoaDon>{
 
     @Override
     public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_SQL, keys);
+        ConnectDB.update(DELETE_BY_ID_SQL, keys);
     }
 
     @Override
@@ -44,31 +42,49 @@ public class HoaDon_Dao implements DaoInterface<HoaDon>{
 
     @Override
     public List<HoaDon> selectBySql(String sql, Object... args) {
-        List<HoaDon> list = new ArrayList<>();
+        List<HoaDon> hoaDonList = new ArrayList<>();
         try {
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 HoaDon hd = new HoaDon();
                 hd.setMaHD(rs.getString("MaHD"));
-                NhanVien nv = new NhanVien_Dao().selectById(rs.getString("MaNV"));
-                KhachHang kh = new KhachHang_Dao().selectById(rs.getString("MaKH"));
-                hd.setMaNV(nv);
-                hd.setMaKH(kh);
+                hd.setMaNV(new NhanVien_Dao().selectById(rs.getString("MaNV")));
+                hd.setMaKH(new KhachHang_Dao().selectById(rs.getString("MaKH")));
                 hd.setNgayLap(rs.getTimestamp("NgayLap"));
                 hd.setTrangThai(rs.getBoolean("TrangThai"));
-
-                list.add(hd);
+                hoaDonList.add(hd);
             }
-            rs.getStatement().getConnection().close();
+            rs.getStatement().close();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return list;
+        return hoaDonList;
     }
 
     @Override
     public List<HoaDon> selectAll() {
-        return selectBySql(SELECT_ALL_SQL);
+        return this.selectBySql(SELECT_ALL_SQL);
+    }
+
+    public String generateNewMaHD() {
+        String newMaHD = "HD001"; // Default value if no records exist
+        String SELECT_TOP1_SQL = "SELECT TOP 1 MaHD FROM HoaDon ORDER BY MaHD DESC";
+        try {
+            ResultSet rs = ConnectDB.query(SELECT_TOP1_SQL);
+            if (rs.next()) {
+                String lastMaHD = rs.getString("MaHD");
+                int stt = Integer.parseInt(lastMaHD.substring(2)); // Extract numeric part
+                stt++; // Increment the numeric part
+                newMaHD = String.format("HD%03d", stt); // Format with leading zeros
+            }
+            rs.getStatement().close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return newMaHD;
+    }
+
+    public List<HoaDon> selectByTuKhoa(String tuKhoa){
+        return this.selectBySql(SELECT_BY_TUKHOA_SQL, "%" + tuKhoa + "%");
     }
 }
-

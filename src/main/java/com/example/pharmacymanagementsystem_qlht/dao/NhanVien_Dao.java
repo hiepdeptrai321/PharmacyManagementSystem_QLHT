@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NhanVien_Dao implements DaoInterface<NhanVien> {
-    private final String INSERT_SQL = "INSERT INTO NhanVien VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE NhanVien SET tenNV=?, sdt=?, email=?, ngaySinh=?, gioiTinh=?, diaChi=?, trangThai=?, taiKhoan=?, matKhau=? WHERE maNV=?";
-    private final String DELETE_BY_ID = "DELETE FROM NhanVien WHERE maNV = ?";
-    private final String SELECT_BY_ID = "SELECT * FROM NhanVien WHERE maNV=?";
+    private final String INSERT_SQL = "INSERT INTO NhanVien(MaNV, TenNV, SDT,Email, NgaySinh, GioiTinh, DiaChi, TrangThai, TaiKhoan,MatKhau ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE NhanVien SET TenNV=?, SDT=?, Email=?, NgaySinh=?, GioiTinh=?, DiaChi=?, TrangThai=?, TaiKhoan=?, MatKhau=? WHERE MaNV=?";
+    private final String DELETE_BY_ID = "DELETE FROM NhanVien WHERE MaNV = ?";
+    private final String SELECT_BY_ID = "SELECT * FROM NhanVien WHERE MaNV=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM NhanVien";
 
     @Override
@@ -65,16 +65,16 @@ public class NhanVien_Dao implements DaoInterface<NhanVien> {
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 NhanVien nv = new NhanVien();
-                nv.setMaNV(rs.getString("maNV"));
-                nv.setTenNV(rs.getString("tenNV"));
-                nv.setSdt(rs.getString("sdt"));
-                nv.setEmail(rs.getString("email"));
-                nv.setNgaySinh(rs.getDate("ngaySinh"));
-                nv.setGioiTinh(rs.getBoolean("gioiTinh"));
-                nv.setDiaChi(rs.getString("diaChi"));
-                nv.setTrangThai(rs.getBoolean("trangThai"));
-                nv.setTaiKhoan(rs.getString("taiKhoan"));
-                nv.setMatKhau(rs.getString("matKhau"));
+                nv.setMaNV(rs.getString("MaNV"));
+                nv.setTenNV(rs.getString("TenNV"));
+                nv.setSdt(rs.getString("SDT"));
+                nv.setEmail(rs.getString("Email"));
+                nv.setNgaySinh(rs.getDate("NgaySinh"));
+                nv.setGioiTinh(rs.getBoolean("GioiTinh"));
+                nv.setDiaChi(rs.getString("DiaChi"));
+                nv.setTrangThai(rs.getBoolean("TrangThai"));
+                nv.setTaiKhoan(rs.getString("TaiKhoan"));
+                nv.setMatKhau(rs.getString("MatKhau"));
                 list.add(nv);
             }
             rs.getStatement().getConnection().close();

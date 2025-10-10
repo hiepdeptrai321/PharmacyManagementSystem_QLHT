@@ -9,9 +9,9 @@ import java.util.List;
 
 public class KeHang_Dao implements DaoInterface<KeHang> {
 
-    private final String INSERT_SQL = "INSERT INTO KeHang VALUES (?, ?)";
-    private final String UPDATE_SQL = "UPDATE KeHang SET tenKe=? WHERE maKe=?";
-    private final String DELETE_BY_ID = "DELETE FROM KeHang WHERE maKe = ?";
+    private final String INSERT_SQL = "INSERT INTO KeHang(MaKe, Tenke) VALUES (?, ?)";
+    private final String UPDATE_SQL = "UPDATE KeHang SET TenKe=? WHERE MaKe=?";
+    private final String DELETE_BY_ID = "DELETE FROM KeHang WHERE MaKe = ?";
     private final String SELECT_BY_ID = "SELECT * FROM KeHang WHERE MaKe=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM KeHang";
 
@@ -46,8 +46,8 @@ public class KeHang_Dao implements DaoInterface<KeHang> {
                     ResultSet rs = ConnectDB.query(sql, args);
                     while (rs.next()){
                         KeHang keHang = new KeHang();
-                        keHang.setMaKe(rs.getString("maKe"));
-                        keHang.setTenKe(rs.getString("tenKe"));
+                        keHang.setMaKe(rs.getString("MaKe"));
+                        keHang.setTenKe(rs.getString("TenKe"));
                         list.add(keHang);
                     }
                     rs.getStatement().getConnection().close();

@@ -9,10 +9,10 @@ import java.util.List;
 
 public class NhomDuocLy_Dao implements DaoInterface<NhomDuocLy> {
 
-    private final String INSERT_SQL = "INSERT INTO NhomDuocLy VALUES (?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE NhomDuocLy SET tenNDL=?, moTa=? WHERE maNDL=?";
-    private final String DELETE_BY_ID = "DELETE FROM NhomDuocLy WHERE maNDL = ?";
-    private final String SELECT_BY_ID = "SELECT * FROM NhomDuocLy WHERE maNDL=?";
+    private final String INSERT_SQL = "INSERT INTO NhomDuocLy(MaNDL, TenNDL, Mota) VALUES (?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE NhomDuocLy SET TenNDL=?, MoTa=? WHERE MaNDL=?";
+    private final String DELETE_BY_ID = "DELETE FROM NhomDuocLy WHERE MaNDL = ?";
+    private final String SELECT_BY_ID = "SELECT * FROM NhomDuocLy WHERE MaNDL=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM NhomDuocLy";
 
     @Override
@@ -46,9 +46,9 @@ public class NhomDuocLy_Dao implements DaoInterface<NhomDuocLy> {
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 NhomDuocLy ndl = new NhomDuocLy();
-                ndl.setMaNDL(rs.getString("maNDL"));
-                ndl.setTenNDL(rs.getString("tenNDL"));
-                ndl.setMoTa(rs.getString("moTa"));
+                ndl.setMaNDL(rs.getString("MaNDL"));
+                ndl.setTenNDL(rs.getString("TenNDL"));
+                ndl.setMoTa(rs.getString("MoTa"));
                 list.add(ndl);
             }
             rs.getStatement().getConnection().close();

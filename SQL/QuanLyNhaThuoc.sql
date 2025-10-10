@@ -65,7 +65,7 @@ CREATE TABLE NhaCungCap (
 -- Bảng LoaiHang
 -- =========================
 CREATE TABLE LoaiHang (
-    MaLH       VARCHAR(10) PRIMARY KEY,
+    MaLoaiHang       VARCHAR(10) PRIMARY KEY,
     TenLH      NVARCHAR(50),
     MoTa       NVARCHAR(255)
 );
@@ -227,10 +227,11 @@ CREATE TABLE PhieuDoiHang (
 CREATE TABLE ChiTietPhieuDoiHang (
     MaLH       VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SP_TheoLo(MaLH),
     MaPD       VARCHAR(10) FOREIGN KEY REFERENCES PhieuDoiHang(MaPD),
+	MaThuoc    VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
     SoLuong    INT NOT NULL,
     DonGia     FLOAT NOT NULL,
     GiamGia    FLOAT NOT NULL,
-    PRIMARY KEY (MaLH, MaPD)
+    PRIMARY KEY (MaLH, MaPD,MaThuoc)
 );
 
 -- =========================
@@ -252,10 +253,11 @@ CREATE TABLE PhieuTraHang (
 CREATE TABLE ChiTietPhieuTraHang (
     MaLH       VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SP_TheoLo(MaLH),
     MaPT       VARCHAR(10) NOT NULL FOREIGN KEY REFERENCES PhieuTraHang(MaPT),
+	MaThuoc    VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
     SoLuong    INT NOT NULL,
     DonGia     FLOAT NOT NULL,
     GiamGia    FLOAT NOT NULL,
-    PRIMARY KEY (MaLH, MaPT)
+    PRIMARY KEY (MaLH, MaPT,MaThuoc)
 );
 
 -- =========================

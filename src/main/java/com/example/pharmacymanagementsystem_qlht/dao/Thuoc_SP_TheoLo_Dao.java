@@ -11,10 +11,10 @@ import java.util.List;
 
 public class Thuoc_SP_TheoLo_Dao implements DaoInterface<Thuoc_SP_TheoLo> {
 
-    private final String INSERT_SQL = "INSERT INTO Thuoc_SP_TheoLo VALUES (?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE Thuoc_SP_TheoLo SET soLuongTon=?, nsx=?, hsd=?, maPN=?, maThuoc=? WHERE maLH=?";
-    private final String DELETE_BY_ID = "DELETE FROM Thuoc_SP_TheoLo WHERE maLH = ?";
-    private final String SELECT_BY_ID = "SELECT * FROM Thuoc_SP_TheoLo WHERE maLH=?";
+    private final String INSERT_SQL = "INSERT INTO Thuoc_SP_TheoLo(MaLH, MaPN, MaThuoc,SoLuongTon, NSX, HSD) VALUES (?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE Thuoc_SP_TheoLo SET SoLuongTon=?, NSX=?, HSD=?, MaPN=?, MaThuoc=? WHERE MaLH=?";
+    private final String DELETE_BY_ID = "DELETE FROM Thuoc_SP_TheoLo WHERE MaLH = ?";
+    private final String SELECT_BY_ID = "SELECT * FROM Thuoc_SP_TheoLo WHERE MaLH=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM Thuoc_SP_TheoLo";
 
     @Override
@@ -53,10 +53,10 @@ public class Thuoc_SP_TheoLo_Dao implements DaoInterface<Thuoc_SP_TheoLo> {
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 Thuoc_SP_TheoLo t = new Thuoc_SP_TheoLo();
-                t.setMaLH(rs.getString("maLH"));
-                t.setSoLuongTon(rs.getInt("soLuongTon"));
-                t.setNsx(rs.getDate("nsx"));
-                t.setHsd(rs.getDate("hsd"));
+                t.setMaLH(rs.getString("MaLH"));
+                t.setSoLuongTon(rs.getInt("SoLuongTon"));
+                t.setNsx(rs.getDate("NSX"));
+                t.setHsd(rs.getDate("HSD"));
                 t.setPhieuNhap(new ChiTietPhieuNhap_Dao().selectById(rs.getString("MaPN")));
                 t.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getString("MaThuoc")));
                 list.add(t);

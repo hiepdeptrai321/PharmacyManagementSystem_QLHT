@@ -10,26 +10,26 @@ GO
 -- =========================
 CREATE TABLE KhachHang (
     MaKH       VARCHAR(10) PRIMARY KEY,
-    TenKH      VARCHAR(50) NOT NULL,
+    TenKH      NVARCHAR(50) NOT NULL,
     SDT        VARCHAR(15) NOT NULL,
     Email      VARCHAR(50),
     NgaySinh   DATE,
-    GioiTinh   VARCHAR(5) NOT NULL,
-    DiaChi     VARCHAR(50),
-    TrangThai  VARCHAR(10) NOT NULL
+    GioiTinh   NVARCHAR(5) NOT NULL,
+    DiaChi     NVARCHAR(50),
+    TrangThai  NVARCHAR(10) NOT NULL
 );
 -- =========================
 -- Bảng NhanVien
 -- =========================
 CREATE TABLE NhanVien (
     MaNV       VARCHAR(10) PRIMARY KEY,
-    TenNV      VARCHAR(50) NOT NULL,
+    TenNV      NVARCHAR(50) NOT NULL,
     SDT        VARCHAR(15) NOT NULL,
     Email      VARCHAR(50),
     NgaySinh   DATE NOT NULL,
-    GioiTinh   VARCHAR(5) NOT NULL,
-    DiaChi     VARCHAR(50),
-    TrangThai  VARCHAR(10) NOT NULL,
+    GioiTinh   NVARCHAR(5) NOT NULL,
+    DiaChi     NVARCHAR(50),
+    TrangThai  NVARCHAR(30) NOT NULL,
     TaiKhoan   VARCHAR(50) NOT NULL,
     MatKhau    VARCHAR(50) NOT NULL
 );
@@ -42,7 +42,7 @@ CREATE TABLE LuongNhanVien (
     DenNgay    DATE NOT NULL,
     LuongCoBan FLOAT NOT NULL,
     PhuCap     FLOAT NOT NULL,
-    GhiChu     VARCHAR(255) NOT NULL,
+    GhiChu     NVARCHAR(255) NOT NULL,
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV)
 );
 
@@ -52,12 +52,12 @@ CREATE TABLE LuongNhanVien (
 CREATE TABLE NhaCungCap (
     MaNCC      VARCHAR(10) PRIMARY KEY,
     TenNCC     VARCHAR(50) NOT NULL,
-    DiaChi     VARCHAR(100),
+    DiaChi     NVARCHAR(100),
     SDT        VARCHAR(20) NOT NULL,
     Email      VARCHAR(50),
 	GPKD       VARCHAR(50),
-    GhiChu     VARCHAR(255),
-    TenCongTy  VARCHAR(50),
+    GhiChu     NVARCHAR(255),
+    TenCongTy  NVARCHAR(50),
     MSThue     VARCHAR(20)
 );
 
@@ -66,8 +66,8 @@ CREATE TABLE NhaCungCap (
 -- =========================
 CREATE TABLE LoaiHang (
     MaLH       VARCHAR(10) PRIMARY KEY,
-    TenLH      VARCHAR(50),
-    MoTa       VARCHAR(255)
+    TenLH      NVARCHAR(50),
+    MoTa       NVARCHAR(255)
 );
 
 -- =========================
@@ -75,8 +75,8 @@ CREATE TABLE LoaiHang (
 -- =========================
 CREATE TABLE NhomDuocLy (
     MaNDL      VARCHAR(10) PRIMARY KEY,
-    TenNDL     VARCHAR(50),
-    MoTa       VARCHAR(255)
+    TenNDL     NVARCHAR(50),
+    MoTa       NVARCHAR(255)
 );
 
 -- =========================
@@ -84,14 +84,14 @@ CREATE TABLE NhomDuocLy (
 -- =========================
 CREATE TABLE Thuoc_SanPham (
     MaThuoc    VARCHAR(10) PRIMARY KEY,
-    TenThuoc   VARCHAR(100),
+    TenThuoc   NVARCHAR(100),
     HamLuong   INT,
     DonViHL    VARCHAR(20),
-    DuongDung  VARCHAR(20),
-    QuyCachDongGoi VARCHAR(20),
+    DuongDung  NVARCHAR(20),
+    QuyCachDongGoi NVARCHAR(20),
     SDK_GPNK   VARCHAR(20),
-    HangSX     VARCHAR(20),
-    NuocSX     VARCHAR(20),
+    HangSX     NVARCHAR(30),
+    NuocSX     NVARCHAR(20),
     HinhAnh    VARCHAR(50),
 	MaLH       VARCHAR(10) FOREIGN KEY REFERENCES LoaiHang(MaLH),
     MaNDL      VARCHAR(10) FOREIGN KEY REFERENCES NhomDuocLy(MaNDL)
@@ -104,8 +104,8 @@ CREATE TABLE Thuoc_SanPham (
 CREATE TABLE PhieuNhap (
     MaPN       VARCHAR(10) PRIMARY KEY,
     NgayNhap   DATE NOT NULL,
-    TrangThai  VARCHAR(10) NOT NULL,
-    GhiChu     VARCHAR(255),
+    TrangThai  NVARCHAR(10) NOT NULL,
+    GhiChu     NVARCHAR(255),
     MaNCC      VARCHAR(10) FOREIGN KEY REFERENCES NhaCungCap(MaNCC),
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV)
 );
@@ -145,7 +145,7 @@ CREATE TABLE HoaDon (
     MaHD       VARCHAR(10) PRIMARY KEY,
     TongHD     FLOAT NOT NULL,
     NgayLap    DATE NOT NULL,
-    TrangThai  VARCHAR(10) NOT NULL,
+    TrangThai  NVARCHAR(10) NOT NULL,
 	MaKH       VARCHAR(10) FOREIGN KEY REFERENCES KhachHang(MaKH),
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV)
 );
@@ -171,8 +171,8 @@ CREATE TABLE HoatDong (
     LoaiHD     VARCHAR(20),
     ThoiGian   DATE NOT NULL,
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV),
-    BangDL    VARCHAR(20),
-	GhiChu     VARCHAR(255)
+    BangDL	   VARCHAR(20),
+	GhiChu     NVARCHAR(255)
 );
 
 
@@ -182,8 +182,8 @@ CREATE TABLE HoatDong (
 CREATE TABLE PhieuDoiHang (
     MaPD       VARCHAR(10) PRIMARY KEY,
     NgayLap    DATE NOT NULL,
-    LyDoDoi    DATE NOT NULL,
-    GhiChu     VARCHAR(255),
+    LyDoDoi    NVARCHAR(255) NOT NULL,
+    GhiChu     NVARCHAR(255),
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV),
     MaKH       VARCHAR(10) FOREIGN KEY REFERENCES KhachHang(MaKH),
     MaHD       VARCHAR(10) FOREIGN KEY REFERENCES HoaDon(MaHD)
@@ -205,10 +205,10 @@ CREATE TABLE ChiTietPhieuDoiHang (
 -- Bảng PhieuTraHang
 -- =========================
 CREATE TABLE PhieuTraHang (
-    MaPT       INT PRIMARY KEY,
+    MaPT       VARCHAR(10) PRIMARY KEY,
     NgayLap    DATE NOT NULL,
-    LyDoTra    VARCHAR(20) NOT NULL,
-    GhiChu     VARCHAR(255),
+    LyDoTra    NVARCHAR(20) NOT NULL,
+    GhiChu     NVARCHAR(255),
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV),
     MaHD       VARCHAR(10) FOREIGN KEY REFERENCES HoaDon(MaHD),
     MaKH       VARCHAR(10) FOREIGN KEY REFERENCES KhachHang(MaKH)
@@ -219,7 +219,7 @@ CREATE TABLE PhieuTraHang (
 -- =========================
 CREATE TABLE ChiTietPhieuTraHang (
     MaLH       VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SP_TheoLo(MaLH),
-    MaPT       INT NOT NULL FOREIGN KEY REFERENCES PhieuTraHang(MaPT),
+    MaPT       VARCHAR(10) NOT NULL FOREIGN KEY REFERENCES PhieuTraHang(MaPT),
     SoLuong    INT NOT NULL,
     DonGia     FLOAT NOT NULL,
     GiamGia    FLOAT NOT NULL,
@@ -231,7 +231,7 @@ CREATE TABLE ChiTietPhieuTraHang (
 -- =========================
 CREATE TABLE HoatChat (
     MaHoatChat VARCHAR(10) PRIMARY KEY,
-    TenHoatChat VARCHAR(50) NOT NULL
+    TenHoatChat NVARCHAR(50) NOT NULL
 );
 
 -- =========================
@@ -476,28 +476,7 @@ INSERT INTO HoatChat (MaHoatChat, TenHoatChat) VALUES
 ('HC069','Mumps Virus Antigen'),
 ('HC070','Rubella Virus Antigen');
 
-INSERT INTO ChiTietHoatChat (MaHoatChat, MaThuoc, HamLuong) VALUES
--- Thuốc tây
-('HC001','TS001',500),   
-('HC006','TS002',500),   
-('HC008','TS003',250),   
-('HC051','TS004',1000),  
-('HC002','TS005',400),   
-('HC004','TS006',81),    
-('HC042','TS007',10),    
-('HC017','TS008',20),   
-('HC034','TS009',500),   
-('HC031','TS010',20),   
-('HC001','TS011',650),  
-('HC006','TS012',250),   
-('HC008','TS013',500),   
-('HC051','TS014',500),   
-('HC002','TS015',200),   
-('HC004','TS016',500),  
-('HC042','TS017',5),     
-('HC017','TS018',40),    
-('HC034','TS019',850),   
-('HC031','TS020',40); 
+
 
 
 INSERT INTO NhaCungCap (MaNCC, TenNCC, DiaChi, SDT, Email, GPKD, GhiChu, TenCongTy, MSThue)
@@ -517,6 +496,7 @@ VALUES
 ('NCC009', N'Công ty CP Trang thiết bị Y tế Vinamed', N'Hà Nội, Việt Nam', '02438223344', 'Vinamed@vinamed.vn', 'GPKD-009', N'Cung cấp dụng cụ y tế', N'Vinamed', '01001009'),
 -- Công ty chuyên mỹ phẩm
 ('NCC010', N'Công ty TNHH Mỹ phẩm Sài Gòn', N'TP.HCM, Việt Nam', '02837778888', 'saigoncosmetics@saigoncosmetics.com.vn', 'GPKD-010', N'Mỹ phẩm chăm sóc da', N'Saigon Cosmetics', '03001010');
+
 
 INSERT INTO Thuoc_SanPham
 (MaThuoc, TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, HinhAnh, MaLH, MaNDL)
@@ -587,6 +567,29 @@ VALUES
 ('TS564','Mặt nạ dưỡng da Green Tea',25,'ml','Đắp mặt','Hộp 10 miếng','MP-0009-23','The Face Shop','Hàn Quốc','ts509.jpg','LH05',null),
 ('TS565','Nước hoa nữ Eau de Parfum',50,'ml','Xịt','Chai 50ml','MP-0010-23','Chanel','Pháp','ts510.jpg','LH05',null);
 
+INSERT INTO ChiTietHoatChat (MaHoatChat, MaThuoc, HamLuong) VALUES
+-- Thuốc tây
+('HC001','TS001',500),   
+('HC006','TS002',500),   
+('HC008','TS003',250),   
+('HC051','TS004',1000),  
+('HC002','TS005',400),   
+('HC004','TS006',81),    
+('HC042','TS007',10),    
+('HC017','TS008',20),   
+('HC034','TS009',500),   
+('HC031','TS010',20),   
+('HC001','TS011',650),  
+('HC006','TS012',250),   
+('HC008','TS013',500),   
+('HC051','TS014',500),   
+('HC002','TS015',200),   
+('HC004','TS016',500),  
+('HC042','TS017',5),     
+('HC017','TS018',40),    
+('HC034','TS019',850),   
+('HC031','TS020',40); 
+
 INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
 VALUES
 ('PN001', '2025-09-01', 'Hoàn tất', 'Nhập thuốc giảm đau', 'NCC001', 'NV001'),
@@ -652,3 +655,91 @@ VALUES
 ('LH00015','PN010','TS556',70,'2025-02-10','2027-02-10'),
 ('LH00016','PN010','TS560',50,'2025-03-20','2027-03-20');
 
+--------Hóa đơn
+INSERT INTO HoaDon (MaHD, TongHD, NgayLap, TrangThai, MaKH, MaNV)
+VALUES
+('HD001', 34000, '2025-09-11 08:30:00', N'Hoàn tất', 'KH001', 'NV001'), -- (10*1500 + 10*1900) - Giảm 10% cho 15000 = 34000
+('HD002', 3600, '2025-09-11 09:15:00', N'Hoàn tất', 'KH002', 'NV002'),
+('HD003', 5000, '2025-09-11 10:45:00', N'Hoàn tất', NULL, 'NV003'),
+('HD004', 34000, '2025-09-12 14:00:00', N'Hoàn tất', 'KH003', 'NV001'),
+('HD005', 150000, '2025-09-12 16:30:00', N'Hoàn tất', NULL, 'NV002'),
+('HD006', 148000, '2025-09-13 11:00:00', N'Hoàn tất', 'KH004', 'NV003'),
+('HD007', 6000, '2025-09-13 15:20:00', N'Hoàn tất', NULL, 'NV001'),
+('HD008', 600000, '2025-09-14 09:40:00', N'Hoàn tất', 'KH005', 'NV002'),
+('HD009', 370000, '2025-09-14 13:00:00', N'Hoàn tất', 'KH006', 'NV003'),
+('HD010', 14000, '2025-09-15 17:00:00', N'Hoàn tất', NULL, 'NV001');
+
+INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
+VALUES
+-- HD001
+('HD001', 'LH00001', 10, 1500, 150), -- Paracetamol
+('HD001', 'LH00002', 10, 1900, 0), -- Amoxicillin
+
+-- HD002: Vitamin C 1000mg (3 chai)
+('HD002', 'LH00005', 3, 1200, 0),
+
+-- HD003: Ibuprofen 400mg (2 hộp)
+('HD003', 'LH00003', 2, 2500, 0),
+
+-- HD004: Hoạt huyết dưỡng não (2 hộp) và Cao ích mẫu (1 hộp)
+('HD004', 'LH00007', 2, 9500, 0),
+('HD004', 'LH00009', 1, 15000, 0),
+
+-- HD005: Vitamin D3 1000IU (1 hộp)
+('HD005', 'LH00011', 1, 150000, 0),
+
+-- HD006: Nhiệt kế điện tử (1 cái) và Găng tay y tế (10 hộp)
+('HD006', 'LH00013', 1, 130000, 0),
+('HD006', 'LH00014', 10, 1800, 0),
+
+-- HD007: Aspirin 81mg (2 hộp)
+('HD007', 'LH00004', 2, 3000, 0),
+
+-- HD008: Kem chống nắng (1 tuýp) và Kem dưỡng ẩm (1 hộp)
+('HD008', 'LH00015', 1, 250000, 0),
+('HD008', 'LH00016', 1, 350000, 0),
+
+-- HD009: Siro ho Bảo Thanh (2 chai) và Probiotic 10 strains (1 hộp)
+('HD009', 'LH00008', 2, 25000, 0),
+('HD009', 'LH00012', 1, 320000, 0),
+
+-- HD010: Atorvastatin 20mg (4 hộp)
+('HD010', 'LH00006', 4, 3500, 0);
+
+INSERT INTO PhieuDoiHang (MaPD, NgayLap, LyDoDoi, GhiChu, MaNV, MaKH, MaHD)
+VALUES
+('PD001', '2025-09-12 10:00:00', N'Đổi sang loại khác', N'Khách vãng lai, đổi Ibuprofen sang Aspirin', 'NV002', NULL, 'HD003'),
+('PD002', '2025-09-14 14:30:00', N'Khách muốn mua loại lớn hơn', N'Đổi Vitamin D3 sang Probiotic, có bù thêm tiền', 'NV003', NULL, 'HD005'),
+('PD003', '2025-09-16 09:00:00', N'Sản phẩm không phù hợp', N'Đổi Amoxicillin lấy Paracetamol', 'NV001', 'KH001', 'HD001');
+
+INSERT INTO ChiTietPhieuDoiHang (MaLH, MaPD, SoLuong, DonGia, GiamGia)
+VALUES
+-- PD001: Đổi Ibuprofen (LH00003) lấy Aspirin (LH00004)
+('LH00003', 'PD001', -1, 2500, 0),
+('LH00004', 'PD001', 2, 3000, 0),
+
+-- PD002: Đổi Vitamin D3 (LH00011) lấy Probiotic (LH00012)
+('LH00011', 'PD002', -1, 150000, 0),
+('LH00012', 'PD002', 1, 320000, 0),
+
+-- PD003: Đổi Amoxicillin (LH00002) lấy Paracetamol (LH00001)
+('LH00002', 'PD003', -10, 1900, 0),
+('LH00001', 'PD003', 10, 1500, 0);
+
+INSERT INTO PhieuTraHang (MaPT, NgayLap, LyDoTra, GhiChu, MaNV, MaHD, MaKH)
+VALUES
+('PT001', '2025-09-13 10:30:00', N'Dư thừa', N'Trả lại Hoạt huyết dưỡng não và Cao ích mẫu', 'NV001', 'HD004', 'KH003'),
+('PT002', '2025-09-15 11:45:00', N'Không phù hợp', N'Trả lại Kem chống nắng', 'NV002', 'HD008', 'KH005'),
+('PT003', '2025-09-16 15:00:00', N'Mua nhầm', N'Trả lại Găng tay y tế', 'NV003', 'HD006', 'KH004');
+
+INSERT INTO ChiTietPhieuTraHang (MaLH, MaPT, SoLuong, DonGia, GiamGia)
+VALUES
+-- PT001: Trả Hoạt huyết dưỡng não (LH00007) và Cao ích mẫu (LH00009)
+('LH00007', 'PT001', 1, 9500, 0),
+('LH00009', 'PT001', 1, 15000, 0),
+
+-- PT002: Trả Kem chống nắng SPF50 (LH00015)
+('LH00015', 'PT002', 1, 250000, 0),
+
+-- PT003: Trả Găng tay y tế (LH00014)
+('LH00014', 'PT003', 1, 1800, 0);

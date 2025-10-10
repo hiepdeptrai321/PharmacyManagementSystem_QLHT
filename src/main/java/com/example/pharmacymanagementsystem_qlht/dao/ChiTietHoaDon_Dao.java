@@ -28,7 +28,7 @@ public class ChiTietHoaDon_Dao implements  DaoInterface<ChiTietHoaDon> {
 
     @Override
     public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_BY_ID_SQL, keys[0], keys[1]);
+        ConnectDB.update(DELETE_SQL, keys[0], keys[1]);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class ChiTietHoaDon_Dao implements  DaoInterface<ChiTietHoaDon> {
     }
 
     public List<ChiTietHoaDon> selectByMaHD(String maHD) {
-        return selectBySql(SELECT_BY_MAHD_SQL, maHD);
+        return selectBySql(SELECT_BY_ID_SQL, maHD);
     }
 
     @Override

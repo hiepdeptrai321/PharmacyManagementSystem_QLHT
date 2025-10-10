@@ -19,23 +19,23 @@
          </children>
       </Pane>
       <Label layoutX="14.0" layoutY="46.0" text="Mã nhà cung cấp:" />
-      <TextField fx:id="maNCC" layoutX="14.0" layoutY="63.0" prefHeight="25.0" prefWidth="117.0" />
+      <TextField fx:id="maNCC" editable="false" layoutX="14.0" layoutY="63.0" prefHeight="25.0" prefWidth="117.0" />
       <Label layoutX="136.0" layoutY="46.0" text="Tên nhà cung cấp:" />
-      <TextField fx:id="tenNCC" layoutX="136.0" layoutY="63.0" prefHeight="25.0" prefWidth="342.0" />
+      <TextField fx:id="tenNCC" editable="false" layoutX="136.0" layoutY="63.0" prefHeight="25.0" prefWidth="342.0" />
       <Label layoutX="484.0" layoutY="45.0" text="Số điện thoại" />
-      <TextField fx:id="SDT" layoutX="484.0" layoutY="63.0" prefHeight="25.0" prefWidth="105.0" />
+      <TextField fx:id="SDT" editable="false" layoutX="484.0" layoutY="63.0" prefHeight="25.0" prefWidth="105.0" />
       <Label layoutX="14.0" layoutY="94.0" text="Email:" />
-      <TextField fx:id="Email" layoutX="14.0" layoutY="111.0" prefHeight="25.0" prefWidth="208.0" />
+      <TextField fx:id="Email" editable="false" layoutX="14.0" layoutY="111.0" prefHeight="25.0" prefWidth="208.0" />
       <Label layoutX="227.0" layoutY="94.0" text="Địa chỉ:" />
-      <TextField fx:id="DiaChi" layoutX="227.0" layoutY="111.0" prefHeight="25.0" prefWidth="362.0" />
+      <TextField fx:id="DiaChi" editable="false" layoutX="227.0" layoutY="111.0" prefHeight="25.0" prefWidth="362.0" />
       <Label layoutX="14.0" layoutY="142.0" text="GPKD:" />
-      <TextField fx:id="GPKD" layoutX="14.0" layoutY="159.0" prefHeight="25.0" prefWidth="134.0" />
-      <TextField fx:id="TenCongTy" layoutX="153.0" layoutY="159.0" prefHeight="25.0" prefWidth="271.0" />
+      <TextField fx:id="GPKD" editable="false" layoutX="14.0" layoutY="159.0" prefHeight="25.0" prefWidth="134.0" />
+      <TextField fx:id="TenCongTy" editable="false" layoutX="153.0" layoutY="159.0" prefHeight="25.0" prefWidth="271.0" />
       <Label layoutX="153.0" layoutY="142.0" text="Tên công ty:" />
       <Label layoutX="430.0" layoutY="142.0" text="Mã số thuế" />
-      <TextField fx:id="MST" layoutX="430.0" layoutY="159.0" prefHeight="25.0" prefWidth="158.0" />
+      <TextField fx:id="MST" editable="false" layoutX="430.0" layoutY="159.0" prefHeight="25.0" prefWidth="158.0" />
       <Label layoutX="14.0" layoutY="191.0" text="Ghi chú:" />
-      <TextArea fx:id="GhiChu" layoutX="14.0" layoutY="209.0" prefHeight="72.0" prefWidth="572.0" wrapText="true" />
+      <TextArea fx:id="GhiChu" editable="false" layoutX="14.0" layoutY="209.0" prefHeight="72.0" prefWidth="572.0" wrapText="true" />
       <Button id="btnThoat" fx:id="btnThoat" layoutX="528.0" layoutY="290.0" mnemonicParsing="false" text="Thoát" />
    </children>
 </Pane>

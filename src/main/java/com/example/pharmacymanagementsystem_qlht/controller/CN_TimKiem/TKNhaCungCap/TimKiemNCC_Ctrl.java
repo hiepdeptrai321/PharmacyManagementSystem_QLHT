@@ -30,7 +30,7 @@ public class TimKiemNCC_Ctrl extends Application {
     private Button btnTim;
 
     @FXML
-    private ImageView btnLamMoi;
+    private Button btnLamMoi;
 
     @FXML
     private TableColumn<NhaCungCap, String> cotDiaChi;
@@ -82,7 +82,8 @@ public class TimKiemNCC_Ctrl extends Application {
             }
         });
         loadTable();
-        btnTim.setOnAction(e -> onTimKiem());
+        btnTim.setOnAction(e -> TimKiem());
+        btnLamMoi.setOnAction(e -> LamMoi());
 
     }
 
@@ -106,6 +107,22 @@ public class TimKiemNCC_Ctrl extends Application {
         cotDiaChi.setCellValueFactory(new PropertyValueFactory<>("diaChi"));
         cotSDT.setCellValueFactory(new PropertyValueFactory<>("SDT"));
         cotEmil.setCellValueFactory(new PropertyValueFactory<>("email"));
+        cotChiTiet.setCellFactory(col -> new TableCell<NhaCungCap, String>() {
+            private final Button btn = new Button("Chi tiết");
+            {
+                btn.setOnAction(event -> {
+                    NhaCungCap ncc = getTableView().getItems().get(getIndex());
+                    btnChiTietClick(ncc);
+                });
+                btn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white;");
+                btn.getStyleClass().add("btn");
+            }
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : btn);
+            }
+        });
         tbNCC.setItems(data);
 
         }
@@ -124,7 +141,7 @@ public class TimKiemNCC_Ctrl extends Application {
         }
     }
     @FXML
-    private void onTimKiem() {
+    private void TimKiem() {
         String criteria = cboTimKiem.getValue();
         String keyword = txtTimKiem.getText().trim().toLowerCase();
         List<NhaCungCap> list = nhaCungCapDao.selectAll();
@@ -143,4 +160,11 @@ public class TimKiemNCC_Ctrl extends Application {
         }).toList();
         tbNCC.setItems(FXCollections.observableArrayList(filtered));
     }
+    @FXML
+    private void LamMoi() {
+        txtTimKiem.clear();
+        cboTimKiem.setValue("Theo mã, tên nhà cung cấp");
+        loadTable();
+    }
+
 }

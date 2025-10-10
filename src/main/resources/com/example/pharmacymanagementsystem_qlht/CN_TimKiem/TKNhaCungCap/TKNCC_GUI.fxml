@@ -17,13 +17,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKNhaCungCap.TimKiemNCC_Ctrl">
+<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" stylesheets="@../../css/TimKiemNhanVien.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKNhaCungCap.TimKiemNCC_Ctrl">
     <children>
         <VBox layoutX="10.0" layoutY="14.0">
             <children>
                 <HBox prefHeight="62.0" prefWidth="1170.0">
                     <children>
-                        <Label id="lbTimKiem" ellipsisString="" prefHeight="53.0" prefWidth="418.0" styleClass="title" text="Tìm Kiếm Nhà Cung Cấp">
+                        <Label id="lbTimKiem" ellipsisString="" prefHeight="53.0" prefWidth="419.0" styleClass="title" text="Tìm Kiếm Nhà Cung Cấp">
                             <font>
                                 <Font size="36.0" />
                             </font>
@@ -34,7 +34,7 @@
                         <Label />
                         <ImageView fitHeight="53.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../img/delivery-truck-9146.png" />
+                                <Image url="@../../img/delivery-truck-9146.png" />
                             </image>
                             <HBox.margin>
                                 <Insets top="5.0" />
@@ -45,24 +45,24 @@
                 <Separator prefWidth="200.0" />
                 <HBox prefHeight="42.0" prefWidth="782.0">
                     <children>
-                        <ComboBox fx:id="cboTimKiem" prefWidth="150.0" promptText="Tìm kiếm theo">
+                        <ComboBox fx:id="cboTimKiem" prefHeight="17.0" prefWidth="150.0" promptText="Tìm kiếm theo">
                             <HBox.margin>
                                 <Insets right="5.0" top="10.0" />
                             </HBox.margin>
                         </ComboBox>
-                        <TextField prefHeight="25.0" prefWidth="368.0" promptText="Tìm...">
+                        <TextField fx:id="txtTimKiem" prefHeight="46.0" prefWidth="368.0" promptText="Tìm...">
                             <HBox.margin>
                                 <Insets top="10.0" />
                             </HBox.margin>
                         </TextField>
-                        <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" prefHeight="28.0" prefWidth="63.0" text="Tìm">
+                        <Button fx:id="btnTim" alignment="CENTER_RIGHT" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" prefHeight="28.0" prefWidth="63.0" text="Tìm">
                             <HBox.margin>
                                 <Insets left="10.0" right="10.0" top="10.0" />
                             </HBox.margin>
                             <graphic>
                                 <ImageView fitHeight="20.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../img/free-search-icon-2911-thumb.png" />
+                                        <Image url="@../../img/free-search-icon-2911-thumb.png" />
                                     </image>
                                     <cursor>
                                         <Cursor fx:constant="DEFAULT" />
@@ -75,29 +75,29 @@
                                 <Insets left="5.0" top="10.0" />
                             </HBox.margin>
                             <graphic>
-                                <ImageView fitHeight="20.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                                <ImageView fx:id="btnLamMoi" fitHeight="20.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../img/trash-can-10416.png" />
+                                        <Image url="@../../img/refresh-3104.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
                         </Button>
                     </children>
                     <VBox.margin>
-                        <Insets bottom="5.0" />
+                        <Insets bottom="10.0" />
                     </VBox.margin>
                 </HBox>
                 <ScrollPane>
                     <content>
-                        <TableView prefHeight="611.0" prefWidth="1168.0">
+                        <TableView fx:id="tbNCC" prefHeight="561.0" prefWidth="1168.0">
                             <columns>
-                                <TableColumn prefWidth="101.0" text="Mã NCC" />
-                                <TableColumn prefWidth="177.0" text="Tên" />
-                                <TableColumn minWidth="0.0" prefWidth="180.0" text="Email" />
-                                <TableColumn minWidth="6.0" prefWidth="176.0" text="SDT" />
-                                <TableColumn prefWidth="79.0" text="Giới tính" />
-                                <TableColumn minWidth="0.0" prefWidth="268.0" text="Địa chỉ" />
-                                <TableColumn prefWidth="186.0" text="Trạng thái" />
+                        <TableColumn fx:id="cotSTT" prefWidth="64.0" text="STT" />
+                                <TableColumn fx:id="cotMNCC" prefWidth="138.0" text="Mã NCC" />
+                                <TableColumn fx:id="cotTenNCC" prefWidth="227.0" text="Tên NCC" />
+                                <TableColumn fx:id="cotEmil" minWidth="0.0" prefWidth="257.0" text="Email" />
+                                <TableColumn fx:id="cotSDT" minWidth="6.0" prefWidth="142.0" text="SDT" />
+                                <TableColumn fx:id="cotDiaChi" minWidth="0.0" prefWidth="273.0" text="Địa chỉ" />
+                        <TableColumn fx:id="cotChiTiet" minWidth="0.0" prefWidth="66.0" />
                             </columns>
                         </TableView>
                     </content>

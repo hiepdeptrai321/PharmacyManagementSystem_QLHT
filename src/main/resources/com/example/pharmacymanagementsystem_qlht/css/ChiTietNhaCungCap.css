@@ -6,6 +6,7 @@
 #btnThoat{
     -fx-background-color: red;
     -fx-background-radius: 5px;
+    -fx-text-fill: white;
 
 }
 #lblTrang{
@@ -14,4 +15,5 @@
 }
 #btnThoat:pressed{
     -fx-background-color: #cc0000;
+    -fx-text-fill: white;
 }

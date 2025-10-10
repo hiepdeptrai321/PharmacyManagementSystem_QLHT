@@ -30,6 +30,7 @@ module com.example.pharmacymanagementsystem_qlht {
     requires java.sql;
 
 
+
     opens com.example.pharmacymanagementsystem_qlht to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMThuoc to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuNhapHang to javafx.fxml;

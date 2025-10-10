@@ -10,10 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import javafx.collections.ObservableList;
@@ -25,6 +22,7 @@ public class QuanLyKhuyenMai_Ctrl extends Application {
     // 1. KHAI BÁO THÀNH PHẦN GIAO DIỆN (FXML)
     @FXML
     public TableView<KhuyenMai> tbKM;
+    public TextField tfTimKM;
     @FXML
     private Button btnthemKM;
     @FXML
@@ -79,6 +77,8 @@ public class QuanLyKhuyenMai_Ctrl extends Application {
                     KhuyenMai km = getTableView().getItems().get(getIndex());
                     btnChiTietClick(km);
                 });
+                btn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white;");
+                btn.getStyleClass().add("btn");
             }
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -116,6 +116,14 @@ public class QuanLyKhuyenMai_Ctrl extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void timKhuyenMai(){
+        String keyword = tfTimKM.getText().trim().toLowerCase();
+        KhuyenMai_Dao km_dao = new KhuyenMai_Dao();
+        List<KhuyenMai> dsKMLoc = km_dao.selectByTuKhoa(keyword);
+        ObservableList<KhuyenMai> data = FXCollections.observableArrayList(dsKMLoc);
+        tbKM.setItems(data);
     }
 
     // 4. XỬ LÝ NGHIỆP VỤ

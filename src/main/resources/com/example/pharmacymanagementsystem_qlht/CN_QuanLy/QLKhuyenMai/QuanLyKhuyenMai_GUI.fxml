@@ -10,8 +10,8 @@
 
 <AnchorPane prefHeight="704.0" prefWidth="1200.0" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLKhuyenMai.QuanLyKhuyenMai_Ctrl">
     <children>
-        <TextField layoutX="12.0" layoutY="47.0" prefHeight="30.0" prefWidth="353.0" promptText="Tìm theo mã, tên khuyến mãi" AnchorPane.topAnchor="47.0" />
-        <Button id="btntim" layoutX="376.0" layoutY="46.0" minWidth="35.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="69.0" styleClass="btn" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" AnchorPane.topAnchor="46.0" />
+        <TextField fx:id="tfTimKM" layoutX="12.0" layoutY="47.0" prefHeight="30.0" prefWidth="353.0" promptText="Tìm theo mã, tên khuyến mãi" AnchorPane.topAnchor="47.0" />
+        <Button id="btntim" layoutX="376.0" layoutY="46.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timKhuyenMai" prefHeight="30.0" prefWidth="69.0" styleClass="btn" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" AnchorPane.topAnchor="46.0" />
         <Label id="lbtitle" layoutX="12.0" layoutY="5.0" prefHeight="36.0" prefWidth="595.0" text="Quản lý khuyến mãi">
          <font>
             <Font name="System Bold" size="14.0" />
@@ -24,9 +24,9 @@
                 <TableColumn fx:id="colTenKM" prefWidth="312.0" text="Tên khuyến mãi" />
                 <TableColumn fx:id="colLoaiKM" minWidth="0.0" prefWidth="144.0" styleClass="a-center" text="Loại khuyến mãi" />
                 <TableColumn fx:id="colGiaTri" minWidth="0.0" prefWidth="145.0" text="Giá trị " />
-                <TableColumn fx:id="colNBD" minWidth="0.0" prefWidth="188.0" styleClass="a-center" text="Ngày bắt đầu" />
-                <TableColumn fx:id="colNKT" minWidth="0.0" prefWidth="167.0" styleClass="a-center" text="Ngày kết thúc" />
-            <TableColumn fx:id="colChiTiet" prefWidth="55.5" styleClass="a-center" />
+                <TableColumn fx:id="colNBD" minWidth="0.0" prefWidth="176.0" styleClass="a-center" text="Ngày bắt đầu" />
+                <TableColumn fx:id="colNKT" minWidth="0.0" prefWidth="168.5" styleClass="a-center" text="Ngày kết thúc" />
+            <TableColumn fx:id="colChiTiet" prefWidth="66.1666259765625" styleClass="a-center" />
             </columns>
         </TableView>
     </children>

@@ -2,12 +2,8 @@ package com.example.pharmacymanagementsystem_qlht.dao;
 
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuNhap;
-import com.example.pharmacymanagementsystem_qlht.model.LoaiHang;
-import com.example.pharmacymanagementsystem_qlht.model.PhieuNhap;
-import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
 
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +13,7 @@ public class ChiTietPhieuNhap_Dao implements DaoInterface<ChiTietPhieuNhap> {
     private final String DELETE_SQL = "DELETE FROM ChiTietPhieuNhap WHERE MaPN = ? AND MaThuoc = ? AND MaLH = ?";
     private final String SELECT_ALL_SQL = "SELECT * FROM ChiTietPhieuNhap";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM ChiTietPhieuNhap WHERE MaPN = ? AND MaThuoc = ? AND MaLH = ?";
+    private final String SELECT_BY_MAPN_SQL = "SELECT * FROM ChiTietPhieuNhap WHERE MaPN = ?";
 
     @Override
     public void insert(ChiTietPhieuNhap e) {
@@ -63,5 +60,9 @@ public class ChiTietPhieuNhap_Dao implements DaoInterface<ChiTietPhieuNhap> {
     @Override
     public List<ChiTietPhieuNhap> selectAll() {
         return this.selectBySql(SELECT_ALL_SQL);
+    }
+
+    public List<ChiTietPhieuNhap> getChiTietPhieuNhapByMaPN(String maPN) {
+        return this.selectBySql(SELECT_BY_MAPN_SQL, maPN);
     }
 }

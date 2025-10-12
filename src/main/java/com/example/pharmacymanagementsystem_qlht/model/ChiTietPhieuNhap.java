@@ -1,5 +1,8 @@
 package com.example.pharmacymanagementsystem_qlht.model;
 
+import com.example.pharmacymanagementsystem_qlht.dao.ChiTietPhieuNhap_Dao;
+
+import java.util.List;
 import java.util.Objects;
 
 public class ChiTietPhieuNhap {
@@ -10,6 +13,7 @@ public class ChiTietPhieuNhap {
     private double giaNhap;
     private float chietKhau;
     private float thue;
+    private double TongTien;
 
     public ChiTietPhieuNhap() {
     }

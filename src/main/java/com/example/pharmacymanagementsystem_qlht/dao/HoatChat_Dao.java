@@ -41,6 +41,7 @@ public class HoatChat_Dao implements DaoInterface<HoatChat> {
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 HoatChat hc = new HoatChat();
+                hc.setMaHoatChat(rs.getString("MaHoatChat"));
                 hc.setTenHoatChat(rs.getString("TenHoatChat"));
                 list.add(hc);
             }

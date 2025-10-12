@@ -170,4 +170,11 @@ public class Thuoc_SanPham {
                 ", vitri=" + vitri +
                 '}';
     }
+
+    public String getHamLuongDonVi(){
+        if(donViHamLuong == null || donViHamLuong.isEmpty()){
+            return String.valueOf(hamLuong);
+        }
+        return hamLuong + " " + donViHamLuong;
+    }
 }

@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKThuoc.TimKiemThuoc_Ctrl">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKThuoc.TimKiemThuoc_Ctrl">
     <children>
         <VBox layoutX="10.0" layoutY="14.0">
             <children>
@@ -118,14 +118,14 @@
                 </HBox>
                 <ScrollPane>
                     <content>
-                        <TableView prefHeight="572.0" prefWidth="1177.0">
+                        <TableView fx:id="tblThuoc_SP" prefHeight="572.0" prefWidth="1177.0">
                             <columns>
-                                <TableColumn prefWidth="149.0" text="Mã thuốc" />
-                                <TableColumn minWidth="0.0" prefWidth="262.0" text="Tên Thuốc" />
-                                <TableColumn minWidth="6.0" prefWidth="289.0" text="Hoạt chất" />
-                                <TableColumn prefWidth="141.0" text="Hàm lượng" />
-                                <TableColumn prefWidth="179.0" text="SDK_GPNK" />
-                                <TableColumn prefWidth="156.0" text="Hãng SX" />
+                                <TableColumn fx:id="colMaThuoc" prefWidth="149.0" text="Mã thuốc" />
+                                <TableColumn fx:id="colTenThuoc" minWidth="0.0" prefWidth="262.0" text="Tên Thuốc" />
+                                <TableColumn fx:id="colHoatChat" minWidth="6.0" prefWidth="289.0" text="Hoạt chất" />
+                                <TableColumn fx:id="colHamLuong" prefWidth="141.0" text="Hàm lượng" />
+                                <TableColumn fx:id="colSDK_GPNK" prefWidth="179.0" text="SDK_GPNK" />
+                                <TableColumn fx:id="colHangSX" prefWidth="156.0" text="Hãng SX" />
                             </columns>
                         </TableView>
                     </content>

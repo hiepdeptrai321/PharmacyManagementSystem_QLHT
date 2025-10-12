@@ -1,5 +1,7 @@
 package com.example.pharmacymanagementsystem_qlht.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Thuoc_SanPham {
@@ -16,6 +18,8 @@ public class Thuoc_SanPham {
     private LoaiHang loaiHang;
     private String hinhAnh;
     private KeHang vitri;
+    private List<ChiTietDonViTinh> dsCTDVT = new ArrayList<>();
+    private List<Thuoc_SP_TheoLo> dsTS_TheoLo = new ArrayList<>();
 
     public Thuoc_SanPham(){
     }
@@ -138,6 +142,48 @@ public class Thuoc_SanPham {
 
     public void setVitri(KeHang vitri) {
         this.vitri = vitri;
+    }
+
+    public List<Thuoc_SP_TheoLo> getDsTS_TheoLo() {
+        return dsTS_TheoLo;
+    }
+    public void setDsTS_TheoLo(List<Thuoc_SP_TheoLo> dsTS_TheoLo) {
+        this.dsTS_TheoLo = dsTS_TheoLo;
+    }
+
+    public List<ChiTietDonViTinh> getDsCTDVT() {
+        return dsCTDVT;
+    }
+
+    public void setDsCTDVT(List<ChiTietDonViTinh> dsCTDVT) {
+        this.dsCTDVT = dsCTDVT;
+    }
+
+    public Double getGiaNhapCoBan() {
+        if (dsCTDVT != null) {
+            for (ChiTietDonViTinh ct : dsCTDVT) {
+                if (ct.isDonViCoBan()) return ct.getGiaNhap();
+            }
+        }
+        return null;
+    }
+
+    public Double getGiaBanCoBan() {
+        if (dsCTDVT != null) {
+            for (ChiTietDonViTinh ct : dsCTDVT) {
+                if (ct.isDonViCoBan()) return ct.getGiaBan();
+            }
+        }
+        return null;
+    }
+
+    public String getTenDVTCoBan() {
+        if (dsCTDVT != null) {
+            for (ChiTietDonViTinh ct : dsCTDVT) {
+                if (ct.isDonViCoBan()) return ct.getDvt().getTenDonViTinh();
+            }
+        }
+        return null;
     }
 
     @Override

@@ -4,9 +4,13 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class ThemThuoc_Ctrl extends Application {
+
+    public Button btnHuy;
+    public Button btnThem;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -14,5 +18,10 @@ public class ThemThuoc_Ctrl extends Application {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void btnHuyClick() {
+        Stage stage = (Stage) btnHuy.getScene().getWindow();
+        stage.close();
     }
 }

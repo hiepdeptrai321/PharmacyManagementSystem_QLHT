@@ -17,10 +17,9 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
-public class SuaXoaKhuyenMai_Ctrl extends Application {
+public class XoaKhuyenMai_Ctrl extends Application {
 
     // 1. KHAI BÁO THÀNH PHẦN GIAO DIỆN (FXML)
-    public Button btnLuu;
     public Button btnHuy;
     public Button btnXoa;
     public TableView<ChiTietKhuyenMai> tbDSThuoc;
@@ -28,9 +27,6 @@ public class SuaXoaKhuyenMai_Ctrl extends Application {
     public TableColumn<ChiTietKhuyenMai,String> colTenThuoc;
     public TableColumn<ChiTietKhuyenMai,Integer> colSLAP;
     public TableColumn<ChiTietKhuyenMai,Integer> colSLTD;
-    public TableColumn<ChiTietKhuyenMai,String> colXoaCT;
-    @FXML
-    private TextField tfTimThuoc;
     @FXML
     private ListView<?> listViewThuoc;
 
@@ -52,14 +48,10 @@ public class SuaXoaKhuyenMai_Ctrl extends Application {
 
     @FXML
     public void initialize() {
-        listViewThuoc.setVisible(false);
-        tfTimThuoc.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            listViewThuoc.setVisible(newVal);
-        });
     }
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhuyenMai/SuaXoaKhuyenMai_GUI.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhuyenMai/XoaKhuyenMai_GUI.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -84,32 +76,14 @@ public class SuaXoaKhuyenMai_Ctrl extends Application {
         colTenThuoc.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getThuoc().getTenThuoc()));
         colSLAP.setCellValueFactory(new PropertyValueFactory<>("slApDung"));
         colSLTD.setCellValueFactory(new PropertyValueFactory<>("slToiDa"));
-        colXoaCT.setCellFactory(col -> new TableCell<ChiTietKhuyenMai, String>() {
-            private final Button btn = new Button("X");
-            {
-                btn.setOnAction(event -> {
-                    ChiTietKhuyenMai ctkm = getTableView().getItems().get(getIndex());
-                    getTableView().getItems().remove(ctkm);
-                });
-                btn.setStyle("-fx-background-color: red; -fx-text-fill: white;");
-                btn.getStyleClass().add("btn");
-            }
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                setGraphic(empty ? null : btn);
-            }
-        });
         tbDSThuoc.setItems(listCTKM);
     }
 
     public void btnHuyClick(){
-        Stage stage = (Stage) tfTimThuoc.getScene().getWindow();
+        Stage stage = (Stage) tfTenKM.getScene().getWindow();
         stage.close();
     }
-    public void btnLuuClick(){
-        // TODO
-    }
+
     public void btnXoaClick(){
         // TODO
     }

@@ -11,7 +11,7 @@ public class LoaiHang_Dao implements DaoInterface<LoaiHang>{
     private final String INSERT_SQL = "INSERT INTO LoaiHang(MaLoaiHang, TenLH, MoTa) VALUES (?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE LoaiHang SET TenLH=?, MoTa=? WHERE MaLoaiHang=?";
     private final String DELETE_BY_ID = "DELETE FROM LoaiHang WHERE MaLoaiHang = ?";
-    private final String SELECT_BY_ID = "SELECT * FROM LoaiHang WHERE MaLH=?";
+    private final String SELECT_BY_ID = "SELECT * FROM LoaiHang WHERE MaLoaiHang=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM LoaiHang";
 
     @Override

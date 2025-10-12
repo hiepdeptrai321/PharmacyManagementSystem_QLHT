@@ -16,6 +16,11 @@ public class Thuoc_SP_TheoLo_Dao implements DaoInterface<Thuoc_SP_TheoLo> {
     private final String DELETE_BY_ID = "DELETE FROM Thuoc_SP_TheoLo WHERE MaLH = ?";
     private final String SELECT_BY_ID = "SELECT * FROM Thuoc_SP_TheoLo WHERE MaLH=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM Thuoc_SP_TheoLo";
+    private final String SELECT_SLTON_BY_MATHUOC = "SELECT SUM(SoLuongTon) AS TongSoLuongTon FROM Thuoc_SP_TheoLo WHERE MaThuoc = ?";
+    private final String SELECT_BY_TUKHOA_SQL =
+                "SELECT t.*, ctdvt.* FROM Thuoc_SP_TheoLo t " +
+                "JOIN Thuoc_SanPham sp ON t.MaThuoc = sp.MaThuoc " +
+                "WHERE LOWER(t.MaThuoc) LIKE ? OR LOWER(sp.TenThuoc) LIKE ?";
 
     @Override
     public void insert(Thuoc_SP_TheoLo e) {
@@ -57,7 +62,7 @@ public class Thuoc_SP_TheoLo_Dao implements DaoInterface<Thuoc_SP_TheoLo> {
                 t.setSoLuongTon(rs.getInt("SoLuongTon"));
                 t.setNsx(rs.getDate("NSX"));
                 t.setHsd(rs.getDate("HSD"));
-                t.setPhieuNhap(new ChiTietPhieuNhap_Dao().selectById(rs.getString("MaPN")));
+                t.setPhieuNhap(new ChiTietPhieuNhap_Dao().selectById(rs.getString("MaPN"),rs.getString("MaThuoc"),rs.getString("MaLH")));
                 t.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getString("MaThuoc")));
                 list.add(t);
             }
@@ -72,4 +77,23 @@ public class Thuoc_SP_TheoLo_Dao implements DaoInterface<Thuoc_SP_TheoLo> {
     public List<Thuoc_SP_TheoLo> selectAll() {
         return this.selectBySql(SELECT_ALL_SQL);
     }
+
+    public int selectSoLuongTonByMaThuoc(String maThuoc) {
+        int soLuongTon = 0;
+        try {
+            ResultSet rs = ConnectDB.query(SELECT_SLTON_BY_MATHUOC, maThuoc);
+            if (rs.next()) {
+                soLuongTon = rs.getInt("TongSoLuongTon");
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return soLuongTon;
+    }
+
+    public List<Thuoc_SP_TheoLo> selectByTuKhoa(String tuKhoa) {
+        return this.selectBySql(SELECT_BY_TUKHOA_SQL, "%" + tuKhoa.toLowerCase() + "%", "%" + tuKhoa.toLowerCase() + "%");
+    }
+
 }

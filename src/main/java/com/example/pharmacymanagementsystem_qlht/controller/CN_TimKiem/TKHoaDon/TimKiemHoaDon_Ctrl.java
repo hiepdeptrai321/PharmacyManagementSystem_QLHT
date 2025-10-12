@@ -24,22 +24,14 @@ import java.util.List;
 
 public class TimKiemHoaDon_Ctrl extends Application {
 
-    @FXML
-    private TableView<HoaDon> tblHD;
-    @FXML
-    private TableColumn<HoaDon, String> colMaHD;
-    @FXML
-    private TableColumn<HoaDon, String> colNgayLap;
-    @FXML
-    private TableColumn<HoaDon, String> colTenKH;
-    @FXML
-    private TableColumn<HoaDon, String> colSdtKH;
-    @FXML
-    private TableColumn<HoaDon, String> colTenNV;
-    @FXML
-    private TableColumn<HoaDon, Integer> colSLP;
-    @FXML
-    private TableColumn<HoaDon, String> colChiTiet;
+    public TableView<HoaDon> tblHD;
+    public TableColumn<HoaDon,String> colMaHD;
+    public TableColumn<HoaDon,String> colNgayLap;
+    public TableColumn<HoaDon,String> colTenKH;
+    public TableColumn<HoaDon,String> colSdtKH;
+    public TableColumn<HoaDon,String> colTenNV;
+    public TableColumn<HoaDon,Integer> colSLP;
+    public TableColumn<HoaDon,String> colChiTiet;
 
     private HoaDon_Dao hoaDonDao = new HoaDon_Dao();
     private PhieuDoiHang_Dao phieuDoiHangDao = new PhieuDoiHang_Dao();

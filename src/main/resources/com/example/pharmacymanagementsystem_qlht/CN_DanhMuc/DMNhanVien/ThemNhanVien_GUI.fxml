@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="442.0" prefWidth="804.0" stylesheets="@../../css/SuaXoaNhanVien.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLNhanVien.ThemNhanVien_Ctrl">
+<AnchorPane prefHeight="442.0" prefWidth="804.0" stylesheets="@../../css/SuaXoaNhanVien.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhanVien.ThemNhanVien_Ctrl">
     <children>
         <Label layoutX="14.0" layoutY="8.0" prefHeight="35.0" prefWidth="188.0" styleClass="lbtitle" text="Thêm nhân viên">
             <font>

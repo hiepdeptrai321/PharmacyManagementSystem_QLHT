@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane prefHeight="704.0" prefWidth="1200.0" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_QuanLy.QLThuoc.QuanLyThuoc_Ctrl">
+<AnchorPane prefHeight="704.0" prefWidth="1200.0" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMThuoc.DanhMucThuoc_Ctrl">
    <children>
       <TextField layoutX="11.5" layoutY="47.0" prefHeight="30.0" prefWidth="353.0" promptText="Tìm theo mã, tên thuốc" />
       <Button id="btntim" layoutX="375.0" layoutY="46.0" minWidth="35.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="69.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" />

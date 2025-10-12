@@ -101,7 +101,7 @@ CREATE TABLE Thuoc_SanPham (
     HangSX     NVARCHAR(30),
     NuocSX     NVARCHAR(20),
     HinhAnh    VARCHAR(50),
-	MaLH       VARCHAR(10) FOREIGN KEY REFERENCES LoaiHang(MaLH),
+	MaLH       VARCHAR(10) FOREIGN KEY REFERENCES LoaiHang(MaLoaiHang),
     MaNDL      VARCHAR(10) FOREIGN KEY REFERENCES NhomDuocLy(MaNDL),
 	ViTri	   VARCHAR(10) FOREIGN KEY REFERENCES KeHang(MaKe)
 );
@@ -379,7 +379,7 @@ INSERT INTO LuongNhanVien (MaLNV, TuNgay, DenNgay, LuongCoBan, PhuCap, GhiChu, M
 ('LNV003', '2025-01-01', '2025-01-31', 9000000, 600000, N'Lương tháng 1', 'NV003'),
 ('LNV004', '2025-01-01', '2025-01-31', 7000000, 350000, N'Lương tháng 1', 'NV004');
 
-INSERT INTO LoaiHang (MaLH, TenLH, MoTa) VALUES
+INSERT INTO LoaiHang (MaLoaiHang, TenLH, MoTa) VALUES
 ('LH01', N'Thuốc Tây', N'Thuốc kê đơn, thuốc không kê đơn, thuốc điều trị bệnh lý thông thường...'),
 ('LH02', N'Vaccine', N'Chế phẩm sinh học giúp tạo miễn dịch, phòng ngừa các bệnh truyền nhiễm...'),
 ('LH03', N'Đông Y', N'Thuốc y học cổ truyền, thảo dược, cao, trà, thuốc sắc...'),

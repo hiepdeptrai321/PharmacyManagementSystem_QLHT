@@ -10,13 +10,13 @@ public class KhachHang {
     private String sdt;
     private String email;
     private Date ngaySinh;
-    private Boolean gioiTinh;
+    private String gioiTinh;
     private String diaChi;
 
     public KhachHang() {
     }
 
-    public KhachHang(String maKH, String tenKH, String sdt, String email, Date ngaySinh, Boolean gioiTinh, String diaChi) {
+    public KhachHang(String maKH, String tenKH, String sdt, String email, Date ngaySinh, String gioiTinh, String diaChi) {
         this.maKH = maKH;
         this.tenKH = tenKH;
         this.sdt = sdt;
@@ -66,11 +66,11 @@ public class KhachHang {
         this.ngaySinh = ngaySinh;
     }
 
-    public Boolean getGioiTinh() {
+    public String getGioiTinh() {
         return gioiTinh;
     }
 
-    public void setGioiTinh(Boolean gioiTinh) {
+    public void setGioiTinh(String gioiTinh) {
         this.gioiTinh = gioiTinh;
     }
 

@@ -34,7 +34,13 @@ public class PhieuDoiHang_Dao implements DaoInterface<PhieuDoiHang> {
         List<PhieuDoiHang> list = selectBySql(SELECT_BY_ID_SQL, keys);
         return list.isEmpty() ? null : list.get(0);
     }
-
+    public int countByHoaDon(String maHD) {
+        String sql = "SELECT COUNT(*) FROM PhieuDoiHang WHERE MaHD=?";
+        try (ResultSet rs = ConnectDB.query(sql, maHD)) {
+            if (rs.next()) return rs.getInt(1);
+        } catch (Exception e) { e.printStackTrace(); }
+        return 0;
+    }
     @Override
     public List<PhieuDoiHang> selectBySql(String sql, Object... args) {
         List<PhieuDoiHang> list = new ArrayList<>();

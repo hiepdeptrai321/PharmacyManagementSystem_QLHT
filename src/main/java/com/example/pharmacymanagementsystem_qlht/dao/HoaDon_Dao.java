@@ -15,7 +15,13 @@ public class HoaDon_Dao implements DaoInterface<HoaDon>{
     private final String UPDATE_SQL = "UPDATE HoaDon SET MaNV=?, NgayLap=?, MaKH=?, TrangThai=? WHERE MaHD=?";
     private final String DELETE_BY_ID_SQL = "DELETE FROM HoaDon WHERE MaHD=?";
     private final String SELECT_BY_ID_SQL = "SELECT MaHD, MaNV, NgayLap, MaKH, TrangThai FROM HoaDon WHERE MaHD=?";
-    private final String SELECT_ALL_SQL = "SELECT MaHD, MaNV, NgayLap, MaKH, TrangThai FROM HoaDon";
+    private final String SELECT_ALL_SQL =
+            "SELECT HD.MaHD, HD.NgayLap, HD.TrangThai, " +
+                    "       NV.MaNV, NV.TenNV, " +
+                    "       KH.MaKH, KH.TenKH, KH.SDT " +
+                    "FROM HoaDon HD " +
+                    "INNER JOIN NhanVien NV ON HD.MaNV = NV.MaNV " +
+                    "LEFT JOIN KhachHang KH ON HD.MaKH = KH.MaKH";
     private final String SELECT_BY_TUKHOA_SQL = "SELECT MaHD, MaNV, NgayLap, MaKH, TrangThai FROM HoaDon WHERE MaHD LIKE ?";
 
     @Override
@@ -43,20 +49,31 @@ public class HoaDon_Dao implements DaoInterface<HoaDon>{
     @Override
     public List<HoaDon> selectBySql(String sql, Object... args) {
         List<HoaDon> hoaDonList = new ArrayList<>();
-        try {
-            ResultSet rs = ConnectDB.query(sql, args);
+        try (ResultSet rs = ConnectDB.query(sql, args)) {
             while (rs.next()) {
                 HoaDon hd = new HoaDon();
                 hd.setMaHD(rs.getString("MaHD"));
-                hd.setMaNV(new NhanVien_Dao().selectById(rs.getString("MaNV")));
-                hd.setMaKH(new KhachHang_Dao().selectById(rs.getString("MaKH")));
                 hd.setNgayLap(rs.getTimestamp("NgayLap"));
                 hd.setTrangThai(rs.getBoolean("TrangThai"));
+
+                // 1. Khách Hàng (Tạo đối tượng KhachHang từ dữ liệu JOIN)
+                KhachHang kh = new KhachHang();
+                kh.setMaKH(rs.getString("MaKH"));
+                kh.setTenKH(rs.getString("TenKH"));
+                kh.setSdt(rs.getString("SDT"));
+                hd.setMaKH(kh);
+
+                // 2. Nhân Viên (Tạo đối tượng NhanVien từ dữ liệu JOIN)
+                NhanVien nv = new NhanVien();
+                nv.setMaNV(rs.getString("MaNV"));
+                nv.setTenNV(rs.getString("TenNV"));
+                hd.setMaNV(nv);
+
                 hoaDonList.add(hd);
             }
-            rs.getStatement().close();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.err.println("Lỗi truy vấn dữ liệu Hóa Đơn (selectBySql): ");
+            e.printStackTrace();
         }
         return hoaDonList;
     }

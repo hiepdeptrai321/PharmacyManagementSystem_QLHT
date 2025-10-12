@@ -18,6 +18,7 @@ import java.util.List;
 
 public class DanhMucNhaCungCap_Ctrl extends Application {
 
+    public TableColumn colChiTietNhaCungCap;
     @FXML
     private TableView<NhaCungCap> tblNhaCungCap;
     @FXML

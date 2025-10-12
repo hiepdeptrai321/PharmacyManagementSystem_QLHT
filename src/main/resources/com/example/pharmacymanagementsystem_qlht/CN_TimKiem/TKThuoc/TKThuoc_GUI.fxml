@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -44,65 +43,13 @@
                </children>
             </HBox>
                 <Separator prefWidth="200.0" />
-                <HBox prefHeight="42.0" prefWidth="1179.0">
-                    <children>
-                        <ComboBox fx:id="cboTimKiem" prefWidth="150.0" promptText="Tìm kiếm theo">
-                            <HBox.margin>
-                                <Insets right="5.0" top="10.0" />
-                            </HBox.margin>
-                        </ComboBox>
-                        <TextField prefHeight="48.0" prefWidth="149.0" promptText="Tìm theo mã, tên thuốc">
-                            <HBox.margin>
-                                <Insets top="10.0" />
-                            </HBox.margin>
-                        </TextField>
-                        <Label prefHeight="17.0" prefWidth="77.0" style="-fx-font-weight: bold;" text="Hàm lượng:">
-                            <opaqueInsets>
-                                <Insets />
-                            </opaqueInsets>
-                            <HBox.margin>
-                                <Insets left="8.0" top="15.0" />
-                            </HBox.margin>
-                        </Label>
-                        <TextField prefHeight="25.0" prefWidth="86.0" promptText="min">
-                            <HBox.margin>
-                                <Insets top="10.0" />
-                            </HBox.margin>
-                        </TextField>
-                        <Label text="--">
-                            <HBox.margin>
-                                <Insets top="15.0" />
-                            </HBox.margin>
-                        </Label>
-                        <TextField prefHeight="25.0" prefWidth="88.0" promptText="max">
-                            <HBox.margin>
-                                <Insets top="10.0" />
-                            </HBox.margin>
-                        </TextField>
-                  <CheckBox mnemonicParsing="false" prefHeight="42.0" prefWidth="143.0" text="Sắp xếp theo lô hàng">
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </HBox.margin>
-                  </CheckBox>
-                        <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" prefHeight="28.0" prefWidth="63.0" text="Tìm">
-                            <HBox.margin>
-                                <Insets left="8.0" top="10.0" />
-                            </HBox.margin>
-                            <graphic>
-                                <ImageView fitHeight="20.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../../img/free-search-icon-2911-thumb.png" />
-                                    </image>
-                                    <cursor>
-                                        <Cursor fx:constant="DEFAULT" />
-                                    </cursor>
-                                </ImageView>
-                            </graphic>
-                        </Button>
-                        <Button id="btnhuy" mnemonicParsing="false" prefHeight="21.0" prefWidth="52.0">
-                            <HBox.margin>
-                                <Insets left="8.0" top="10.0" />
-                            </HBox.margin>
+            <Pane prefHeight="46.0" prefWidth="1179.0">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+               <children>
+                        <TextField fx:id="txtTimKiem" layoutX="121.0" layoutY="8.0" prefHeight="30.0" prefWidth="371.0" promptText="Tìm kiếm" />
+                        <Button id="btnhuy" layoutX="1124.0" layoutY="8.0" mnemonicParsing="false" onAction="#btnXoaRong" prefHeight="30.0" prefWidth="52.0">
                             <graphic>
                                 <ImageView fitHeight="20.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -111,21 +58,32 @@
                                 </ImageView>
                             </graphic>
                         </Button>
-                    </children>
-                    <VBox.margin>
-                        <Insets bottom="5.0" />
-                    </VBox.margin>
-                </HBox>
+                  <Label layoutX="515.0" layoutY="13.0" text="Lọc:">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <ComboBox id="cbo" fx:id="cboTimKiem" layoutY="8.0" prefHeight="30.0" prefWidth="117.0" promptText="Loại tìm kiếm" />
+                  <ComboBox fx:id="cbxLoaiHang" layoutX="548.0" layoutY="8.0" prefHeight="30.0" prefWidth="203.0" promptText="Chọn loại hàng" />
+                  <ComboBox fx:id="cbxXuatSu" layoutX="756.0" layoutY="8.0" prefHeight="30.0" prefWidth="129.0" promptText="Chọn xuất xứ" />
+                  <Label layoutX="890.0" layoutY="14.0" text="Hàm lượng:" />
+                  <TextField fx:id="txtHamLuongMin" layoutX="954.0" layoutY="8.0" prefHeight="30.0" prefWidth="74.0" promptText="Từ" />
+                  <TextField fx:id="txtHamLuongMax" layoutX="1038.0" layoutY="8.0" prefHeight="30.0" prefWidth="74.0" promptText="Đến" />
+                  <Label layoutX="1028.0" layoutY="14.0" text="--" />
+               </children>
+            </Pane>
                 <ScrollPane>
                     <content>
-                        <TableView prefHeight="572.0" prefWidth="1177.0">
+                        <TableView fx:id="tbl_Thuoc" prefHeight="572.0" prefWidth="1177.0">
                             <columns>
-                                <TableColumn prefWidth="149.0" text="Mã thuốc" />
-                                <TableColumn minWidth="0.0" prefWidth="262.0" text="Tên Thuốc" />
-                                <TableColumn minWidth="6.0" prefWidth="289.0" text="Hoạt chất" />
-                                <TableColumn prefWidth="141.0" text="Hàm lượng" />
-                                <TableColumn prefWidth="179.0" text="SDK_GPNK" />
-                                <TableColumn prefWidth="156.0" text="Hãng SX" />
+                                <TableColumn fx:id="colMaThuoc" prefWidth="149.0" text="Mã thuốc" />
+                                <TableColumn fx:id="colTenThuoc" minWidth="0.0" prefWidth="238.28570556640625" text="Tên Thuốc" />
+                                <TableColumn fx:id="colHamLuong" prefWidth="89.71435546875" text="Hàm lượng" />
+                                <TableColumn fx:id="colSDK_GPNK" prefWidth="150.28564453125" text="SDK_GPNK" />
+                                <TableColumn fx:id="colXuatXu" prefWidth="158.28570556640625" text="Xuất xứ" />
+                                <TableColumn fx:id="colLoaiHang" prefWidth="205.71429443359375" text="Loại hàng" />
+                                <TableColumn fx:id="colViTri" prefWidth="104.5716552734375" text="Vị trí" />
+                                <TableColumn fx:id="colChiTiet" prefWidth="78.28567940848211" text="Chi tiết" />
                             </columns>
                         </TableView>
                     </content>
@@ -133,4 +91,7 @@
             </children>
         </VBox>
     </children>
+   <cursor>
+      <Cursor fx:constant="DEFAULT" />
+   </cursor>
 </Pane>

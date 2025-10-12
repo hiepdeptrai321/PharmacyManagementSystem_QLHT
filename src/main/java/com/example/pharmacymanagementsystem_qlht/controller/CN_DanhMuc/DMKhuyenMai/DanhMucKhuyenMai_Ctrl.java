@@ -70,7 +70,7 @@ public class DanhMucKhuyenMai_Ctrl extends Application {
         colGiaTri.setCellValueFactory(new PropertyValueFactory<>("giaTriKM"));
         colNBD.setCellValueFactory(new PropertyValueFactory<>("ngayBatDau"));
         colNKT.setCellValueFactory(new PropertyValueFactory<>("ngayKetThuc"));
-        colChiTiet.setCellFactory(col -> new TableCell<KhuyenMai, String>() {
+        colChiTiet.setCellFactory(col-> new TableCell<KhuyenMai, String>() {
             private final Button btn = new Button("Chi tiết");
             {
                 btn.setOnAction(event -> {

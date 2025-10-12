@@ -1,167 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="571.0" prefWidth="1004.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKThuoc.ChiTietThuoc_Ctrl">
-    <children>
-        <Label id="lbtitle" layoutX="14.0" layoutY="8.0" prefHeight="31.0" prefWidth="990.0" text="Thông tin chung">
-            <font>
-                <Font size="18.0" />
-            </font>
-        </Label>
-        <VBox layoutX="14.0" layoutY="36.0" prefHeight="522.0" prefWidth="977.0">
-            <children>
-                <Pane prefHeight="121.0" prefWidth="956.0">
-                    <children>
-                        <VBox layoutY="1.0" prefHeight="136.0" prefWidth="668.0">
-                            <children>
-                                <Pane prefHeight="207.0" prefWidth="668.0">
-                                    <children>
-                                        <TextField layoutX="67.0" layoutY="22.0" prefHeight="25.0" prefWidth="255.0" style="-fx-max-height: 30;" />
-                                        <Label layoutY="25.0" text="Mã thuốc">
-                                            <font>
-                                                <Font size="14.0" />
-                                            </font>
-                                        </Label>
-                                        <Label layoutX="332.0" layoutY="25.0" prefHeight="20.0" prefWidth="59.0" text="Tồn kho">
-                                            <font>
-                                                <Font size="14.0" />
-                                            </font>
-                                        </Label>
-                                        <TextField layoutX="391.0" layoutY="22.0" prefHeight="25.0" prefWidth="102.0" style="-fx-max-height: 30;" />
-                                        <Label layoutX="509.0" layoutY="25.0" prefHeight="17.0" prefWidth="44.0" text="Vị trí">
-                                            <font>
-                                                <Font size="14.0" />
-                                            </font>
-                                        </Label>
-                                        <ComboBox layoutX="550.0" layoutY="22.0" prefHeight="25.0" prefWidth="77.0" style="-fx-max-height: 30;" />
-                                    </children>
-                                </Pane>
-                                <Pane prefHeight="240.0" prefWidth="574.0" style="-fx-min-height: 10;">
-                                    <children>
-                                        <Label layoutY="26.0" text="Tên thuốc">
-                                            <font>
-                                                <Font size="14.0" />
-                                            </font>
-                                        </Label>
-                                        <TextField layoutX="70.0" layoutY="22.0" prefHeight="25.0" prefWidth="393.0" style="-fx-max-height: 30;" />
-                                        <Label layoutX="481.0" layoutY="26.0" prefHeight="20.0" prefWidth="69.0" text="Loại hàng">
-                                            <font>
-                                                <Font size="14.0" />
-                                            </font>
-                                        </Label>
-                                        <ComboBox layoutX="550.0" layoutY="22.0" prefHeight="25.0" prefWidth="77.0" style="-fx-max-height: 30;" />
-                                    </children>
-                                </Pane>
-                            </children>
-                        </VBox>
-                        <ImageView fitHeight="270.0" fitWidth="266.0" layoutX="685.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../../img/noimage.jpg" />
-                            </image>
-                        </ImageView>
-                    </children>
-                </Pane>
-                <Pane prefHeight="184.0" prefWidth="970.0" styleClass="pnlthongtin">
-                    <children>
-                        <Label layoutX="4.0" layoutY="31.0" prefHeight="16.0" prefWidth="77.0" text="Hàm lượng">
-                            <font>
-                                <Font size="11.0" />
-                            </font>
-                        </Label>
-                        <TextField layoutX="4.0" layoutY="45.0" prefHeight="25.0" prefWidth="136.0" style="-fx-max-height: 30;" />
-                        <TextField layoutX="4.0" layoutY="92.0" prefHeight="25.0" prefWidth="152.0" style="-fx-max-height: 30;" />
-                        <Label id="lbtitle" layoutX="4.0" layoutY="-1.0" prefHeight="31.0" prefWidth="637.0" text="Chi tiết">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Label>
-                        <Label layoutX="154.0" layoutY="31.0" prefHeight="16.0" prefWidth="102.0" text="Đơn vị hàm lượng">
-                            <font>
-                                <Font size="11.0" />
-                            </font>
-                        </Label>
-                        <ComboBox layoutX="154.0" layoutY="45.0" prefHeight="25.0" prefWidth="102.0" style="-fx-max-height: 30;" />
-                        <Label layoutX="272.0" layoutY="31.0" prefHeight="16.0" prefWidth="102.0" text="Đường dùng">
-                            <font>
-                                <Font size="11.0" />
-                            </font>
-                        </Label>
-                        <ComboBox layoutX="272.0" layoutY="45.0" prefHeight="25.0" prefWidth="116.0" style="-fx-max-height: 30;" />
-                        <ComboBox layoutX="402.0" layoutY="45.0" prefHeight="25.0" prefWidth="227.0" style="-fx-max-height: 30;" />
-                        <Label layoutX="402.0" layoutY="31.0" prefHeight="16.0" prefWidth="102.0" text="Nhóm dược lý">
-                            <font>
-                                <Font size="11.0" />
-                            </font>
-                        </Label>
-                        <TextField layoutX="173.0" layoutY="92.0" prefHeight="25.0" prefWidth="198.0" style="-fx-max-height: 30;" />
-                        <Label layoutX="4.0" layoutY="76.0" prefHeight="16.0" prefWidth="77.0" text="Hãng sản xuất">
-                            <font>
-                                <Font size="11.0" />
-                            </font>
-                        </Label>
-                        <Label layoutX="173.0" layoutY="76.0" prefHeight="16.0" prefWidth="77.0" text="Nước sản xuất">
-                            <font>
-                                <Font size="11.0" />
-                            </font>
-                        </Label>
-                        <TextField layoutX="388.0" layoutY="92.0" prefHeight="25.0" prefWidth="242.0" style="-fx-max-height: 30;" />
-                        <Label layoutX="389.0" layoutY="75.0" prefHeight="16.0" prefWidth="152.0" text="Quy cách đóng gói">
-                            <font>
-                                <Font size="11.0" />
-                            </font>
-                        </Label>
-                        <TextField layoutX="4.0" layoutY="138.0" prefHeight="25.0" prefWidth="255.0" style="-fx-max-height: 30;" />
-                        <Label layoutX="4.0" layoutY="122.0" prefHeight="16.0" prefWidth="83.0" text="SDK_GPNK">
-                            <font>
-                                <Font size="11.0" />
-                            </font>
-                        </Label>
-                        <TextField layoutX="275.0" layoutY="138.0" prefHeight="25.0" prefWidth="356.0" style="-fx-max-height: 30;" />
-                        <Label layoutX="276.0" layoutY="122.0" prefHeight="16.0" prefWidth="102.0" text="Mã thuốc quốc tế">
-                            <font>
-                                <Font size="11.0" />
-                            </font>
-                        </Label>
-                    </children>
-                </Pane>
-                <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-max-height: 30;" styleClass="pnlthongtin">
-                    <children>
-                        <Label id="lbtitle" layoutY="-1.0" prefHeight="31.0" prefWidth="942.0" text="Đơn vị tính &amp; giá bán">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Label>
-                    </children>
-                </Pane>
-                <VBox prefHeight="200.0" prefWidth="100.0">
-                    <children>
-                        <TableView prefHeight="205.0" prefWidth="977.0">
-                            <columns>
-                                <TableColumn prefWidth="148.5" text="Đơn vị tính" />
-                                <TableColumn prefWidth="141.5" text="Kí hiệu" />
-                                <TableColumn minWidth="0.0" prefWidth="193.5" text="Hệ số quy đổi" />
-                                <TableColumn prefWidth="219.0" text="Giá nhập" />
-                                <TableColumn minWidth="0.0" prefWidth="243.5" text="Giá bán" />
-                            </columns>
-                        </TableView>
-                    </children>
-                </VBox>
-            </children>
-        </VBox>
-    </children>
-   <stylesheets>
-      <URL value="@../../css/ThemThuoc.css" />
-   </stylesheets>
-</AnchorPane>
+<Pane prefHeight="506.0" prefWidth="996.0" stylesheets="@../../css/TimKiemThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKThuoc.ChiTietThuoc_Ctrl">
+   <children>
+      <Pane id="paneTitle" prefHeight="51.0" prefWidth="1004.0">
+         <children>
+              <Label layoutX="14.0" layoutY="7.0" prefHeight="36.0" prefWidth="198.0" text="Thông tin chung">
+                  <font>
+                      <Font name="System Bold" size="25.0" />
+                  </font>
+              </Label>
+         </children>
+      </Pane>
+                <TextField fx:id="txtMaThuoc" layoutX="16.0" layoutY="70.0" maxHeight="31.0" prefHeight="31.0" prefWidth="256.0" style="-fx-max-height: 30;" />
+                <TextField fx:id="txtTenThuoc" layoutX="276.0" layoutY="70.0" maxHeight="31.0" prefHeight="31.0" prefWidth="410.0" style="-fx-max-height: 30;" />
+            <ImageView fitHeight="270.0" fitWidth="266.0" layoutX="707.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@../../img/noimage.jpg" />
+                </image>
+            </ImageView>
+            <Label layoutX="16.0" layoutY="107.0" prefHeight="16.0" prefWidth="58.0" text="Hàm lượng:">
+                <font>
+                    <Font size="11.0" />
+                </font>
+            </Label>
+            <TextField fx:id="txtHamLuong" layoutX="16.0" layoutY="123.0" prefHeight="25.0" prefWidth="136.0" style="-fx-max-height: 30;" />
+            <TextField fx:id="txtHangSanXuat" layoutX="16.0" layoutY="179.0" maxHeight="31.0" prefHeight="31.0" prefWidth="196.0" style="-fx-max-height: 30;" />
+            <Label layoutX="156.0" layoutY="107.0" prefHeight="16.0" prefWidth="66.0" text="Đường dùng:">
+                <font>
+                    <Font size="11.0" />
+                </font>
+            </Label>
+            <Label layoutX="216.0" layoutY="217.0" prefHeight="16.0" prefWidth="78.0" text="Nhóm dược lý:">
+                <font>
+                    <Font size="11.0" />
+                </font>
+            </Label>
+            <TextField fx:id="txtNuocSanXuat" layoutX="216.0" layoutY="179.0" maxHeight="31.0" prefHeight="31.0" prefWidth="215.0" style="-fx-max-height: 30;" />
+            <Label layoutX="16.0" layoutY="161.0" prefHeight="16.0" prefWidth="77.0" text="Hãng sản xuất:">
+                <font>
+                    <Font size="11.0" />
+                </font>
+            </Label>
+            <Label layoutX="216.0" layoutY="161.0" prefHeight="16.0" prefWidth="77.0" text="Nước sản xuất:">
+                <font>
+                    <Font size="11.0" />
+                </font>
+            </Label>
+            <TextField fx:id="txtQCDongGoi" layoutX="435.0" layoutY="179.0" maxHeight="31.0" prefHeight="31.0" prefWidth="248.0" style="-fx-max-height: 30;" />
+            <Label layoutX="435.0" layoutY="161.0" prefHeight="16.0" prefWidth="152.0" text="Quy cách đóng gói">
+                <font>
+                    <Font size="11.0" />
+                </font>
+            </Label>
+            <TextField fx:id="txtSDK_GPNK" layoutX="16.0" layoutY="234.0" maxHeight="31.0" prefHeight="31.0" prefWidth="196.0" style="-fx-max-height: 30;" />
+            <Label layoutX="16.0" layoutY="217.0" prefHeight="16.0" prefWidth="83.0" text="SDK_GPNK:">
+                <font>
+                    <Font size="11.0" />
+                </font>
+            </Label>
+            <TableView fx:id="tblHoatChat" layoutX="16.0" layoutY="287.0" prefHeight="201.0" prefWidth="663.0">
+                <columns>
+                    <TableColumn fx:id="colMaHoatChat" prefWidth="195.42859268188477" text="Mã hoạt chất" />
+                    <TableColumn fx:id="colTenHoatChat" prefWidth="249.71429443359375" text="Tên hoạt chất" />
+                    <TableColumn fx:id="colHamLuong" minWidth="0.0" prefWidth="216.42855834960938" text="hàm lượng" />
+                </columns>
+            </TableView>
+      <Label layoutX="16.0" layoutY="55.0" prefHeight="16.0" prefWidth="52.0" text="Mã thuốc:">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <Label layoutX="276.0" layoutY="55.0" prefHeight="16.0" prefWidth="52.0" text="Tên thuốc:">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtDuongDung" layoutX="156.0" layoutY="123.0" prefHeight="25.0" prefWidth="198.0" style="-fx-max-height: 30;" />
+      <Label layoutX="359.0" layoutY="107.0" prefHeight="16.0" prefWidth="30.0" text="Vị trí:">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtViTri" layoutX="359.0" layoutY="123.0" maxHeight="31.0" prefHeight="31.0" prefWidth="159.0" style="-fx-max-height: 30;" />
+      <TextField fx:id="txtLoaiHang" layoutX="522.0" layoutY="123.0" maxHeight="31.0" prefHeight="31.0" prefWidth="163.0" style="-fx-max-height: 30;" />
+      <Label layoutX="522.0" layoutY="107.0" prefHeight="16.0" prefWidth="54.0" text="Loại hàng:">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtNhomDuocLy" layoutX="216.0" layoutY="233.0" maxHeight="31.0" prefHeight="31.0" prefWidth="248.0" style="-fx-max-height: 30;" />
+      <Label layoutX="814.0" layoutY="332.0" prefHeight="21.0" prefWidth="66.0" text="Hình ảnh">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Pane id="btnHuy" layoutX="871.0" layoutY="452.0" prefHeight="36.0" prefWidth="102.0">
+         <children>
+            <Label id="lblTrang" layoutX="30.0" layoutY="8.0" prefHeight="21.0" prefWidth="42.0" text="Thoát">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Label layoutX="16.0" layoutY="271.0" prefHeight="16.0" prefWidth="52.0" text="Hoạt chất:">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

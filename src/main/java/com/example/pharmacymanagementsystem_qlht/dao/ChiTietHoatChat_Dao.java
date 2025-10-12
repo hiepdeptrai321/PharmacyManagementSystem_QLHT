@@ -13,6 +13,7 @@ public class ChiTietHoatChat_Dao implements DaoInterface<ChiTietHoatChat>{
     private final String DELETE_BY_ID = "DELETE FROM ChiTietHoatChat WHERE MaThuoc = ? AND MaHoatChat = ?";
     private final String SELECT_BY_ID = "SELECT * FROM ChiTietHoatChat WHERE MaThuoc = ? AND MaHoatChat = ?";
     private final String SELECT_ALL_SQL = "SELECT * FROM ChiTietHoatChat";
+    private final String SELECT_BY_MATHUOC = "SELECT * FROM ChiTietHoatChat WHERE MaThuoc = ?";
 
     @Override
     public void insert(ChiTietHoatChat e) {
@@ -41,7 +42,7 @@ public class ChiTietHoatChat_Dao implements DaoInterface<ChiTietHoatChat>{
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 ChiTietHoatChat ct = new ChiTietHoatChat();
-                ct.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getInt("MaThuoc")));
+                ct.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getString("MaThuoc")));
                 ct.setHoatChat(new HoatChat_Dao().selectById(rs.getString("MaHoatChat")));
                 ct.setHamLuong(rs.getFloat("HamLuong"));
                 list.add(ct);
@@ -55,5 +56,9 @@ public class ChiTietHoatChat_Dao implements DaoInterface<ChiTietHoatChat>{
     @Override
     public List<ChiTietHoatChat> selectAll() {
         return this.selectBySql(SELECT_ALL_SQL);
+    }
+
+    public List<ChiTietHoatChat> selectByMaThuoc(String maThuoc) {
+        return this.selectBySql(SELECT_BY_MATHUOC, maThuoc);
     }
 }

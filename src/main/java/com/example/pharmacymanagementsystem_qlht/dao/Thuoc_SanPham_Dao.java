@@ -68,4 +68,33 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
     public List<Thuoc_SanPham> selectAll() {
         return this.selectBySql(SELECT_ALL_SQL);
     }
+
+    public List<String> getAllLoaiHang() {
+        String sql = "SELECT TenLH FROM LoaiHang";
+        List<String> list = new ArrayList<>();
+        try {
+            ResultSet rs = ConnectDB.query(sql);
+            while (rs.next()) {
+                list.add(rs.getString("TenLH"));
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+    public List<String> getAllXuatXu() {
+        String sql = "SELECT DISTINCT NuocSX FROM Thuoc_SanPham";
+        List<String> list = new ArrayList<>();
+        try {
+            ResultSet rs = ConnectDB.query(sql);
+            while (rs.next()) {
+                list.add(rs.getString("NuocSX"));
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
 }

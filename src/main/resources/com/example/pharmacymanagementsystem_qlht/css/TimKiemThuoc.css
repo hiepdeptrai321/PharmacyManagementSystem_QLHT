@@ -51,3 +51,31 @@
 .table-view .table-row-cell:filled:selected {
     -fx-background-color: #d0e7ff;
 }
+
+#paneTitle{
+    -fx-border-color: transparent transparent #ccc transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+#btnHuy{
+    -fx-background-color: rgb(255, 0, 0);
+    -fx-background-radius: 5px;
+}
+#lblTrang{
+    -fx-text-fill: white;
+}
+#btnHuy:pressed{
+    -fx-background-color: rgb(220, 0, 0);
+}
+#cbo{
+    -fx-arc-height: 30px;
+}
+
+.combo-box.clear {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 0;
+    -fx-effect: none;
+}

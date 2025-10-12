@@ -1,3 +1,4 @@
+// src/main/java/com/example/pharmacymanagementsystem_qlht/dao/ChiTietDonViTinh_Dao.java
 package com.example.pharmacymanagementsystem_qlht.dao;
 
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
@@ -8,19 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChiTietDonViTinh_Dao implements DaoInterface<ChiTietDonViTinh> {
-    private final String INSERT_SQL = "INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan) VALUES (?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE ChiTietDonViTinh SET HeSoQuyDoi=?, GiaNhap=?, GiaBan=? WHERE MaThuoc=? AND MaDVT=?";
+    private final String INSERT_SQL = "INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES (?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE ChiTietDonViTinh SET HeSoQuyDoi=?, GiaNhap=?, GiaBan=?, DonViCoBan=? WHERE MaThuoc=? AND MaDVT=?";
     private final String DELETE_BY_ID_SQL = "DELETE FROM ChiTietDonViTinh WHERE MaThuoc=? AND MaDVT=?";
-    private final String SELECT_BY_ID_SQL = "SELECT MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan FROM ChiTietDonViTinh WHERE MaThuoc=? AND MaDVT=?";
-    private final String SELECT_ALL_SQL = "SELECT MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan FROM ChiTietDonViTinh";
+    private final String SELECT_BY_ID_SQL = "SELECT MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan FROM ChiTietDonViTinh WHERE MaThuoc=? AND MaDVT=?";
+    private final String SELECT_ALL_SQL = "SELECT MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan FROM ChiTietDonViTinh";
+    private final String SELECT_BY_MATHUOC_SQL = "SELECT MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan FROM ChiTietDonViTinh WHERE MaThuoc=?";
     @Override
     public void insert(ChiTietDonViTinh e) {
-        ConnectDB.update(INSERT_SQL, e.getThuoc().getMaThuoc(), e.getDvt().getMaDVT(), e.getHeSoQuyDoi(), e.getGiaNhap(), e.getGiaBan());
+        ConnectDB.update(INSERT_SQL, e.getThuoc().getMaThuoc(), e.getDvt().getMaDVT(), e.getHeSoQuyDoi(), e.getGiaNhap(), e.getGiaBan(), e.isDonViCoBan());
     }
 
     @Override
     public void update(ChiTietDonViTinh e) {
-        ConnectDB.update(UPDATE_SQL, e.getHeSoQuyDoi(), e.getGiaNhap(), e.getGiaBan(), e.getThuoc().getMaThuoc(), e.getDvt().getMaDVT());
+        ConnectDB.update(UPDATE_SQL, e.getHeSoQuyDoi(), e.getGiaNhap(), e.getGiaBan(), e.isDonViCoBan(), e.getThuoc().getMaThuoc(), e.getDvt().getMaDVT());
     }
 
     @Override
@@ -45,6 +47,7 @@ public class ChiTietDonViTinh_Dao implements DaoInterface<ChiTietDonViTinh> {
                 ct.setHeSoQuyDoi(rs.getInt("HeSoQuyDoi"));
                 ct.setGiaNhap(rs.getDouble("GiaNhap"));
                 ct.setGiaBan(rs.getDouble("GiaBan"));
+                ct.setDonViCoBan(rs.getBoolean("DonViCoBan"));
                 list.add(ct);
             }
             rs.getStatement().close();
@@ -58,5 +61,7 @@ public class ChiTietDonViTinh_Dao implements DaoInterface<ChiTietDonViTinh> {
     public List<ChiTietDonViTinh> selectAll() {
         return selectBySql(SELECT_ALL_SQL);
     }
-
+    public List<ChiTietDonViTinh> selectByMaThuoc(Object... keys) {
+        return selectBySql(SELECT_BY_MATHUOC_SQL, keys);
+    }
 }

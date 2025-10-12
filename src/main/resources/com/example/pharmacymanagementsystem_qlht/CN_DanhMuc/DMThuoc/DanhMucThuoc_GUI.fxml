@@ -10,28 +10,28 @@
 
 <AnchorPane prefHeight="704.0" prefWidth="1200.0" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMThuoc.DanhMucThuoc_Ctrl">
    <children>
-      <TextField layoutX="11.5" layoutY="47.0" prefHeight="30.0" prefWidth="353.0" promptText="Tìm theo mã, tên thuốc" />
-      <Button id="btntim" layoutX="375.0" layoutY="46.0" minWidth="35.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="69.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" />
+      <TextField fx:id="tfTimThuoc" layoutX="11.5" layoutY="47.0" prefHeight="30.0" prefWidth="353.0" promptText="Tìm theo mã, tên thuốc" />
+      <Button id="btntim" fx:id="btnTimThuoc" layoutX="375.0" layoutY="46.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timThuoc" prefHeight="30.0" prefWidth="69.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" />
       <Pane id="lblpaneTitle" prefHeight="40.0" prefWidth="1200.0">
          <children>
-            <Label id="lbtitle" layoutX="11.5" layoutY="2.0" prefHeight="36.0" prefWidth="168.0" text="Quản lý thuốc" />
+            <Label id="lbtitle" layoutX="12.0" layoutY="2.0" prefHeight="36.0" prefWidth="269.0" text="Danh mục thuốc" />
          </children>
       </Pane>
-      <Button id="btnthemthuoc" fx:id="btnthemthuoc" layoutX="956.0" layoutY="46.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="144.0" text="✚Thêm thuốc" AnchorPane.topAnchor="46.0" />
-      <TableView id="tablethuoc" layoutX="12.0" layoutY="86.0" prefHeight="609.0" prefWidth="1177.0">
+      <Button id="btnthemthuoc" fx:id="btnThemThuoc" layoutX="956.0" layoutY="46.0" mnemonicParsing="false" onMouseClicked="#btnThemThuocClick" prefHeight="30.0" prefWidth="144.0" text="✚Thêm thuốc" AnchorPane.topAnchor="46.0" />
+      <TableView id="tablethuoc" fx:id="tbDanhMucThuoc" layoutX="12.0" layoutY="86.0" prefHeight="609.0" prefWidth="1177.0">
         <columns>
-          <TableColumn prefWidth="48.83333206176758" text="STT" />
-          <TableColumn prefWidth="114.16667175292969" text="Mã thuốc" />
-            <TableColumn prefWidth="352.1666259765625" text="Tên thuốc" />
-            <TableColumn minWidth="0.0" prefWidth="110.66668701171875" text="Đơn vị tính" />
-            <TableColumn minWidth="0.0" prefWidth="145.33331298828125" text="Giá nhập" />
-            <TableColumn minWidth="0.0" prefWidth="135.83331298828125" text="Giá bán" />
-            <TableColumn minWidth="0.0" prefWidth="100.66668701171875" text="Tồn" />
-            <TableColumn minWidth="0.0" prefWidth="104.0" text="Đơn đặt" />
-            <TableColumn minWidth="0.0" prefWidth="58.0" />
+          <TableColumn fx:id="colSTT" prefWidth="48.83333206176758" text="STT" />
+          <TableColumn fx:id="colMaThuoc" prefWidth="114.16667175292969" text="Mã thuốc" />
+            <TableColumn fx:id="colTenThuoc" prefWidth="321.0" text="Tên thuốc" />
+            <TableColumn fx:id="colDVT" minWidth="0.0" prefWidth="103.0" text="Đơn vị tính" />
+            <TableColumn fx:id="colGiaNhap" minWidth="0.0" prefWidth="159.0" text="Giá nhập" />
+            <TableColumn fx:id="colGiaBan" minWidth="0.0" prefWidth="142.0" text="Giá bán" />
+            <TableColumn fx:id="colSLTon" minWidth="0.0" prefWidth="90.0" text="Tồn" />
+            <TableColumn fx:id="colDonDat" minWidth="0.0" prefWidth="118.0" text="Đơn đặt" />
+            <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="76.0" />
         </columns>
       </TableView>
-      <Button id="btnnhapxuat" layoutX="1106.0" layoutY="46.0" minWidth="46.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="45.0" text="📥" AnchorPane.topAnchor="46.0" />
-      <Button id="btnnhapxuat" layoutX="1150.0" layoutY="46.0" minWidth="27.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="39.0" text="📤" AnchorPane.topAnchor="46.0" />
+      <Button id="btnnhapxuat" fx:id="btnImport" layoutX="1106.0" layoutY="46.0" minWidth="46.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="45.0" text="📥" AnchorPane.topAnchor="46.0" />
+      <Button id="btnnhapxuat" fx:id="btnExport" layoutX="1150.0" layoutY="46.0" minWidth="27.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="39.0" text="📤" AnchorPane.topAnchor="46.0" />
    </children>
 </AnchorPane>

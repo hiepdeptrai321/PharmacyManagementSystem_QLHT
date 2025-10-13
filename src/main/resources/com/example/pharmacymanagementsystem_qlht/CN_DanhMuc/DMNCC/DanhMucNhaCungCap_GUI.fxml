@@ -27,7 +27,7 @@
                 <TableColumn fx:id="colSDT" minWidth="0.0" prefWidth="129.0" text="Số điện thoại" />
                 <TableColumn fx:id="colEmail" minWidth="0.0" prefWidth="173.0" text="Email" />
                 <TableColumn fx:id="colGhiChu" minWidth="0.0" prefWidth="174.0" text="Ghi chú" />
-                <TableColumn fx:id="colChiTietNhaCungCap" minWidth="0.0" prefWidth="54.0" />
+                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="54.0" text="Chi tiết" />
             </columns>
         </TableView>
         <Button id="btnnhapxuat" layoutX="1110.0" layoutY="46.0" minWidth="46.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="45.0" text="📥" AnchorPane.topAnchor="46.0" />

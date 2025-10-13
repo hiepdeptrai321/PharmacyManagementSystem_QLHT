@@ -132,7 +132,7 @@ public class TimKiemNCC_Ctrl extends Application {
             FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNCC/ChiTietNhaCungCap_GUI.fxml"));
             Parent root = loader.load();
             ChiTietNhaCungCap_Ctrl ctrl = loader.getController();
-            ctrl.setNhaCungCap(ncc);
+            ctrl.hienThiThongTin(ncc);
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();

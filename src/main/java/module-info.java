@@ -42,9 +42,13 @@ module com.example.pharmacymanagementsystem_qlht {
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapHoaDon to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.model to javafx.base;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDatHang to javafx.fxml;
-    exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDatHang;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKNhaCungCap;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKNhaCungCap to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuNhap to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhaCungCap;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDatHang to javafx.graphics;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuTraHang to javafx.graphics, javafx.fxml;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDoiHang to javafx.graphics, javafx.fxml;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuTraHang to javafx.fxml;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDoiHang to javafx.fxml;
 }

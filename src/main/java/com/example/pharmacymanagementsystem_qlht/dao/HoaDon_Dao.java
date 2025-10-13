@@ -50,23 +50,25 @@ public class HoaDon_Dao implements DaoInterface<HoaDon>{
     public List<HoaDon> selectBySql(String sql, Object... args) {
         List<HoaDon> hoaDonList = new ArrayList<>();
         try (ResultSet rs = ConnectDB.query(sql, args)) {
+            java.sql.ResultSetMetaData meta = rs.getMetaData();
+            int columnCount = meta.getColumnCount();
             while (rs.next()) {
                 HoaDon hd = new HoaDon();
                 hd.setMaHD(rs.getString("MaHD"));
                 hd.setNgayLap(rs.getTimestamp("NgayLap"));
                 hd.setTrangThai(rs.getBoolean("TrangThai"));
 
-                // 1. Khách Hàng (Tạo đối tượng KhachHang từ dữ liệu JOIN)
+                // Khách Hàng
                 KhachHang kh = new KhachHang();
-                kh.setMaKH(rs.getString("MaKH"));
-                kh.setTenKH(rs.getString("TenKH"));
-                kh.setSdt(rs.getString("SDT"));
+                if (hasColumn(meta, "MaKH")) kh.setMaKH(rs.getString("MaKH"));
+                if (hasColumn(meta, "TenKH")) kh.setTenKH(rs.getString("TenKH"));
+                if (hasColumn(meta, "SDT")) kh.setSdt(rs.getString("SDT"));
                 hd.setMaKH(kh);
 
-                // 2. Nhân Viên (Tạo đối tượng NhanVien từ dữ liệu JOIN)
+                // Nhân Viên
                 NhanVien nv = new NhanVien();
-                nv.setMaNV(rs.getString("MaNV"));
-                nv.setTenNV(rs.getString("TenNV"));
+                if (hasColumn(meta, "MaNV")) nv.setMaNV(rs.getString("MaNV"));
+                if (hasColumn(meta, "TenNV")) nv.setTenNV(rs.getString("TenNV"));
                 hd.setMaNV(nv);
 
                 hoaDonList.add(hd);
@@ -103,5 +105,11 @@ public class HoaDon_Dao implements DaoInterface<HoaDon>{
 
     public List<HoaDon> selectByTuKhoa(String tuKhoa){
         return this.selectBySql(SELECT_BY_TUKHOA_SQL, "%" + tuKhoa + "%");
+    }
+    private boolean hasColumn(java.sql.ResultSetMetaData meta, String column) throws java.sql.SQLException {
+        for (int i = 1; i <= meta.getColumnCount(); i++) {
+            if (meta.getColumnName(i).equalsIgnoreCase(column)) return true;
+        }
+        return false;
     }
 }

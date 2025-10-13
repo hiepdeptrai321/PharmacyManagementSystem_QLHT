@@ -19,7 +19,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" stylesheets="@../../css/TimKiemHoaDon.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.collections.FXCollections?>
+<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" stylesheets="@../../css/TimKiemHoaDon.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoaDon.TimKiemHoaDon_Ctrl">
     <children>
         <VBox layoutX="10.0" layoutY="14.0">
             <children>
@@ -44,12 +45,12 @@
                 <Separator prefWidth="200.0" />
                 <HBox prefHeight="51.0" prefWidth="1179.0">
                     <children>
-                        <ComboBox fx:id="cboTimKiem" prefHeight="35.0" prefWidth="130.0" promptText="Tìm theo" styleClass="btntim">
+                        <ComboBox fx:id="cboTieuChiTimKiem" prefHeight="35.0" prefWidth="130.0" promptText="Tiêu chí tìm kiếm" styleClass="btntim">
                             <HBox.margin>
                                 <Insets right="5.0" top="10.0" />
                             </HBox.margin>
                         </ComboBox>
-                        <TextField prefHeight="35.0" prefWidth="209.0" promptText="Nhập thông tin hóa đơn" styleClass="tftim">
+                        <TextField fx:id="txtNoiDungTimKiem" prefHeight="35.0" prefWidth="209.0" promptText="Nhập nội dung tìm kiếm" styleClass="tftim">
                             <HBox.margin>
                                 <Insets top="10.0" />
                             </HBox.margin>
@@ -68,7 +69,7 @@
                         <Insets top="10.0" />
                      </HBox.margin>
                   </Label>
-                  <DatePicker prefHeight="35.0" prefWidth="125.0" styleClass="tftim">
+                  <DatePicker fx:id="dpTuNgay" prefHeight="35.0" prefWidth="125.0" styleClass="tftim">
                      <HBox.margin>
                         <Insets right="10.0" top="10.0" />
                      </HBox.margin>
@@ -78,13 +79,13 @@
                         <Insets top="10.0" />
                      </HBox.margin>
                   </Label>
-                  <DatePicker minHeight="14.0" prefHeight="35.0" prefWidth="125.0" styleClass="tftim">
+                  <DatePicker fx:id="dpDenNgay" minHeight="14.0" prefHeight="35.0" prefWidth="125.0" styleClass="tftim">
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
                   </DatePicker>
                   <Region prefHeight="51.0" prefWidth="30.0" />
-                        <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" prefHeight="28.0" prefWidth="63.0" styleClass="btntim" text="Tìm">
+                        <Button fx:id="btnTimKiem" alignment="CENTER_RIGHT" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" prefHeight="28.0" prefWidth="63.0" styleClass="btntim" text="Tìm">
                             <HBox.margin>
                                 <Insets left="8.0" top="10.0" />
                             </HBox.margin>
@@ -99,7 +100,7 @@
                                 </ImageView>
                             </graphic>
                         </Button>
-                        <Button id="btnhuy" mnemonicParsing="false" prefHeight="21.0" prefWidth="52.0" styleClass="btntim">
+                        <Button fx:id="btnHuyBo" mnemonicParsing="false" prefHeight="21.0" prefWidth="52.0" styleClass="btntim">
                             <HBox.margin>
                                 <Insets left="8.0" top="10.0" />
                             </HBox.margin>
@@ -112,7 +113,7 @@
                             </graphic>
                         </Button>
                   <Region prefHeight="51.0" prefWidth="163.0" />
-                  <ComboBox fx:id="cboTimKiem1" prefHeight="35.0" prefWidth="146.0" promptText="⌛ Bộ lọc nhanh" styleClass="btntim">
+                  <ComboBox fx:id="cboBoLocNhanh" prefHeight="35.0" prefWidth="146.0" promptText="⌛ Bộ lọc nhanh" styleClass="btntim">
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
@@ -127,12 +128,12 @@
                         <TableView fx:id="tblHD" prefHeight="560.0" prefWidth="1177.0">
                             <columns>
                                 <TableColumn fx:id="colMaHD" minWidth="0.0" prefWidth="169.0" text="Mã hóa đơn" />
-                                <TableColumn fx:id="colNgayLap" minWidth="6.0" prefWidth="211.0" text="Ngày lập" />
-                                <TableColumn fx:id="colTenKH" prefWidth="207.0" text="Khách hàng" />
-                                <TableColumn fx:id="colSdtKH" prefWidth="162.0" text="SĐT" />
-                                <TableColumn fx:id="colTenNV" prefWidth="216.0" text="Nhân viên" />
-                                <TableColumn fx:id="colSLP" minWidth="0.0" prefWidth="157.0" text="Số lượng phiếu đổi trả" />
-                                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="53.0" />
+                                <TableColumn fx:id="colNgayLap" minWidth="6.0" prefWidth="192.0" text="Ngày lập" />
+                                <TableColumn fx:id="colTenKH" prefWidth="210.0" text="Khách hàng" />
+                                <TableColumn fx:id="colSdtKH" prefWidth="178.0" text="SĐT" />
+                                <TableColumn fx:id="colTenNV" prefWidth="206.0" text="Nhân viên" />
+                                <TableColumn fx:id="colSLP" minWidth="0.0" prefWidth="142.0" text="Số lượng phiếu đổi trả" />
+                                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="78.0" />
                             </columns>
                         </TableView>
                     </content>

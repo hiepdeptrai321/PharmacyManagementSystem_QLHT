@@ -10,6 +10,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class CuaSoChinh_QuanLy_Ctrl extends Application {
     public Pane pnlChung;
 
@@ -35,22 +37,17 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
         }
     }
 
-    public void GiaoDienQuanLyThuoc(ActionEvent actionEvent) {
-        pnlChung.getChildren().clear();
-        try{
-            Pane pane = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/DanhMucThuoc_GUI.fxml"));
-            pnlChung.getChildren().add(pane);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+
+    public void CapNhatGiaBanGUI(ActionEvent actionEvent) {
+
     }
 
-    public void lapPhieuNhapHang_GUI(ActionEvent actionEvent) {
+    public void timKiemPhieuNhap(ActionEvent actionEvent) {
         pnlChung.getChildren().clear();
-        try{
-            Pane pane = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapPhieuNhapHang/LapPhieuNhapHang_GUI.fxml"));
+        try {
+            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuNhapHang/TKPhieuNhapHang_GUI.fxml")));
             pnlChung.getChildren().add(pane);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

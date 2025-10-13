@@ -1,8 +1,6 @@
-package com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMThuoc;
+package com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatGia;
 
-import com.example.pharmacymanagementsystem_qlht.dao.KhuyenMai_Dao;
 import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SanPham_Dao;
-import com.example.pharmacymanagementsystem_qlht.model.KhuyenMai;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
@@ -17,29 +15,23 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
-public class DanhMucThuoc_Ctrl extends Application {
-
+public class CapNhatGiaThuoc_Ctrl extends Application {
     // 1. KHAI BÁO THÀNH PHẦN GIAO DIỆN (FXML)
     public TextField tfTimThuoc;
     public Button btnTimThuoc;
-    public Button btnThemThuoc;
-    public TableView tbDanhMucThuoc;
+    public TableView tbThuoc;
     public TableColumn colSTT;
     public TableColumn colMaThuoc;
     public TableColumn colTenThuoc;
     public TableColumn colDVT;
     public TableColumn colGiaNhap;
     public TableColumn colGiaBan;
-    public TableColumn colSLTon;
-    public TableColumn colDonDat;
     public TableColumn colChiTiet;
-    public Button btnImport;
-    public Button btnExport;
 
     // 2. KHỞI TẠO (INITIALIZE)
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/DanhMucThuoc_GUI.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatGia/CapNhatGiaThuoc_GUI.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -48,7 +40,6 @@ public class DanhMucThuoc_Ctrl extends Application {
     public void initialize() {
         loadTable();
     }
-
     // 3. XỬ LÝ SỰ KIỆN GIAO DIỆN
     public void loadTable() {
         Thuoc_SanPham_Dao thuocDao = new Thuoc_SanPham_Dao();
@@ -56,7 +47,7 @@ public class DanhMucThuoc_Ctrl extends Application {
         ObservableList<Thuoc_SanPham> data = FXCollections.observableArrayList(list);
 
         colSTT.setCellValueFactory(cellData ->
-                new SimpleStringProperty(String.valueOf(tbDanhMucThuoc.getItems().indexOf(cellData.getClass()) + 1))
+                new SimpleStringProperty(String.valueOf(tbThuoc.getItems().indexOf(cellData.getClass()) + 1))
         );
         colMaThuoc.setCellValueFactory(new PropertyValueFactory<>("maThuoc"));
         colTenThuoc.setCellValueFactory(new PropertyValueFactory<>("tenThuoc"));
@@ -81,27 +72,17 @@ public class DanhMucThuoc_Ctrl extends Application {
             }
         });
 
-        tbDanhMucThuoc.setItems(data);
+        tbThuoc.setItems(data);
     }
 
-    public void btnThemThuocClick() {
-        try {
-            Stage stage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/ThemThuoc_GUI.fxml"));
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
     // 4. XỬ LÝ NGHIỆP VỤ
     public void timThuoc(){
         String keyword = tfTimThuoc.getText().trim().toLowerCase();
         Thuoc_SanPham_Dao ts_dao = new Thuoc_SanPham_Dao();
         List<Thuoc_SanPham> dsTSLoc = ts_dao.selectByTuKhoa(keyword);
         ObservableList<Thuoc_SanPham> data = FXCollections.observableArrayList(dsTSLoc);
-        tbDanhMucThuoc.setItems(data);
+        tbThuoc.setItems(data);
     }
+
 
 }

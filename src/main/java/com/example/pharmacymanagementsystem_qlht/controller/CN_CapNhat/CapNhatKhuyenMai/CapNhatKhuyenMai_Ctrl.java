@@ -1,4 +1,4 @@
-package com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhuyenMai;
+package com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatKhuyenMai;
 
 import com.example.pharmacymanagementsystem_qlht.dao.ChiTietKhuyenMai_Dao;
 import com.example.pharmacymanagementsystem_qlht.dao.KhuyenMai_Dao;
@@ -6,6 +6,7 @@ import com.example.pharmacymanagementsystem_qlht.model.KhuyenMai;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,11 +14,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.collections.ObservableList;
 
 import java.util.List;
 
-public class DanhMucKhuyenMai_Ctrl extends Application {
+public class CapNhatKhuyenMai_Ctrl extends Application {
 
     // 1. KHAI BÁO THÀNH PHẦN GIAO DIỆN (FXML)
     @FXML
@@ -50,7 +50,7 @@ public class DanhMucKhuyenMai_Ctrl extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhuyenMai/DanhMucKhuyenMai_GUI.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatKhuyenMai/CapNhatKhuyenMai_GUI.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -70,7 +70,7 @@ public class DanhMucKhuyenMai_Ctrl extends Application {
         colGiaTri.setCellValueFactory(new PropertyValueFactory<>("giaTriKM"));
         colNBD.setCellValueFactory(new PropertyValueFactory<>("ngayBatDau"));
         colNKT.setCellValueFactory(new PropertyValueFactory<>("ngayKetThuc"));
-        colChiTiet.setCellFactory(col-> new TableCell<KhuyenMai, String>() {
+        colChiTiet.setCellFactory(col -> new TableCell<KhuyenMai, String>() {
             private final Button btn = new Button("Chi tiết");
             {
                 btn.setOnAction(event -> {
@@ -91,26 +91,14 @@ public class DanhMucKhuyenMai_Ctrl extends Application {
     public void btnChiTietClick(KhuyenMai km) {
         try {
             Stage stage = new Stage();
-            FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhuyenMai/XoaKhuyenMai_GUI.fxml"));
+            FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatKhuyenMai/SuaKhuyenMai_GUI.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
 
             this.getClass();
-            XoaKhuyenMai_Ctrl ctrl = loader.getController();
+            SuaKhuyenMai_Ctrl ctrl = loader.getController();
             ctrl.loadData(km);
             ctrl.loadDatatbCTKM(new ChiTietKhuyenMai_Dao().selectByMaKM(km.getMaKM()));
-            stage.setScene(scene);
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void btnThemKMClick() {
-        try {
-            Stage stage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhuyenMai/ThemKhuyenMai_GUI.fxml"));
-            Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {

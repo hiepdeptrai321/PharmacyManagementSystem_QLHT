@@ -20,6 +20,7 @@ import java.util.ResourceBundle;
 
 public class ThongKeBanHang_Ctrl extends Application {
 
+    // 1. KHAI BÁO THÀNH PHẦN GIAO DIỆN (FXML)
     @FXML
     private Button btnBang;
 
@@ -44,7 +45,7 @@ public class ThongKeBanHang_Ctrl extends Application {
     @FXML
     private TableView<?> tableDoanhThu;
 
-
+    // 2. KHỞI TẠO (INITIALIZE)
     public void initialize() {
         // managed sẽ ràng buộc theo visible
         chartDoanhThu.managedProperty().bind(chartDoanhThu.visibleProperty());
@@ -69,9 +70,16 @@ public class ThongKeBanHang_Ctrl extends Application {
 
         );
     }
+    @Override
+    public void start(Stage stage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_ThongKe/ThongKeBanHang_GUI.fxml"));
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/css/ThongKeBanHang.css").toExternalForm());
+        stage.setScene(scene);
+        stage.show();
+    }
 
-
-
+    // 3. XỬ LÝ SỰ KIỆN GIAO DIỆN
     @FXML
     private void hienThiBieuDo(ActionEvent event) {
         chartDoanhThu.setVisible(true);
@@ -84,12 +92,5 @@ public class ThongKeBanHang_Ctrl extends Application {
         tableDoanhThu.setVisible(true);
     }
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_ThongKe/ThongKeBanHang_GUI.fxml"));
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/css/ThongKeBanHang.css").toExternalForm());
-        stage.setScene(scene);
-        stage.show();
-    }
+
 }

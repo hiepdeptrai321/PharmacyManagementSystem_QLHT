@@ -26,8 +26,7 @@
                 <TableColumn minWidth="0.0" prefWidth="92.0" text="Giới tính" />
                 <TableColumn minWidth="0.0" prefWidth="220.0" text="SĐT" />
                 <TableColumn minWidth="0.0" prefWidth="182.0" text="Ngày sinh" />
-                <TableColumn prefWidth="197.0" text="Trạng thái" />
-            <TableColumn minWidth="0.0" prefWidth="77.0" />
+                <TableColumn prefWidth="274.0" text="Trạng thái" />
             </columns>
         </TableView>
     </children>

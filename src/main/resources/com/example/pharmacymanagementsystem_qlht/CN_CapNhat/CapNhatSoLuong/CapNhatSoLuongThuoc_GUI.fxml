@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane prefHeight="704.0" prefWidth="1200.0" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatSoLuong.CapNhatSoLuongThuoc_Ctrl">
+   <children>
+      <TextField fx:id="tfTimThuoc" layoutX="11.5" layoutY="47.0" prefHeight="30.0" prefWidth="353.0" promptText="Tìm theo mã, tên thuốc" />
+      <Button id="btntim" fx:id="btnTimThuoc" layoutX="375.0" layoutY="46.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timThuoc" prefHeight="30.0" prefWidth="69.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" />
+      <Pane id="lblpaneTitle" prefHeight="40.0" prefWidth="1200.0">
+         <children>
+            <Label id="lbtitle" layoutX="12.0" layoutY="2.0" prefHeight="36.0" prefWidth="353.0" text="Cập nhật số lượng thuốc" />
+         </children>
+      </Pane>
+      <TableView id="tablethuoc" fx:id="tbThuoc" layoutX="12.0" layoutY="86.0" prefHeight="609.0" prefWidth="1177.0">
+        <columns>
+          <TableColumn fx:id="colSTT" prefWidth="48.83333206176758" text="STT" />
+          <TableColumn fx:id="colMaThuoc" prefWidth="114.16667175292969" text="Mã thuốc" />
+            <TableColumn fx:id="colTenThuoc" prefWidth="285.0" text="Tên thuốc" />
+            <TableColumn fx:id="colDVT" minWidth="0.0" prefWidth="211.0" text="Đơn vị tính" />
+            <TableColumn fx:id="colMaLo" minWidth="0.0" prefWidth="252.0" text="Mã lô hàng" />
+            <TableColumn fx:id="colSLTon" minWidth="0.0" prefWidth="205.0" text="Số lượng tồn" />
+            <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="58.0" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

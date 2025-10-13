@@ -8,16 +8,18 @@ public class ChiTietDonViTinh {
     private int heSoQuyDoi;
     private double giaNhap;
     private double giaBan;
+    private boolean donViCoBan;
 
     public ChiTietDonViTinh() {
     }
 
-    public ChiTietDonViTinh(Thuoc_SanPham thuoc, DonViTinh dvt, int heSoQuyDoi, double giaNhap, double giaBan) {
+    public ChiTietDonViTinh(Thuoc_SanPham thuoc, DonViTinh dvt, int heSoQuyDoi, double giaNhap, double giaBan, boolean donViCoBan) {
         this.thuoc = thuoc;
         this.dvt = dvt;
         this.heSoQuyDoi = heSoQuyDoi;
         this.giaNhap = giaNhap;
         this.giaBan = giaBan;
+        this.donViCoBan = donViCoBan;
     }
 
     public Thuoc_SanPham getThuoc() {
@@ -60,6 +62,14 @@ public class ChiTietDonViTinh {
         this.giaBan = giaBan;
     }
 
+    public boolean isDonViCoBan() {
+        return donViCoBan;
+    }
+
+    public void setDonViCoBan(boolean donViCoBan) {
+        this.donViCoBan = donViCoBan;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -80,6 +90,7 @@ public class ChiTietDonViTinh {
                 ", heSoQuyDoi=" + heSoQuyDoi +
                 ", giaNhap=" + giaNhap +
                 ", giaBan=" + giaBan +
+                ", donViCoBan=" + donViCoBan +
                 '}';
     }
 }

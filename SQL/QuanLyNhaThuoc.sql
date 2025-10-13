@@ -101,7 +101,7 @@ CREATE TABLE Thuoc_SanPham (
     HangSX     NVARCHAR(30),
     NuocSX     NVARCHAR(20),
     HinhAnh    VARCHAR(50),
-	MaLH       VARCHAR(10) FOREIGN KEY REFERENCES LoaiHang(MaLoaiHang),
+	MaLoaiHang       VARCHAR(10) FOREIGN KEY REFERENCES LoaiHang(MaLoaiHang),
     MaNDL      VARCHAR(10) FOREIGN KEY REFERENCES NhomDuocLy(MaNDL),
 	ViTri	   VARCHAR(10) FOREIGN KEY REFERENCES KeHang(MaKe)
 );
@@ -125,7 +125,7 @@ CREATE TABLE PhieuNhap (
 CREATE TABLE ChiTietPhieuNhap (
     MaPN       VARCHAR(10) FOREIGN KEY REFERENCES PhieuNhap(MaPN),
     MaThuoc    VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
-	MaLH       VARCHAR(10) NOT NULL,
+	MaLH       VARCHAR(10) ,
     SoLuong    INT NOT NULL,
     GiaNhap    FLOAT NOT NULL,
     ChietKhau  FLOAT NOT NULL,
@@ -144,7 +144,7 @@ CREATE TABLE Thuoc_SP_TheoLo (
     NSX DATE,
     HSD DATE,
     PRIMARY KEY (MaLH),
-    FOREIGN KEY (MaPN, MaThuoc, MaLH) REFERENCES ChiTietPhieuNhap(MaPN, MaThuoc, MaLH)
+    FOREIGN KEY (MaPN, MaThuoc,MaLH) REFERENCES ChiTietPhieuNhap(MaPN, MaThuoc,MaLH)
 );
 
 -- =========================
@@ -295,7 +295,8 @@ CREATE TABLE ChiTietDonViTinh (
     MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT),
     HeSoQuyDoi INT NOT NULL,
     GiaNhap    FLOAT NOT NULL,
-    GiaBan     FLOAT NOT NULL
+    GiaBan     FLOAT NOT NULL,
+	DonViCoBan BIT NOT NULL DEFAULT 0,
 	PRIMARY KEY(MaThuoc, MaDVT)
 );
 -- =========================
@@ -449,6 +450,22 @@ INSERT INTO NhomDuocLy (MaNDL, TenNDL, MoTa) VALUES
 ('NDL031', N'Thuốc tăng sức đề kháng', N'Hỗ trợ miễn dịch'),
 ('NDL032', N'Chế phẩm sinh học, vaccine', N'Phòng và hỗ trợ điều trị bệnh');
 
+-- Thêm các đơn vị tính mới với kí hiệu viết tắt ngắn gọn
+INSERT INTO DonViTinh (MaDVT, TenDonViTinh, KiHieu) VALUES
+('DVT01', 'Viên', 'v'),
+('DVT02', 'Vỉ', 'vỉ'),
+('DVT03', 'Hộp', 'h'),
+('DVT04', 'Chai', 'c'),
+('DVT05', 'Lọ', 'lọ'),
+('DVT06', 'Tuýp', 't'),
+('DVT07', 'Gói', 'gói'),
+('DVT08', 'Ống', 'ống'),
+('DVT09', 'Thùng', 'th'),
+('DVT10', 'Cái', 'cái'),
+('DVT11', 'Cuộn', 'cuộn'),
+('DVT12', 'Bịch', 'bịch'),
+('DVT13', 'Lốc', 'lốc')
+
 INSERT INTO HoatChat (MaHoatChat, TenHoatChat) VALUES
 ('HC001','Paracetamol'),
 ('HC002','Ibuprofen'),
@@ -551,7 +568,7 @@ VALUES
 ('KE005', N'Kệ mỹ phẩm và chăm sóc da');
 
 INSERT INTO Thuoc_SanPham
-(MaThuoc, TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, HinhAnh, MaLH, MaNDL,ViTri)
+(MaThuoc, TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, HinhAnh, MaLoaiHang, MaNDL,ViTri)
 VALUES
 -- Thuốc tân dược
 ('TS001',N'Paracetamol 500mg',500,'mg',N'Uống',N'Hộp 10 vỉ x 10 viên','VN-2345-19','DHG Pharma',N'Việt Nam','t001.jpg','LH01','NDL016','KE001'),
@@ -618,6 +635,108 @@ VALUES
 ('TS563',N'Kem trị mụn',20,'g',N'Bôi',N'Tuýp 20g','MP-0008-23','La Roche-Posay',N'Pháp','ts508.jpg','LH05',null,'KE001'),
 ('TS564',N'Mặt nạ dưỡng da Green Tea',25,'ml',N'Đắp mặt',N'Hộp 10 miếng','MP-0009-23','The Face Shop',N'Hàn Quốc','ts509.jpg','LH05',null,'KE001'),
 ('TS565',N'Nước hoa nữ Eau de Parfum',50,'ml',N'Xịt',N'Chai 50ml','MP-0010-23','Chanel',N'Pháp','ts510.jpg','LH05',null,'KE001');
+
+
+INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
+('TS001', 'DVT01', 1, 800, 1000, 1),      -- Viên
+('TS001', 'DVT02', 10, 7800, 9800, 0),     -- Vỉ
+('TS001', 'DVT03', 100, 75000, 95000, 0);  -- Hộp
+
+-- Thuốc: Amoxicillin 500mg (TS002) - Hộp 2 vỉ x 10 viên
+INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
+('TS002', 'DVT01', 1, 1200, 1500, 1),     -- Viên
+('TS002', 'DVT02', 10, 11800, 14500, 0),    -- Vỉ
+('TS002', 'DVT03', 20, 23000, 28000, 0);   -- Hộp
+
+-- Thuốc: Cefuroxime 250mg (TS003) - Hộp 2 vỉ x 10 viên
+INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
+('TS003', 'DVT01', 1, 2000, 2500, 1),     -- Viên
+('TS003', 'DVT02', 10, 19500, 24000, 0),    -- Vỉ
+('TS003', 'DVT03', 20, 38000, 47000, 0);   -- Hộp
+
+-- Thuốc: Vitamin C 1000mg (TS004) - Hộp 10 ống
+INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
+('TS004', 'DVT08', 1, 2500, 3200, 1),      -- Ống
+('TS004', 'DVT03', 10, 24000, 30000, 0);   -- Hộp
+
+-- Thuốc: Ibuprofen 400mg (TS005) - Hộp 1 vỉ x 10 viên
+INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
+('TS005', 'DVT01', 1, 900, 1200, 1),       -- Viên
+('TS005', 'DVT03', 10, 8500, 11000, 0);    -- Hộp
+
+-- Thuốc: Aspirin 81mg (TS006) - Hộp 3 vỉ x 10 viên
+INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
+('TS006', 'DVT01', 1, 500, 700, 1),        -- Viên
+('TS006', 'DVT02', 10, 4800, 6800, 0),      -- Vỉ
+('TS006', 'DVT03', 30, 14000, 19500, 0);   -- Hộp
+
+-- Thuốc: Loratadine 10mg (TS007) - Hộp 1 vỉ x 10 viên
+INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
+('TS007', 'DVT01', 1, 1500, 2000, 1),     -- Viên
+('TS007', 'DVT03', 10, 14500, 19000, 0);   -- Hộp
+
+-- Thuốc: Omeprazole 20mg (TS008) - Hộp 2 vỉ x 7 viên
+INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
+('TS008', 'DVT01', 1, 1800, 2300, 1),     -- Viên
+('TS008', 'DVT02', 7, 12000, 15500, 0),     -- Vỉ
+('TS008', 'DVT03', 14, 23500, 30000, 0);   -- Hộp
+
+-- Thuốc: Metformin 500mg (TS009) - Hộp 3 vỉ x 10 viên
+INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
+('TS009', 'DVT01', 1, 700, 900, 1),       -- Viên
+('TS009', 'DVT02', 10, 6800, 8800, 0),      -- Vỉ
+('TS009', 'DVT03', 30, 20000, 26000, 0);  -- Hộp
+
+-- Thuốc: Atorvastatin 20mg (TS010) - Hộp 2 vỉ x 10 viên
+INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
+('TS010', 'DVT01', 1, 3000, 3800, 1),     -- Viên
+('TS010', 'DVT02', 10, 29000, 37000, 0),    -- Vỉ
+('TS010', 'DVT03', 20, 57000, 72000, 0);   -- Hộp
+
+-- Thuốc: Hoạt huyết dưỡng não (TS226) - Hộp 3 vỉ x 10 viên
+INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
+('TS226', 'DVT01', 1, 900, 1100, 1),      -- Viên
+('TS226', 'DVT02', 10, 8800, 10800, 0),     -- Vỉ
+('TS226', 'DVT03', 30, 26000, 32000, 0);   -- Hộp
+
+-- Thuốc: Siro ho Bảo Thanh (TS229) - Chai 125 ml
+INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
+('TS229', 'DVT04', 1, 35000, 42000, 1),    -- Chai
+('TS229', 'DVT09', 20, 680000, 800000, 0); -- Thùng (Giả định 1 thùng 20 chai)
+
+-- Thuốc: Viên ngậm Strepsils thảo dược (TS230) - Hộp 2 vỉ x 12 viên
+INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
+('TS230', 'DVT01', 1, 2000, 2500, 1),     -- Viên ngậm
+('TS230', 'DVT02', 12, 23000, 29000, 0),    -- Vỉ
+('TS230', 'DVT03', 24, 45000, 56000, 0);   -- Hộp
+
+-- TPCN: Vitamin D3 1000IU (TS336) - Lọ 100 viên
+INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
+('TS336', 'DVT01', 1, 1500, 2000, 1),     -- Viên
+('TS336', 'DVT05', 100, 145000, 190000, 0); -- Lọ
+
+-- TPCN: Omega-3 Fish Oil 1000mg (TS337) - Lọ 120 viên
+INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
+('TS337', 'DVT01', 1, 2500, 3200, 1),     -- Viên
+('TS337', 'DVT05', 120, 290000, 370000, 0);-- Lọ
+
+-- TPCN: Probiotic 10 strains (TS340) - Hộp 30 gói
+INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
+('TS340', 'DVT07', 1, 4000, 5000, 1),      -- Gói
+('TS340', 'DVT03', 30, 115000, 145000, 0); -- Hộp
+
+-- TPCN: Vitamin C + Zinc (TS344) - Lọ 20 viên sủi
+INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
+('TS344', 'DVT01', 1, 3500, 4500, 1),     -- Viên sủi
+('TS344', 'DVT05', 20, 68000, 85000, 0);   -- Lọ
+
+-- TPCN: Glucosamine 1500mg (TS345) - Lọ 60 viên
+INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
+('TS345', 'DVT01', 1, 4000, 5500, 1),     -- Viên
+('TS345', 'DVT05', 60, 235000, 310000, 0);-- Lọ
+GO
+
+
 
 INSERT INTO ChiTietHoatChat (MaHoatChat, MaThuoc, HamLuong) VALUES
 -- Thuốc tây
@@ -828,41 +947,42 @@ VALUES
 
 
 
--- Dữ liệu mẫu cho PhieuDoiHang
+-- Dữ liệu mẫu cho PhieuDoiHang (Không thay đổi)
 INSERT INTO PhieuDoiHang (MaPD, NgayLap, LyDoDoi, GhiChu, MaNV, MaKH, MaHD)
 VALUES
-('PD001', '2025-09-12 10:00:00', N'Đổi sang loại khác', N'Khách vãng lai, đổi Ibuprofen sang Aspirin', 'NV002', NULL, 'HD003'),
-('PD002', '2025-09-14 14:30:00', N'Khách muốn mua loại lớn hơn', N'Đổi Vitamin D3 sang Probiotic, có bù thêm tiền', 'NV003', NULL, 'HD005'),
-('PD003', '2025-09-16 09:00:00', N'Sản phẩm không phù hợp', N'Đổi Amoxicillin lấy Paracetamol', 'NV001', 'KH001', 'HD001');
+('PD001', '2025-09-12', N'Đổi sang loại khác', N'Khách vãng lai, đổi Ibuprofen sang Aspirin', 'NV002', NULL, 'HD003'),
+('PD002', '2025-09-14', N'Khách muốn mua loại lớn hơn', N'Đổi Vitamin D3 sang Probiotic, có bù thêm tiền', 'NV003', NULL, 'HD005'),
+('PD003', '2025-09-16', N'Sản phẩm không phù hợp', N'Đổi Amoxicillin lấy Paracetamol', 'NV001', 'KH001', 'HD001');
 
-INSERT INTO ChiTietPhieuDoiHang (MaLH, MaPD, SoLuong, DonGia, GiamGia)
+INSERT INTO ChiTietPhieuDoiHang (MaLH, MaPD, MaThuoc, SoLuong, DonGia, GiamGia)
 VALUES
--- PD001: Đổi Ibuprofen (LH00003) lấy Aspirin (LH00004)
-('LH00003', 'PD001', -1, 2500, 0),
-('LH00004', 'PD001', 2, 3000, 0),
+-- PD001: Đổi Ibuprofen (LH00003/TS005) lấy Aspirin (LH00004/TS006)
+('LH00003', 'PD001', 'TS005', -1, 2500, 0), -- Trả Ibuprofen
+('LH00004', 'PD001', 'TS006', 2, 3000, 0),  -- Lấy Aspirin
 
--- PD002: Đổi Vitamin D3 (LH00011) lấy Probiotic (LH00012)
-('LH00011', 'PD002', -1, 150000, 0),
-('LH00012', 'PD002', 1, 320000, 0),
+-- PD002: Đổi Vitamin D3 (LH00011/TS336) lấy Probiotic (LH00012/TS340)
+('LH00011', 'PD002', 'TS336', -1, 150000, 0), -- Trả Vitamin D3
+('LH00012', 'PD002', 'TS340', 1, 320000, 0),  -- Lấy Probiotic
 
--- PD003: Đổi Amoxicillin (LH00002) lấy Paracetamol (LH00001)
-('LH00002', 'PD003', -10, 1900, 0),
-('LH00001', 'PD003', 10, 1500, 0);
+-- PD003: Đổi Amoxicillin (LH00002/TS002) lấy Paracetamol (LH00001/TS001)
+('LH00002', 'PD003', 'TS002', -10, 1900, 0), -- Trả Amoxicillin
+('LH00001', 'PD003', 'TS001', 10, 1500, 0);  -- Lấy Paracetamol
 
+-- Dữ liệu mẫu cho PhieuTraHang (Sửa định dạng ngày tháng)
 INSERT INTO PhieuTraHang (MaPT, NgayLap, LyDoTra, GhiChu, MaNV, MaHD, MaKH)
 VALUES
-('PT001', '2025-09-13 10:30:00', N'Dư thừa', N'Trả lại Hoạt huyết dưỡng não và Cao ích mẫu', 'NV001', 'HD004', 'KH003'),
-('PT002', '2025-09-15 11:45:00', N'Không phù hợp', N'Trả lại Kem chống nắng', 'NV002', 'HD008', 'KH005'),
-('PT003', '2025-09-16 15:00:00', N'Mua nhầm', N'Trả lại Găng tay y tế', 'NV003', 'HD006', 'KH004');
+('PT001', '2025-09-13', N'Dư thừa', N'Trả lại Hoạt huyết dưỡng não và Cao ích mẫu', 'NV001', 'HD004', 'KH003'),
+('PT002', '2025-09-15', N'Không phù hợp', N'Trả lại Kem chống nắng', 'NV002', 'HD008', 'KH005'),
+('PT003', '2025-09-16', N'Mua nhầm', N'Trả lại Găng tay y tế', 'NV003', 'HD006', 'KH004');
 
-INSERT INTO ChiTietPhieuTraHang (MaLH, MaPT, SoLuong, DonGia, GiamGia)
+INSERT INTO ChiTietPhieuTraHang (MaLH, MaPT, MaThuoc, SoLuong, DonGia, GiamGia)
 VALUES
--- PT001: Trả Hoạt huyết dưỡng não (LH00007) và Cao ích mẫu (LH00009)
-('LH00007', 'PT001', 1, 9500, 0),
-('LH00009', 'PT001', 1, 15000, 0),
+-- PT001: Trả Hoạt huyết dưỡng não (LH00007/TS226) và Cao ích mẫu (LH00009/TS231) từ HD004
+('LH00007', 'PT001', 'TS226', 1, 9500, 0),  -- Trả Hoạt huyết dưỡng não
+('LH00009', 'PT001', 'TS231', 1, 15000, 0), -- Trả Cao ích mẫu
 
--- PT002: Trả Kem chống nắng SPF50 (LH00015)
-('LH00015', 'PT002', 1, 250000, 0),
+-- PT002: Trả Kem chống nắng (LH00015/TS556) từ HD008
+('LH00015', 'PT002', 'TS556', 1, 250000, 0), -- Trả Kem chống nắng
 
--- PT003: Trả Găng tay y tế (LH00014)
-('LH00014', 'PT003', 1, 1800, 0);
+-- PT003: Trả Găng tay y tế (LH00014/TS451) từ HD006
+('LH00014', 'PT003', 'TS451', 1, 1800, 0);   -- Trả Găng tay y tế

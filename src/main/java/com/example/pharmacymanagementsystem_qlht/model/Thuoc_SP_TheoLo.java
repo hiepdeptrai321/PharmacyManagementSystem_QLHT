@@ -65,6 +65,7 @@ public class Thuoc_SP_TheoLo {
         this.phieuNhap = phieuNhap;
     }
 
+
     public Thuoc_SanPham getThuoc() {
         return thuoc;
     }

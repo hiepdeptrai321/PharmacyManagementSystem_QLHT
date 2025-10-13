@@ -15,6 +15,7 @@ public class PhieuNhap_Dao implements DaoInterface<PhieuNhap>{
     private final String SELECT_ALL_SQL = "SELECT * FROM PhieuNhap";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM PhieuNhap WHERE MaPN = ?";
     private final String SELECT_TOP1_MAPN = "SELECT TOP 1 MaPN FROM PhieuNhap ORDER BY MaPN DESC";
+    private final String SELECT_ALL_NCC = "SELECT TenNCC FROM NhaCungCap";
 
     @Override
     public void insert(PhieuNhap e) {
@@ -78,5 +79,34 @@ public class PhieuNhap_Dao implements DaoInterface<PhieuNhap>{
             throw new RuntimeException(e);
         }
         return key;
+    }
+
+    public List<String> getAllNCC() {
+        List<String> list = new ArrayList<>();
+        try {
+            ResultSet rs = ConnectDB.query(SELECT_ALL_NCC);
+            while (rs.next()) {
+                list.add(rs.getString("TenNCC"));
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
+    public List<String> getAllNhanVien() {
+        String sql = "SELECT TenNV FROM NhanVien";
+        List<String> list = new ArrayList<>();
+        try {
+            ResultSet rs = ConnectDB.query(sql);
+            while (rs.next()) {
+                list.add(rs.getString("TenNV"));
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;
     }
 }

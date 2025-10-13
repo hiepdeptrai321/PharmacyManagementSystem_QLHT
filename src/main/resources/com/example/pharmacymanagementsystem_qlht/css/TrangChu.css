@@ -1,7 +1,7 @@
 #menuBar{
     -fx-background-color: #1e90ff;
 }
-.menu > .label {
+#menu > .label {
     -fx-text-fill: white;
     -fx-font-size: 16px;
     -fx-font-weight: bold;

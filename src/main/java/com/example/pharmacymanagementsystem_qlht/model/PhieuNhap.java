@@ -1,6 +1,9 @@
 package com.example.pharmacymanagementsystem_qlht.model;
 
+import com.example.pharmacymanagementsystem_qlht.dao.ChiTietPhieuNhap_Dao;
+
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 public class PhieuNhap {
@@ -10,6 +13,7 @@ public class PhieuNhap {
     private Boolean trangThai;
     private String ghiChu;
     private NhanVien nhanVien;
+    private Double TongTien;
 
     public PhieuNhap() {
 
@@ -94,5 +98,14 @@ public class PhieuNhap {
                 ", ghiChu='" + ghiChu + '\'' +
                 ", nhanVien=" + nhanVien +
                 '}';
+    }
+
+    public double getTongTien() {
+        List<ChiTietPhieuNhap> list = new ChiTietPhieuNhap_Dao().getChiTietPhieuNhapByMaPN(this.getMaPN());
+        double tong = 0;
+        for (ChiTietPhieuNhap ctpn : list) {
+            tong += ctpn.getSoLuong() * ctpn.getGiaNhap() * (1 - ctpn.getChietKhau() / 100) * (1 + ctpn.getThue() / 100);
+        }
+        return tong;
     }
 }

@@ -59,18 +59,18 @@ public class TimKiemThuoc_Ctrl extends Application {
         ThemThuocVaoCot();
         cboTimKiem.getItems().addAll("Loại tìm kiếm", "Mã thuốc", "Tên thuốc", "Nước sản xuất", "Loại hàng", "Vị trí");
         cboTimKiem.setValue("Loại tìm kiếm");
-        txtTimKiem.textProperty().addListener((obs, oldVal, newVal) -> applyFilters());
-        cboTimKiem.valueProperty().addListener((obs, oldVal, newVal) -> applyFilters());
+        txtTimKiem.textProperty().addListener((obs, oldVal, newVal) -> TimKiemTxt());
+        cboTimKiem.valueProperty().addListener((obs, oldVal, newVal) -> TimKiemTxt());
         cbxLoaiHang.getItems().addAll(new Thuoc_SanPham_Dao().getAllLoaiHang());
         cbxLoaiHang.getItems().addFirst("Chọn loại hàng");
         cbxLoaiHang.setValue("Chọn loại hàng");
         cbxXuatSu.getItems().addAll(new Thuoc_SanPham_Dao().getAllXuatXu());
         cbxXuatSu.getItems().addFirst("Chọn xuất xứ");
         cbxXuatSu.setValue("Chọn xuất xứ");
-        cbxLoaiHang.setOnAction(e -> filterData());
-        cbxXuatSu.setOnAction(e -> filterData());
-        txtHamLuongMin.textProperty().addListener((obs, oldVal, newVal) -> filterData());
-        txtHamLuongMax.textProperty().addListener((obs, oldVal, newVal) -> filterData());
+        cbxLoaiHang.setOnAction(e -> TimKiemLoc());
+        cbxXuatSu.setOnAction(e -> TimKiemLoc());
+        txtHamLuongMin.textProperty().addListener((obs, oldVal, newVal) -> TimKiemLoc());
+        txtHamLuongMax.textProperty().addListener((obs, oldVal, newVal) -> TimKiemLoc());
     }
 
 //  button chuyển sang giao diện chi tiết thuốc
@@ -98,7 +98,7 @@ public class TimKiemThuoc_Ctrl extends Application {
         cbxXuatSu.setValue("Chọn xuất xứ");
         txtHamLuongMin.clear();
         txtHamLuongMax.clear();
-        filterData();
+        TimKiemLoc();
     }
 
     private void ThemThuocVaoCot() {
@@ -128,7 +128,7 @@ public class TimKiemThuoc_Ctrl extends Application {
     }
 
 //  funtion lọc dữ liệu từ các combobox và textfield
-    private void filterData() {
+    private void TimKiemLoc() {
         String loaiHang = (String) cbxLoaiHang.getValue();
         String xuatXu = (String) cbxXuatSu.getValue();
         String hamLuongMinStr = txtHamLuongMin.getText().trim();
@@ -153,7 +153,7 @@ public class TimKiemThuoc_Ctrl extends Application {
         });
     }
 
-    private void applyFilters() {
+    private void TimKiemTxt() {
         String filterType = cboTimKiem.getValue();
         String filterText = txtTimKiem.getText().toLowerCase().trim();
 

@@ -1,19 +1,30 @@
 package com.example.pharmacymanagementsystem_qlht.dao;
 
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
-import com.example.pharmacymanagementsystem_qlht.model.LoaiHang;
-import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
+import com.example.pharmacymanagementsystem_qlht.model.*;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
-    private final String INSERT_SQL = "INSERT INTO Thuoc_SanPham (TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaNDL, MaLH, HinhAnh, ViTri) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String INSERT_SQL = "INSERT INTO Thuoc_SanPham (TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaNDL, MaLoaiHang, HinhAnh, ViTri) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE Thuoc_SanPham SET TenThuoc=?, HamLuong=?, DonViHL=?, DuongDung=?, QuyCachDongGoi=?, SDK_GPNK=?, HangSX=?, NuocSX=?, HinhAnh=? WHERE MaThuoc=?";
     private final String DELETE_SQL = "DELETE FROM Thuoc_SanPham WHERE MaThuoc=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM Thuoc_SanPham";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM Thuoc_SanPham WHERE MaThuoc=?";
+    private final String SELECT_BY_TUKHOA_SQL = "SELECT * FROM Thuoc_SanPham WHERE TenThuoc LIKE ? OR MaThuoc LIKE ?";
+    private final String SELECT_THUOC_SANPHAM_DONVICOBAN_SQL =
+            "SELECT * FROM Thuoc_SanPham ts " +
+                    "JOIN ChiTietDonViTinh ctdvt ON ts.MaThuoc = ctdvt.MaThuoc " +
+                    "WHERE ctdvt.DonViCoBan = 1";
+
+    private final String SELECT_THUOC_SANPHAM_DONVICOBAN_BYTUKHOA_SQL =
+            "SELECT * FROM Thuoc_SanPham ts " +
+            "JOIN ChiTietDonViTinh ctdvt ON ts.MaThuoc = ctdvt.MaThuoc " +
+            "WHERE ctdvt.DonViCoBan = 1 AND (ts.TenThuoc LIKE ? OR ts.MaThuoc LIKE ?)";
+
+    private final String SELECT_TENDVT_BYMA_SQL = "SELECT TenDonViTinh FROM ChiTietDonViTinh ctdvt JOIN DonViTinh dvt ON ctdvt.MaDVT = dvt.MaDVT WHERE MaThuoc = ? AND DonViCoBan = 1";
 
     @Override
     public void insert(Thuoc_SanPham e) {
@@ -52,7 +63,7 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
                 sp.setHangSX(rs.getString("HangSX"));
                 sp.setNuocSX(rs.getString("NuocSX"));
                 sp.setNhomDuocLy(new NhomDuocLy_Dao().selectById(rs.getString("MaNDL")));
-                sp.setLoaiHang(new LoaiHang_Dao().selectById(rs.getString("MaLH")));
+                sp.setLoaiHang(new LoaiHang_Dao().selectById(rs.getString("MaLoaiHang")));
                 sp.setHinhAnh(rs.getString("HinhAnh"));
                 sp.setVitri(new KeHang_Dao().selectById(rs.getString("ViTri")));
                 list.add(sp);
@@ -96,5 +107,44 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
             throw new RuntimeException(e);
         }
         return list;
+    }
+    public List<Thuoc_SanPham> selectByTuKhoa(String tuKhoa) {
+        return this.selectBySql(SELECT_BY_TUKHOA_SQL, "%" + tuKhoa + "%", "%" + tuKhoa + "%");
+    }
+
+    // Only join ChiTietDonViTinh (unit info)
+    public List<Thuoc_SanPham> selectAllSLTheoDonViCoBan_ChiTietDVT() {
+        List<Thuoc_SanPham> list = this.selectBySql(SELECT_THUOC_SANPHAM_DONVICOBAN_SQL);
+        ChiTietDonViTinh_Dao ctdvtDao = new ChiTietDonViTinh_Dao();
+        for (Thuoc_SanPham sp : list) {
+            List<ChiTietDonViTinh> dsCTDVT = ctdvtDao.selectByMaThuoc(sp.getMaThuoc());
+            sp.setDsCTDVT(dsCTDVT);
+        }
+        return list;
+    }
+
+    // By keyword, only join ChiTietDonViTinh
+    public List<Thuoc_SanPham> selectSLTheoDonViCoBanByTuKhoa_ChiTietDVT(String tuKhoa) {
+        List<Thuoc_SanPham> list = this.selectBySql(SELECT_THUOC_SANPHAM_DONVICOBAN_BYTUKHOA_SQL, "%" + tuKhoa + "%", "%" + tuKhoa + "%");
+        ChiTietDonViTinh_Dao ctdvtDao = new ChiTietDonViTinh_Dao();
+        for (Thuoc_SanPham sp : list) {
+            List<ChiTietDonViTinh> dsCTDVT = ctdvtDao.selectByMaThuoc(sp.getMaThuoc());
+            sp.setDsCTDVT(dsCTDVT);
+        }
+        return list;
+    }
+
+    public String getTenDVTByMaThuoc(String maThuoc) {
+        String tenDVT = null;
+        try {
+            ResultSet rs = ConnectDB.query(SELECT_TENDVT_BYMA_SQL, maThuoc);
+            if (rs.next()) {
+                tenDVT = rs.getString("TenDonViTinh");
+            }
+            rs.getStatement().close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return tenDVT;
     }
 }

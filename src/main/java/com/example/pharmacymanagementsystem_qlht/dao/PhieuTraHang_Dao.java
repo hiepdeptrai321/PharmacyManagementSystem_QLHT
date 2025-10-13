@@ -57,7 +57,13 @@ public class PhieuTraHang_Dao implements DaoInterface<PhieuTraHang> {
         }
         return list;
     }
-
+    public int countByHoaDon(String maHD) {
+        String sql = "SELECT COUNT(*) FROM PhieuTraHang WHERE MaHD=?";
+        try (ResultSet rs = ConnectDB.query(sql, maHD)) {
+            if (rs.next()) return rs.getInt(1);
+        } catch (Exception e) { e.printStackTrace(); }
+        return 0;
+    }
     @Override
     public List<PhieuTraHang> selectAll() {
         return selectBySql(SELECT_ALL_SQL);

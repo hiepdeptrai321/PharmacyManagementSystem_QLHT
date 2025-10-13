@@ -125,7 +125,7 @@ CREATE TABLE PhieuNhap (
 CREATE TABLE ChiTietPhieuNhap (
     MaPN       VARCHAR(10) FOREIGN KEY REFERENCES PhieuNhap(MaPN),
     MaThuoc    VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
-	MaLH       VARCHAR(10) NOT NULL,
+	MaLH       VARCHAR(10) ,
     SoLuong    INT NOT NULL,
     GiaNhap    FLOAT NOT NULL,
     ChietKhau  FLOAT NOT NULL,
@@ -144,7 +144,7 @@ CREATE TABLE Thuoc_SP_TheoLo (
     NSX DATE,
     HSD DATE,
     PRIMARY KEY (MaLH),
-    FOREIGN KEY (MaPN, MaThuoc, MaLH) REFERENCES ChiTietPhieuNhap(MaPN, MaThuoc, MaLH)
+    FOREIGN KEY (MaPN, MaThuoc,MaLH) REFERENCES ChiTietPhieuNhap(MaPN, MaThuoc,MaLH)
 );
 
 -- =========================

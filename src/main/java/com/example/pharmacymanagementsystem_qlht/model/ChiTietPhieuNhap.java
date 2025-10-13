@@ -8,7 +8,7 @@ import java.util.Objects;
 public class ChiTietPhieuNhap {
     private PhieuNhap phieuNhap;
     private Thuoc_SanPham Thuoc;
-    private Thuoc_SP_TheoLo loHang;
+    private String maLH;
     private int soLuong;
     private double giaNhap;
     private float chietKhau;
@@ -18,10 +18,10 @@ public class ChiTietPhieuNhap {
     public ChiTietPhieuNhap() {
     }
 
-    public ChiTietPhieuNhap(PhieuNhap phieuNhap, Thuoc_SanPham Thuoc, Thuoc_SP_TheoLo loHang, int soLuong, double giaNhap, float chietKhau, float thue) {
+    public ChiTietPhieuNhap(PhieuNhap phieuNhap, Thuoc_SanPham Thuoc, String maLH, int soLuong, double giaNhap, float chietKhau, float thue) {
         this.phieuNhap = phieuNhap;
         this.Thuoc = Thuoc;
-        this.loHang = loHang;
+        this.maLH = maLH;
         this.soLuong = soLuong;
         this.giaNhap = giaNhap;
         this.chietKhau = chietKhau;
@@ -44,12 +44,12 @@ public class ChiTietPhieuNhap {
         this.Thuoc = Thuoc;
     }
 
-    public Thuoc_SP_TheoLo getLoHang() {
-        return loHang;
+    public String getMaLH() {
+        return maLH;
     }
 
-    public void setLoHang(Thuoc_SP_TheoLo loHang) {
-        this.loHang = loHang;
+    public void setMaLH(String loHang) {
+        this.maLH = loHang;
     }
 
     public int getSoLuong() {
@@ -88,12 +88,12 @@ public class ChiTietPhieuNhap {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         ChiTietPhieuNhap that = (ChiTietPhieuNhap) o;
-        return Objects.equals(phieuNhap, that.phieuNhap) && Objects.equals(Thuoc, that.Thuoc) && Objects.equals(loHang, that.loHang);
+        return Objects.equals(phieuNhap, that.phieuNhap) && Objects.equals(Thuoc, that.Thuoc) && Objects.equals(maLH, that.maLH);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(phieuNhap, Thuoc, loHang);
+        return Objects.hash(phieuNhap, Thuoc, maLH);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class ChiTietPhieuNhap {
         return "ChiTietPhieuNhap{" +
                 "phieuNhap=" + phieuNhap +
                 ", maThuoc=" + Thuoc +
-                ", loHang=" + loHang +
+                ", loHang=" + maLH +
                 ", soLuong=" + soLuong +
                 ", giaNhap=" + giaNhap +
                 ", chietKhau=" + chietKhau +

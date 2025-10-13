@@ -2,6 +2,7 @@ package com.example.pharmacymanagementsystem_qlht.dao;
 
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuNhap;
+import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SP_TheoLo;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -17,12 +18,12 @@ public class ChiTietPhieuNhap_Dao implements DaoInterface<ChiTietPhieuNhap> {
 
     @Override
     public void insert(ChiTietPhieuNhap e) {
-        ConnectDB.update(INSERT_SQL, e.getPhieuNhap().getMaPN(), e.getThuoc().getMaThuoc(), e.getLoHang().getMaLH(), e.getSoLuong(), e.getGiaNhap(),e.getChietKhau(),e.getThue());
+        ConnectDB.update(INSERT_SQL, e.getPhieuNhap().getMaPN(), e.getThuoc().getMaThuoc(), e.getMaLH(), e.getSoLuong(), e.getGiaNhap(),e.getChietKhau(),e.getThue());
     }
 
     @Override
     public void update(ChiTietPhieuNhap e) {
-        ConnectDB.update(UPDATE_SQL, e.getSoLuong(), e.getGiaNhap(), e.getChietKhau(), e.getThue(), e.getPhieuNhap().getMaPN(), e.getThuoc().getMaThuoc(), e.getLoHang().getMaLH());
+        ConnectDB.update(UPDATE_SQL, e.getSoLuong(), e.getGiaNhap(), e.getChietKhau(), e.getThue(), e.getPhieuNhap().getMaPN(), e.getThuoc().getMaThuoc(), e.getMaLH());
     }
 
     @Override
@@ -44,6 +45,7 @@ public class ChiTietPhieuNhap_Dao implements DaoInterface<ChiTietPhieuNhap> {
                 ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
                 ctpn.setPhieuNhap(new PhieuNhap_Dao().selectById(rs.getString("MaPN")));
                 ctpn.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getString("MaThuoc")));
+                ctpn.setMaLH(rs.getString("MaLH"));
                 ctpn.setSoLuong(rs.getInt("SoLuong"));
                 ctpn.setGiaNhap(rs.getDouble("GiaNhap"));
                 ctpn.setChietKhau(rs.getFloat("ChietKhau"));

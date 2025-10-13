@@ -23,6 +23,7 @@ public class ChiTietPhieuNhap_Ctrl {
     public TableColumn<ChiTietPhieuNhap,String> colThue;
     public TableColumn<ChiTietPhieuNhap,String> colChietKhau;
     public Label lblTongGiaNhap;
+    public TableColumn<ChiTietPhieuNhap,String> colMaLoHang;
 
 
     public void load(PhieuNhap temp){
@@ -45,6 +46,7 @@ public class ChiTietPhieuNhap_Ctrl {
         colGiaNhap.setCellValueFactory(new PropertyValueFactory<>("giaNhap"));
         colThue.setCellValueFactory(new PropertyValueFactory<>("thue"));
         colChietKhau.setCellValueFactory(new PropertyValueFactory<>("chietKhau"));
+        colMaLoHang.setCellValueFactory(new PropertyValueFactory<>("maLH"));
         Double tongGiaNhap = temp.getTongTien();
         lblTongGiaNhap.setText("Tổng giá nhập: " + String.format("%.2f", tongGiaNhap) +" VND");
     }

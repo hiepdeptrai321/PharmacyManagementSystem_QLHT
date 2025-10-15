@@ -1,4 +1,4 @@
-package com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhaCungCap;
+package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKNhaCungCap;
 
 import com.example.pharmacymanagementsystem_qlht.model.NhaCungCap;
 import javafx.application.Application;
@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class ChiTietNhaCungCap_Ctrl extends Application {
@@ -45,7 +44,7 @@ public class ChiTietNhaCungCap_Ctrl extends Application {
     private NhaCungCap nhaCungCap;
     @Override
     public void start(javafx.stage.Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNCC/ChiTietNhaCungCap_GUI.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKNhaCungCap/ChiTietNhaCungCap_GUI.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();

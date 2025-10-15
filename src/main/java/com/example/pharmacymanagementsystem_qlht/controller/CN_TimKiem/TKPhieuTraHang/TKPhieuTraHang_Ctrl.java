@@ -1,6 +1,8 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuTraHang;
 
+import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDatHang.ChiTietPhieuDatHang_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.dao.PhieuTraHang_Dao;
+import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuTraHang;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuTraHang;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -119,16 +121,16 @@ public class TKPhieuTraHang_Ctrl extends Application {
         tblPT.setItems(data);
     }
 
-    private void btnChiTietClick(PhieuTraHang pt) {
+    private void btnChiTietClick(PhieuTraHang pTra) {
         try {
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuTraHang/ChiTietPhieuTraHang_GUI.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
 
-//            this.getClass();
-//            ChiTietPhieuDatHang_Ctrl ctrl = loader.getController();
-//            ctrl.load(pdh);
+            this.getClass();
+            ChiTietPhieuTraHang_Ctrl ctrl = loader.getController();
+            ctrl.setPhieuTraHang(pTra);
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {

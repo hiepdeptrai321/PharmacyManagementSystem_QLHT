@@ -22,7 +22,7 @@ public class NhaCungCap_Dao implements DaoInterface<NhaCungCap>{
 
     @Override
     public void update(NhaCungCap e) {
-        ConnectDB.update(UPDATE_SQL, e);
+        this.selectBySql(UPDATE_SQL, e);
     }
 
     @Override

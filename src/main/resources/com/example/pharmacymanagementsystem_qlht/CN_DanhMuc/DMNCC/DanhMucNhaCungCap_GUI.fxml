@@ -24,10 +24,10 @@
                 <TableColumn fx:id="colMaNCC" prefWidth="114.16667175292969" text="Mã NCC" />
                 <TableColumn fx:id="colTenNCC" prefWidth="288.0" text="Tên NCC" />
                 <TableColumn fx:id="colDiaChi" minWidth="0.0" prefWidth="193.0" text="Địa chỉ" />
-                <TableColumn fx:id="colSDT" minWidth="0.0" prefWidth="129.0" text="Số điện thoại" />
-                <TableColumn fx:id="colEmail" minWidth="0.0" prefWidth="173.0" text="Email" />
-                <TableColumn fx:id="colGhiChu" minWidth="0.0" prefWidth="174.0" text="Ghi chú" />
-                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="54.0" text="Chi tiết" />
+                <TableColumn fx:id="colSDT" minWidth="0.0" prefWidth="138.857177734375" text="Số điện thoại" />
+                <TableColumn fx:id="colEmail" minWidth="0.0" prefWidth="131.4285888671875" text="Email" />
+                <TableColumn fx:id="colGhiChu" minWidth="0.0" prefWidth="198.85711669921875" text="Ghi chú" />
+                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="62.857177734375" text="Chi tiết" />
             </columns>
         </TableView>
         <Button id="btnnhapxuat" layoutX="1110.0" layoutY="46.0" minWidth="46.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="45.0" text="📥" AnchorPane.topAnchor="46.0" />

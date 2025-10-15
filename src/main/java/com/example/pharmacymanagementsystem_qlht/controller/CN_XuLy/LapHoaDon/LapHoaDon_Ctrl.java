@@ -75,7 +75,7 @@ public class LapHoaDon_Ctrl extends Application {
         VBox vbox = new VBox(10);
         vbox.setStyle("-fx-padding: 20; -fx-alignment: center;");
         Label label = new Label("Quét mã QR dưới đây để thanh toán");
-        // Sử dụng một mã QR online bất kỳ
+        // Link ma QR
         ImageView qrImage = new ImageView(new Image("https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=DemoQRCode"));
         vbox.getChildren().addAll(label, qrImage);
         Scene scene = new Scene(vbox, 300, 300);
@@ -86,7 +86,7 @@ public class LapHoaDon_Ctrl extends Application {
     @FXML
     private void handleTimKhachHang() {
         try {
-            // Gọi giao diện tìm kiếm khách hàng
+            // Goi giap dien
             com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang.TimKiemKhachHang_Ctrl ctrl = new com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang.TimKiemKhachHang_Ctrl();
             Stage stage = new Stage();
             ctrl.start(stage);

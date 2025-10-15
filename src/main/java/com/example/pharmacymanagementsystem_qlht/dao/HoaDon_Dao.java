@@ -15,7 +15,13 @@ public class HoaDon_Dao implements DaoInterface<HoaDon>{
     private final String UPDATE_SQL = "UPDATE HoaDon SET MaNV=?, NgayLap=?, MaKH=?, TrangThai=? WHERE MaHD=?";
     private final String DELETE_BY_ID_SQL = "DELETE FROM HoaDon WHERE MaHD=?";
     private final String SELECT_BY_ID_SQL = "SELECT MaHD, MaNV, NgayLap, MaKH, TrangThai FROM HoaDon WHERE MaHD=?";
-    private final String SELECT_ALL_SQL = "SELECT MaHD, MaNV, NgayLap, MaKH, TrangThai FROM HoaDon";
+    private final String SELECT_ALL_SQL =
+            "SELECT HD.MaHD, HD.NgayLap, HD.TrangThai, " +
+                    "       NV.MaNV, NV.TenNV, " +
+                    "       KH.MaKH, KH.TenKH, KH.SDT " +
+                    "FROM HoaDon HD " +
+                    "INNER JOIN NhanVien NV ON HD.MaNV = NV.MaNV " +
+                    "LEFT JOIN KhachHang KH ON HD.MaKH = KH.MaKH";
     private final String SELECT_BY_TUKHOA_SQL = "SELECT MaHD, MaNV, NgayLap, MaKH, TrangThai FROM HoaDon WHERE MaHD LIKE ?";
 
     @Override
@@ -43,20 +49,33 @@ public class HoaDon_Dao implements DaoInterface<HoaDon>{
     @Override
     public List<HoaDon> selectBySql(String sql, Object... args) {
         List<HoaDon> hoaDonList = new ArrayList<>();
-        try {
-            ResultSet rs = ConnectDB.query(sql, args);
+        try (ResultSet rs = ConnectDB.query(sql, args)) {
+            java.sql.ResultSetMetaData meta = rs.getMetaData();
+            int columnCount = meta.getColumnCount();
             while (rs.next()) {
                 HoaDon hd = new HoaDon();
                 hd.setMaHD(rs.getString("MaHD"));
-                hd.setMaNV(new NhanVien_Dao().selectById(rs.getString("MaNV")));
-                hd.setMaKH(new KhachHang_Dao().selectById(rs.getString("MaKH")));
                 hd.setNgayLap(rs.getTimestamp("NgayLap"));
                 hd.setTrangThai(rs.getBoolean("TrangThai"));
+
+                // Khách Hàng
+                KhachHang kh = new KhachHang();
+                if (hasColumn(meta, "MaKH")) kh.setMaKH(rs.getString("MaKH"));
+                if (hasColumn(meta, "TenKH")) kh.setTenKH(rs.getString("TenKH"));
+                if (hasColumn(meta, "SDT")) kh.setSdt(rs.getString("SDT"));
+                hd.setMaKH(kh);
+
+                // Nhân Viên
+                NhanVien nv = new NhanVien();
+                if (hasColumn(meta, "MaNV")) nv.setMaNV(rs.getString("MaNV"));
+                if (hasColumn(meta, "TenNV")) nv.setTenNV(rs.getString("TenNV"));
+                hd.setMaNV(nv);
+
                 hoaDonList.add(hd);
             }
-            rs.getStatement().close();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.err.println("Lỗi truy vấn dữ liệu Hóa Đơn (selectBySql): ");
+            e.printStackTrace();
         }
         return hoaDonList;
     }
@@ -86,5 +105,11 @@ public class HoaDon_Dao implements DaoInterface<HoaDon>{
 
     public List<HoaDon> selectByTuKhoa(String tuKhoa){
         return this.selectBySql(SELECT_BY_TUKHOA_SQL, "%" + tuKhoa + "%");
+    }
+    private boolean hasColumn(java.sql.ResultSetMetaData meta, String column) throws java.sql.SQLException {
+        for (int i = 1; i <= meta.getColumnCount(); i++) {
+            if (meta.getColumnName(i).equalsIgnoreCase(column)) return true;
+        }
+        return false;
     }
 }

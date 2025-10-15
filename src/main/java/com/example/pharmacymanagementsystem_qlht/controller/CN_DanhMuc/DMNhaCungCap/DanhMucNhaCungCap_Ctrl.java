@@ -9,6 +9,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -19,6 +21,7 @@ import java.util.List;
 public class DanhMucNhaCungCap_Ctrl extends Application {
 
     public TableColumn colChiTietNhaCungCap;
+    public TableColumn<NhaCungCap, String> colChiTiet;
     @FXML
     private TableView<NhaCungCap> tblNhaCungCap;
     @FXML
@@ -51,6 +54,20 @@ public class DanhMucNhaCungCap_Ctrl extends Application {
         colSDT.setCellValueFactory(new PropertyValueFactory<>("SDT"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colGhiChu.setCellValueFactory(new PropertyValueFactory<>("ghiChu"));
+        colChiTiet.setCellFactory(cel-> new TableCell<NhaCungCap, String>(){
+            private final Button btn = new Button("Chi tiết");
+            {
+                btn.setOnAction(event -> {
+                    NhaCungCap ncc = getTableView().getItems().get(getIndex());
+                    btnChiTietClick(ncc);
+                });
+            }
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : btn);
+            }
+        });
         tblNhaCungCap.setItems(data);
     }
 
@@ -62,6 +79,21 @@ public class DanhMucNhaCungCap_Ctrl extends Application {
         stage.show();
     }
 
+    private void btnChiTietClick(NhaCungCap ncc) {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNCC/SuaXoaNhaCungCap_GUI.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
 
+            this.getClass();
+            SuaXoaNhaCungCap_Ctrl ctrl = loader.getController();
+            ctrl.initialize(ncc);
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

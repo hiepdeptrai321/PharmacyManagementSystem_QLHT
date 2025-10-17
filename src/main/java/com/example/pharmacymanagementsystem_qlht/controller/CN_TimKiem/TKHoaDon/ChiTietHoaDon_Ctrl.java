@@ -71,37 +71,9 @@ public class ChiTietHoaDon_Ctrl {
 
     private HoaDon hoaDon;
 
-    public void setHoaDon(HoaDon hoaDon) {
-        this.hoaDon = hoaDon;
-        if (hoaDon == null) return;
-        lblMaHoaDonValue.setText(hoaDon.getMaHD());
-        lblNgayLapValue.setText(hoaDon.getNgayLap() != null ? hoaDon.getNgayLap().toString() : "");
-        lblTenNhanVienValue.setText(hoaDon.getMaNV() != null ? hoaDon.getMaNV().getTenNV() : "");
-        lblTenKhachHangValue.setText(hoaDon.getMaKH() != null ? hoaDon.getMaKH().getTenKH() : "");
-        lblSDTKhachHangValue.setText(hoaDon.getMaKH() != null ? hoaDon.getMaKH().getSdt() : "");
-        // lblGhiChuValue, lblTongTienHangValue, lblChietKhauHDValue, lblThueVATValue, lblThanhToanValue, lblPTTTValue, lblTienKhachDuaValue, lblTienThuaValue
-        // ...set các label này nếu có dữ liệu...
-        loadTableChiTiet(hoaDon.getChiTietHD());
-    }
 
-    private void loadTableChiTiet(List<ChiTietHoaDon> chiTietList) {
-        ObservableList<ChiTietHoaDon> data = FXCollections.observableArrayList(chiTietList);
-        colNSTT.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(tblChiTietHoaDon.getItems().indexOf(cellData.getValue()) + 1));
-        colNTen.setCellValueFactory(cellData -> new SimpleStringProperty(
-                cellData.getValue().getLoHang() != null && cellData.getValue().getLoHang().getThuoc() != null
-                        ? cellData.getValue().getLoHang().getThuoc().getTenThuoc() : ""));
-        colNSL.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getSoLuong()));
-        colNDonVi.setCellValueFactory(cellData -> new SimpleStringProperty(
-                cellData.getValue().getLoHang() != null && cellData.getValue().getLoHang().getThuoc() != null
-                        ? cellData.getValue().getLoHang().getThuoc().getDonViHamLuong() : ""));
-        colNDonGia.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getDonGia()));
-        colNChietKhau.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getGiamGia()));
-        colNThanhTien.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(
-                (cellData.getValue().getDonGia() * cellData.getValue().getSoLuong()) - cellData.getValue().getGiamGia()
-        ));
-        // Sửa lại số lượng
-        colNSL.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getSoLuong()));
-        tblChiTietHoaDon.setItems(data);
+
+    private void taiChiTietHoaDon(List<ChiTietHoaDon> chiTietList) {
     }
 
     @FXML
@@ -157,5 +129,6 @@ public class ChiTietHoaDon_Ctrl {
 //            alert.showAndWait();
 //        }
 //    }
+
 
 }

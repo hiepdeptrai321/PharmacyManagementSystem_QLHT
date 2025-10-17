@@ -2,16 +2,13 @@ package com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhaCun
 
 import com.example.pharmacymanagementsystem_qlht.dao.NhaCungCap_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.NhaCungCap;
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-public class ThemNhaCungCap_Ctrl extends Application {
+public class ThemNhaCungCap_Ctrl {
 
+    private  DanhMucNhaCungCap_Ctrl danhMucNhaCungCap_Ctrl;
     public TextField txtTenNCC;
     public TextField txtDiaChi;
     public TextField txtSDT;
@@ -20,22 +17,20 @@ public class ThemNhaCungCap_Ctrl extends Application {
     public TextField txtTenCongTy;
     public TextField txtMaSoThue;
     public TextArea txtGhiChu;
+    NhaCungCap ncc = new NhaCungCap();
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNCC/ThemNhaCungCap_GUI.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+//  Thiết lập Ctrl cha
+    public void setParentCtrl(DanhMucNhaCungCap_Ctrl parent) {
+        this.danhMucNhaCungCap_Ctrl = parent;
     }
 
-
+//  Button hủy (đóng cửa sổ)
     public void btnHuy(MouseEvent mouseEvent) {
         dong();
     }
 
+//  Button thêm nhà cung cấp
     public void btnThemNCC(MouseEvent mouseEvent) {
-        NhaCungCap ncc = new NhaCungCap();
         ncc.setTenNCC(txtTenNCC.getText());
         ncc.setDiaChi(txtDiaChi.getText());
         ncc.setSDT(txtSDT.getText());
@@ -54,6 +49,7 @@ public class ThemNhaCungCap_Ctrl extends Application {
                 dialogPane.getButtonTypes().addAll(javafx.scene.control.ButtonType.OK);
                 dialog.setDialogPane(dialogPane);
                 dialog.showAndWait();
+                danhMucNhaCungCap_Ctrl.refreshTable();
             }else{
                 Dialog<String> dialog = new Dialog<>();
                 dialog.setTitle("Lỗi");
@@ -67,24 +63,19 @@ public class ThemNhaCungCap_Ctrl extends Application {
         dong();
     }
 
+//  Hàm đóng cửa sổ
     private void dong(){
         Stage stage = (Stage) txtTenNCC.getScene().getWindow();
         stage.close();
     }
 
+//  Kiểm tra hợp lệ
     private boolean kiemTraHopLe(NhaCungCap ncc){
         if(ncc.getTenNCC().isEmpty()){
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setTitle("Lỗi");
             DialogPane dialogPane = new DialogPane();
             dialogPane.setContentText("Tên nhà cung cấp không được để trống!");
-            dialogPane.getButtonTypes().addAll(javafx.scene.control.ButtonType.OK);
-            return false;
-        }else if(ncc.getDiaChi().isEmpty()){
-            Dialog<ButtonType> dialog = new Dialog<>();
-            dialog.setTitle("Lỗi");
-            DialogPane dialogPane = new DialogPane();
-            dialogPane.setContentText("Địa chỉ không được để trống!");
             dialogPane.getButtonTypes().addAll(javafx.scene.control.ButtonType.OK);
             return false;
         }else if(ncc.getSDT().isEmpty()){

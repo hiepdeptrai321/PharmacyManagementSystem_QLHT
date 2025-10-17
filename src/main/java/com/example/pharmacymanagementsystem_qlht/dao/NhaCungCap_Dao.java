@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NhaCungCap_Dao implements DaoInterface<NhaCungCap>{
-    private final String INSERT_SQL = "INSERT INTO NhaCungCap (TenNCC, DiaChi, SDT, Email, GPKD, GhiChu, TenCongTy, MSThue) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String INSERT_SQL = "INSERT INTO NhaCungCap (MaNCC,TenNCC, DiaChi, SDT, Email, GPKD, GhiChu, TenCongTy, MSThue) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE NhaCungCap SET TenNCC = ?, DiaChi = ?, SDT = ?, Email = ?, GPKD = ?, GhiChu = ?, TenCongTy = ?, MSThue = ? WHERE MaNCC = ?";
     private final String DELETE_SQL = "DELETE FROM NhaCungCap WHERE MaNCC = ?";
     private final String SELECT_ALL_SQL = "SELECT * FROM NhaCungCap";
@@ -18,7 +18,7 @@ public class NhaCungCap_Dao implements DaoInterface<NhaCungCap>{
     @Override
     public boolean insert(NhaCungCap e) {
         e.setMaNCC(generatekeyNhaCungCap());
-        return ConnectDB.update(INSERT_SQL, e)>0;
+        return ConnectDB.update(INSERT_SQL, e.getMaNCC(),e.getTenNCC(),e.getDiaChi(),e.getSDT(),e.getEmail(),e.getGPKD(),e.getGhiChu(),e.getTenCongTy(),e.getMSThue())>0;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class NhaCungCap_Dao implements DaoInterface<NhaCungCap>{
     }
 
     public String generatekeyNhaCungCap() {
-        String key = "NCC001"; // mặc định
+        String key = "NCC001";
         try {
             String lastKey = ConnectDB.queryTaoMa(SELECT_TOP1_MANCC);
                 if (lastKey != null && lastKey.startsWith("NCC")) {

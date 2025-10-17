@@ -46,18 +46,18 @@ public class ConnectDB {
     }
 
     public static String queryTaoMa(String sql) {
-        String result = null;
+        String maGenerate = null;
         try (Connection con = DriverManager.getConnection(url, user, password);
              PreparedStatement stmt = con.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             if (rs.next()) {
-                result = rs.getString(1);
+                maGenerate = rs.getString(1);
             }
             rs.getStatement().getConnection().close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return result;
+        return maGenerate;
     }
 }

@@ -1,10 +1,10 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuTraHang;
 
-import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuTraHang;
-import com.example.pharmacymanagementsystem_qlht.model.NhaCungCap;
-import com.example.pharmacymanagementsystem_qlht.model.NhanVien;
-import com.example.pharmacymanagementsystem_qlht.model.PhieuTraHang;
+import com.example.pharmacymanagementsystem_qlht.dao.ChiTietPhieuNhap_Dao;
+import com.example.pharmacymanagementsystem_qlht.dao.ChiTietPhieuTraHang_Dao;
+import com.example.pharmacymanagementsystem_qlht.model.*;
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,10 +12,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class ChiTietPhieuTraHang_Ctrl {
 
@@ -30,8 +32,6 @@ public class ChiTietPhieuTraHang_Ctrl {
     @FXML
     private Button btnInPhieuTra;
 
-    @FXML
-    private TableColumn<ChiTietPhieuTraHang, String> colDonVi;
 
     @FXML
     private TableColumn<ChiTietPhieuTraHang, String> colLyDo;
@@ -46,7 +46,7 @@ public class ChiTietPhieuTraHang_Ctrl {
     private TableColumn<ChiTietPhieuTraHang, String> colTenSP;
 
     @FXML
-    private TableColumn<ChiTietPhieuTraHang, String> colThanhTien;
+    private TableColumn<ChiTietPhieuTraHang, Double> colThanhTien;
 
     @FXML
     private Label lblChietKhauPTValue;
@@ -127,6 +127,22 @@ public class ChiTietPhieuTraHang_Ctrl {
             lblSDTKhachHangValue.setText(phieuTraHang.getKhachHang().getSdt());
             lblGhiChuValue.setText(phieuTraHang.getGhiChu() != null ? phieuTraHang.getGhiChu() : "");
 
+            List<ChiTietPhieuTraHang> list = new ChiTietPhieuTraHang_Dao().getChiTietPhieuTraByMaPT(phieuTraHang.getMaPT());
+
+            tblChiTietPhieuTra.getItems().clear();
+            tblChiTietPhieuTra.getItems().addAll(list);
+
+            colSTT.setCellValueFactory(cellData ->
+                    new SimpleStringProperty(String.valueOf(tblChiTietPhieuTra.getItems().indexOf(cellData.getValue()) + 1))
+            );
+            colTenSP.setCellValueFactory(cel -> new SimpleStringProperty(cel.getValue().getThuoc().getTenThuoc()));
+            colSoLuong.setCellValueFactory(new PropertyValueFactory<>("soLuong"));
+            //colGiaNhap.setCellValueFactory(new PropertyValueFactory<>("giaNhap"));
+            ColDongia.setCellValueFactory(new PropertyValueFactory<>("donGia"));
+            colLyDo.setCellValueFactory(cel -> new SimpleStringProperty(cel.getValue().getPhieuTraHang().getLyDoTra()));
+            colThanhTien.setCellValueFactory(new PropertyValueFactory<>("thanhTienTra"));
+            //Double tongGiaNhap = temp.getTongTien();
+            //lblTongGiaNhap.setText("Tổng giá nhập: " + String.format("%.2f", tongGiaNhap) +" VND");
 
         }
     }

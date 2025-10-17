@@ -18,12 +18,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" stylesheets="@../css/ThongKeBanHang.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_ThongKe.ThongKeXNT_Ctrl">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="895" prefWidth="1646" stylesheets="@../css/ThongKeBanHang.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_ThongKe.ThongKeXNT_Ctrl">
 
     <children>
         <HBox layoutX="14.0" layoutY="14.0">
             <children>
-                <VBox prefHeight="726.0" prefWidth="250.0">
+                <VBox prefHeight="863.0" prefWidth="454.0">
                     <children>
                   <HBox prefHeight="41.0" prefWidth="281.0">
                      <children>
@@ -52,7 +52,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField prefHeight="26.0" prefWidth="223.0" promptText="Nhập mã, tên" />
+                  <TextField prefHeight="39.0" prefWidth="439.0" promptText="Nhập mã, tên" />
                         <HBox alignment="CENTER">
                             <VBox.margin>
                                 <Insets top="5.0" />
@@ -66,7 +66,7 @@
                                 <Insets top="5.0" />
                             </VBox.margin>
                         </Label>
-                        <ComboBox fx:id="btnMQT" prefHeight="25.0" prefWidth="230.0" promptText="Xuất-Nhập-Tồn">
+                        <ComboBox fx:id="btnMQT" prefHeight="49.0" prefWidth="451.0" promptText="Xuất-Nhập-Tồn">
                             <VBox.margin>
                                 <Insets top="5.0" />
                             </VBox.margin>
@@ -81,7 +81,7 @@
                         </Label>
                         <RadioButton mnemonicParsing="false">
                             <graphic>
-                                <ComboBox fx:id="btnThoiGian" prefHeight="25.0" prefWidth="215.0" promptText="Hôm nay" />
+                                <ComboBox fx:id="btnThoiGian" prefHeight="49.0" prefWidth="426.0" promptText="Hôm nay" />
                             </graphic>
                             <VBox.margin>
                                 <Insets top="10.0" />
@@ -90,9 +90,9 @@
                                 <ToggleGroup fx:id="date" />
                             </toggleGroup>
                         </RadioButton>
-                        <RadioButton mnemonicParsing="false" toggleGroup="$date">
+                        <RadioButton mnemonicParsing="false" prefHeight="39.0" prefWidth="442.0" toggleGroup="$date">
                             <graphic>
-                                <DatePicker prefHeight="25.0" prefWidth="215.0" />
+                                <DatePicker prefHeight="39.0" prefWidth="419.0" />
                             </graphic>
                             <VBox.margin>
                                 <Insets top="10.0" />
@@ -106,7 +106,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <ComboBox fx:id="btnNhomHang" prefHeight="26.0" prefWidth="230.0" promptText="Thuốc Tây" />
+                  <ComboBox fx:id="btnNhomHang" prefHeight="49.0" prefWidth="441.0" promptText="Thuốc Tây" />
                         <Label text="Xuất file">
                             <font>
                                 <Font size="18.0" />
@@ -115,8 +115,8 @@
                                 <Insets top="10.0" />
                             </VBox.margin>
                         </Label>
-                        <ComboBox fx:id="btnXuatFile" prefHeight="26.0" prefWidth="230.0" promptText="Excel" />
-                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="230.0" text="Xuất File 💾">
+                        <ComboBox fx:id="btnXuatFile" prefHeight="49.0" prefWidth="437.0" promptText="Excel" />
+                        <Button mnemonicParsing="false" prefHeight="62.0" prefWidth="438.0" text="Xuất File 💾">
                             <VBox.margin>
                                 <Insets top="10.0" />
                             </VBox.margin>
@@ -130,7 +130,7 @@
                                 <Font size="18.0" />
                             </font>
                         </Label>
-                  <TableView prefHeight="410.0" prefWidth="934.0">
+                  <TableView prefHeight="538.0" prefWidth="1161.0">
                     <columns>
                       <TableColumn prefWidth="75.0" text="C1" />
                       <TableColumn prefWidth="75.0" text="C2" />
@@ -149,7 +149,7 @@
                         <Insets bottom="10.0" left="10.0" top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <TableView prefHeight="198.0" prefWidth="934.0">
+                  <TableView prefHeight="259.0" prefWidth="1161.0">
                     <columns>
                       <TableColumn prefWidth="75.0" text="C1" />
                       <TableColumn prefWidth="75.0" text="C2" />

@@ -45,4 +45,19 @@ public class ConnectDB {
         return stmt.executeQuery();
     }
 
+    public static String queryTaoMa(String sql) {
+        String maGenerate = null;
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = con.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                maGenerate = rs.getString(1);
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return maGenerate;
+    }
 }

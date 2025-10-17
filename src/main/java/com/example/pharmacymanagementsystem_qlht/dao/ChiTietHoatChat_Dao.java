@@ -16,18 +16,18 @@ public class ChiTietHoatChat_Dao implements DaoInterface<ChiTietHoatChat>{
     private final String SELECT_BY_MATHUOC = "SELECT * FROM ChiTietHoatChat WHERE MaThuoc = ?";
 
     @Override
-    public void insert(ChiTietHoatChat e) {
-        ConnectDB.update(INSERT_SQL, e.getThuoc().getMaThuoc(), e.getHoatChat().getMaHoatChat(), e.getHamLuong());
+    public boolean insert(ChiTietHoatChat e) {
+        return ConnectDB.update(INSERT_SQL, e.getThuoc().getMaThuoc(), e.getHoatChat().getMaHoatChat(), e.getHamLuong())>0;
     }
 
     @Override
-    public void update(ChiTietHoatChat e) {
-        ConnectDB.update(UPDATE_SQL, e.getHamLuong(), e.getThuoc().getMaThuoc(), e.getHoatChat().getMaHoatChat());
+    public boolean update(ChiTietHoatChat e) {
+        return ConnectDB.update(UPDATE_SQL, e.getHamLuong(), e.getThuoc().getMaThuoc(), e.getHoatChat().getMaHoatChat())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        this.selectBySql(DELETE_BY_ID, keys[0], keys[1]);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_BY_ID, keys[0], keys[1])>0;
     }
 
     @Override

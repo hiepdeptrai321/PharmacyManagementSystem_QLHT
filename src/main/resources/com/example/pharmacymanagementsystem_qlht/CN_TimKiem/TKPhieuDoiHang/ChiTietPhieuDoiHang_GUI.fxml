@@ -23,7 +23,7 @@
                   <children>
                       <Label styleClass="bold-label" text="Mã phiếu đổi: " />
                       <Label fx:id="lblMaPhieuDoiValue" layoutX="110.0" layoutY="0.8" styleClass="value-label" text="PDH012345" />
-                      <Label fx:id="lblNgayLapValue" layoutX="346.0" layoutY="1.0" prefHeight="20.0" prefWidth="99.0" styleClass="value-label" text="08/10/2025" />
+                      <Label fx:id="lblNgayLapValue" layoutX="346.0" layoutY="1.0" prefHeight="20.0" prefWidth="317.0" styleClass="value-label" text="08/10/2025" />
                       <Label layoutX="282.0" layoutY="2.0" styleClass="bold-label label-padding" text="Ngày lập: " />
                   </children>
                </Pane>
@@ -33,7 +33,6 @@
                        <TableColumn fx:id="colSTT" prefWidth="55.73331546783447" text="STT" />
                        <TableColumn fx:id="colTenSP" prefWidth="371.46668243408203" text="Tên sản phẩm/Hoạt chất" />
                        <TableColumn fx:id="colSoLuong" prefWidth="89.33331298828125" text="Số lượng đổi" />
-                       <TableColumn prefWidth="91.4666748046875" text="Đơn vị" />
                        <TableColumn fx:id="colLyDo" prefWidth="160.800048828125" text="Lý do đổi" />
                    </columns>
                    <columnResizePolicy>
@@ -55,7 +54,10 @@
                    <Label layoutX="5.0" layoutY="65.0" styleClass="bold-label" text="SĐT Khách hàng:" />
                    <Label fx:id="lblSDTKhachHangValue" layoutX="160.0" layoutY="65.0" styleClass="value-label" />
                    <Label layoutX="5.0" layoutY="95.0" styleClass="bold-label" text="Ghi chú:" />
-                   <Label fx:id="lblGhiChuValue" layoutX="160.0" layoutY="95.0" prefWidth="200.0" styleClass="value-label" text="Không có." wrapText="true" />
+                   <Label fx:id="lblGhiChuValue" layoutX="146.0" layoutY="95.0" prefHeight="20.0" prefWidth="214.0" styleClass="value-label" wrapText="true" />
+                  <Label fx:id="lblTenNV" layoutX="146.0" layoutY="7.0" prefHeight="17.0" prefWidth="205.0" />
+                  <Label fx:id="lblTenKH" layoutX="146.0" layoutY="37.0" prefHeight="17.0" prefWidth="205.0" />
+                  <Label fx:id="lblSDTKH" layoutX="146.0" layoutY="67.0" prefHeight="17.0" prefWidth="205.0" />
                </Pane>
 
                   <Separator layoutY="216.0" />

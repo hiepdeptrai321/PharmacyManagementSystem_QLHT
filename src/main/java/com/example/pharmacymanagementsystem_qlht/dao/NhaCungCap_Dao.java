@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NhaCungCap_Dao implements DaoInterface<NhaCungCap>{
-    private final String INSERT_SQL = "INSERT INTO NhaCungCap (TenNCC, DiaChi, SDT, Email, GPKD, GhiChu, TenCongTy, MSThue) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String INSERT_SQL = "INSERT INTO NhaCungCap (MaNCC,TenNCC, DiaChi, SDT, Email, GPKD, GhiChu, TenCongTy, MSThue) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE NhaCungCap SET TenNCC = ?, DiaChi = ?, SDT = ?, Email = ?, GPKD = ?, GhiChu = ?, TenCongTy = ?, MSThue = ? WHERE MaNCC = ?";
     private final String DELETE_SQL = "DELETE FROM NhaCungCap WHERE MaNCC = ?";
     private final String SELECT_ALL_SQL = "SELECT * FROM NhaCungCap";
@@ -16,18 +16,19 @@ public class NhaCungCap_Dao implements DaoInterface<NhaCungCap>{
     private final String SELECT_TOP1_MANCC = "SELECT TOP 1 MaNCC FROM NhaCungCap ORDER BY MaNCC DESC";
 
     @Override
-    public void insert(NhaCungCap e) {
-        ConnectDB.update(INSERT_SQL, e);
+    public boolean insert(NhaCungCap e) {
+        e.setMaNCC(generatekeyNhaCungCap());
+        return ConnectDB.update(INSERT_SQL, e.getMaNCC(),e.getTenNCC(),e.getDiaChi(),e.getSDT(),e.getEmail(),e.getGPKD(),e.getGhiChu(),e.getTenCongTy(),e.getMSThue())>0;
     }
 
     @Override
-    public void update(NhaCungCap e) {
-        ConnectDB.update(UPDATE_SQL, e);
+    public boolean update(NhaCungCap e) {
+            return ConnectDB.update(UPDATE_SQL,e.getTenNCC(),e.getDiaChi(),e.getSDT(),e.getEmail(),e.getGPKD(),e.getGhiChu(),e.getTenCongTy(),e.getMSThue(),e.getMaNCC())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        this.selectBySql(DELETE_SQL, keys);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_SQL, keys)>0;
     }
 
     @Override
@@ -66,20 +67,18 @@ public class NhaCungCap_Dao implements DaoInterface<NhaCungCap>{
     }
 
     public String generatekeyNhaCungCap() {
-        String key = null;
+        String key = "NCC001";
         try {
-            ResultSet rs = ConnectDB.query(SELECT_TOP1_MANCC);
-            String lastKey = rs.getString("maPN");
-            if (lastKey != null) {
-                int numericPart = Integer.parseInt(lastKey.substring(2));
-                numericPart++;
-                key = String.format("NCC%03d", numericPart);
-            } else {
-                key = "NCC001";
-            }
+            String lastKey = ConnectDB.queryTaoMa(SELECT_TOP1_MANCC);
+                if (lastKey != null && lastKey.startsWith("NCC")) {
+                    int numericPart = Integer.parseInt(lastKey.substring(3));
+                    numericPart++;
+                    key = String.format("NCC%03d", numericPart);
+                }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return key;
     }
+
 }

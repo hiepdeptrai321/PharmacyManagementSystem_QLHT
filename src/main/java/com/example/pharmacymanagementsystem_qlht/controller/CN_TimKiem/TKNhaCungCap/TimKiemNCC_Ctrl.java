@@ -1,6 +1,5 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKNhaCungCap;
 
-import com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhaCungCap.ChiTietNhaCungCap_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.model.NhaCungCap;
 import com.example.pharmacymanagementsystem_qlht.dao.NhaCungCap_Dao;
 import javafx.application.Application;
@@ -12,7 +11,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.beans.property.SimpleStringProperty;
 import java.util.List;
@@ -129,10 +127,10 @@ public class TimKiemNCC_Ctrl extends Application {
     public void btnChiTietClick(NhaCungCap ncc) {
         try {
             Stage stage = new Stage();
-            FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNCC/ChiTietNhaCungCap_GUI.fxml"));
+            FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKNhaCungCap/ChiTietNhaCungCap_GUI.fxml"));
             Parent root = loader.load();
             ChiTietNhaCungCap_Ctrl ctrl = loader.getController();
-            ctrl.setNhaCungCap(ncc);
+            ctrl.hienThiThongTin(ncc);
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();

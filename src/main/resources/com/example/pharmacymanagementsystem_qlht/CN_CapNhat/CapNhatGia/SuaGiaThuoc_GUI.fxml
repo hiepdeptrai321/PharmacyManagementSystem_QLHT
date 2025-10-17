@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="384.0" prefWidth="955.0" stylesheets="@../../css/ThemThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMThuoc.SuaXoaThuoc_Ctrl">
+<AnchorPane prefHeight="384.0" prefWidth="955.0" stylesheets="@../../css/ThemThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatGia.SuaGiaThuoc_Ctrl">
     <children>
         <Label layoutX="14.0" layoutY="8.0" prefHeight="31.0" prefWidth="932.0" styleClass="lbtitle" text="Sửa giá thuốc">
             <font>
@@ -26,7 +26,7 @@
                             <children>
                                 <Pane prefHeight="207.0" prefWidth="668.0">
                                     <children>
-                                        <TextField layoutX="67.0" layoutY="22.0" prefHeight="25.0" prefWidth="187.0" style="-fx-max-height: 30;" />
+                                        <TextField fx:id="tfMaThuoc" layoutX="67.0" layoutY="22.0" prefHeight="25.0" prefWidth="187.0" style="-fx-max-height: 30;" />
                                         <Label layoutY="25.0" text="Mã thuốc">
                                             <font>
                                                 <Font size="14.0" />
@@ -37,13 +37,13 @@
                                                 <Font size="14.0" />
                                             </font>
                                         </Label>
-                                        <TextField layoutX="353.0" layoutY="22.0" prefHeight="25.0" prefWidth="363.0" style="-fx-max-height: 30;" />
+                                        <TextField fx:id="tfTenThuoc" layoutX="353.0" layoutY="22.0" prefHeight="25.0" prefWidth="363.0" style="-fx-max-height: 30;" />
                                         <Label layoutX="735.0" layoutY="25.0" prefHeight="20.0" prefWidth="69.0" text="Loại hàng">
                                             <font>
                                                 <Font size="14.0" />
                                             </font>
                                         </Label>
-                                        <ComboBox layoutX="804.0" layoutY="22.0" prefHeight="25.0" prefWidth="92.0" style="-fx-max-height: 30;" />
+                                        <ComboBox fx:id="cbLoaiHang" layoutX="804.0" layoutY="22.0" prefHeight="25.0" prefWidth="92.0" style="-fx-max-height: 30;" />
                                     </children>
                                 </Pane>
                                 <Pane prefHeight="240.0" prefWidth="932.0" style="-fx-min-height: 10;" />
@@ -58,19 +58,19 @@
                                 <Font size="18.0" />
                             </font>
                         </Label>
-                        <Button id="btnthemdvt" layoutX="707.0" layoutY="-6.0" minHeight="30.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="225.0" text="✚Thiết lập giá bán &amp; đơn vị tính" />
+                        <Button id="btnthemdvt" fx:id="btnThietLap" layoutX="707.0" layoutY="-6.0" minHeight="30.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="225.0" text="✚Thiết lập giá bán &amp; đơn vị tính" />
                     </children>
                 </Pane>
                 <VBox prefHeight="200.0" prefWidth="100.0">
                     <children>
                         <TableView prefHeight="200.0" prefWidth="924.0">
                             <columns>
-                                <TableColumn prefWidth="128.0" text="Đơn vị tính" />
-                                <TableColumn prefWidth="103.0" text="Kí hiệu" />
-                                <TableColumn minWidth="0.0" prefWidth="150.0" text="Hệ số quy đổi" />
-                                <TableColumn prefWidth="184.0" text="Giá nhập" />
-                                <TableColumn minWidth="0.0" prefWidth="201.0" text="Giá bán" />
-                        <TableColumn minWidth="0.0" prefWidth="118.0" text="Đơn vị cơ bản" />
+                                <TableColumn fx:id="colDVT" prefWidth="128.0" text="Đơn vị tính" />
+                                <TableColumn fx:id="colKH" prefWidth="103.0" text="Kí hiệu" />
+                                <TableColumn fx:id="colHeSo" minWidth="0.0" prefWidth="150.0" text="Hệ số quy đổi" />
+                                <TableColumn fx:id="colGiaNhap" prefWidth="184.0" text="Giá nhập" />
+                                <TableColumn fx:id="colGiaBan" minWidth="0.0" prefWidth="201.0" text="Giá bán" />
+                        <TableColumn fx:id="colDVCB" minWidth="0.0" prefWidth="118.0" text="Đơn vị cơ bản" />
                         <TableColumn minWidth="0.0" prefWidth="47.0" />
                             </columns>
                         </TableView>
@@ -78,12 +78,12 @@
                 </VBox>
             </children>
         </VBox>
-        <Button id="btnluu" layoutX="872.0" layoutY="343.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="69.0" styleClass="btnthemhuy" text="Lưu" textFill="WHITE">
+        <Button id="btnluu" fx:id="btnLuu" layoutX="872.0" layoutY="343.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="69.0" styleClass="btnthemhuy" text="Lưu" textFill="WHITE">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>
         </Button>
-        <Button id="btnhuy" layoutX="785.0" layoutY="343.0" minHeight="20.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="69.0" styleClass="btnthemhuy" text="Hủy" textFill="WHITE">
+        <Button id="btnhuy" fx:id="btnHuy" layoutX="793.0" layoutY="343.0" minHeight="20.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="69.0" styleClass="btnthemhuy" text="Hủy" textFill="WHITE">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>

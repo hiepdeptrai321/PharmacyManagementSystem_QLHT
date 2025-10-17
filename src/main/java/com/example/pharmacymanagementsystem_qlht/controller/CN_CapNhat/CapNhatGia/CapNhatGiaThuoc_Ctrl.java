@@ -1,6 +1,7 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatGia;
 
 import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SanPham_Dao;
+import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SP_TheoLo;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,14 +20,14 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
     // 1. KHAI BÁO THÀNH PHẦN GIAO DIỆN (FXML)
     public TextField tfTimThuoc;
     public Button btnTimThuoc;
-    public TableView tbThuoc;
-    public TableColumn colSTT;
-    public TableColumn colMaThuoc;
-    public TableColumn colTenThuoc;
-    public TableColumn colDVT;
-    public TableColumn colGiaNhap;
-    public TableColumn colGiaBan;
-    public TableColumn colChiTiet;
+    public TableView<Thuoc_SanPham> tbThuoc;
+    public TableColumn<Thuoc_SanPham,String> colSTT;
+    public TableColumn<Thuoc_SanPham,String> colMaThuoc;
+    public TableColumn<Thuoc_SanPham,String> colTenThuoc;
+    public TableColumn<Thuoc_SanPham,String>colDVT;
+    public TableColumn<Thuoc_SanPham,String> colGiaNhap;
+    public TableColumn<Thuoc_SanPham,String> colGiaBan;
+    public TableColumn<Thuoc_SanPham,String> colChiTiet;
 
     // 2. KHỞI TẠO (INITIALIZE)
     @Override
@@ -47,11 +48,10 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
         ObservableList<Thuoc_SanPham> data = FXCollections.observableArrayList(list);
 
         colSTT.setCellValueFactory(cellData ->
-                new SimpleStringProperty(String.valueOf(tbThuoc.getItems().indexOf(cellData.getClass()) + 1))
+                new SimpleStringProperty(String.valueOf(tbThuoc.getItems().indexOf(cellData.getValue()) + 1))
         );
         colMaThuoc.setCellValueFactory(new PropertyValueFactory<>("maThuoc"));
         colTenThuoc.setCellValueFactory(new PropertyValueFactory<>("tenThuoc"));
-        colDVT.setCellValueFactory(new PropertyValueFactory<>("donViHamLuong"));
         colGiaNhap.setCellValueFactory(new PropertyValueFactory<>("giaNhapCoBan"));
         colGiaBan.setCellValueFactory(new PropertyValueFactory<>("giaBanCoBan"));
         colDVT.setCellValueFactory(new PropertyValueFactory<>("tenDVTCoBan"));
@@ -60,7 +60,7 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
             {
                 btn.setOnAction(event -> {
                     Thuoc_SanPham thuoc = getTableView().getItems().get(getIndex());
-                    // Implement btnChiTietClick(thuoc) as needed
+                    showSuaGiaThuoc(thuoc);
                 });
                 btn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white;");
                 btn.getStyleClass().add("btn");
@@ -76,13 +76,33 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
     }
 
     // 4. XỬ LÝ NGHIỆP VỤ
-    public void timThuoc(){
+    public void timThuoc() {
         String keyword = tfTimThuoc.getText().trim().toLowerCase();
         Thuoc_SanPham_Dao ts_dao = new Thuoc_SanPham_Dao();
-        List<Thuoc_SanPham> dsTSLoc = ts_dao.selectByTuKhoa(keyword);
+        List<Thuoc_SanPham> dsTSLoc;
+        if (keyword.isEmpty()) {
+            dsTSLoc = ts_dao.selectAllSLTheoDonViCoBan_ChiTietDVT();
+        } else {
+            dsTSLoc = ts_dao.selectSLTheoDonViCoBanByTuKhoa_ChiTietDVT(keyword);
+        }
         ObservableList<Thuoc_SanPham> data = FXCollections.observableArrayList(dsTSLoc);
         tbThuoc.setItems(data);
     }
-
+    private void showSuaGiaThuoc(Thuoc_SanPham thuoc) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                    "/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatGia/SuaGiaThuoc_GUI.fxml"));
+            Parent root = loader.load();
+            SuaGiaThuoc_Ctrl controller = loader.getController();
+            controller.setThuoc(thuoc); // Implement setThuoc in SuaGiaThuoc_Ctrl
+            Stage stage = new Stage();
+            stage.setTitle("Sửa giá thuốc");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+            tbThuoc.refresh();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

@@ -10,6 +10,7 @@ public class ChiTietPhieuTraHang {
     private double donGia;
     private double giamGia;
     public ChiTietPhieuTraHang() {
+
     }
 
     public ChiTietPhieuTraHang(Thuoc_SP_TheoLo loHang, PhieuTraHang phieuTraHang, Thuoc_SanPham thuoc, int soLuong, double donGia, double giamGia) {
@@ -20,6 +21,8 @@ public class ChiTietPhieuTraHang {
         this.donGia = donGia;
         this.giamGia = giamGia;
     }
+
+
 
     public Thuoc_SP_TheoLo getLoHang() {
         return loHang;
@@ -79,6 +82,10 @@ public class ChiTietPhieuTraHang {
     @Override
     public int hashCode() {
         return Objects.hash(loHang, phieuTraHang);
+    }
+
+    public double getThanhTienTra() {
+        return soLuong* donGia;
     }
 
     @Override

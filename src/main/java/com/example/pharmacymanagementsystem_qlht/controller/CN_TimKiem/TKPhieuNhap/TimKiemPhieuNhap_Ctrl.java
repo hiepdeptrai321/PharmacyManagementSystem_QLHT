@@ -117,7 +117,6 @@ public class TimKiemPhieuNhap_Ctrl extends Application {
             Parent root = loader.load();
             Scene scene = new Scene(root);
 
-            this.getClass();
             ChiTietPhieuNhap_Ctrl ctrl = loader.getController();
             ctrl.load(pn);
             stage.setScene(scene);

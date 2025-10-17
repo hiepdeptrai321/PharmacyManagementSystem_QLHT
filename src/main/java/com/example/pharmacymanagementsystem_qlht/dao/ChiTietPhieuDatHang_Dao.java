@@ -15,18 +15,18 @@ public class ChiTietPhieuDatHang_Dao implements DaoInterface<ChiTietPhieuDatHang
     private final String SELECT_ALL_SQL = "SELECT * FROM ChiTietPhieuDatHang";
 
     @Override
-    public void insert(ChiTietPhieuDatHang e) {
-        ConnectDB.update(INSERT_SQL, e.getPhieuDatHang().getMaPDat(), e.getThuoc().getMaThuoc(), e.getSoLuong(), e.getDonGia(), e.getGiamGia());
+    public boolean insert(ChiTietPhieuDatHang e) {
+        return ConnectDB.update(INSERT_SQL, e.getPhieuDatHang().getMaPDat(), e.getThuoc().getMaThuoc(), e.getSoLuong(), e.getDonGia(), e.getGiamGia())>0;
     }
 
     @Override
-    public void update(ChiTietPhieuDatHang e) {
-        ConnectDB.update(UPDATE_SQL, e.getSoLuong(), e.getDonGia(), e.getGiamGia(), e.getPhieuDatHang().getMaPDat(), e.getThuoc().getMaThuoc());
+    public boolean update(ChiTietPhieuDatHang e) {
+        return ConnectDB.update(UPDATE_SQL, e.getSoLuong(), e.getDonGia(), e.getGiamGia(), e.getPhieuDatHang().getMaPDat(), e.getThuoc().getMaThuoc())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_BY_ID_SQL, keys[0], keys[1]);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_BY_ID_SQL, keys[0], keys[1])>0;
     }
 
     @Override

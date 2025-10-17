@@ -13,11 +13,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1200.0"
-            stylesheets="@../../css/ChiTietPhieuTra.css"
-            xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuTraHang.ChiTietPhieuTraHang_Ctrl">
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" stylesheets="@../../css/ChiTietPhieuTra.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuTraHang.ChiTietPhieuTraHang_Ctrl">
 <SplitPane dividerPositions="0.65" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
     <AnchorPane minHeight="0.0" minWidth="0.0">
@@ -27,7 +23,7 @@
                   <children>
                       <Label styleClass="bold-label" text="Mã phiếu trả: " />
                       <Label fx:id="lblMaPhieuTraValue" layoutX="110.0" layoutY="0.8" styleClass="value-label" text="PT012345" />
-                      <Label fx:id="lblNgayLapValue" layoutX="346.0" layoutY="1.0" prefHeight="20.0" prefWidth="99.0" styleClass="value-label" text="01/10/2025" />
+                      <Label fx:id="lblNgayLapValue" layoutX="346.0" layoutY="1.0" prefHeight="20.0" prefWidth="315.0" styleClass="value-label" text="01/10/2025" />
                       <Label layoutX="282.0" layoutY="2.0" styleClass="bold-label label-padding" text="Ngày lập: " />
                   </children>
                </Pane>
@@ -37,10 +33,9 @@
                        <TableColumn fx:id="colSTT" prefWidth="50.0" text="STT" />
                        <TableColumn fx:id="colTenSP" prefWidth="250.0" text="Tên sản phẩm/Hoạt chất" />
                        <TableColumn fx:id="colSoLuong" prefWidth="100.0" text="Số lượng trả" />
-                       <TableColumn prefWidth="100.0" text="Đơn vị" />
-                       <TableColumn prefWidth="100.0" text="Đơn giá trả" />
+                       <TableColumn fx:id="ColDongia" prefWidth="100.0" text="Đơn giá trả" />
                        <TableColumn fx:id="colLyDo" prefWidth="100.0" text="Lý do trả" />
-                       <TableColumn prefWidth="100.0" text="Thành tiền trả" />
+                       <TableColumn fx:id="colThanhTien" prefWidth="100.0" text="Thành tiền trả" />
                    </columns>
                    <columnResizePolicy>
                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -61,7 +56,13 @@
                    <Label layoutX="5.0" layoutY="65.0" styleClass="bold-label" text="SĐT Khách hàng:" />
                    <Label fx:id="lblSDTKhachHangValue" layoutX="160.0" layoutY="65.0" styleClass="value-label" />
                    <Label layoutX="5.0" layoutY="95.0" styleClass="bold-label" text="Ghi chú:" />
-                   <Label fx:id="lblGhiChuValue" layoutX="160.0" layoutY="95.0" prefWidth="200.0" styleClass="value-label" text="Không có." wrapText="true" />
+                   <Label fx:id="lblGhiChuValue" layoutX="93.0" layoutY="95.0" prefWidth="200.0" styleClass="value-label" text="Không có." wrapText="true" />
+                  <Label fx:id="lblTenNV" layoutX="164.0" layoutY="7.0" prefHeight="20.0" prefWidth="207.0" textFill="#3581bc">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font></Label>
+                  <Label fx:id="lblTenKH" layoutX="151.0" layoutY="37.0" prefHeight="17.0" prefWidth="232.0" />
+                  <Label fx:id="lblSDTKH" layoutX="150.0" layoutY="67.0" prefHeight="17.0" prefWidth="238.0" />
                </Pane>
 
                   <Separator layoutY="216.0" />
@@ -118,4 +119,3 @@
     </AnchorPane>
 </SplitPane>
 </AnchorPane>
-

@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" stylesheets="@../../css/TimKiemHoaDon.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDatHang.TKPhieuDatHang_Ctrl">
+<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="895" prefWidth="1646" stylesheets="@../../css/TimKiemHoaDon.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDatHang.TKPhieuDatHang_Ctrl">
     <children>
         <VBox layoutX="10.0" layoutY="14.0">
             <children>
@@ -42,14 +42,14 @@
                     </children>
                 </HBox>
                 <Separator prefWidth="200.0" />
-                <HBox prefHeight="51.0" prefWidth="1179.0">
+                <HBox prefHeight="67.0" prefWidth="1622.0">
                     <children>
-                        <ComboBox fx:id="cboTimKiem" prefHeight="35.0" prefWidth="130.0" promptText="Tìm theo" styleClass="btntim">
+                        <ComboBox fx:id="cboTimKiem" prefHeight="40.0" prefWidth="130.0" promptText="Tìm theo" styleClass="btntim">
                             <HBox.margin>
                                 <Insets right="5.0" top="10.0" />
                             </HBox.margin>
                         </ComboBox>
-                        <TextField fx:id="txtNoiDungTimKiem" prefHeight="35.0" prefWidth="209.0" promptText="Nhập thông tin phiếu đặt hàng" styleClass="tftim">
+                        <TextField fx:id="txtNoiDungTimKiem" prefHeight="40.0" prefWidth="209.0" promptText="Nhập thông tin phiếu đặt hàng" styleClass="tftim">
                             <HBox.margin>
                                 <Insets top="10.0" />
                             </HBox.margin>
@@ -68,7 +68,7 @@
                                 <Insets top="10.0" />
                             </HBox.margin>
                         </Label>
-                        <DatePicker fx:id="dpTuNgay" prefHeight="35.0" prefWidth="125.0" styleClass="tftim">
+                        <DatePicker fx:id="dpTuNgay" prefHeight="40.0" prefWidth="125.0" styleClass="tftim">
                             <HBox.margin>
                                 <Insets right="10.0" top="10.0" />
                             </HBox.margin>
@@ -78,13 +78,13 @@
                                 <Insets top="10.0" />
                             </HBox.margin>
                         </Label>
-                        <DatePicker fx:id="dpDenNgay" minHeight="14.0" prefHeight="35.0" prefWidth="125.0" styleClass="tftim">
+                        <DatePicker fx:id="dpDenNgay" minHeight="14.0" prefHeight="40.0" prefWidth="125.0" styleClass="tftim">
                             <HBox.margin>
                                 <Insets top="10.0" />
                             </HBox.margin>
                         </DatePicker>
                         <Region prefHeight="51.0" prefWidth="30.0" />
-                        <Button fx:id="btnTimKiem" alignment="CENTER_RIGHT" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" prefHeight="28.0" prefWidth="63.0" styleClass="btntim" text="Tìm">
+                        <Button fx:id="btnTimKiem" alignment="CENTER_RIGHT" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" prefHeight="40.0" prefWidth="63.0" styleClass="btntim" text="Tìm">
                             <HBox.margin>
                                 <Insets left="8.0" top="10.0" />
                             </HBox.margin>
@@ -99,7 +99,7 @@
                                 </ImageView>
                             </graphic>
                         </Button>
-                        <Button fx:id="btnHuyBo" mnemonicParsing="false" prefHeight="21.0" prefWidth="52.0" styleClass="btntim">
+                        <Button fx:id="btnHuyBo" mnemonicParsing="false" prefHeight="40.0" prefWidth="52.0" styleClass="btntim">
                             <HBox.margin>
                                 <Insets left="8.0" top="10.0" />
                             </HBox.margin>
@@ -111,8 +111,8 @@
                                 </ImageView>
                             </graphic>
                         </Button>
-                        <Region prefHeight="51.0" prefWidth="163.0" />
-                        <ComboBox fx:id="cbLoc" prefHeight="35.0" prefWidth="146.0" promptText="⌛ Bộ lọc nhanh" styleClass="btntim">
+                        <Region prefHeight="67.0" prefWidth="611.0" />
+                        <ComboBox fx:id="cbLoc" prefHeight="40.0" prefWidth="146.0" promptText="⌛ Bộ lọc nhanh" styleClass="btntim">
                             <HBox.margin>
                                 <Insets top="10.0" />
                             </HBox.margin>
@@ -124,7 +124,7 @@
                 </HBox>
                 <ScrollPane>
                     <content>
-                        <TableView fx:id="tblPD" prefHeight="560.0" prefWidth="1177.0">
+                        <TableView fx:id="tblPD" prefHeight="738.0" prefWidth="1620.0">
                             <columns>
                                 <TableColumn fx:id="colSTT" minWidth="0.0" prefWidth="51.0" text="STT" />
                                 <TableColumn fx:id="colMaPD" minWidth="0.0" prefWidth="156.0" text="Mã phiếu đặt hàng" />

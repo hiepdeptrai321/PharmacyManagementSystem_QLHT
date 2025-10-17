@@ -52,7 +52,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField prefHeight="39.0" prefWidth="439.0" promptText="Nhập mã, tên" />
+                  <TextField prefHeight="40.0" prefWidth="439.0" promptText="Nhập mã, tên" />
                         <HBox alignment="CENTER">
                             <VBox.margin>
                                 <Insets top="5.0" />

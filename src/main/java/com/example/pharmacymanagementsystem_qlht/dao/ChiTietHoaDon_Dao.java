@@ -11,10 +11,11 @@ import java.util.List;
 
 public class ChiTietHoaDon_Dao implements  DaoInterface<ChiTietHoaDon> {
     private final String INSERT_SQL = "INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia) VALUES (?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE ChiTietHoaDon SET SoLuong=?, DonGia=?, GiamGia=? WHERE MaHD=? AND MaLo=?";
-    private final String DELETE_SQL = "DELETE FROM ChiTietHoaDon WHERE MaHD=? AND MaLo=?";
+    private final String UPDATE_SQL = "UPDATE ChiTietHoaDon SET SoLuong=?, DonGia=?, GiamGia=? WHERE MaHD=? AND MaLH=?";
+    private final String DELETE_SQL = "DELETE FROM ChiTietHoaDon WHERE MaHD=? AND MaLH=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM ChiTietHoaDon";
-    private final String SELECT_BY_ID_SQL = "SELECT * FROM ChiTietHoaDon WHERE MaHD=? AND MaLo=?";
+    private final String SELECT_BY_ID_SQL = "SELECT * FROM ChiTietHoaDon WHERE MaHD=? AND MaLH=?";
+    private final String SELECT_BY_MAHD_SQL = "SELECT * FROM ChiTietHoaDon WHERE MaHD=?";
 
     @Override
     public boolean insert(ChiTietHoaDon e) {
@@ -38,7 +39,7 @@ public class ChiTietHoaDon_Dao implements  DaoInterface<ChiTietHoaDon> {
     }
 
     public List<ChiTietHoaDon> selectByMaHD(String maHD) {
-        return selectBySql(SELECT_BY_ID_SQL, maHD);
+        return selectBySql(SELECT_BY_MAHD_SQL, maHD);
     }
 
     @Override
@@ -48,12 +49,32 @@ public class ChiTietHoaDon_Dao implements  DaoInterface<ChiTietHoaDon> {
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 ChiTietHoaDon cthd = new ChiTietHoaDon();
+
+                // Populate HoaDon (minimal)
                 HoaDon hoaDon = new HoaDon();
-                hoaDon.setMaHD(rs.getString("MaHD"));
+                String maHD = rs.getString("MaHD");
+                if (maHD != null) {
+                    hoaDon.setMaHD(maHD);
+                    // try to load full HoaDon if DAO available
+                    try {
+                        HoaDon_Dao hdDao = new HoaDon_Dao();
+                        HoaDon full = hdDao.selectById(maHD);
+                        if (full != null) hoaDon = full;
+                    } catch (Exception ignored) {}
+                }
                 cthd.setHoaDon(hoaDon);
 
+                // Populate LoHang fully using Thuoc_SP_TheoLo_Dao if present
+                String maLH = rs.getString("MaLH");
                 Thuoc_SP_TheoLo loHang = new Thuoc_SP_TheoLo();
-                loHang.setMaLH(rs.getString("MaLo"));
+                if (maLH != null) {
+                    loHang.setMaLH(maLH);
+                    try {
+                        Thuoc_SP_TheoLo_Dao loDao = new Thuoc_SP_TheoLo_Dao();
+                        Thuoc_SP_TheoLo fullLo = loDao.selectById(maLH);
+                        if (fullLo != null) loHang = fullLo;
+                    } catch (Exception ignored) {}
+                }
                 cthd.setLoHang(loHang);
 
                 cthd.setSoLuong(rs.getInt("SoLuong"));

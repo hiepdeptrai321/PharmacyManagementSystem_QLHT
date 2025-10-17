@@ -129,8 +129,8 @@ public class TKPhieuDatHang_Ctrl extends Application {
             Scene scene = new Scene(root);
 
 //            this.getClass();
-//            ChiTietPhieuDatHang_Ctrl ctrl = loader.getController();
-//            ctrl.load(pdh);
+            com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDatHang.ChiTietPhieuDatHang_Ctrl ctrl = loader.getController();
+            ctrl.setPhieuDatHang(pdh);
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {

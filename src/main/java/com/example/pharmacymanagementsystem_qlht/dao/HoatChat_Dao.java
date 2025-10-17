@@ -15,18 +15,18 @@ public class HoatChat_Dao implements DaoInterface<HoatChat> {
     private final String SELECT_BY_ID_SQL = "SELECT * FROM HoatChat WHERE MaHoatChat = ?";
 
     @Override
-    public void insert(HoatChat e) {
-        ConnectDB.update(INSERT_SQL, e.getTenHoatChat());
+    public boolean insert(HoatChat e) {
+        return ConnectDB.update(INSERT_SQL, e.getTenHoatChat())>0;
     }
 
     @Override
-    public void update(HoatChat e) {
-        ConnectDB.update(UPDATE_SQL, e.getMaHoatChat(), e.getTenHoatChat());
+    public boolean update(HoatChat e) {
+        return ConnectDB.update(UPDATE_SQL,  e.getTenHoatChat(), e.getMaHoatChat())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        this.selectBySql(DELETE_SQL, keys);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_SQL, keys)>0;
     }
 
     @Override

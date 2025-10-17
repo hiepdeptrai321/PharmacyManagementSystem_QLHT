@@ -2,7 +2,6 @@ package com.example.pharmacymanagementsystem_qlht.dao;
 
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuNhap;
-import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SP_TheoLo;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -17,18 +16,18 @@ public class ChiTietPhieuNhap_Dao implements DaoInterface<ChiTietPhieuNhap> {
     private final String SELECT_BY_MAPN_SQL = "SELECT * FROM ChiTietPhieuNhap WHERE MaPN = ?";
 
     @Override
-    public void insert(ChiTietPhieuNhap e) {
-        ConnectDB.update(INSERT_SQL, e.getPhieuNhap().getMaPN(), e.getThuoc().getMaThuoc(), e.getMaLH(), e.getSoLuong(), e.getGiaNhap(),e.getChietKhau(),e.getThue());
+    public boolean insert(ChiTietPhieuNhap e) {
+        return ConnectDB.update(INSERT_SQL, e.getPhieuNhap().getMaPN(), e.getThuoc().getMaThuoc(), e.getMaLH(), e.getSoLuong(), e.getGiaNhap(),e.getChietKhau(),e.getThue())>0;
     }
 
     @Override
-    public void update(ChiTietPhieuNhap e) {
-        ConnectDB.update(UPDATE_SQL, e.getSoLuong(), e.getGiaNhap(), e.getChietKhau(), e.getThue(), e.getPhieuNhap().getMaPN(), e.getThuoc().getMaThuoc(), e.getMaLH());
+    public boolean update(ChiTietPhieuNhap e) {
+        return ConnectDB.update(UPDATE_SQL, e.getSoLuong(), e.getGiaNhap(), e.getChietKhau(), e.getThue(), e.getPhieuNhap().getMaPN(), e.getThuoc().getMaThuoc(), e.getMaLH())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        this.selectBySql(DELETE_SQL, keys[0], keys[1], keys[2]);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_SQL, keys[0], keys[1], keys[2])>0;
     }
 
     @Override

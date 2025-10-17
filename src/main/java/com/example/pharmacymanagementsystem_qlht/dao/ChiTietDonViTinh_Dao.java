@@ -16,18 +16,18 @@ public class ChiTietDonViTinh_Dao implements DaoInterface<ChiTietDonViTinh> {
     private final String SELECT_ALL_SQL = "SELECT MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan FROM ChiTietDonViTinh";
     private final String SELECT_BY_MATHUOC_SQL = "SELECT MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan FROM ChiTietDonViTinh WHERE MaThuoc=?";
     @Override
-    public void insert(ChiTietDonViTinh e) {
-        ConnectDB.update(INSERT_SQL, e.getThuoc().getMaThuoc(), e.getDvt().getMaDVT(), e.getHeSoQuyDoi(), e.getGiaNhap(), e.getGiaBan(), e.isDonViCoBan());
+    public boolean insert(ChiTietDonViTinh e) {
+        return ConnectDB.update(INSERT_SQL, e.getThuoc().getMaThuoc(), e.getDvt().getMaDVT(), e.getHeSoQuyDoi(), e.getGiaNhap(), e.getGiaBan(), e.isDonViCoBan())>0;
     }
 
     @Override
-    public void update(ChiTietDonViTinh e) {
-        ConnectDB.update(UPDATE_SQL, e.getHeSoQuyDoi(), e.getGiaNhap(), e.getGiaBan(), e.isDonViCoBan(), e.getThuoc().getMaThuoc(), e.getDvt().getMaDVT());
+    public boolean update(ChiTietDonViTinh e) {
+        return ConnectDB.update(UPDATE_SQL, e.getHeSoQuyDoi(), e.getGiaNhap(), e.getGiaBan(), e.isDonViCoBan(), e.getThuoc().getMaThuoc(), e.getDvt().getMaDVT())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_BY_ID_SQL, keys[0], keys[1]);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_BY_ID_SQL, keys[0], keys[1])>0;
     }
 
     @Override

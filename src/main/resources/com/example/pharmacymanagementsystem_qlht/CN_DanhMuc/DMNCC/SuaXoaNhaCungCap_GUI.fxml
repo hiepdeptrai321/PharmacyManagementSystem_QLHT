@@ -14,33 +14,33 @@
                 <Font name="System Bold" size="18.0" />
             </font>
         </Label>
-        <TextField layoutX="14.0" layoutY="66.0" prefHeight="25.0" prefWidth="273.0" />
+        <TextField fx:id="txtTen" layoutX="14.0" layoutY="66.0" prefHeight="25.0" prefWidth="273.0" />
         <Label layoutX="13.5" layoutY="49.0" text="Tên nhà cung cấp:" />
-        <TextField layoutX="294.0" layoutY="66.0" prefHeight="25.0" prefWidth="273.0" />
+        <TextField fx:id="txtDiaChi" layoutX="294.0" layoutY="66.0" prefHeight="25.0" prefWidth="273.0" />
         <Label layoutX="294.0" layoutY="49.0" text="Địa chỉ:" />
-        <TextField layoutX="14.0" layoutY="119.0" prefHeight="25.0" prefWidth="142.0" />
+        <TextField fx:id="txtSDT" layoutX="14.0" layoutY="119.0" prefHeight="25.0" prefWidth="142.0" />
         <Label layoutX="14.0" layoutY="102.0" text="Số điện thoại:" />
-        <TextField layoutX="163.0" layoutY="119.0" prefHeight="25.0" prefWidth="225.0" />
+        <TextField fx:id="txtEmail" layoutX="163.0" layoutY="119.0" prefHeight="25.0" prefWidth="225.0" />
         <Label layoutX="163.0" layoutY="102.0" text="Email:" />
-        <TextField layoutX="394.0" layoutY="119.0" prefHeight="25.0" prefWidth="172.0" />
+        <TextField fx:id="txtGPKD_SDK" layoutX="394.0" layoutY="119.0" prefHeight="25.0" prefWidth="172.0" />
         <Label layoutX="394.0" layoutY="102.0" text="GPKD/SDK:" />
-        <TextField layoutX="14.0" layoutY="173.0" prefHeight="25.0" prefWidth="273.0" />
+        <TextField fx:id="txtTenCongTy" layoutX="14.0" layoutY="173.0" prefHeight="25.0" prefWidth="273.0" />
         <Label layoutX="14.0" layoutY="156.0" text="Tên công ty:" />
-        <TextField layoutX="294.0" layoutY="173.0" prefHeight="25.0" prefWidth="273.0" />
+        <TextField fx:id="txtMaSoThue" layoutX="294.0" layoutY="173.0" prefHeight="25.0" prefWidth="273.0" />
         <Label layoutX="296.0" layoutY="158.0" text="Mã số thuế:" />
-        <TextArea layoutX="14.0" layoutY="227.0" prefHeight="69.0" prefWidth="555.0" />
+        <TextArea fx:id="txtGhiChu" layoutX="14.0" layoutY="227.0" prefHeight="69.0" prefWidth="555.0" />
         <Label layoutX="14.0" layoutY="210.0" text="Ghi chú:" />
-        <Pane id="NutHuy" layoutX="378.0" layoutY="307.0" prefHeight="25.0" prefWidth="91.0">
+        <Pane id="NutHuy" layoutX="378.0" layoutY="307.0" onMouseClicked="#btnHuy" prefHeight="25.0" prefWidth="91.0">
             <children>
                 <Label id="txtDen_Bold" layoutX="34.0" layoutY="4.0" text="Hủy" />
             </children>
         </Pane>
-        <Pane id="nutThem" layoutX="476.0" layoutY="307.0" prefHeight="25.0" prefWidth="91.0">
+        <Pane id="nutThem" layoutX="476.0" layoutY="307.0" onMouseClicked="#CapNhatNCC" prefHeight="25.0" prefWidth="91.0">
             <children>
                 <Label id="txtTrang_Bold" layoutX="34.0" layoutY="4.0" text="Lưu" />
             </children>
         </Pane>
-      <Pane id="nutXoa" layoutX="16.0" layoutY="307.0" prefHeight="25.0" prefWidth="91.0">
+      <Pane id="nutXoa" layoutX="16.0" layoutY="307.0" onKeyPressed="#btnXoa" onMouseClicked="#XoaNCC" prefHeight="25.0" prefWidth="91.0">
          <children>
             <Label id="txtTrang_Bold" layoutX="34.0" layoutY="4.0" text="Xóa" />
          </children>

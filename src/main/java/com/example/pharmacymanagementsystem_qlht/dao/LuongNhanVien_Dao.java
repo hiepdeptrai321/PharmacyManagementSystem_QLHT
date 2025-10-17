@@ -2,7 +2,6 @@ package com.example.pharmacymanagementsystem_qlht.dao;
 
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.LuongNhanVien;
-import com.example.pharmacymanagementsystem_qlht.model.NhanVien;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -17,18 +16,18 @@ public class LuongNhanVien_Dao implements DaoInterface<LuongNhanVien> {
     private final String SELECT_ALL_SQL = "SELECT * FROM LuongNhanVien";
 
     @Override
-    public void insert(LuongNhanVien e) {
-        ConnectDB.update(INSERT_SQL, e.getMaLNV(), e.getTuNgay(), e.getDenNgay(), e.getLuongCoBan(), e.getPhuCap(), e.getGhiChu(), e.getNhanVien().getMaNV());
+    public boolean insert(LuongNhanVien e) {
+        return ConnectDB.update(INSERT_SQL, e.getMaLNV(), e.getTuNgay(), e.getDenNgay(), e.getLuongCoBan(), e.getPhuCap(), e.getGhiChu(), e.getNhanVien().getMaNV())>0;
     }
 
     @Override
-    public void update(LuongNhanVien e) {
-        ConnectDB.update(UPDATE_SQL, e.getTuNgay(), e.getDenNgay(), e.getLuongCoBan(), e.getPhuCap(), e.getGhiChu(), e.getMaLNV());
+    public boolean update(LuongNhanVien e) {
+        return ConnectDB.update(UPDATE_SQL, e.getTuNgay(), e.getDenNgay(), e.getLuongCoBan(), e.getPhuCap(), e.getGhiChu(), e.getMaLNV())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_BY_ID, keys);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_BY_ID, keys) > 0;
     }
 
     @Override

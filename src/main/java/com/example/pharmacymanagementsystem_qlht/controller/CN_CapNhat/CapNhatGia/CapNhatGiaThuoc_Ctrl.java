@@ -35,6 +35,7 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatGia/CapNhatGiaThuoc_GUI.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setMaximized(true);
         stage.show();
     }
 

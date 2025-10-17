@@ -2,6 +2,7 @@ package com.example.pharmacymanagementsystem_qlht.dao;
 
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuDoiHang;
+import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuTraHang;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class ChiTietPhieuDoiHang_Dao implements DaoInterface<ChiTietPhieuDoiHang
     private final String DELETE_BY_ID_SQL = "DELETE FROM ChiTietPhieuDoiHang WHERE MaLH=? AND MaPD=? AND MaThuoc=?";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM ChiTietPhieuDoiHang WHERE MaLH=? AND maPD=? AND MaThuoc=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM ChiTietPhieuDoiHang";
+    private final String SELECT_BY_MAPD_SQL = "SELECT * FROM ChiTietPhieuDoiHang WHERE MaPD = ?";
 
     @Override
     public boolean insert(ChiTietPhieuDoiHang e) {
@@ -61,5 +63,9 @@ public class ChiTietPhieuDoiHang_Dao implements DaoInterface<ChiTietPhieuDoiHang
     @Override
     public List<ChiTietPhieuDoiHang> selectAll() {
         return selectBySql(SELECT_ALL_SQL);
+    }
+
+    public List<ChiTietPhieuDoiHang> getChiTietPhieuDoiByMaPT(String maPD) {
+        return this.selectBySql(SELECT_BY_MAPD_SQL, maPD);
     }
 }

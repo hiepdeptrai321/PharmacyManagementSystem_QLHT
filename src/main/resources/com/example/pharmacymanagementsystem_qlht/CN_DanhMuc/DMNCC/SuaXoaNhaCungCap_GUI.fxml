@@ -30,7 +30,7 @@
         <Label layoutX="296.0" layoutY="158.0" text="Mã số thuế:" />
         <TextArea fx:id="txtGhiChu" layoutX="14.0" layoutY="227.0" prefHeight="69.0" prefWidth="555.0" />
         <Label layoutX="14.0" layoutY="210.0" text="Ghi chú:" />
-        <Pane id="NutHuy" layoutX="378.0" layoutY="307.0" prefHeight="25.0" prefWidth="91.0">
+        <Pane id="NutHuy" layoutX="378.0" layoutY="307.0" onMouseClicked="#btnHuy" prefHeight="25.0" prefWidth="91.0">
             <children>
                 <Label id="txtDen_Bold" layoutX="34.0" layoutY="4.0" text="Hủy" />
             </children>
@@ -40,7 +40,7 @@
                 <Label id="txtTrang_Bold" layoutX="34.0" layoutY="4.0" text="Lưu" />
             </children>
         </Pane>
-      <Pane id="nutXoa" layoutX="16.0" layoutY="307.0" onMouseClicked="#XoaNCC" prefHeight="25.0" prefWidth="91.0">
+      <Pane id="nutXoa" layoutX="16.0" layoutY="307.0" onKeyPressed="#btnXoa" onMouseClicked="#XoaNCC" prefHeight="25.0" prefWidth="91.0">
          <children>
             <Label id="txtTrang_Bold" layoutX="34.0" layoutY="4.0" text="Xóa" />
          </children>

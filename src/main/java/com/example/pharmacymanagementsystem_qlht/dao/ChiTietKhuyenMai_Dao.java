@@ -16,18 +16,18 @@ public class ChiTietKhuyenMai_Dao implements DaoInterface<ChiTietKhuyenMai> {
     private final String SELECT_BY_MAKM_SQL = "SELECT MaThuoc, MaKM, SLApDung, SLToiDa FROM ChiTietKhuyenMai WHERE MaKM=?";
 
     @Override
-    public void insert(ChiTietKhuyenMai e) {
-        ConnectDB.update(INSERT_SQL, e.getThuoc().getMaThuoc(), e.getKhuyenMai().getMaKM(), e.getSlApDung(), e.getSlToiDa());
+    public boolean insert(ChiTietKhuyenMai e) {
+        return ConnectDB.update(INSERT_SQL, e.getThuoc().getMaThuoc(), e.getKhuyenMai().getMaKM(), e.getSlApDung(), e.getSlToiDa())>0;
     }
 
     @Override
-    public void update(ChiTietKhuyenMai e) {
-        ConnectDB.update(UPDATE_SQL, e.getSlApDung(), e.getSlToiDa(), e.getThuoc().getMaThuoc(), e.getKhuyenMai().getMaKM());
+    public boolean update(ChiTietKhuyenMai e) {
+        return ConnectDB.update(UPDATE_SQL, e.getSlApDung(), e.getSlToiDa(), e.getThuoc().getMaThuoc(), e.getKhuyenMai().getMaKM())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_BY_ID_SQL, keys[0], keys[1]);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_BY_ID_SQL, keys[0], keys[1])>0;
     }
 
     @Override

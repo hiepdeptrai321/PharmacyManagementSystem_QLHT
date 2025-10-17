@@ -1,7 +1,6 @@
 package com.example.pharmacymanagementsystem_qlht.dao;
 
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
-import com.example.pharmacymanagementsystem_qlht.model.KhuyenMai;
 import com.example.pharmacymanagementsystem_qlht.model.LoaiKhuyenMai;
 
 import java.sql.ResultSet;
@@ -9,18 +8,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LoaiKhuyenMai_Dao implements DaoInterface<LoaiKhuyenMai> {
-
+    private final String INSERT_SQL = "INSERT INTO LoaiKhuyenMai (MaLoai, TenLoai, MoTa) VALUES (?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE LoaiKhuyenMai SET TenLoai=?, MoTa=? WHERE MaLoai=?";
+    private final String DELETE_BY_ID_SQL = "DELETE FROM LoaiKhuyenMai WHERE MaLoai=?";
     private final String SELECT_BY_ID_SQL = "SELECT MaLoai, TenLoai, MoTa FROM LoaiKhuyenMai WHERE MaLoai = ?";
     @Override
-    public void insert(LoaiKhuyenMai e) {
+    public boolean insert(LoaiKhuyenMai e) {
+        return ConnectDB.update(INSERT_SQL, e.getMaLoai(), e.getTenLoai(), e.getMoTa())>0;
     }
 
     @Override
-    public void update(LoaiKhuyenMai e) {
+    public boolean update(LoaiKhuyenMai e) {
+        return ConnectDB.update(UPDATE_SQL, e.getTenLoai(), e.getMoTa(), e.getMaLoai())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_BY_ID_SQL, keys)>0;
     }
 
     @Override

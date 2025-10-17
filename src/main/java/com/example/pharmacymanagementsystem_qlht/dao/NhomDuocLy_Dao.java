@@ -16,18 +16,18 @@ public class NhomDuocLy_Dao implements DaoInterface<NhomDuocLy> {
     private final String SELECT_ALL_SQL = "SELECT * FROM NhomDuocLy";
 
     @Override
-    public void insert(NhomDuocLy e) {
-        ConnectDB.update(INSERT_SQL, e.getMaNDL(), e.getTenNDL(), e.getMoTa());
+    public boolean insert(NhomDuocLy e) {
+        return ConnectDB.update(INSERT_SQL, e.getMaNDL(), e.getTenNDL(), e.getMoTa())>0;
     }
 
     @Override
-    public void update(NhomDuocLy e) {
-    ConnectDB.update(UPDATE_SQL, e.getTenNDL(), e.getMoTa(), e.getMaNDL());
+    public boolean update(NhomDuocLy e) {
+        return ConnectDB.update(UPDATE_SQL, e.getTenNDL(), e.getMoTa(), e.getMaNDL())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-    ConnectDB.update(DELETE_BY_ID, keys);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_BY_ID, keys)>0;
     }
 
     @Override

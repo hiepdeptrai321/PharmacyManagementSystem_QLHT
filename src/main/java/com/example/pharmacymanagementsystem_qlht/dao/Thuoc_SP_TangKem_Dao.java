@@ -15,18 +15,18 @@ public class Thuoc_SP_TangKem_Dao implements DaoInterface<Thuoc_SP_TangKem> {
     private final String SELECT_ALL_SQL = "SELECT MaThuocTangKem, MaKM, SoLuong FROM Thuoc_SP_TangKem";
 
     @Override
-    public void insert(Thuoc_SP_TangKem e) {
-        ConnectDB.update(INSERT_SQL, e.getThuocTangKem().getMaThuoc(), e.getKhuyenmai().getMaKM(), e.getSoLuong());
+    public boolean insert(Thuoc_SP_TangKem e) {
+        return ConnectDB.update(INSERT_SQL, e.getThuocTangKem().getMaThuoc(), e.getKhuyenmai().getMaKM(), e.getSoLuong())>0;
     }
 
     @Override
-    public void update(Thuoc_SP_TangKem e) {
-        ConnectDB.update(UPDATE_SQL, e.getSoLuong(), e.getThuocTangKem().getMaThuoc(), e.getKhuyenmai().getMaKM());
+    public boolean update(Thuoc_SP_TangKem e) {
+        return ConnectDB.update(UPDATE_SQL, e.getSoLuong(), e.getThuocTangKem().getMaThuoc(), e.getKhuyenmai().getMaKM())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_BY_ID_SQL, keys[0], keys[1]);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_BY_ID_SQL, keys[0], keys[1])>0;
     }
 
     @Override

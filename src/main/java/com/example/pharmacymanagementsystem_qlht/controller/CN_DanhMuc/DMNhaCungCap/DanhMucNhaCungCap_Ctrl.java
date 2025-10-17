@@ -5,6 +5,7 @@ import com.example.pharmacymanagementsystem_qlht.model.NhaCungCap;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,6 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.util.List;
+import java.util.Objects;
 
 public class DanhMucNhaCungCap_Ctrl extends Application {
 
@@ -73,7 +75,7 @@ public class DanhMucNhaCungCap_Ctrl extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNCC/DanhMucNhaCungCap_GUI.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNCC/DanhMucNhaCungCap_GUI.fxml")));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -85,7 +87,6 @@ public class DanhMucNhaCungCap_Ctrl extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNCC/SuaXoaNhaCungCap_GUI.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-
             this.getClass();
             SuaXoaNhaCungCap_Ctrl ctrl = loader.getController();
             ctrl.initialize(ncc);
@@ -96,4 +97,19 @@ public class DanhMucNhaCungCap_Ctrl extends Application {
         }
     }
 
+    public void btnThemNCC(ActionEvent actionEvent) {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNCC/ThemNhaCungCap_GUI.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+
+            this.getClass();
+            ThemNhaCungCap_Ctrl ctrl = loader.getController();
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

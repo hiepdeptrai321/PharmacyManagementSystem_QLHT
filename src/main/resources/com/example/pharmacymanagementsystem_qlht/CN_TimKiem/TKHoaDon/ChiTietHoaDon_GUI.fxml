@@ -13,7 +13,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1200.0"
+<AnchorPane prefHeight="879.0" prefWidth="1646.0"
             stylesheets="@../../css/ChiTietHoaDon.css"
             xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
@@ -37,10 +37,10 @@
                        <TableColumn fx:id="colNSTT" prefWidth="50.0" text="STT" />
                        <TableColumn fx:id="colNTen" prefWidth="250.0" text="Tên sản phẩm/Hoạt chất" />
                        <TableColumn fx:id="colNSL" prefWidth="100.0" text="Số lượng" />
-                       <TableColumn prefWidth="100.0" text="Đơn vị" />
-                       <TableColumn prefWidth="100.0" text="Đơn giá" />
+                       <TableColumn fx:id="colNDonVi" prefWidth="100.0" text="Đơn vị" />
+                       <TableColumn fx:id="colNDonGia" prefWidth="100.0" text="Đơn giá" />
                        <TableColumn fx:id="colNChietKhau" prefWidth="100.0" text="Chiết khấu (%)" />
-                       <TableColumn prefWidth="100.0" text="Thành tiền" />
+                       <TableColumn fx:id="colNThanhTien" prefWidth="100.0" text="Thành tiền" />
                    </columns>
                    <columnResizePolicy>
                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

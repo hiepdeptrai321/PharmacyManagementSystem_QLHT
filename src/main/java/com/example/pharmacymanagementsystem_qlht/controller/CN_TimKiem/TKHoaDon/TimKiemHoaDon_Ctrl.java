@@ -164,8 +164,8 @@ public class TimKiemHoaDon_Ctrl extends Application {
             Parent root = loader.load();
 
             // Optionally pass data to the detail controller
-            // ChiTietHoaDon_Ctrl controller = loader.getController();
-            // controller.setHoaDon(hoaDon);
+            com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoaDon.ChiTietHoaDon_Ctrl controller = loader.getController();
+            controller.setHoaDon(hoaDon);
 
             Stage stage = new Stage();
             stage.setTitle("Chi tiết hóa đơn");

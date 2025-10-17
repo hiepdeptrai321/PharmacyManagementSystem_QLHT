@@ -64,11 +64,11 @@ public class TKPhieuDoiHang_Ctrl extends Application {
     @FXML
     public void initialize() {
         cboTimKiem.getItems().addAll(
-            "Mã phiếu đổi", "Mã hóa đơn", "Tên khách hàng", "SĐT khách hàng", "Tên nhân viên", "Ngày lập"
+                "Mã phiếu đổi", "Mã hóa đơn", "Tên khách hàng", "SĐT khách hàng", "Tên nhân viên", "Ngày lập"
         );
         cboTimKiem.setValue("Tiêu chí");
         cbLoc.getItems().addAll(
-            "Tất cả", "Hôm nay", "7 ngày gần nhất", "Tháng này", "Năm nay"
+                "Tất cả", "Hôm nay", "7 ngày gần nhất", "Tháng này", "Năm nay"
         );
         cbLoc.setValue("⌛ Bộ lọc nhanh");
         tblPD.setRowFactory(tv -> {

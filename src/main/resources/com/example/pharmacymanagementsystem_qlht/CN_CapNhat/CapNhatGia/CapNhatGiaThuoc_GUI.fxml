@@ -12,39 +12,4 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatGia.CapNhatGiaThuoc_Ctrl">
-    <top>
-        <HBox spacing="8" alignment="CENTER_LEFT">
-            <padding>
-                <Insets top="10" right="10" bottom="10" left="10"/>
-            </padding>
 
-            <Label text="Cập nhật giá thuốc" styleClass="lbtitle"/>
-
-            <Region HBox.hgrow="ALWAYS"/>
-
-            <TextField fx:id="tfTimThuoc" promptText="Tìm theo mã, tên thuốc" HBox.hgrow="ALWAYS"/>
-            <Button fx:id="btnTimThuoc" text="🔍 Tìm" onAction="#timThuoc" minWidth="80"/>
-        </HBox>
-    </top>
-
-    <center>
-        <VBox spacing="8">
-            <padding>
-                <Insets top="6" right="8" bottom="8" left="8"/>
-            </padding>
-
-            <TableView fx:id="tbThuoc" VBox.vgrow="ALWAYS">
-                <columns>
-                    <TableColumn fx:id="colSTT" text="STT" prefWidth="54.0"/>
-                    <TableColumn fx:id="colMaThuoc" text="Mã thuốc" prefWidth="135.0"/>
-                    <TableColumn fx:id="colTenThuoc" text="Tên thuốc" prefWidth="337.0"/>
-                    <TableColumn fx:id="colDVT" text="Đơn vị tính" prefWidth="191.0"/>
-                    <TableColumn fx:id="colGiaNhap" text="Giá nhập" prefWidth="185.0"/>
-                    <TableColumn fx:id="colGiaBan" text="Giá bán" prefWidth="195.0"/>
-                    <TableColumn fx:id="colChiTiet" text=""/>
-                </columns>
-            </TableView>
-        </VBox>
-    </center>
-</BorderPane>

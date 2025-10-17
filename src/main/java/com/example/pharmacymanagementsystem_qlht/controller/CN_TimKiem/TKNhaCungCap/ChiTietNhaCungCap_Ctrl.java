@@ -56,20 +56,20 @@ public class ChiTietNhaCungCap_Ctrl extends Application {
 
     public void setNhaCungCap(NhaCungCap ncc) {
         this.nhaCungCap = ncc;
-        hienThiThongTin();
+        hienThiThongTin(ncc);
     }
 
-    private void hienThiThongTin() {
-        if (nhaCungCap != null) {
-            maNCC.setText(nhaCungCap.getMaNCC());
-            tenNCC.setText(nhaCungCap.getTenNCC() != null ? nhaCungCap.getTenNCC() : "");
-            DiaChi.setText(nhaCungCap.getDiaChi() != null ? nhaCungCap.getDiaChi() : "");
-            SDT.setText(nhaCungCap.getSDT() != null ? nhaCungCap.getSDT() : "");
-            Email.setText(nhaCungCap.getEmail()!= null ? nhaCungCap.getEmail() : "");
-            GPKD.setText(nhaCungCap.getGPKD() != null ? nhaCungCap.getGPKD() : "");
-            MST.setText(nhaCungCap.getMSThue() != null ? nhaCungCap.getMSThue() : "");
-            TenCongTy.setText(nhaCungCap.getTenCongTy() != null ? nhaCungCap.getTenCongTy() : "");
-            GhiChu.setText(nhaCungCap.getGhiChu() != null ? nhaCungCap.getGhiChu() : "");
+    public void hienThiThongTin(NhaCungCap ncc) {
+        if (ncc != null) {
+            maNCC.setText(ncc.getMaNCC());
+            tenNCC.setText(ncc.getTenNCC() != null ? ncc.getTenNCC() : "");
+            DiaChi.setText(ncc.getDiaChi() != null ? ncc.getDiaChi() : "");
+            SDT.setText(ncc.getSDT() != null ? ncc.getSDT() : "");
+            Email.setText(ncc.getEmail()!= null ? ncc.getEmail() : "");
+            GPKD.setText(ncc.getGPKD() != null ? ncc.getGPKD() : "");
+            MST.setText(ncc.getMSThue() != null ? ncc.getMSThue() : "");
+            TenCongTy.setText(ncc.getTenCongTy() != null ? ncc.getTenCongTy() : "");
+            GhiChu.setText(ncc.getGhiChu() != null ? ncc.getGhiChu() : "");
         }
     }
 

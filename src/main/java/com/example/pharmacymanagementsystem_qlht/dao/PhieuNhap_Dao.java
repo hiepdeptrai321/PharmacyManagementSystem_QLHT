@@ -1,7 +1,6 @@
 package com.example.pharmacymanagementsystem_qlht.dao;
 
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
-import com.example.pharmacymanagementsystem_qlht.model.NhaCungCap;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuNhap;
 
 import java.sql.ResultSet;
@@ -18,18 +17,18 @@ public class PhieuNhap_Dao implements DaoInterface<PhieuNhap>{
     private final String SELECT_ALL_NCC = "SELECT TenNCC FROM NhaCungCap";
 
     @Override
-    public void insert(PhieuNhap e) {
-        ConnectDB.update(INSERT_SQL, e.getMaPN(), e.getNhaCungCap().getMaNCC(), e.getNhanVien().getMaNV(), e.getNgayNhap(), e.getTrangThai(), e.getGhiChu());
+    public boolean insert(PhieuNhap e) {
+        return ConnectDB.update(INSERT_SQL, e.getMaPN(), e.getNhaCungCap().getMaNCC(), e.getNhanVien().getMaNV(), e.getNgayNhap(), e.getTrangThai(), e.getGhiChu())>0;
     }
 
     @Override
-    public void update(PhieuNhap e) {
-        ConnectDB.update(UPDATE_SQL, e.getNhaCungCap().getMaNCC(), e.getNhanVien().getMaNV(), e.getNgayNhap(), e.getTrangThai(), e.getGhiChu(), e.getMaPN());
+    public boolean update(PhieuNhap e) {
+        return ConnectDB.update(UPDATE_SQL, e.getNhaCungCap().getMaNCC(), e.getNhanVien().getMaNV(), e.getNgayNhap(), e.getTrangThai(), e.getGhiChu(), e.getMaPN())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        this.selectBySql(DELETE_SQL, keys);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_SQL, keys)>0;
     }
 
     @Override

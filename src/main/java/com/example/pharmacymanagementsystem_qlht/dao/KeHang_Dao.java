@@ -16,18 +16,18 @@ public class KeHang_Dao implements DaoInterface<KeHang> {
     private final String SELECT_ALL_SQL = "SELECT * FROM KeHang";
 
     @Override
-    public void insert(KeHang e) {
-        ConnectDB.update(INSERT_SQL, e.getMaKe(), e.getTenKe());
+    public boolean insert(KeHang e) {
+        return ConnectDB.update(INSERT_SQL, e.getMaKe(), e.getTenKe())>0;
     }
 
     @Override
-    public void update(KeHang e) {
-        ConnectDB.update(UPDATE_SQL,e.getTenKe(),e.getMaKe());
+    public boolean update(KeHang e) {
+        return ConnectDB.update(UPDATE_SQL,e.getTenKe(),e.getMaKe())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_BY_ID, keys);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_BY_ID, keys)>0;
     }
 
     @Override

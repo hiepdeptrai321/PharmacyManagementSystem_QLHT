@@ -17,18 +17,18 @@ public class ChiTietHoaDon_Dao implements  DaoInterface<ChiTietHoaDon> {
     private final String SELECT_BY_ID_SQL = "SELECT * FROM ChiTietHoaDon WHERE MaHD=? AND MaLo=?";
 
     @Override
-    public void insert(ChiTietHoaDon e) {
-        ConnectDB.update(INSERT_SQL, e.getHoaDon().getMaHD(), e.getLoHang().getMaLH(), e.getSoLuong(), e.getDonGia(), e.getGiamGia());
+    public boolean insert(ChiTietHoaDon e) {
+        return ConnectDB.update(INSERT_SQL, e.getHoaDon().getMaHD(), e.getLoHang().getMaLH(), e.getSoLuong(), e.getDonGia(), e.getGiamGia())>0;
     }
 
     @Override
-    public void update(ChiTietHoaDon e) {
-        ConnectDB.update(UPDATE_SQL, e.getSoLuong(), e.getDonGia(), e.getGiamGia(), e.getHoaDon().getMaHD(), e.getLoHang().getMaLH());
+    public boolean update(ChiTietHoaDon e) {
+        return ConnectDB.update(UPDATE_SQL, e.getSoLuong(), e.getDonGia(), e.getGiamGia(), e.getHoaDon().getMaHD(), e.getLoHang().getMaLH())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_SQL, keys[0], keys[1]);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_SQL, keys[0], keys[1])>0;
     }
 
     @Override

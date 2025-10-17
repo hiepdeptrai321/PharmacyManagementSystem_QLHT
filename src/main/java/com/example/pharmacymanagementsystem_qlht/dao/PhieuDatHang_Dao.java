@@ -15,18 +15,18 @@ public class PhieuDatHang_Dao implements DaoInterface<PhieuDatHang> {
     private final String SELECT_ALL_SQL = "SELECT * FROM PhieuDatHang";
 
     @Override
-    public void insert(PhieuDatHang e) {
-        ConnectDB.update(INSERT_SQL, e.getMaPDat(), e.getNgayLap(), e.getSoTienCoc(), e.getGhiChu(), e.getKhachHang().getMaKH());
+    public boolean insert(PhieuDatHang e) {
+        return ConnectDB.update(INSERT_SQL, e.getMaPDat(), e.getNgayLap(), e.getSoTienCoc(), e.getGhiChu(), e.getKhachHang().getMaKH())>0;
     }
 
     @Override
-    public void update(PhieuDatHang e) {
-        ConnectDB.update(UPDATE_SQL, e.getNgayLap(), e.getSoTienCoc(), e.getGhiChu(), e.getKhachHang().getMaKH(), e.getMaPDat());
+    public boolean update(PhieuDatHang e) {
+        return ConnectDB.update(UPDATE_SQL, e.getNgayLap(), e.getSoTienCoc(), e.getGhiChu(), e.getKhachHang().getMaKH(), e.getMaPDat())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_BY_ID_SQL, keys);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_BY_ID_SQL, keys)>0;
     }
 
     @Override

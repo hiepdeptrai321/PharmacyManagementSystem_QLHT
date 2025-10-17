@@ -15,18 +15,18 @@ public class LoaiHang_Dao implements DaoInterface<LoaiHang>{
     private final String SELECT_ALL_SQL = "SELECT * FROM LoaiHang";
 
     @Override
-    public void insert(LoaiHang e) {
-        ConnectDB.update(INSERT_SQL, e.getMaLoaiHang(), e.getTenLoaiHang(), e.getMoTa());
+    public boolean insert(LoaiHang e) {
+        return ConnectDB.update(INSERT_SQL, e.getMaLoaiHang(), e.getTenLoaiHang(), e.getMoTa())>0;
     }
 
     @Override
-    public void update(LoaiHang e) {
-        ConnectDB.update(UPDATE_SQL, e.getTenLoaiHang(), e.getMoTa(), e.getMaLoaiHang());
+    public boolean update(LoaiHang e) {
+        return ConnectDB.update(UPDATE_SQL, e.getTenLoaiHang(), e.getMoTa(), e.getMaLoaiHang())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_BY_ID, keys);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_BY_ID, keys)>0;
     }
 
     @Override

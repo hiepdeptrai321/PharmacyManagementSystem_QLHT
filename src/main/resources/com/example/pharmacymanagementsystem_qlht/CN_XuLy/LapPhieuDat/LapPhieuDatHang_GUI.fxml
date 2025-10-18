@@ -17,29 +17,28 @@
 <AnchorPane prefHeight="895.0" prefWidth="1646.0" stylesheets="@../../css/LapPhieuDatHang.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDatHang.LapPhieuDatHang_Ctrl">
     <children>
         <!-- Decorative header background -->
-        <Pane styleClass="header-pane" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="8.0" prefHeight="72.0" />
+        <Pane prefHeight="72.0" styleClass="header-pane" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="8.0" />
 
         <Label layoutX="40.0" layoutY="21.0" styleClass="title-label" text="LẬP PHIẾU ĐẶT HÀNG" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="18.0" />
 
         <!-- Search area anchored left, leaving space for info pane on right -->
-        <Pane fx:id="searchPane" styleClass="search-pane" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="90.0" AnchorPane.rightAnchor="480.0" prefHeight="70.0">
+        <Pane fx:id="searchPane" layoutY="91.2" prefHeight="70.0" prefWidth="784.0" styleClass="search-pane" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="832.0" AnchorPane.topAnchor="91.0">
             <children>
                 <Label layoutX="21.0" layoutY="26.0" text="Tìm sản phẩm:">
                    <font>
                       <Font name="System Bold" size="13.0" />
                    </font></Label>
-                <TextField fx:id="txtTimSanPham" layoutX="120.0" layoutY="15.0" prefHeight="38.0" prefWidth="760.0" promptText="Nhập tên hoặc mã sản phẩm ..." />
-                <Button fx:id="btnTimSanPham" layoutX="890.0" layoutY="23.0" prefWidth="60.0" styleClass="primary-btn" text="Tìm" />
+                <TextField fx:id="txtTimSanPham" layoutX="120.0" layoutY="15.0" prefHeight="38.0" prefWidth="598.0" promptText="Nhập tên hoặc mã sản phẩm ..." />
             </children>
         </Pane>
 
         <!-- Left: wrapped into an HBox so decorative filler can absorb extra horizontal space -->
-        <HBox AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="170.0" AnchorPane.rightAnchor="480.0" spacing="10.0">
+        <HBox spacing="10.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="480.0" AnchorPane.topAnchor="170.0">
             <children>
                 <VBox spacing="12.0">
                     <children>
                         <Label styleClass="section-label" text="Danh sách sản phẩm đặt mua" />
-                        <TableView fx:id="tblSanPhamDatHang" styleClass="main-table" prefHeight="420.0" prefWidth="920.0">
+                        <TableView fx:id="tblSanPhamDatHang" prefHeight="578.0" prefWidth="1116.0" styleClass="main-table">
                             <columns>
                                 <TableColumn prefWidth="50.0" text="STT" />
                                 <TableColumn prefWidth="328.80006408691406" text="Tên sản phẩm" />
@@ -59,7 +58,7 @@
         </HBox>
 
         <!-- Info Panel anchored right (kept structure) -->
-        <Pane fx:id="infoPane" prefWidth="430.0" styleClass="info-pane" AnchorPane.topAnchor="20.0" AnchorPane.rightAnchor="30.0" AnchorPane.bottomAnchor="20.0">
+        <Pane fx:id="infoPane" prefHeight="762.0" prefWidth="430.0" styleClass="info-pane" AnchorPane.bottomAnchor="113.0" AnchorPane.rightAnchor="31.0" AnchorPane.topAnchor="20.0">
             <children>
                 <Label layoutX="18.0" layoutY="20.0" styleClass="bold-label" text="THÔNG TIN PHIẾU ĐẶT HÀNG" />
 
@@ -93,14 +92,14 @@
                 <Label fx:id="lblConLai" layoutX="160.0" layoutY="365.0" styleClass="main-value-label" text="0 VNĐ" />
 
                 <Label layoutX="18.0" layoutY="410.0" text="Ghi chú:" />
-                <TextArea fx:id="txtGhiChu" layoutX="18.0" layoutY="440.0" prefHeight="120.0" prefWidth="394.0" />
+                <TextArea fx:id="txtGhiChu" layoutX="18.0" layoutY="440.0" prefHeight="134.0" prefWidth="394.0" />
 
-                <Button fx:id="btnDatHang" layoutX="58.0" layoutY="580.0" prefHeight="44.0" prefWidth="120.0" styleClass="success-btn" text="Đặt hàng">
+                <Button fx:id="btnDatHang" layoutX="53.0" layoutY="625.0" prefHeight="44.0" prefWidth="120.0" styleClass="success-btn" text="Đặt hàng">
                     <font>
                         <Font name="System Bold" size="13.0" />
                     </font>
                 </Button>
-                <Button fx:id="btnThanhToan" layoutX="252.0" layoutY="580.0" prefHeight="44.0" prefWidth="120.0" styleClass="primary-btn" text="Thanh toán">
+                <Button fx:id="btnThanhToan" layoutX="247.0" layoutY="625.0" prefHeight="44.0" prefWidth="120.0" styleClass="primary-btn" text="Thanh toán">
                     <font>
                         <Font name="System Bold" size="13.0" />
                     </font>

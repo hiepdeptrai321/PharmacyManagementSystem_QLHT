@@ -127,13 +127,13 @@
                         <TableView fx:id="tblPD" prefHeight="747.0" prefWidth="1618.0">
                             <columns>
                                 <TableColumn fx:id="colSTT" minWidth="0.0" prefWidth="51.0" text="STT" />
-                                <TableColumn fx:id="colMaPD" minWidth="0.0" prefWidth="202.40004348754883" text="Mã phiếu đổi" />
-                                <TableColumn fx:id="colMaHD" minWidth="0.0" prefWidth="204.0" text="Mã hóa đơn" />
-                                <TableColumn fx:id="colNgayLap" minWidth="6.0" prefWidth="286.3999938964844" text="Ngày lập" />
-                                <TableColumn fx:id="colTenKH" prefWidth="309.59979248046875" text="Khách hàng" />
-                                <TableColumn fx:id="colSdtKH" prefWidth="208.8001708984375" text="SĐT" />
-                                <TableColumn fx:id="colTenNV" prefWidth="256.8001708984375" text="Nhân viên" />
-                                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="0.0" />
+                                <TableColumn fx:id="colMaPD" minWidth="0.0" prefWidth="193.33334350585938" text="Mã phiếu đổi" />
+                                <TableColumn fx:id="colMaHD" minWidth="0.0" prefWidth="213.66665649414062" text="Mã hóa đơn" />
+                                <TableColumn fx:id="colNgayLap" minWidth="6.0" prefWidth="228.66665649414062" text="Ngày lập" />
+                                <TableColumn fx:id="colTenKH" prefWidth="320.7999267578125" text="Khách hàng" />
+                                <TableColumn fx:id="colSdtKH" prefWidth="235.20001220703125" text="SĐT" />
+                                <TableColumn fx:id="colTenNV" prefWidth="287.2000732421875" text="Nhân viên" />
+                                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="90.0" />
                             </columns>
                         </TableView>
                     </content>

@@ -76,11 +76,11 @@
                                 <TableColumn fx:id="colMaThuoc" prefWidth="149.0" text="Mã thuốc" />
                                 <TableColumn fx:id="colTenThuoc" minWidth="0.0" prefWidth="238.28570556640625" text="Tên Thuốc" />
                                 <TableColumn fx:id="colHamLuong" prefWidth="89.71435546875" text="Hàm lượng" />
-                                <TableColumn fx:id="colSDK_GPNK" prefWidth="150.28564453125" text="SDK_GPNK" />
-                                <TableColumn fx:id="colXuatXu" prefWidth="158.28570556640625" text="Xuất xứ" />
-                                <TableColumn fx:id="colLoaiHang" prefWidth="205.71429443359375" text="Loại hàng" />
-                                <TableColumn fx:id="colViTri" prefWidth="104.5716552734375" text="Vị trí" />
-                                <TableColumn fx:id="colChiTiet" prefWidth="78.28567940848211" text="Chi tiết" />
+                                <TableColumn fx:id="colSDK_GPNK" prefWidth="273.66668701171875" text="SDK_GPNK" />
+                                <TableColumn fx:id="colXuatXu" prefWidth="239.33331298828125" text="Xuất xứ" />
+                                <TableColumn fx:id="colLoaiHang" prefWidth="287.33331298828125" text="Loại hàng" />
+                                <TableColumn fx:id="colViTri" prefWidth="189.00006103515625" text="Vị trí" />
+                                <TableColumn fx:id="colChiTiet" prefWidth="140.0" text="Chi tiết" />
                             </columns>
                         </TableView>
                     </content>

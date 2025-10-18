@@ -93,12 +93,12 @@
                             <columns>
                         <TableColumn fx:id="cotSTT" prefWidth="69.0" text="STT" />
                                 <TableColumn fx:id="cotMaKH" prefWidth="134.0" text="Mã KH" />
-                                <TableColumn fx:id="cotTenKH" prefWidth="172.0" text="Tên Khách Hàng" />
-                        <TableColumn fx:id="cotNgaySinh" prefWidth="129.0" text="Ngày sinh" />
-                                <TableColumn fx:id="cotEmail" minWidth="0.0" prefWidth="217.0" text="Email" />
-                                <TableColumn fx:id="cotSDT" minWidth="6.0" prefWidth="145.0" text="SDT" />
-                                <TableColumn fx:id="cotGT" prefWidth="83.0" text="Giới tính" />
-                                <TableColumn fx:id="cotDiaChi" minWidth="0.0" prefWidth="217.0" text="Địa chỉ" />
+                                <TableColumn fx:id="cotTenKH" prefWidth="258.6666564941406" text="Tên Khách Hàng" />
+                        <TableColumn fx:id="cotNgaySinh" prefWidth="145.33334350585938" text="Ngày sinh" />
+                                <TableColumn fx:id="cotEmail" minWidth="0.0" prefWidth="291.0" text="Email" />
+                                <TableColumn fx:id="cotSDT" minWidth="6.0" prefWidth="240.0" text="SDT" />
+                                <TableColumn fx:id="cotGT" prefWidth="131.33331298828125" text="Giới tính" />
+                                <TableColumn fx:id="cotDiaChi" minWidth="0.0" prefWidth="345.33331298828125" text="Địa chỉ" />
                             </columns>
                         </TableView>
                     </content>

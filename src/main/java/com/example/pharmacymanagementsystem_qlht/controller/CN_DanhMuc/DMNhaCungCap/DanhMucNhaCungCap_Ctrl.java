@@ -68,6 +68,7 @@ public class DanhMucNhaCungCap_Ctrl extends Application {
                     NhaCungCap ncc = getTableView().getItems().get(getIndex());
                     btnChiTietClick(ncc);
                 });
+                btn.setStyle("-fx-text-fill: white;-fx-background-color: rgba(50, 100, 255, 0.8);-fx-font-weight: bold;-fx-font-size: 11px");
             }
 //          Thêm button vào cột chi tiết
             @Override

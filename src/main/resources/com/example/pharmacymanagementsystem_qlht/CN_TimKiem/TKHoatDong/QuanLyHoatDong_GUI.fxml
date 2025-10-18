@@ -10,16 +10,12 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="895" prefWidth="1646" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhuyenMai.DanhMucKhuyenMai_Ctrl">
     <children>
         <TextField layoutX="12.0" layoutY="47.0" prefHeight="41.0" prefWidth="353.0" promptText="Tìm theo mã, tên nhân viên" AnchorPane.topAnchor="47.0" />
         <Button id="btntim" layoutX="738.0" layoutY="46.0" minWidth="35.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="69.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" AnchorPane.topAnchor="46.0" />
-        <Label id="lbtitle" layoutX="12.0" layoutY="5.0" prefHeight="36.0" prefWidth="257.0" text="Quản lý hoạt động">
-            <font>
-                <Font name="System Bold" size="14.0" />
-            </font></Label>
+        <Label id="lbtitle" layoutX="12.0" layoutY="5.0" prefHeight="36.0" prefWidth="257.0" text="Quản lý hoạt động" />
         <TableView id="tablethuoc" layoutX="12.0" layoutY="102.0" prefHeight="777.0" prefWidth="1617.0">
             <columns>
                 <TableColumn prefWidth="61.0" text="STT" />

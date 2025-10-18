@@ -1,4 +1,4 @@
-package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuNhap;
+package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuNhapHang;
 
 import com.example.pharmacymanagementsystem_qlht.dao.PhieuNhap_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuNhap;
@@ -17,7 +17,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Objects;
 
 public class TimKiemPhieuNhap_Ctrl extends Application {

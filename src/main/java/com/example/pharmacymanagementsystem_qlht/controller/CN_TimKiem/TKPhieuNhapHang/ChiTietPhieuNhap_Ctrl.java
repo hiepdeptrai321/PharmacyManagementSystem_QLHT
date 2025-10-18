@@ -1,4 +1,4 @@
-package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuNhap;
+package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuNhapHang;
 
 import com.example.pharmacymanagementsystem_qlht.dao.ChiTietPhieuNhap_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuNhap;

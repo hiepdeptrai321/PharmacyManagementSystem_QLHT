@@ -13,7 +13,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="879.0" prefWidth="1646.0" stylesheets="@../../css/LapPhieuDoiHang.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDoi.LapPhieuDoiHang_Ctrl">
+<AnchorPane prefHeight="895.0" prefWidth="1646.0" stylesheets="@../../css/LapPhieuDoiHang.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDoi.LapPhieuDoiHang_Ctrl">
     <children>
         <!-- Title -->
         <Label layoutX="40.0" layoutY="21.0" styleClass="title-label" text="LẬP PHIẾU ĐỔI HÀNG" />

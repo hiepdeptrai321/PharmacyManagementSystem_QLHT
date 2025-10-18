@@ -8,24 +8,24 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="704.0" prefWidth="1200.0" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatKhuyenMai.CapNhatKhuyenMai_Ctrl">
+<AnchorPane prefHeight="895.0" prefWidth="1646.0" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatKhuyenMai.CapNhatKhuyenMai_Ctrl">
     <children>
-        <TextField fx:id="tfTimKM" layoutX="12.0" layoutY="47.0" prefHeight="30.0" prefWidth="353.0" promptText="Tìm theo mã, tên khuyến mãi" AnchorPane.topAnchor="47.0" />
-        <Button id="btntim" layoutX="376.0" layoutY="46.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timKhuyenMai" prefHeight="30.0" prefWidth="69.0" styleClass="btn" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" AnchorPane.topAnchor="46.0" />
+        <TextField fx:id="tfTimKM" layoutX="12.0" layoutY="47.0" prefHeight="40.0" prefWidth="762.0" promptText="Tìm theo mã, tên khuyến mãi" AnchorPane.topAnchor="47.0" />
+        <Button id="btntim" layoutX="789.0" layoutY="47.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timKhuyenMai" prefHeight="40.0" prefWidth="76.0" styleClass="btn" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" AnchorPane.topAnchor="47.0" />
         <Label id="lbtitle" layoutX="12.0" layoutY="5.0" prefHeight="36.0" prefWidth="595.0" text="Cập nhật khuyến mãi">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Label>
-        <TableView id="tablethuoc" fx:id="tbKM" layoutX="12.0" layoutY="85.0" prefHeight="611.0" prefWidth="1177.0">
+        <TableView id="tablethuoc" fx:id="tbKM" layoutX="12.0" layoutY="92.0" prefHeight="796.0" prefWidth="1622.0">
             <columns>
                 <TableColumn fx:id="colSTT" prefWidth="48.83333206176758" styleClass="a-center" text="STT" />
-                <TableColumn fx:id="colMaKM" prefWidth="114.16667175292969" styleClass="a-center" text="Mã khuyến mãi" />
-                <TableColumn fx:id="colTenKM" prefWidth="312.0" text="Tên khuyến mãi" />
-                <TableColumn fx:id="colLoaiKM" minWidth="0.0" prefWidth="144.0" styleClass="a-center" text="Loại khuyến mãi" />
-                <TableColumn fx:id="colGiaTri" minWidth="0.0" prefWidth="145.0" text="Giá trị " />
-                <TableColumn fx:id="colNBD" minWidth="0.0" prefWidth="176.0" styleClass="a-center" text="Ngày bắt đầu" />
-                <TableColumn fx:id="colNKT" minWidth="0.0" prefWidth="168.5" styleClass="a-center" text="Ngày kết thúc" />
-            <TableColumn fx:id="colChiTiet" prefWidth="66.1666259765625" styleClass="a-center" />
+                <TableColumn fx:id="colMaKM" prefWidth="204.0" styleClass="a-center" text="Mã khuyến mãi" />
+                <TableColumn fx:id="colTenKM" prefWidth="381.0" text="Tên khuyến mãi" />
+                <TableColumn fx:id="colLoaiKM" minWidth="0.0" prefWidth="172.0" styleClass="a-center" text="Loại khuyến mãi" />
+                <TableColumn fx:id="colGiaTri" minWidth="0.0" prefWidth="185.0" text="Giá trị " />
+                <TableColumn fx:id="colNBD" minWidth="0.0" prefWidth="285.0" styleClass="a-center" text="Ngày bắt đầu" />
+                <TableColumn fx:id="colNKT" minWidth="0.0" prefWidth="249.0" styleClass="a-center" text="Ngày kết thúc" />
+            <TableColumn fx:id="colChiTiet" prefWidth="95.0" styleClass="a-center" />
             </columns>
         </TableView>
     </children>

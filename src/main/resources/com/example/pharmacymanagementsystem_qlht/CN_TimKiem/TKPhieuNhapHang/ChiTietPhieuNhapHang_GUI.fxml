@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="388.0" prefWidth="777.0" stylesheets="@../../css/ChiTietPhieuNhap.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuNhap.ChiTietPhieuNhap_Ctrl">
+<Pane prefHeight="388.0" prefWidth="777.0" stylesheets="@../../css/ChiTietPhieuNhap.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuNhapHang.ChiTietPhieuNhap_Ctrl">
     <children>
         <Pane id="paneTitle" prefHeight="40.0" prefWidth="714.0">
             <children>

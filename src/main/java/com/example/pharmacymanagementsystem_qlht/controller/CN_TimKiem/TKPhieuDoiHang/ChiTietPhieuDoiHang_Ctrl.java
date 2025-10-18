@@ -1,9 +1,13 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDoiHang;
 
+import com.example.pharmacymanagementsystem_qlht.dao.ChiTietPhieuDoiHang_Dao;
+import com.example.pharmacymanagementsystem_qlht.dao.ChiTietPhieuTraHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuDoiHang;
+import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuTraHang;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuDoiHang;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuTraHang;
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -11,6 +15,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+
+import java.util.List;
 
 public class ChiTietPhieuDoiHang_Ctrl  {
     @FXML
@@ -97,8 +103,8 @@ public class ChiTietPhieuDoiHang_Ctrl  {
             lblMaPhieuDoiValue.setText(phieuDoiHang.getMaPD());
             lblNgayLapValue.setText(phieuDoiHang.getNgayLap().toString());
             lblTenNhanVienValue.setText(phieuDoiHang.getNhanVien().getTenNV());
-            lblTenKhachHangValue.setText(phieuDoiHang.getKhachHang().getTenKH());
-            lblSDTKhachHangValue.setText(phieuDoiHang.getKhachHang().getSdt());
+            lblTenKhachHangValue.setText(phieuDoiHang.getKhachHang() != null ? phieuDoiHang.getKhachHang().getTenKH() : "Khách lẻ");
+            lblSDTKhachHangValue.setText(phieuDoiHang.getKhachHang() != null ? phieuDoiHang.getKhachHang().getSdt() : "");
             //lblPTTTValue.setText(phieuDoiHang.get());
             //lblChietKhauPDoiValue.setText(String.valueOf(phieuDoiHang.getChietKhau()) + "%");
             //lblTongTienPhaiDoiValue.setText(String.format("%.2f", phieuDoiHang.tinhTongTienPhaiDoi()));
@@ -108,6 +114,19 @@ public class ChiTietPhieuDoiHang_Ctrl  {
             //lblThueVATValue.setText(String.format("%.2f", phieuDoiHang.tinhThueVAT()));
             lblGhiChuValue.setText(phieuDoiHang.getGhiChu() != null ? phieuDoiHang.getGhiChu() : "");
             //tblChiTietPhieuDoi.setItems(phieuDoiHang.getChiTietPhieuDoiHang());
+
+            List<ChiTietPhieuDoiHang> list = new ChiTietPhieuDoiHang_Dao().getChiTietPhieuDoiByMaPT(phieuDoiHang.getMaPD());
+            tblChiTietPhieuDoi.getItems().clear();
+            tblChiTietPhieuDoi.getItems().addAll(list);
+
+            colSTT.setCellValueFactory(cellData ->
+                    new SimpleStringProperty(String.valueOf(tblChiTietPhieuDoi.getItems().indexOf(cellData.getValue()) + 1))
+            );
+            colTenSP.setCellValueFactory(cel -> new SimpleStringProperty(cel.getValue().getThuoc().getTenThuoc())
+            );
+            colSoLuong.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getSoLuong()))
+            );
+            colLyDo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPhieuDoiHang().getLyDoDoi()));
         }
     }
 }

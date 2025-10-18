@@ -18,13 +18,13 @@
         <Label id="lbtitle" layoutX="12.0" layoutY="5.0" prefHeight="36.0" prefWidth="257.0" text="Quản lý hoạt động" />
         <TableView id="tablethuoc" layoutX="12.0" layoutY="102.0" prefHeight="777.0" prefWidth="1617.0">
             <columns>
-                <TableColumn prefWidth="61.0" text="STT" />
-                <TableColumn prefWidth="139.0" text="Mã hoạt động" />
-                <TableColumn prefWidth="301.0" text="Loại hoạt động" />
-                <TableColumn minWidth="0.0" prefWidth="176.0" text="Bảng" />
-                <TableColumn minWidth="0.0" prefWidth="173.0" text="Thời gian" />
-                <TableColumn minWidth="0.0" prefWidth="277.0" text="Ghi chú" />
-                <TableColumn minWidth="0.0" prefWidth="48.0" />
+                <TableColumn prefWidth="101.0" text="STT" />
+                <TableColumn prefWidth="263.0" text="Mã hoạt động" />
+                <TableColumn prefWidth="284.00001525878906" text="Loại hoạt động" />
+                <TableColumn minWidth="0.0" prefWidth="248.3333740234375" text="Bảng" />
+                <TableColumn minWidth="0.0" prefWidth="265.33331298828125" text="Thời gian" />
+                <TableColumn minWidth="0.0" prefWidth="389.33331298828125" text="Ghi chú" />
+                <TableColumn minWidth="0.0" prefWidth="65.3333740234375" />
             </columns>
         </TableView>
       <ImageView fitHeight="20.0" fitWidth="22.0" layoutX="379.0" layoutY="52.0" pickOnBounds="true" preserveRatio="true">

@@ -40,12 +40,12 @@
             <TableView fx:id="tblPhieuNhap" layoutX="10.0" layoutY="175.0" prefHeight="697.0" prefWidth="1622.0">
                 <columns>
                     <TableColumn fx:id="colMaPN" minWidth="0.0" prefWidth="176.0" text="Mã phiếu nhập" />
-                    <TableColumn fx:id="colNgayNhap" minWidth="6.0" prefWidth="175.0" text="Ngày nhập" />
-                    <TableColumn fx:id="colNhaCungCap" prefWidth="254.0" text="Nhà cung cấp" />
-                    <TableColumn fx:id="colNhanVien" prefWidth="168.0" text="Nhân viên" />
-                    <TableColumn fx:id="colGhiChu" prefWidth="253.0" text="Ghi chú" />
-                    <TableColumn fx:id="colTrangThai" minWidth="0.0" prefWidth="82.0" text="Trạng thái" />
-                    <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="67.3333740234375" text="Chi tiết" />
+                    <TableColumn fx:id="colNgayNhap" minWidth="6.0" prefWidth="217.66668701171875" text="Ngày nhập" />
+                    <TableColumn fx:id="colNhaCungCap" prefWidth="259.33331298828125" text="Nhà cung cấp" />
+                    <TableColumn fx:id="colNhanVien" prefWidth="236.0" text="Nhân viên" />
+                    <TableColumn fx:id="colGhiChu" prefWidth="355.0" text="Ghi chú" />
+                    <TableColumn fx:id="colTrangThai" minWidth="0.0" prefWidth="246.6666259765625" text="Trạng thái" />
+                    <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="131.0" text="Chi tiết" />
                 </columns>
             </TableView>
         <ImageView fitHeight="35.0" fitWidth="40.0" layoutX="500.0" layoutY="-91.0" pickOnBounds="true" preserveRatio="true" styleClass="icontime" />

@@ -8,34 +8,36 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="704.0" prefWidth="1200.0" stylesheets="@../../css/QuanLyKe.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKeHang.DanhMucKeHang_Ctrl">
+<AnchorPane prefHeight="895.0" prefWidth="1646.0" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKeHang.DanhMucKeHang_Ctrl">
     <children>
-        <TextField fx:id="txtTimKiem" layoutX="7.0" layoutY="47.0" prefHeight="27.0" prefWidth="353.0" promptText="Tìm theo mã, tên kệ" />
-        <Button id="btntim" fx:id="btnTim" layoutX="376.0" layoutY="45.0" minWidth="35.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="69.0" stylesheets="@../../css/QuanLyKeHang.css" text="🔍 Tìm" />
-        <Label id="lbtitle" layoutX="7.0" layoutY="5.0" prefHeight="37.0" prefWidth="1177.0" text="Quản lý kệ hàng">
-            <font>
-                <Font name="System Bold" size="25.0" />
-            </font>
-        </Label>
-        <Button id="btnthemthuoc" fx:id="btnThem" layoutX="949.0" layoutY="45.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="144.0" text="✚Thêm kệ hàng" />
-        <TableView id="tablethuoc" fx:id="tblKeHang" layoutX="12.0" layoutY="89.0" prefHeight="601.0" prefWidth="1177.0">
+        <TextField fx:id="txtTimKiem" layoutX="11.0" layoutY="51.0" prefHeight="40.0" prefWidth="772.0" promptText="Tìm theo mã, tên kệ" />
+        <Button id="btntim" fx:id="btnTim" layoutX="794.0" layoutY="51.0" minWidth="35.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="77.0" styleClass="btn" text="🔍 Tìm" />
+        <Button id="btnthemthuoc" fx:id="btnThem" layoutX="1414.0" layoutY="51.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="144.0" styleClass="btn" text="✚Thêm kệ hàng" />
+        <TableView id="tablethuoc" fx:id="tblKeHang" layoutX="12.0" layoutY="102.0" prefHeight="785.0" prefWidth="1624.0">
             <columns>
                 <TableColumn fx:id="cotSTT" prefWidth="48.83333206176758" text="STT" />
                 <TableColumn fx:id="cotMaKe" prefWidth="234.0" text="Mã Kệ" />
                 <TableColumn fx:id="cotTenKe" minWidth="0.0" prefWidth="892.0" text="Tên Kệ" />
             </columns>
         </TableView>
-      <Button fx:id="btnXoa" layoutX="1106.0" layoutY="45.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="69.0" text="Xóa Kệ" />
-      <Button id="btnReset" fx:id="btnLamMoi" layoutX="456.0" layoutY="45.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="45.0">
-         <graphic>
-            <ImageView id="btnReset" fitHeight="23.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../img/refresh-3104.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Button>
+      <Button fx:id="btnXoa" layoutX="1567.0" layoutY="51.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="69.0" text="Xóa Kệ" />
+      <Button id="btnReset" fx:id="btnLamMoi" layoutX="879.0" layoutY="51.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="45.0" />
+      <ImageView id="btnReset" fitHeight="23.0" fitWidth="30.0" layoutX="890.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../img/refresh-3104.png" />
+         </image>
+      </ImageView>
+      <Pane id="lblpaneTitle" layoutX="11.0" layoutY="-2.0" prefHeight="40.0" prefWidth="1634.0">
+         <children>
+            <Label id="lbtitle" layoutY="2.0" prefHeight="36.0" prefWidth="306.0" text="Danh mục kệ hàng">
+               <font>
+                  <Font size="48.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
     </children>
 </AnchorPane>

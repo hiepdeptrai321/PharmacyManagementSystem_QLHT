@@ -133,8 +133,13 @@
                   </Label>
                   <TableView fx:id="tableDoanhThu" prefHeight="510.0" prefWidth="1161.0">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
+                      <TableColumn prefWidth="147.3333740234375" text="Thời gian" />
+                        <TableColumn prefWidth="170.6666259765625" text="Số lượng HĐ" />
+                        <TableColumn prefWidth="129.6666259765625" text="Tổng giá trị" />
+                        <TableColumn prefWidth="142.99993896484375" text="Giảm giá" />
+                        <TableColumn prefWidth="150.6666259765625" text="Số lượng đơn trả" />
+                        <TableColumn prefWidth="193.3333740234375" text="Giá trị đơn trả" />
+                        <TableColumn prefWidth="229.6666259765625" text="Doanh thu" />
                     </columns>
                   </TableView>
                   <AreaChart fx:id="chartDoanhThu" prefHeight="510.0" prefWidth="1161.0" visible="false">
@@ -155,10 +160,10 @@
                   </Label>
                   <TableView prefHeight="273.0" prefWidth="1161.0">
                     <columns>
-                      <TableColumn prefWidth="98.0" text="Mã thuốc" />
-                      <TableColumn prefWidth="475.0" text="Tên thuốc" />
-                        <TableColumn minWidth="0.0" prefWidth="88.0" text="Số lượng" />
-                        <TableColumn prefWidth="262.0" text="Thành tiền" />
+                      <TableColumn prefWidth="153.0" text="Mã thuốc" />
+                      <TableColumn prefWidth="507.0" text="Tên thuốc" />
+                        <TableColumn minWidth="0.0" prefWidth="129.0" text="Số lượng" />
+                        <TableColumn prefWidth="370.0" text="Thành tiền" />
                     </columns>
                   </TableView>
                </children>

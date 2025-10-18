@@ -94,11 +94,11 @@
                             <columns>
                         <TableColumn fx:id="cotSTT" prefWidth="64.0" text="STT" />
                                 <TableColumn fx:id="cotMNCC" prefWidth="138.0" text="Mã NCC" />
-                                <TableColumn fx:id="cotTenNCC" prefWidth="227.0" text="Tên NCC" />
-                                <TableColumn fx:id="cotEmil" minWidth="0.0" prefWidth="257.0" text="Email" />
-                                <TableColumn fx:id="cotSDT" minWidth="6.0" prefWidth="142.0" text="SDT" />
-                                <TableColumn fx:id="cotDiaChi" minWidth="0.0" prefWidth="273.0" text="Địa chỉ" />
-                        <TableColumn fx:id="cotChiTiet" minWidth="0.0" prefWidth="66.0" />
+                                <TableColumn fx:id="cotTenNCC" prefWidth="271.0" text="Tên NCC" />
+                                <TableColumn fx:id="cotEmil" minWidth="0.0" prefWidth="344.0" text="Email" />
+                                <TableColumn fx:id="cotSDT" minWidth="6.0" prefWidth="230.33331298828125" text="SDT" />
+                                <TableColumn fx:id="cotDiaChi" minWidth="0.0" prefWidth="456.33331298828125" text="Địa chỉ" />
+                        <TableColumn fx:id="cotChiTiet" minWidth="0.0" prefWidth="108.6666259765625" />
                             </columns>
                         </TableView>
                     </content>

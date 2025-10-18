@@ -3,84 +3,104 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="895.0" prefWidth="1646.0" stylesheets="@../../css/LapPhieuDatHang.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDatHang.LapPhieuDatHang_Ctrl">
     <children>
-        <!-- Title -->
-        <Label layoutX="40.0" layoutY="21.0" styleClass="title-label" text="LẬP PHIẾU ĐẶT HÀNG" />
+        <!-- Decorative header background -->
+        <Pane styleClass="header-pane" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="8.0" prefHeight="72.0" />
 
-        <!-- Search and Table Area -->
-        <Pane layoutX="30.0" layoutY="70.0" prefHeight="70.0" prefWidth="1126.0" styleClass="search-pane">
+        <Label layoutX="40.0" layoutY="21.0" styleClass="title-label" text="LẬP PHIẾU ĐẶT HÀNG" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="18.0" />
+
+        <!-- Search area anchored left, leaving space for info pane on right -->
+        <Pane fx:id="searchPane" styleClass="search-pane" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="90.0" AnchorPane.rightAnchor="480.0" prefHeight="70.0">
             <children>
                 <Label layoutX="21.0" layoutY="26.0" text="Tìm sản phẩm:">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font></Label>
-                <TextField fx:id="txtTimSanPham" layoutX="120.0" layoutY="15.0" prefHeight="38.0" prefWidth="915.0" promptText="Nhập tên hoặc mã sản phẩm ..." />
-                <Button fx:id="btnTimSanPham" layoutX="1052.0" layoutY="23.0" prefWidth="60.0" styleClass="primary-btn" text="Tìm" />
+                   <font>
+                      <Font name="System Bold" size="13.0" />
+                   </font></Label>
+                <TextField fx:id="txtTimSanPham" layoutX="120.0" layoutY="15.0" prefHeight="38.0" prefWidth="760.0" promptText="Nhập tên hoặc mã sản phẩm ..." />
+                <Button fx:id="btnTimSanPham" layoutX="890.0" layoutY="23.0" prefWidth="60.0" styleClass="primary-btn" text="Tìm" />
             </children>
         </Pane>
 
-        <Label layoutX="40.0" layoutY="150.0" styleClass="section-label" text="Danh sách sản phẩm đặt mua" />
-        <TableView fx:id="tblSanPhamDatHang" layoutX="40.0" layoutY="180.0" prefHeight="697.0" prefWidth="1118.0" styleClass="main-table">
-            <columns>
-                <TableColumn prefWidth="50.0" text="STT" />
-                <TableColumn prefWidth="220.0" text="Tên sản phẩm" />
-                <TableColumn prefWidth="80.0" text="Đơn vị" />
-                <TableColumn prefWidth="80.0" text="Số lượng" />
-                <TableColumn prefWidth="100.0" text="Đơn giá" />
-                <TableColumn prefWidth="100.0" text="Thành tiền" />
-                <TableColumn prefWidth="108.80001220703127" text="Ghi chú" />
-            </columns>
-        </TableView>
-
-        <!-- Info Panel -->
-        <Pane layoutX="1184.0" layoutY="21.0" prefHeight="856.0" prefWidth="447.0" styleClass="info-pane">
+        <!-- Left: wrapped into an HBox so decorative filler can absorb extra horizontal space -->
+        <HBox AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="170.0" AnchorPane.rightAnchor="480.0" spacing="10.0">
             <children>
-                <Label layoutX="30.0" layoutY="20.0" styleClass="bold-label" text="THÔNG TIN PHIẾU ĐẶT HÀNG" />
-                <Label layoutX="30.0" layoutY="60.0" text="Mã phiếu đặt:" />
-                <TextField fx:id="txtMaPhieuDat" layoutX="170.0" layoutY="54.0" prefWidth="140.0" />
+                <VBox spacing="12.0">
+                    <children>
+                        <Label styleClass="section-label" text="Danh sách sản phẩm đặt mua" />
+                        <TableView fx:id="tblSanPhamDatHang" styleClass="main-table" prefHeight="420.0" prefWidth="920.0">
+                            <columns>
+                                <TableColumn prefWidth="50.0" text="STT" />
+                                <TableColumn prefWidth="328.80006408691406" text="Tên sản phẩm" />
+                                <TableColumn prefWidth="105.5999755859375" text="Số lượng" />
+                                <TableColumn prefWidth="122.4000244140625" text="Đơn vị" />
+                                <TableColumn prefWidth="142.39990234375" text="Đơn giá" />
+                                <TableColumn prefWidth="146.400146484375" text="Thành tiền" />
+                                <TableColumn prefWidth="225.59991455078125" text="Ghi chú" />
+                            </columns>
+                        </TableView>
+                    </children>
+                </VBox>
 
-                <Label layoutX="30.0" layoutY="100.0" text="Ngày lập phiếu:" />
-                <DatePicker fx:id="dpNgayLapPhieu" layoutX="170.0" layoutY="94.0" prefWidth="140.0" />
+                <!-- decorative filler expands to keep tables from stretching horizontally -->
+                <Pane styleClass="middle-decor" HBox.hgrow="ALWAYS" />
+            </children>
+        </HBox>
 
-                <Label layoutX="30.0" layoutY="140.0" text="Tên khách hàng:" />
-                <TextField fx:id="txtTenKhachHang" layoutX="170.0" layoutY="134.0" prefWidth="140.0" />
+        <!-- Info Panel anchored right (kept structure) -->
+        <Pane fx:id="infoPane" prefWidth="430.0" styleClass="info-pane" AnchorPane.topAnchor="20.0" AnchorPane.rightAnchor="30.0" AnchorPane.bottomAnchor="20.0">
+            <children>
+                <Label layoutX="18.0" layoutY="20.0" styleClass="bold-label" text="THÔNG TIN PHIẾU ĐẶT HÀNG" />
 
-                <Label layoutX="30.0" layoutY="179.0" text="Trạng thái phiếu:" />
-                <Label fx:id="lblTrangThai" layoutX="170.0" layoutY="179.0" styleClass="value-label" text="Chờ thanh toán" />
+                <Label layoutX="18.0" layoutY="60.0" text="Mã phiếu đặt:" />
+                <TextField fx:id="txtMaPhieuDat" layoutX="160.0" layoutY="54.0" prefWidth="200.0" />
 
-                <Label layoutX="30.0" layoutY="219.0" text="Tổng tiền hàng:" />
-                <Label fx:id="lblTongTienHang" layoutX="170.0" layoutY="219.0" styleClass="value-label" text="0 VNĐ" />
+                <Label layoutX="18.0" layoutY="100.0" text="Ngày lập phiếu:" />
+                <DatePicker fx:id="dpNgayLapPhieu" layoutX="160.0" layoutY="94.0" prefWidth="200.0" />
 
-                <Label layoutX="30.0" layoutY="259.0" text="Thuế (VAT):" />
-                <Label fx:id="lblVAT" layoutX="170.0" layoutY="259.0" styleClass="value-label" text="0 VNĐ" />
+                <Label layoutX="18.0" layoutY="140.0" text="Tên khách hàng:" />
+                <TextField fx:id="txtTenKhachHang" layoutX="160.0" layoutY="134.0" prefWidth="200.0" />
 
-                <Label layoutX="30.0" layoutY="286.0" styleClass="bold-label" text="Tổng thanh toán:" />
-                <Label fx:id="lblTongThanhToan" layoutX="170.0" layoutY="286.0" styleClass="main-value-label" text="0 VNĐ" />
+                <Label layoutX="18.0" layoutY="179.0" text="Trạng thái phiếu:" />
+                <Label fx:id="lblTrangThai" layoutX="160.0" layoutY="179.0" styleClass="value-label" text="Chờ thanh toán" />
 
-                <Label layoutX="30.0" layoutY="326.0" text="Tiền cọc:" />
-                <TextField fx:id="txtTienCoc" layoutX="170.0" layoutY="320.0" prefWidth="140.0" promptText="Nhập số tiền cọc..." />
+                <Separator layoutX="18.0" layoutY="210.0" prefWidth="394.0" />
 
-                <Label layoutX="30.0" layoutY="366.0" styleClass="bold-label" text="Còn thiếu :" />
-                <Label fx:id="lblConLai" layoutX="170.0" layoutY="366.0" styleClass="main-value-label" text="0 VNĐ" />
+                <Label layoutX="18.0" layoutY="230.0" text="Tổng tiền hàng:" />
+                <Label fx:id="lblTongTienHang" layoutX="160.0" layoutY="230.0" styleClass="value-label" text="0 VNĐ" />
 
-                <Label layoutX="30.0" layoutY="396.0" text="Ghi chú:" />
-                <TextArea fx:id="txtGhiChu" layoutX="30.0" layoutY="426.0" prefHeight="40.0" prefWidth="280.0" />
+                <Label layoutX="18.0" layoutY="260.0" text="Thuế (VAT):" />
+                <Label fx:id="lblVAT" layoutX="160.0" layoutY="260.0" styleClass="value-label" text="0 VNĐ" />
 
-                <Button fx:id="btnDatHang" layoutX="40.0" layoutY="498.0" prefHeight="44.0" prefWidth="120.0" styleClass="success-btn" text="Đặt hàng">
+                <Label layoutX="18.0" layoutY="292.0" styleClass="bold-label" text="Tổng thanh toán:" />
+                <Label fx:id="lblTongThanhToan" layoutX="160.0" layoutY="292.0" styleClass="main-value-label" text="0 VNĐ" />
+
+                <Label layoutX="18.0" layoutY="330.0" text="Tiền cọc:" />
+                <TextField fx:id="txtTienCoc" layoutX="160.0" layoutY="324.0" prefWidth="200.0" promptText="Nhập số tiền cọc..." />
+
+                <Label layoutX="18.0" layoutY="365.0" styleClass="bold-label" text="Còn thiếu :" />
+                <Label fx:id="lblConLai" layoutX="160.0" layoutY="365.0" styleClass="main-value-label" text="0 VNĐ" />
+
+                <Label layoutX="18.0" layoutY="410.0" text="Ghi chú:" />
+                <TextArea fx:id="txtGhiChu" layoutX="18.0" layoutY="440.0" prefHeight="120.0" prefWidth="394.0" />
+
+                <Button fx:id="btnDatHang" layoutX="58.0" layoutY="580.0" prefHeight="44.0" prefWidth="120.0" styleClass="success-btn" text="Đặt hàng">
                     <font>
                         <Font name="System Bold" size="13.0" />
                     </font>
                 </Button>
-                <Button fx:id="btnThanhToan" layoutX="180.0" layoutY="498.0" prefHeight="44.0" prefWidth="120.0" styleClass="primary-btn" text="Thanh toán">
+                <Button fx:id="btnThanhToan" layoutX="252.0" layoutY="580.0" prefHeight="44.0" prefWidth="120.0" styleClass="primary-btn" text="Thanh toán">
                     <font>
                         <Font name="System Bold" size="13.0" />
                     </font>

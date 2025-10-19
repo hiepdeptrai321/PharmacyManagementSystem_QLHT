@@ -129,7 +129,8 @@ public class DanhMucKeHang_Ctrl extends Application {
             //ctrl.hienThiThongTin(ncc);
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.show();
+            stage.showAndWait();
+            loadTable();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -143,7 +144,8 @@ public class DanhMucKeHang_Ctrl extends Application {
             ctrl.hienThiThongTin(kh);
             Scene scene = new Scene(root);
             stage.setScene(scene);
-            stage.show();
+            stage.showAndWait();
+            loadTable();
         } catch (Exception e) {
             e.printStackTrace();
         }

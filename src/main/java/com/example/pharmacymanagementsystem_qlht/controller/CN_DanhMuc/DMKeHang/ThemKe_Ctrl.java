@@ -32,6 +32,7 @@ public class ThemKe_Ctrl extends Application {
 
     private KeHang_Dao keHangDao = new KeHang_Dao();
 
+
     @FXML
     public void initialize() {
         btnThem.setOnAction(e -> themKe());

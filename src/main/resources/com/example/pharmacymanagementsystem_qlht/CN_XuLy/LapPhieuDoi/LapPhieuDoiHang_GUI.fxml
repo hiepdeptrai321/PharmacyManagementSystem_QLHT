@@ -7,112 +7,96 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="895.0" prefWidth="1646.0" stylesheets="@../../css/LapPhieuDoiHang.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDoi.LapPhieuDoiHang_Ctrl">
     <children>
-        <!-- Title -->
-        <Label layoutX="40.0" layoutY="21.0" styleClass="title-label" text="LẬP PHIẾU ĐỔI HÀNG" />
+        <!-- Decorative header background (spans across content) -->
+        <Pane layoutX="28.0" prefHeight="54.0" prefWidth="1598.0" styleClass="header-pane" AnchorPane.leftAnchor="28.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="8.0" />
 
-        <!-- Search and Table Area -->
-        <Pane layoutX="37.0" layoutY="70.0" prefHeight="70.0" prefWidth="734.0" styleClass="search-pane">
+        <!-- Tiêu đề (kept at top-left) -->
+        <Label layoutX="40.0" layoutY="21.0" styleClass="title-label" text="LẬP PHIẾU ĐỔI HÀNG" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="18.0" />
+
+        <!-- Search area (anchored, will resize) -->
+        <Pane fx:id="searchPane" layoutY="71.2" prefHeight="70.0" prefWidth="633.0" styleClass="search-pane" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="983.0" AnchorPane.topAnchor="71.0">
             <children>
                 <Label layoutX="20.0" layoutY="20.0" text="Tìm hóa đơn gốc:">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font></Label>
+                   <font>
+                      <Font name="System Bold" size="13.0" />
+                   </font></Label>
                 <TextField fx:id="txtTimHoaDonGoc" layoutX="140.0" layoutY="15.0" prefHeight="27.0" prefWidth="456.0" promptText="Nhập mã hóa đơn hoặc tên khách hàng ..." />
-                <Button fx:id="btnTim" layoutX="642.0" layoutY="16.0" prefWidth="60.0" styleClass="primary-btn" text="Tìm" />
             </children>
         </Pane>
 
-        <Label layoutX="40.0" layoutY="150.0" styleClass="section-label" text="Sản phẩm trong hóa đơn gốc" />
-        <TableView fx:id="tblSanPhamGoc" layoutX="40.0" layoutY="180.0" prefHeight="180.0" prefWidth="741.0" styleClass="main-table">
+        <!-- Hint -->
+        <Label layoutX="40.0" layoutY="150.0" styleClass="hint-label" text="Chọn hóa đơn gốc để bắt đầu đổi hàng" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="150.0" />
+
+        <!-- Left tables area: anchored so it shrinks/grows with window -->
+        <Label layoutX="40.0" layoutY="180.0" styleClass="section-label" text="Sản phẩm trong hóa đơn gốc" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="180.0" />
+        <TableView fx:id="tblSanPhamGoc" maxWidth="1156.0" prefHeight="248.0" prefWidth="1156.0" styleClass="main-table" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="450.0" AnchorPane.topAnchor="210.0">
             <columns>
                 <TableColumn prefWidth="50.0" text="STT" />
-                <TableColumn prefWidth="242.0" text="Tên sản phẩm" />
-                <TableColumn prefWidth="57.0" text="Số lượng" />
-                <TableColumn prefWidth="50.0" text="Đơn vị" />
-                <TableColumn prefWidth="130.0" text="Đơn giá" />
-                <TableColumn prefWidth="87.0" text="Chiết khấu(%)" />
-                <TableColumn prefWidth="123.0" text="Thành tiền" />
+                <TableColumn prefWidth="409.60011291503906" text="Tên sản phẩm" />
+                <TableColumn prefWidth="97.5999755859375" text="Số lượng" />
+                <TableColumn prefWidth="131.2000732421875" text="Đơn vị" />
+                <TableColumn prefWidth="148.7999267578125" text="Đơn giá" />
+                <TableColumn prefWidth="120.800048828125" text="Chiết khấu(%)" />
+                <TableColumn prefWidth="196.79998779296875" text="Thành tiền" />
             </columns>
         </TableView>
 
-        <Label layoutX="40.0" layoutY="370.0" styleClass="section-label" text="Chi tiết đổi hàng" />
-        <TableView fx:id="tblChiTietDoiHang" layoutX="40.0" layoutY="400.0" prefHeight="250.0" prefWidth="741.0" styleClass="main-table">
+        <Label layoutX="43.0" layoutY="474.0" styleClass="section-label" text="Chi tiết đổi hàng" AnchorPane.leftAnchor="43.0" AnchorPane.topAnchor="474.0" />
+        <TableView fx:id="tblChiTietDoiHang" layoutX="38.0" layoutY="510.0" maxWidth="1160.0" prefHeight="263.0" prefWidth="1160.0" styleClass="main-table" AnchorPane.bottomAnchor="122.79999999999995" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="451.60000000000014" AnchorPane.topAnchor="510.0">
             <columns>
                 <TableColumn prefWidth="50.0" text="STT" />
-                <TableColumn prefWidth="242.0" text="Tên sản phẩm" />
-                <TableColumn prefWidth="82.0" text="Số lượng đổi" />
-                <TableColumn prefWidth="54.0" text="Đơn vị" />
-                <TableColumn prefWidth="101.0" text="Đơn giá" />
-                <TableColumn prefWidth="106.0" text="Thành tiền" />
-                <TableColumn prefWidth="102.0" text="Lý do đổi" />
+                <TableColumn prefWidth="445.6001205444336" text="Tên sản phẩm" />
+                <TableColumn prefWidth="88.79989624023438" text="Số lượng đổi" />
+                <TableColumn prefWidth="92.7999267578125" text="Đơn vị" />
+                <TableColumn prefWidth="102.4000244140625" text="Đơn giá" />
+                <TableColumn prefWidth="119.199951171875" text="Thành tiền" />
+                <TableColumn prefWidth="207.19989013671875" text="Lý do đổi" />
             </columns>
         </TableView>
 
-        <!-- Info Panel -->
-        <Pane layoutX="820.0" layoutY="70.0" prefHeight="571.0" prefWidth="341.0" styleClass="info-pane">
+        <!-- Info panel anchored to right like other dialogs -->
+        <Pane fx:id="infoPane" prefWidth="391.0" styleClass="info-pane" AnchorPane.bottomAnchor="120.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="70.0">
             <children>
-                <Label layoutX="30.0" layoutY="20.0" styleClass="bold-label" text="THÔNG TIN PHIẾU ĐỔI HÀNG" />
-                <Label layoutX="30.0" layoutY="60.0" text="Mã hóa đơn gốc:" />
-                <TextField fx:id="txtMaHoaDonGoc" layoutX="170.0" layoutY="54.0" prefWidth="140.0" />
+                <Label layoutX="30.0" layoutY="14.0" styleClass="bold-label" text="THÔNG TIN PHIẾU ĐỔI HÀNG" />
 
-                <Label layoutX="30.0" layoutY="100.0" text="Ngày lập phiếu:" />
-                <DatePicker fx:id="dpNgayLapPhieu" layoutX="170.0" layoutY="94.0" prefWidth="140.0" />
+                <Label layoutX="30.0" layoutY="55.0" text="Mã hóa đơn gốc:" />
+                <TextField fx:id="txtMaHoaDonGoc" editable="false" layoutX="170.0" layoutY="49.0" prefWidth="140.0" />
 
-                <Label layoutX="30.0" layoutY="140.0" text="Tổng tiền gốc:" />
-                <Label fx:id="lblTongTienGoc" layoutX="170.0" layoutY="140.0" styleClass="value-label" text="0 VNĐ" />
+                <Label layoutX="30.0" layoutY="95.0" text="Ngày lập phiếu:" />
+                <DatePicker fx:id="dpNgayLapPhieu" layoutX="170.0" layoutY="89.0" prefWidth="140.0" />
 
-                <Label layoutX="30.0" layoutY="180.0" text="Tổng tiền đổi hàng:" />
-                <Label fx:id="lblTongTienDoi" layoutX="170.0" layoutY="180.0" styleClass="value-label" text="0 VNĐ" />
+                <Label layoutX="30.0" layoutY="226.0" text="Tổng tiền gốc:" />
+                <Label fx:id="lblTongTienGoc" layoutX="170.0" layoutY="226.0" styleClass="value-label" text="0 VNĐ" />
 
-                <Label layoutX="30.0" layoutY="220.0" text="Thuế (VAT):" />
-                <Label fx:id="lblVAT" layoutX="170.0" layoutY="220.0" styleClass="value-label" text="0 VNĐ" />
+                <Label layoutX="30.0" layoutY="266.0" text="Tổng tiền đổi hàng:" />
+                <Label fx:id="lblTongTienDoi" layoutX="170.0" layoutY="266.0" styleClass="value-label" text="0 VNĐ" />
 
-                <Label layoutX="30.0" layoutY="270.0" styleClass="bold-label" text="Số tiền trả lại:" />
-                <Label fx:id="lblTienTraLai" layoutX="170.0" layoutY="270.0" styleClass="main-value-label" text="0 VNĐ" />
+                <Label layoutX="30.0" layoutY="306.0" text="Thuế (VAT):" />
+                <Label fx:id="lblVAT" layoutX="170.0" layoutY="306.0" styleClass="value-label" text="0 VNĐ" />
 
-                <Label layoutX="30.0" layoutY="320.0" text="Ghi chú:" />
-                <TextArea fx:id="txtGhiChu" layoutX="30.0" layoutY="350.0" prefHeight="80.0" prefWidth="280.0" />
+                <Label layoutX="30.0" layoutY="346.0" styleClass="bold-label" text="Số tiền trả lại:" />
+                <Label fx:id="lblTienTraLai" layoutX="170.0" layoutY="346.0" styleClass="main-value-label" text="0 VNĐ" />
 
-                <Button fx:id="btnDatHang" layoutX="40.0" layoutY="471.0" prefHeight="44.0" prefWidth="120.0" styleClass="print-btn" text="In phiếu đổi">
+                <Label layoutX="30.0" layoutY="396.0" text="Ghi chú:" />
+                <TextArea fx:id="txtGhiChu" layoutX="30.0" layoutY="426.0" prefHeight="112.0" prefWidth="322.0" />
+
+                <Button fx:id="btnDatHang" layoutX="54.0" layoutY="578.0" prefHeight="44.0" prefWidth="120.0" styleClass="print-btn" text="In phiếu đổi">
                     <font>
                         <Font size="14.0" />
                     </font>
-                    <effect>
-                        <DropShadow>
-                            <color>
-                                <Color red="0.7368420958518982" green="0.668615996837616" blue="0.668615996837616" />
-                            </color>
-                        </DropShadow>
-                    </effect>
                 </Button>
-                <Button fx:id="btnThanhToan" layoutX="180.0" layoutY="471.0" prefHeight="44.0" prefWidth="120.0" styleClass="success-btn" text="Đổi hàng">
+                <Button fx:id="btnThanhToan" layoutX="194.0" layoutY="578.0" prefHeight="44.0" prefWidth="120.0" styleClass="success-btn" text="Đổi hàng">
                     <font>
                         <Font size="14.0" />
                     </font>
-               <effect>
-                  <DropShadow>
-                     <color>
-                        <Color red="0.7368420958518982" green="0.668615996837616" blue="0.668615996837616" />
-                     </color>
-                  </DropShadow>
-               </effect>
                 </Button>
             </children>
-         <effect>
-            <DropShadow>
-               <color>
-                  <Color red="0.05263157933950424" green="0.05092592537403107" blue="0.05092592537403107" />
-               </color>
-            </DropShadow>
-         </effect>
         </Pane>
     </children>
 </AnchorPane>

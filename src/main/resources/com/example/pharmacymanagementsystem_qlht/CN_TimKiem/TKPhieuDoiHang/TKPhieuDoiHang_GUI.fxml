@@ -130,9 +130,9 @@
                                 <TableColumn fx:id="colMaPD" minWidth="0.0" prefWidth="193.33334350585938" text="Mã phiếu đổi" />
                                 <TableColumn fx:id="colMaHD" minWidth="0.0" prefWidth="213.66665649414062" text="Mã hóa đơn" />
                                 <TableColumn fx:id="colNgayLap" minWidth="6.0" prefWidth="228.66665649414062" text="Ngày lập" />
-                                <TableColumn fx:id="colTenKH" prefWidth="259.3333740234375" text="Khách hàng" />
-                                <TableColumn fx:id="colSdtKH" prefWidth="223.3333740234375" text="SĐT" />
-                                <TableColumn fx:id="colTenNV" prefWidth="358.66668701171875" text="Nhân viên" />
+                                <TableColumn fx:id="colTenKH" prefWidth="320.7999267578125" text="Khách hàng" />
+                                <TableColumn fx:id="colSdtKH" prefWidth="235.20001220703125" text="SĐT" />
+                                <TableColumn fx:id="colTenNV" prefWidth="287.2000732421875" text="Nhân viên" />
                                 <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="90.0" />
                             </columns>
                         </TableView>

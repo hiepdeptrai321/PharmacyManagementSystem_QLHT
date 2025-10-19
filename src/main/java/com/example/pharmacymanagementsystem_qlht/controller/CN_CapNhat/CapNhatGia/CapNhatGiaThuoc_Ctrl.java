@@ -24,7 +24,7 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
     public TableColumn<Thuoc_SanPham,String> colSTT;
     public TableColumn<Thuoc_SanPham,String> colMaThuoc;
     public TableColumn<Thuoc_SanPham,String> colTenThuoc;
-    public TableColumn<Thuoc_SanPham,String>colDVT;
+    public TableColumn<Thuoc_SanPham,String> colDVT;
     public TableColumn<Thuoc_SanPham,String> colGiaNhap;
     public TableColumn<Thuoc_SanPham,String> colGiaBan;
     public TableColumn<Thuoc_SanPham,String> colChiTiet;

@@ -6,7 +6,7 @@
     -fx-cursor: hand;
     -fx-graphic-text-gap: 8;
     -fx-min-width: 60px;
-    -fx-min-height: 32px;
+    -fx-min-height: 40px;
     -fx-pref-height: 20px;
 }
 #lbtitle{
@@ -24,7 +24,7 @@
     -fx-background-radius: 6;
     -fx-cursor: hand;
     -fx-graphic-text-gap: 8;
-    -fx-min-height: 32px;
+    -fx-min-height: 40px;
     -fx-border-radius: 6;
 }
 
@@ -35,7 +35,7 @@
     -fx-background-radius: 6;
     -fx-cursor: hand;
     -fx-graphic-text-gap: 8;
-    -fx-min-height: 32px;
+    -fx-min-height: 40px;
     -fx-border-radius: 6;
     -fx-min-width: 20px;
     -fx-pref-width: 36px;
@@ -62,4 +62,15 @@
 }
 .btn:hover{
     -fx-opacity: 0.9;
+}
+#btnXoa{
+    -fx-background-color: red;
+    -fx-border-color: transparent;
+    -fx-font-size: 14px;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-graphic-text-gap: 8;
+    -fx-min-height: 40px;
+    -fx-border-radius: 6;
+    -fx-text-fill: white;
 }

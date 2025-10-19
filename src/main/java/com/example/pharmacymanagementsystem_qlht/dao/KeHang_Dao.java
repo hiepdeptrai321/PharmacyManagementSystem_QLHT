@@ -9,21 +9,19 @@ import java.util.List;
 
 public class KeHang_Dao implements DaoInterface<KeHang> {
 
-    private final String INSERT_SQL = "INSERT INTO KeHang(MaKe, Tenke) VALUES (?, ?)";
-    private final String UPDATE_SQL = "UPDATE KeHang SET TenKe=? WHERE MaKe=?";
+    private final String INSERT_SQL = "INSERT INTO KeHang(MaKe, Tenke, MoTa) VALUES (?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE KeHang SET TenKe=?, MoTa=? WHERE MaKe=?";
     private final String DELETE_BY_ID = "DELETE FROM KeHang WHERE MaKe = ?";
     private final String SELECT_BY_ID = "SELECT * FROM KeHang WHERE MaKe=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM KeHang";
 
     @Override
     public boolean insert(KeHang e) {
-        return ConnectDB.update(INSERT_SQL, e.getMaKe(), e.getTenKe())>0;
-    }
+        return ConnectDB.update(INSERT_SQL, e.getMaKe(), e.getTenKe(), e.getMoTa()) > 0;}
 
     @Override
     public boolean update(KeHang e) {
-        return ConnectDB.update(UPDATE_SQL,e.getTenKe(),e.getMaKe())>0;
-    }
+        return ConnectDB.update(UPDATE_SQL, e.getTenKe(), e.getMoTa(), e.getMaKe()) > 0;}
 
     @Override
     public boolean deleteById(Object... keys) {
@@ -48,6 +46,7 @@ public class KeHang_Dao implements DaoInterface<KeHang> {
                         KeHang keHang = new KeHang();
                         keHang.setMaKe(rs.getString("MaKe"));
                         keHang.setTenKe(rs.getString("TenKe"));
+                        keHang.setMoTa(rs.getString("MoTa"));
                         list.add(keHang);
                     }
                     rs.getStatement().getConnection().close();
@@ -56,6 +55,24 @@ public class KeHang_Dao implements DaoInterface<KeHang> {
                     throw new RuntimeException(e);
                 }
         return list;
+    }
+
+    public String generateNewMaKeHang() {
+        String newMaKeHang = "KE001"; // Default value if no records exist
+        String SELECT_TOP1_SQL = "SELECT TOP 1 maKe FROM KeHang ORDER BY MaKe DESC";
+        try {
+            ResultSet rs = ConnectDB.query(SELECT_TOP1_SQL);
+            if (rs.next()) {
+                String lastMaKeHang = rs.getString("maKe");
+                int stt = Integer.parseInt(lastMaKeHang.substring(2)); // Extract numeric part
+                stt++; // Increment the numeric part
+                newMaKeHang = String.format("KE%03d", stt); // Format with leading zeros
+            }
+            rs.getStatement().close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return newMaKeHang;
     }
 
     @Override

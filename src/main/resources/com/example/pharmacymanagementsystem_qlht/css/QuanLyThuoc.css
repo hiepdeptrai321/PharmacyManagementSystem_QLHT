@@ -74,3 +74,13 @@
     -fx-border-radius: 6;
     -fx-text-fill: white;
 }
+#btnReset{
+-fx-background-color: green;   /* trong suốt nền */
+    -fx-border-color: transparent;       /* bỏ viền */
+    -fx-font-size: 14px;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-graphic-text-gap: 8;
+    -fx-min-height: 32px;
+    -fx-border-radius: 6;
+}

@@ -12,10 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -43,6 +40,9 @@ public class DanhMucKeHang_Ctrl extends Application {
 
     @FXML
     private TableColumn<KeHang, String> cotTenKe;
+
+    @FXML
+    private TableColumn<KeHang, String> colChiTiet;
 
     @FXML
     private TableView<KeHang> tblKeHang;
@@ -77,7 +77,24 @@ public class DanhMucKeHang_Ctrl extends Application {
         );
         cotMaKe.setCellValueFactory(new PropertyValueFactory<>("maKe"));
         cotTenKe.setCellValueFactory(new PropertyValueFactory<>("tenKe"));
+        colChiTiet.setCellFactory(col -> new TableCell<KeHang, String>() {
+            private final Button btn = new Button("Chi tiết");
+            {
+                btn.setOnAction(event -> {
+                    KeHang kh = getTableView().getItems().get(getIndex());
+                    btnChiTietClick(kh);
+                });
+                btn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white;");
+                btn.getStyleClass().add("btn");
+            }
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : btn);
+            }
+        });
         tblKeHang.setItems(data);
+
     }
     private void TimKiem() {
         String keyword = txtTimKiem.getText().trim().toLowerCase();
@@ -87,7 +104,7 @@ public class DanhMucKeHang_Ctrl extends Application {
             return;
         }
 
-        // Lọc theo tất cả các trường
+
         List<KeHang> filtered = list.stream()
                 .filter(keHang ->
                         (keHang.getMaKe() != null && keHang.getMaKe().toLowerCase().contains(keyword)) ||
@@ -110,6 +127,20 @@ public class DanhMucKeHang_Ctrl extends Application {
             Parent root = loader.load();
             //ChiTietNhaCungCap_Ctrl ctrl = loader.getController();
             //ctrl.hienThiThongTin(ncc);
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void btnChiTietClick(KeHang kh) {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKeHang/XoaSuakeHang.fxml"));
+            Parent root = loader.load();
+            XoaSuaKeHang_Ctrl ctrl = loader.getController();
+            ctrl.hienThiThongTin(kh);
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();

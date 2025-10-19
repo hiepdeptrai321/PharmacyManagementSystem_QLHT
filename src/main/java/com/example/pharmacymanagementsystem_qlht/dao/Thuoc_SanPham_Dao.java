@@ -3,6 +3,8 @@ package com.example.pharmacymanagementsystem_qlht.dao;
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.*;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -146,5 +148,20 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
             throw new RuntimeException(e);
         }
         return tenDVT;
+    }
+
+    public List<String> layDanhSachThuocTheoKe(String maKe) {
+        List<String> danhSach = new ArrayList<>();
+        String sql = "SELECT TenThuoc FROM Thuoc_SanPham WHERE ViTri = ?";
+        try {
+            ResultSet rs = ConnectDB.query(sql, maKe);
+            while (rs.next()) {
+                danhSach.add(rs.getString("TenThuoc"));
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return danhSach;
     }
 }

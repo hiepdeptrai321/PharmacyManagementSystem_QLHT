@@ -14,6 +14,7 @@ public class DonViTinh_Dao implements DaoInterface<DonViTinh>{
     private final String DELETE_BY_ID_SQL = "DELETE FROM DonViTinh WHERE MaDVT=?";
     private final String SELECT_BY_ID_SQL = "SELECT MaDVT, TenDonViTinh, KiHieu FROM DonViTinh WHERE MaDVT = ?";
     private final String SELECT_ALL_SQL = "SELECT MaDVT, TenDonViTinh, KiHieu FROM DonViTinh";
+    private final String SELECT_BY_TEN_SQL = "SELECT MaDVT, TenDonViTinh, KiHieu FROM DonViTinh WHERE TenDonViTinh = ?";
 
     @Override
     public boolean insert(DonViTinh e) {
@@ -58,5 +59,8 @@ public class DonViTinh_Dao implements DaoInterface<DonViTinh>{
     @Override
     public List<DonViTinh> selectAll() {
         return selectBySql(SELECT_ALL_SQL);
+    }
+    public DonViTinh selectByTenDVT(String tenDVT) {
+        return selectBySql(SELECT_BY_TEN_SQL, tenDVT).get(0);
     }
 }

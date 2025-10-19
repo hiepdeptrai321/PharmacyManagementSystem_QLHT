@@ -16,8 +16,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 public class ChiTietThuoc_Ctrl {
@@ -36,6 +39,7 @@ public class ChiTietThuoc_Ctrl {
     public TextField txtViTri;
     public TextField txtLoaiHang;
     public TextField txtNhomDuocLy;
+    public ImageView imgThuoc;
 
     public void initialize() {
 
@@ -53,6 +57,7 @@ public class ChiTietThuoc_Ctrl {
         txtViTri.setText(thuoc.getVitri().getTenKe());
         txtNhomDuocLy.setText(thuoc.getNhomDuocLy().getTenNDL());
         txtDuongDung.setText(thuoc.getDuongDung());
+        imgThuoc.setImage(new Image(new ByteArrayInputStream(thuoc.getHinhAnh())));
         List<ChiTietHoatChat> list = new ChiTietHoatChat_Dao().selectByMaThuoc(thuoc.getMaThuoc());
         ObservableList<ChiTietHoatChat> oblist = FXCollections.observableArrayList(list);
         colMaHoatChat.setCellValueFactory(cel -> new SimpleStringProperty(cel.getValue().getHoatChat().getMaHoatChat()));

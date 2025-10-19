@@ -16,7 +16,7 @@ public class Thuoc_SanPham {
     private String nuocSX;
     private NhomDuocLy nhomDuocLy;
     private LoaiHang loaiHang;
-    private String hinhAnh;
+    private byte[] hinhAnh;
     private KeHang vitri;
     private List<ChiTietDonViTinh> dsCTDVT = new ArrayList<>();
     private List<Thuoc_SP_TheoLo> dsTS_TheoLo = new ArrayList<>();
@@ -24,7 +24,7 @@ public class Thuoc_SanPham {
     public Thuoc_SanPham(){
     }
 
-    public Thuoc_SanPham(String maThuoc, String tenThuoc, int hamLuong, String donViHamLuong, String duongDung, String quyCachDongGoi, String SDK_GPNK, String hangSX, String nuocSX, NhomDuocLy nhomDuocLy, LoaiHang loaiHang, String hinhAnh, KeHang vitri) {
+    public Thuoc_SanPham(String maThuoc, String tenThuoc, int hamLuong, String donViHamLuong, String duongDung, String quyCachDongGoi, String SDK_GPNK, String hangSX, String nuocSX, NhomDuocLy nhomDuocLy, LoaiHang loaiHang, byte[] hinhAnh, KeHang vitri) {
         this.maThuoc = maThuoc;
         this.tenThuoc = tenThuoc;
         this.hamLuong = hamLuong;
@@ -128,11 +128,10 @@ public class Thuoc_SanPham {
         this.loaiHang = loaiHang;
     }
 
-    public String getHinhAnh() {
+    public byte[] getHinhAnh() {
         return hinhAnh;
     }
-
-    public void setHinhAnh(String hinhAnh) {
+    public void setHinhAnh(byte[] hinhAnh) {
         this.hinhAnh = hinhAnh;
     }
 

@@ -44,3 +44,10 @@
 .btn:hover{
     -fx-opacity: 0.9;
 }
+
+.btnChiTiet{
+    -fx-background-color: #0288d1;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-border-radius: 4px;
+}

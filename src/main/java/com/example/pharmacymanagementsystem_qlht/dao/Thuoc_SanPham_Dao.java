@@ -66,7 +66,7 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
                 sp.setNuocSX(rs.getString("NuocSX"));
                 sp.setNhomDuocLy(new NhomDuocLy_Dao().selectById(rs.getString("MaNDL")));
                 sp.setLoaiHang(new LoaiHang_Dao().selectById(rs.getString("MaLoaiHang")));
-                sp.setHinhAnh(rs.getString("HinhAnh"));
+                sp.setHinhAnh(rs.getBytes("HinhAnh"));
                 sp.setVitri(new KeHang_Dao().selectById(rs.getString("ViTri")));
                 list.add(sp);
             }

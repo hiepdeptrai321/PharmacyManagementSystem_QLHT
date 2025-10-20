@@ -2,6 +2,7 @@
 
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -10,6 +11,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -17,7 +19,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="496.0" prefWidth="933.0" stylesheets="@../../css/ThemThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatKhuyenMai.SuaKhuyenMai_Ctrl">
+<AnchorPane prefHeight="496.0" prefWidth="933.0" stylesheets="@../../css/ThemThuoc.css"
+            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatKhuyenMai.SuaKhuyenMai_Ctrl">
     <children>
         <Label layoutX="14.0" layoutY="8.0" prefHeight="31.0" prefWidth="915.0" styleClass="lbtitle" text="Cập nhật khuyến mãi">
             <font>
@@ -95,10 +99,10 @@
                         <TableView fx:id="tbDSThuoc" layoutY="54.0" prefHeight="213.0" prefWidth="908.0">
                             <columns>
                                 <TableColumn fx:id="colMaThuoc" prefWidth="120.0" text="Mã thuốc" />
-                                <TableColumn fx:id="colTenThuoc" prefWidth="352.0" text="Tên thuốc" />
-                                <TableColumn fx:id="colSLAP" minWidth="0.0" prefWidth="176.0" text="Số lượng áp dụng" />
-                                <TableColumn fx:id="colSLTD" prefWidth="232.5" text="Số lượng tối đa" />
-                                <TableColumn fx:id="colXoaCT" prefWidth="26.5" />
+                                <TableColumn fx:id="colTenThuoc" prefWidth="313.0" text="Tên thuốc" />
+                                <TableColumn fx:id="colSLAP" minWidth="0.0" prefWidth="207.0" text="Số lượng áp dụng" />
+                                <TableColumn fx:id="colSLTD" prefWidth="175.0" text="Số lượng tối đa" />
+                                <TableColumn fx:id="colXoaCT" prefWidth="92.0" />
                             </columns>
                         </TableView>
                         <Pane prefHeight="62.0" prefWidth="915.0">
@@ -114,25 +118,55 @@
                         </Pane>
                     </children>
                 </Pane>
+
+                <!-- Gift section Accordion -->
+                <Accordion fx:id="accTangKem" expandedPane="$tpTangKem" visible="false" managed="false">
+                    <panes>
+                        <TitledPane fx:id="tpTangKem" text="Sản phẩm tặng kèm (chỉ áp dụng cho loại KM: LKM001)" animated="true">
+                            <content>
+                                <VBox spacing="8.0" style="-fx-padding: 8;">
+                                    <children>
+                                        <Pane prefHeight="62.0" prefWidth="915.0">
+                                            <children>
+                                                <TextField fx:id="tfTimQua" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="388.0" />
+                                                <Label layoutX="410.0" layoutY="15.0" text="Tìm quà tặng" />
+                                                <ListView fx:id="listViewQua" layoutX="10.0" layoutY="40.0" prefHeight="160.0" prefWidth="388.0"/>
+                                            </children>
+                                        </Pane>
+                                        <TableView fx:id="tbTangKem" prefHeight="220.0" prefWidth="908.0">
+                                            <columns>
+                                                <TableColumn fx:id="colMaQua" prefWidth="120.0" text="Mã SP" />
+                                                <TableColumn fx:id="colTenQua" prefWidth="400.0" text="Tên SP" />
+                                                <TableColumn fx:id="colSLTang" prefWidth="200.0" text="Số lượng tặng" />
+                                                <TableColumn fx:id="colXoaQua" prefWidth="120.0" text="Xóa" />
+                                            </columns>
+                                        </TableView>
+                                    </children>
+                                </VBox>
+                            </content>
+                        </TitledPane>
+                    </panes>
+                </Accordion>
             </children>
         </VBox>
+
         <Button id="btnluu" fx:id="btnLuu" layoutX="850.0" layoutY="458.0" mnemonicParsing="false" onMouseClicked="#btnLuuClick" prefHeight="32.0" prefWidth="69.0" text="Lưu" textFill="WHITE">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>
-         <styleClass>
-            <String fx:value="btnthemhuy" />
-            <String fx:value="btn" />
-         </styleClass>
+            <styleClass>
+                <String fx:value="btnthemhuy" />
+                <String fx:value="btn" />
+            </styleClass>
         </Button>
         <Button id="btnhuy" fx:id="btnHuy" layoutX="772.0" layoutY="458.0" minHeight="20.0" mnemonicParsing="false" onMouseClicked="#btnHuyClick" prefHeight="32.0" prefWidth="69.0" text="Hủy" textFill="WHITE">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>
-         <styleClass>
-            <String fx:value="btnthemhuy" />
-            <String fx:value="btn" />
-         </styleClass>
+            <styleClass>
+                <String fx:value="btnthemhuy" />
+                <String fx:value="btn" />
+            </styleClass>
         </Button>
     </children>
 </AnchorPane>

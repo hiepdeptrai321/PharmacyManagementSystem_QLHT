@@ -17,7 +17,9 @@ import javafx.stage.Stage;
 import java.util.List;
 
 public class CapNhatGiaThuoc_Ctrl extends Application {
+
     // 1. KHAI BÁO THÀNH PHẦN GIAO DIỆN (FXML)
+
     public TextField tfTimThuoc;
     public Button btnTimThuoc;
     public TableView<Thuoc_SanPham> tbThuoc;
@@ -30,6 +32,7 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
     public TableColumn<Thuoc_SanPham,String> colChiTiet;
 
     // 2. KHỞI TẠO (INITIALIZE)
+
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatGia/CapNhatGiaThuoc_GUI.fxml"));
@@ -41,7 +44,9 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
     public void initialize() {
         loadTable();
     }
+
     // 3. XỬ LÝ SỰ KIỆN GIAO DIỆN
+
     public void loadTable() {
         Thuoc_SanPham_Dao thuocDao = new Thuoc_SanPham_Dao();
         List<Thuoc_SanPham> list = thuocDao.selectAllSLTheoDonViCoBan_ChiTietDVT();
@@ -58,6 +63,7 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
         colChiTiet.setCellFactory(col -> new TableCell<Thuoc_SanPham, String>() {
             private final Button btn = new Button("Chi tiết");
             {
+                // SỰ KIỆN KHI NHẤN NÚT "CHI TIẾT"
                 btn.setOnAction(event -> {
                     Thuoc_SanPham thuoc = getTableView().getItems().get(getIndex());
                     showSuaGiaThuoc(thuoc);
@@ -76,6 +82,7 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
     }
 
     // 4. XỬ LÝ NGHIỆP VỤ
+
     public void timThuoc() {
         String keyword = tfTimThuoc.getText().trim().toLowerCase();
         Thuoc_SanPham_Dao ts_dao = new Thuoc_SanPham_Dao();
@@ -88,6 +95,7 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
         ObservableList<Thuoc_SanPham> data = FXCollections.observableArrayList(dsTSLoc);
         tbThuoc.setItems(data);
     }
+
     private void showSuaGiaThuoc(Thuoc_SanPham thuoc) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
@@ -99,7 +107,7 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
             stage.setTitle("Sửa giá thuốc");
             stage.setScene(new Scene(root));
             stage.showAndWait();
-            tbThuoc.refresh();
+            loadTable();
         } catch (Exception e) {
             e.printStackTrace();
         }

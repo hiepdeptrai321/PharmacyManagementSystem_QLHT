@@ -18,20 +18,20 @@
          </children>
       </Pane>
       <Button id="btnthemthuoc" fx:id="btnThemThuoc" layoutX="1387.0" layoutY="47.0" mnemonicParsing="false" onMouseClicked="#btnThemThuocClick" prefHeight="40.0" prefWidth="158.0" text="✚Thêm thuốc" AnchorPane.topAnchor="47.0" />
-      <TableView id="tablethuoc" fx:id="tbDanhMucThuoc" layoutX="12.0" layoutY="101.0" prefHeight="785.0" prefWidth="1622.0">
-        <columns>
-          <TableColumn fx:id="colSTT" prefWidth="48.83333206176758" text="STT" />
-          <TableColumn fx:id="colMaThuoc" prefWidth="135.0" text="Mã thuốc" />
-            <TableColumn fx:id="colTenThuoc" prefWidth="301.0" text="Tên thuốc" />
-            <TableColumn fx:id="colDVT" minWidth="0.0" prefWidth="230.0" text="Đơn vị tính" />
-            <TableColumn fx:id="colGiaNhap" minWidth="0.0" prefWidth="198.0" text="Giá nhập" />
-            <TableColumn fx:id="colGiaBan" minWidth="0.0" prefWidth="204.0" text="Giá bán" />
-            <TableColumn fx:id="colSLTon" minWidth="0.0" prefWidth="217.0" text="Tồn" />
-            <TableColumn fx:id="colDonDat" minWidth="0.0" prefWidth="204.0" text="Đơn đặt" />
-            <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="82.0" />
-        </columns>
-      </TableView>
-      <Button id="btnnhapxuat" fx:id="btnImport" layoutX="1553.0" layoutY="47.0" minWidth="46.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="45.0" text="📥" AnchorPane.topAnchor="47.0" />
-      <Button id="btnnhapxuat" fx:id="btnExport" layoutX="1596.0" layoutY="47.0" minWidth="27.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="39.0" text="📤" AnchorPane.topAnchor="47.0" />
+       <TableView fx:id="tbl_Thuoc" layoutX="12.0" layoutY="101.0" prefHeight="785.0" prefWidth="1622.0">
+           <columns>
+            <TableColumn fx:id="colSTT" prefWidth="54.28570747375488" text="STT" />
+               <TableColumn fx:id="colMaThuoc" prefWidth="144.0" text="Mã thuốc" />
+               <TableColumn fx:id="colTenThuoc" minWidth="0.0" prefWidth="260.3809814453125" text="Tên Thuốc" />
+               <TableColumn fx:id="colHamLuong" prefWidth="78.09521484375" text="Hàm lượng" />
+               <TableColumn fx:id="colSDK_GPNK" prefWidth="148.76190185546875" text="SDK_GPNK" />
+               <TableColumn fx:id="colXuatXu" prefWidth="165.90478515625" text="Xuất xứ" />
+               <TableColumn fx:id="colLoaiHang" prefWidth="204.57135009765625" text="Loại hàng" />
+               <TableColumn fx:id="colViTri" prefWidth="123.2379150390625" text="Vị trí" />
+               <TableColumn fx:id="colChiTiet" prefWidth="152.1904296875" text="Chi tiết" />
+           </columns>
+       </TableView>
+      <Button id="btnnhapxuat" fx:id="btnImport" layoutX="1106.0" layoutY="46.0" minWidth="46.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="45.0" text="📥" AnchorPane.topAnchor="46.0" />
+      <Button id="btnnhapxuat" fx:id="btnExport" layoutX="1150.0" layoutY="46.0" minWidth="27.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="39.0" text="📤" AnchorPane.topAnchor="46.0" />
    </children>
 </AnchorPane>

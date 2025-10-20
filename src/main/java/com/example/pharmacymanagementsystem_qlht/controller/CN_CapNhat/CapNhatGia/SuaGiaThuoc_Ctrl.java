@@ -244,7 +244,6 @@ public class SuaGiaThuoc_Ctrl extends Application {
                 (ct.getDvt() != null ? ct.getDvt().getMaDVT() : "");
     }
 
-
     public void btnHuyClick() {
         Stage stage = (Stage) tfMaThuoc.getScene().getWindow();
         stage.close();

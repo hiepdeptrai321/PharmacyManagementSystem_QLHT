@@ -30,6 +30,8 @@ module com.example.pharmacymanagementsystem_qlht {
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMHoatDong;
     requires javafx.base;
     requires java.sql;
+    requires java.desktop;
+    requires javafx.swing;
 
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKeHang to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMHoatDong to javafx.fxml;
@@ -62,7 +64,4 @@ module com.example.pharmacymanagementsystem_qlht {
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatGia;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatSoLuong;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKNhaCungCap;
-    opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuTra to javafx.fxml;
-    opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDoi to javafx.fxml;
-    opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDatHang to javafx.fxml;
 }

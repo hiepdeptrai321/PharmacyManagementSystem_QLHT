@@ -13,6 +13,7 @@ public class LoaiHang_Dao implements DaoInterface<LoaiHang>{
     private final String DELETE_BY_ID = "DELETE FROM LoaiHang WHERE MaLoaiHang = ?";
     private final String SELECT_BY_ID = "SELECT * FROM LoaiHang WHERE MaLoaiHang=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM LoaiHang";
+    private final String SELECT_TENLH = "SELECT TenLH FROM LoaiHang";
 
     @Override
     public boolean insert(LoaiHang e) {
@@ -57,9 +58,32 @@ public class LoaiHang_Dao implements DaoInterface<LoaiHang>{
         return list;
     }
 
+    public List<String> getAllTenLH() {
+        List<String> list = new ArrayList<>();
+        try {
+            ResultSet rs = ConnectDB.query(SELECT_TENLH);
+            while (rs.next()) {
+                list.add(rs.getString("TenLH"));
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
     @Override
     public List<LoaiHang> selectAll() {
         return this.selectBySql(SELECT_ALL_SQL);
+    }
+
+    public LoaiHang selectByTenLH(String string) {
+        String sql = "SELECT * FROM LoaiHang WHERE TenLH = ?";
+        List<LoaiHang> list = selectBySql(sql, string);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
     }
 }
 

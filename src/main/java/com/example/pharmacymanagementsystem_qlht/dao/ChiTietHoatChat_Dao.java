@@ -30,9 +30,12 @@ public class ChiTietHoatChat_Dao implements DaoInterface<ChiTietHoatChat>{
         return ConnectDB.update(DELETE_BY_ID, keys[0], keys[1])>0;
     }
 
-    @Override
     public ChiTietHoatChat selectById(Object... keys) {
-        return this.selectBySql(SELECT_BY_ID, keys[0], keys[1]).get(0);
+        List<ChiTietHoatChat> list = this.selectBySql(SELECT_BY_ID, keys[0], keys[1]);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
     }
 
     @Override

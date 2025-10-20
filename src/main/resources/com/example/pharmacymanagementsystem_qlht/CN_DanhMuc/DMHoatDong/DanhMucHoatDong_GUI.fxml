@@ -20,7 +20,7 @@
         <Button id="btnthemthuoc" layoutX="1371.0" layoutY="47.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="174.0" text="✚Thêm nhà cung cấp" AnchorPane.topAnchor="47.0" />
         <TableView id="tablethuoc" layoutX="12.0" layoutY="98.0" prefHeight="789.0" prefWidth="1625.0">
             <columns>
-                <TableColumn prefWidth="48.83333206176758" text="STT" />
+                <TableColumn fx:id="colSTT" prefWidth="48.83333206176758" text="STT" />
                 <TableColumn prefWidth="154.0" text="Mã NCC" />
                 <TableColumn prefWidth="320.0" text="Tên NCC" />
                 <TableColumn minWidth="0.0" prefWidth="179.0" text="Địa chỉ" />

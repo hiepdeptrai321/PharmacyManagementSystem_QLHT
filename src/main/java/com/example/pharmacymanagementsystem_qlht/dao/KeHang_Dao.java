@@ -63,4 +63,18 @@ public class KeHang_Dao implements DaoInterface<KeHang> {
         return this.selectBySql(SELECT_ALL_SQL);
     }
 
+    public List<String> getAllTenKe() {
+        String sql = "SELECT TenKe FROM KeHang";
+        List<String> list = new ArrayList<>();
+        try {
+            ResultSet rs = ConnectDB.query(sql);
+            while (rs.next()) {
+                list.add(rs.getString("TenKe"));
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
 }

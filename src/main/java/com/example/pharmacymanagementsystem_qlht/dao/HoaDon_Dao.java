@@ -5,7 +5,10 @@ import com.example.pharmacymanagementsystem_qlht.model.HoaDon;
 import com.example.pharmacymanagementsystem_qlht.model.NhanVien;
 import com.example.pharmacymanagementsystem_qlht.model.KhachHang;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +25,29 @@ public class HoaDon_Dao implements DaoInterface<HoaDon>{
                     "FROM HoaDon HD " +
                     "INNER JOIN NhanVien NV ON HD.MaNV = NV.MaNV " +
                     "LEFT JOIN KhachHang KH ON HD.MaKH = KH.MaKH";
-    private final String SELECT_BY_TUKHOA_SQL = "SELECT MaHD, MaNV, NgayLap, MaKH, TrangThai FROM HoaDon WHERE MaHD LIKE ?";
+    private final String INSERT_HD_SQL = "INSERT INTO HoaDon (MaNV, MaKH, NgayLap, TrangThai) OUTPUT INSERTED.MaHD VALUES (?, ?, GETDATE(), ?)";
 
+    private final String SELECT_BY_TUKHOA_SQL = "SELECT MaHD, MaNV, NgayLap, MaKH, TrangThai FROM HoaDon WHERE MaHD LIKE ?";
+    public String insertAndGetId(Connection conn, HoaDon hoaDon) throws SQLException {
+        String generatedMaHoaDon = null;
+
+        // Sử dụng try-with-resources cho PreparedStatement
+        try (PreparedStatement ps = conn.prepareStatement(INSERT_HD_SQL)) {
+
+            // Giả định: HoaDon model chứa các object NhanVien và KhachHang có thể lấy được mã
+            ps.setString(1, hoaDon.getMaNV().getMaNV());
+            ps.setString(2, hoaDon.getMaKH().getMaKH());
+            ps.setBoolean(3, hoaDon.getTrangThai());
+
+            // Dùng executeQuery để lấy kết quả từ OUTPUT INSERTED
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    generatedMaHoaDon = rs.getString(1); // Cột đầu tiên là MaHD
+                }
+            }
+        }
+        return generatedMaHoaDon;
+    }
     @Override
     public boolean insert(HoaDon e) {
         return ConnectDB.update(INSERT_SQL, e.getMaHD(), e.getMaNV().getMaNV(), e.getNgayLap(), e.getMaKH().getMaKH(), e.getTrangThai())>0;

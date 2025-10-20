@@ -103,4 +103,9 @@ public class KeHang_Dao implements DaoInterface<KeHang> {
         }
         return list.get(0);
     }
+
+    public List<String> selectTenKe() {
+        String sql = "SELECT TenKe FROM KeHang";
+        return this.selectBySql(sql);
+    }
 }

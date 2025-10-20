@@ -66,7 +66,7 @@ public class DanhMucNhaCungCap_Ctrl extends Application {
 //              Thêm sự kiện cho Button chi tiết
                 btn.setOnAction(event -> {
                     NhaCungCap ncc = getTableView().getItems().get(getIndex());
-                    btnChiTietClick(ncc);
+                    suaXoaNhaCungCap(ncc);
                 });
                 btn.setStyle("-fx-text-fill: white;-fx-background-color: rgba(50, 100, 255, 0.8);-fx-font-weight: bold;-fx-font-size: 11px");
             }
@@ -90,7 +90,7 @@ public class DanhMucNhaCungCap_Ctrl extends Application {
     }
 
 //  Button mở giao diện sửa xóa nhà cung cấp
-    private void btnChiTietClick(NhaCungCap ncc) {
+    private void suaXoaNhaCungCap(NhaCungCap ncc) {
         try {
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNCC/SuaXoaNhaCungCap_GUI.fxml"));
@@ -100,6 +100,7 @@ public class DanhMucNhaCungCap_Ctrl extends Application {
 //          Thêm dữ liệu nhà cung cấp vào ctrl sửa xóa
             SuaXoaNhaCungCap_Ctrl ctrl = loader.getController();
             ctrl.initialize(ncc);
+
 
             stage.setScene(scene);
             stage.show();

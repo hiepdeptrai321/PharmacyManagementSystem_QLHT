@@ -9,6 +9,7 @@ import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -36,6 +37,8 @@ public class DanhMucThuoc_Ctrl extends Application {
     public TextField tfTimThuoc;
     public Button btnTimThuoc;
     public Button btnThemThuoc;
+    Thuoc_SanPham_Dao thuocDao = new Thuoc_SanPham_Dao();
+    List<Thuoc_SanPham> list;
 
 //  2. Khởi tạo
     @Override
@@ -52,8 +55,7 @@ public class DanhMucThuoc_Ctrl extends Application {
 
 //  3. Tải bảng
     public void loadTable() {
-        Thuoc_SanPham_Dao thuocDao = new Thuoc_SanPham_Dao();
-        List<Thuoc_SanPham> list = thuocDao.selectAllSLTheoDonViCoBan_ChiTietDVT();
+        list = thuocDao.selectAllSLTheoDonViCoBan_ChiTietDVT();
         ObservableList<Thuoc_SanPham> data = FXCollections.observableArrayList(list);
 
         colSTT.setCellValueFactory(cellData ->
@@ -86,8 +88,6 @@ public class DanhMucThuoc_Ctrl extends Application {
         tbl_Thuoc.setItems(data);
     }
 
-//  4. Các xử lý nghiệp vụ
-//  Tìm thuốc
     public void timThuoc(){
         String keyword = tfTimThuoc.getText().trim().toLowerCase();
         Thuoc_SanPham_Dao ts_dao = new Thuoc_SanPham_Dao();
@@ -119,6 +119,7 @@ public class DanhMucThuoc_Ctrl extends Application {
 
             SuaXoaThuoc_Ctrl ctrl = loader.getController();
             ctrl.initialize(thuoc);
+            ctrl.setParent(this);
 
             stage.setScene(scene);
             stage.show();
@@ -128,4 +129,11 @@ public class DanhMucThuoc_Ctrl extends Application {
     }
 
 
+    public void themthuoc(ActionEvent actionEvent) {
+
+    }
+
+    public void refestTable(){
+        loadTable();
+    }
 }

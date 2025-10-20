@@ -8,15 +8,24 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import java.util.Map;
+import java.util.HashMap;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.FloatStringConverter;
 
@@ -27,6 +36,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class SuaXoaThuoc_Ctrl {
     public TextField txtTenThuoc;
@@ -51,6 +61,10 @@ public class SuaXoaThuoc_Ctrl {
     public ImageView imgThuoc_SanPham;
     private ObservableList<HoatChat> allHoatChat;
     private List<ChiTietHoatChat> listChiTietHoatChat = new ArrayList<>();
+    private String maThuoc;
+    private Consumer<Thuoc_SanPham> onAdded;
+    private Consumer<Thuoc_SanPham> onDeleted;
+    private DanhMucThuoc_Ctrl danhMucThuoc_Ctrl;
 
     @FXML
     public void initialize(Thuoc_SanPham thuoc) {
@@ -208,6 +222,139 @@ public class SuaXoaThuoc_Ctrl {
     }
 
     public void btnCapNhat(ActionEvent actionEvent) {
+        // Lấy root hiện tại
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        Scene scene = stage.getScene();
+        AnchorPane root = (AnchorPane) scene.getRoot();
+
+        // Tạo overlay làm mờ nền
+        StackPane overlay = new StackPane();
+        overlay.setStyle("-fx-background-color: rgba(0,0,0,0.4);");
+        ProgressIndicator progress = new ProgressIndicator();
+        overlay.getChildren().add(progress);
+
+        // Căn overlay phủ toàn màn hình
+        AnchorPane.setTopAnchor(overlay, 0.0);
+        AnchorPane.setRightAnchor(overlay, 0.0);
+        AnchorPane.setBottomAnchor(overlay, 0.0);
+        AnchorPane.setLeftAnchor(overlay, 0.0);
+
+        // Thêm overlay vào AnchorPane
+        root.getChildren().add(overlay);
+
+        // Tạo luồng riêng để xử lý cập nhật (tránh lag UI)
+        new Thread(() -> {
+            try {
+                // 👉 Code xử lý lâu (ví dụ: cập nhật CSDL)
+                Thuoc_SanPham thuoc = new Thuoc_SanPham();
+                thuoc.setMaThuoc(txtMaThuoc.getText());
+                thuoc.setTenThuoc(txtTenThuoc.getText().trim());
+                thuoc.setLoaiHang(new LoaiHang_Dao().selectByTenLH(cbxLoaiHang.getSelectionModel().getSelectedItem().toString()));
+                thuoc.setVitri(new KeHang_Dao().selectByTenKe(cbxViTri.getSelectionModel().getSelectedItem().toString()));
+                thuoc.setHamLuong(Float.parseFloat(txtHamLuong.getText().trim()));
+                thuoc.setHangSX(txtHangSanXuat.getText().trim());
+                thuoc.setDonViHamLuong(txtDonViHamLuong.getText().trim());
+                thuoc.setDuongDung(txtDuongDung.getText().trim());
+                thuoc.setNhomDuocLy(new NhomDuocLy_Dao().selectByTenNhomDuocLy(cbxNhomDuocLy.getSelectionModel().getSelectedItem().toString()));
+                thuoc.setNuocSX(txtNuocSanXuat.getText().trim());
+                thuoc.setQuyCachDongGoi(txtQuyCachDongGoi.getText().trim());
+                thuoc.setSDK_GPNK(txtSDK_GPNK.getText().trim());
+                // ... xử lý ảnh, listChiTietHoatChat, update, insert, v.v. ...
+                Image image = imgThuoc_SanPham.getImage(); // lấy ảnh trong ImageView
+                if (image != null) {
+                    BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    try {
+                        ImageIO.write(bufferedImage, "png", baos); // định dạng ảnh png
+                        baos.flush();
+                        byte[] imageBytes = baos.toByteArray();    // chuyển sang byte[]
+                        baos.close();
+                        thuoc.setHinhAnh(imageBytes); // gán vào đối tượng
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Thuoc_SanPham_Dao thuoc_dao = new Thuoc_SanPham_Dao();
+                thuoc_dao.update(thuoc);
+
+                if(listChiTietHoatChat != null) {
+                    ChiTietHoatChat_Dao chtc_dao = new ChiTietHoatChat_Dao();
+                    List<ChiTietHoatChat> existingList = chtc_dao.selectByMaThuoc(thuoc.getMaThuoc());
+                    Map<String, Float> existingMap = new HashMap<>();
+                    for (ChiTietHoatChat c : existingList) {
+                        existingMap.put(c.getHoatChat().getMaHoatChat(), c.getHamLuong());
+                    }
+
+                    for (ChiTietHoatChat chtc : listChiTietHoatChat) {
+                        ChiTietHoatChat existing = chtc_dao.selectById(
+                                chtc.getThuoc().getMaThuoc(),
+                                chtc.getHoatChat().getMaHoatChat()
+                        );
+
+                        if (existing == null) {
+                            chtc_dao.insert(chtc);
+                        } else if (existing.getHamLuong() != chtc.getHamLuong()) {
+                            chtc_dao.update(chtc);
+                        }
+                    }
+                }
+                // Sau khi xong, ẩn overlay (chạy lại trên JavaFX Thread)
+                Platform.runLater(() -> {
+                    root.getChildren().remove(overlay);
+                    danhMucThuoc_Ctrl.refestTable();
+                    dong();
+                });
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Platform.runLater(() -> root.getChildren().remove(overlay));
+            }
+        }).start();
+    }
+
+    private void dong(){
+        Stage stage = (Stage) txtMaThuoc.getScene().getWindow();
+        stage.close();
+    }
+
+    public void btnHuy(ActionEvent actionEvent) {
+        dong();
+    }
+
+    public void setParent(DanhMucThuoc_Ctrl parent) {
+        danhMucThuoc_Ctrl = parent;
+    }
+
+    public void btnXoa(ActionEvent actionEvent) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Bạn có chắc muốn xoá thuốc này?", ButtonType.YES, ButtonType.NO);
+        confirm.setHeaderText(null);
+        confirm.showAndWait().ifPresent(btn -> {
+            if (btn == ButtonType.YES) {
+                Thuoc_SanPham_Dao thuoc_dao = new Thuoc_SanPham_Dao();
+                thuoc_dao.deleteById(txtMaThuoc.getText().trim());
+                if (onDeleted != null) onDeleted.accept(thuoc_dao.selectById(txtMaThuoc.getText().trim()));
+                danhMucThuoc_Ctrl.refestTable();
+                dong();
+            }
+        });
+    }
+
+    public void chonFile(ActionEvent actionEvent) {
+        Stage stage = (Stage) txtMaThuoc.getScene().getWindow();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Chọn ảnh thuốc");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+        java.io.File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile != null) {
+            Image image = new Image(selectedFile.toURI().toString());
+            imgThuoc_SanPham.setImage(image);
+        }
+    }
+
+    private void capNhatThuoc() {
         Thuoc_SanPham thuoc = new Thuoc_SanPham();
         thuoc.setMaThuoc(txtMaThuoc.getText());
         thuoc.setTenThuoc(txtTenThuoc.getText().trim());
@@ -221,45 +368,8 @@ public class SuaXoaThuoc_Ctrl {
         thuoc.setNuocSX(txtNuocSanXuat.getText().trim());
         thuoc.setQuyCachDongGoi(txtQuyCachDongGoi.getText().trim());
         thuoc.setSDK_GPNK(txtSDK_GPNK.getText().trim());
-        Image image = imgThuoc_SanPham.getImage(); // lấy ảnh trong ImageView
-        if (image != null) {
-            BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            try {
-                ImageIO.write(bufferedImage, "png", baos); // định dạng ảnh png
-                baos.flush();
-                byte[] imageBytes = baos.toByteArray();    // chuyển sang byte[]
-                baos.close();
-
-                thuoc.setHinhAnh(imageBytes); // gán vào đối tượng
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        dong();
-
-        Thuoc_SanPham_Dao thuoc_dao = new Thuoc_SanPham_Dao();
-        thuoc_dao.update(thuoc);
-
-        if(listChiTietHoatChat != null) {
-            ChiTietHoatChat_Dao chtc_dao = new ChiTietHoatChat_Dao();
-            for (ChiTietHoatChat chtc : listChiTietHoatChat) {
-                if(chtc_dao.selectById(chtc.getThuoc().getMaThuoc(), chtc.getHoatChat().getMaHoatChat()) == null) {
-                    chtc_dao.insert(chtc);
-                } else if (chtc.getHamLuong() != chtc_dao.selectById(chtc.getThuoc().getMaThuoc(), chtc.getHoatChat().getMaHoatChat()).getHamLuong()) {
-                    chtc_dao.update(chtc);
-                }
-            }
-        }
-    }
-
-    private void dong(){
-        Stage stage = (Stage) txtMaThuoc.getScene().getWindow();
-        stage.close();
-    }
-
-    public void btnHuy(ActionEvent actionEvent) {
+        danhMucThuoc_Ctrl.refestTable();
         dong();
     }
 }

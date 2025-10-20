@@ -63,6 +63,7 @@ public class SuaXoaNhaCungCap_Ctrl {
                 dialogPane.getButtonTypes().addAll(javafx.scene.control.ButtonType.OK);
                 dialogPane.setContentText("Cập nhật nhà cung cấp thành công!");
                 dialog.showAndWait();
+                dong();
             } else {
                 Dialog<String> dialog = new Dialog<>();
                 dialog.setTitle("Thông báo");

@@ -10,15 +10,15 @@
 
 <AnchorPane prefHeight="895.0" prefWidth="1646.0" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMThuoc.DanhMucThuoc_Ctrl">
    <children>
-      <TextField fx:id="tfTimThuoc" layoutX="12.0" layoutY="47.0" prefHeight="40.0" prefWidth="771.0" promptText="Tìm theo mã, tên thuốc" />
-      <Button id="btntim" fx:id="btnTimThuoc" layoutX="789.0" layoutY="47.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timThuoc" prefHeight="30.0" prefWidth="69.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" />
-      <Pane id="lblpaneTitle" prefHeight="40.0" prefWidth="1632.0">
+      <TextField fx:id="tfTimThuoc" layoutX="11.5" layoutY="47.0" prefHeight="30.0" prefWidth="353.0" promptText="Tìm theo mã, tên thuốc" />
+      <Button id="btntim" fx:id="btnTimThuoc" layoutX="375.0" layoutY="46.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timThuoc" prefHeight="30.0" prefWidth="69.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" />
+      <Pane id="lblpaneTitle" prefHeight="40.0" prefWidth="1200.0">
          <children>
             <Label id="lbtitle" layoutX="12.0" layoutY="2.0" prefHeight="36.0" prefWidth="269.0" text="Danh mục thuốc" />
          </children>
       </Pane>
-      <Button id="btnthemthuoc" fx:id="btnThemThuoc" layoutX="1387.0" layoutY="47.0" mnemonicParsing="false" onMouseClicked="#btnThemThuocClick" prefHeight="40.0" prefWidth="158.0" text="✚Thêm thuốc" AnchorPane.topAnchor="47.0" />
-       <TableView fx:id="tbl_Thuoc" layoutX="12.0" layoutY="101.0" prefHeight="785.0" prefWidth="1622.0">
+      <Button id="btnthemthuoc" fx:id="btnThemThuoc" layoutX="956.0" layoutY="46.0" mnemonicParsing="false" onAction="#themthuoc" onMouseClicked="#btnThemThuocClick" prefHeight="30.0" prefWidth="144.0" text="✚Thêm thuốc" AnchorPane.topAnchor="46.0" />
+       <TableView fx:id="tbl_Thuoc" layoutX="11.0" layoutY="86.0" prefHeight="786.0" prefWidth="1614.0">
            <columns>
             <TableColumn fx:id="colSTT" prefWidth="54.28570747375488" text="STT" />
                <TableColumn fx:id="colMaThuoc" prefWidth="144.0" text="Mã thuốc" />

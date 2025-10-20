@@ -3,13 +3,15 @@ package com.example.pharmacymanagementsystem_qlht.dao;
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.*;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
     private final String INSERT_SQL = "INSERT INTO Thuoc_SanPham (TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaNDL, MaLoaiHang, HinhAnh, ViTri) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE Thuoc_SanPham SET TenThuoc=?, HamLuong=?, DonViHL=?, DuongDung=?, QuyCachDongGoi=?, SDK_GPNK=?, HangSX=?, NuocSX=?, HinhAnh=? WHERE MaThuoc=?";
+    private final String UPDATE_SQL = "UPDATE Thuoc_SanPham SET TenThuoc=?, HamLuong=?, DonViHL=?, DuongDung=?, QuyCachDongGoi=?, SDK_GPNK=?, HangSX=?, NuocSX=?, MaNDL=?, MaLoaiHang=?, HinhAnh=?, ViTri=? WHERE MaThuoc=?";
     private final String DELETE_SQL = "DELETE FROM Thuoc_SanPham WHERE MaThuoc=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM Thuoc_SanPham";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM Thuoc_SanPham WHERE MaThuoc=?";
@@ -27,18 +29,18 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
     private final String SELECT_TENDVT_BYMA_SQL = "SELECT TenDonViTinh FROM ChiTietDonViTinh ctdvt JOIN DonViTinh dvt ON ctdvt.MaDVT = dvt.MaDVT WHERE MaThuoc = ? AND DonViCoBan = 1";
 
     @Override
-    public void insert(Thuoc_SanPham e) {
-        ConnectDB.update(INSERT_SQL, e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(),e.getNhomDuocLy().getMaNDL(), e.getLoaiHang().getMaLoaiHang(), e.getHinhAnh(),e.getVitri().getMaKe());
+    public boolean insert(Thuoc_SanPham e) {
+        return ConnectDB.update(INSERT_SQL, e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(),e.getNhomDuocLy().getMaNDL(), e.getLoaiHang().getMaLoaiHang(), e.getHinhAnh(),e.getVitri().getMaKe())>0;
     }
 
     @Override
-    public void update(Thuoc_SanPham e) {
-        ConnectDB.update(UPDATE_SQL, e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(), e.getHinhAnh(), e.getMaThuoc());
+    public boolean update(Thuoc_SanPham thuoc) {
+        return ConnectDB.update(UPDATE_SQL, thuoc.getTenThuoc(), thuoc.getHamLuong(), thuoc.getDonViHamLuong(), thuoc.getDuongDung(), thuoc.getQuyCachDongGoi(), thuoc.getSDK_GPNK(), thuoc.getHangSX(), thuoc.getNuocSX(), thuoc.getNhomDuocLy().getMaNDL(), thuoc.getLoaiHang().getMaLoaiHang(), thuoc.getHinhAnh(), thuoc.getVitri().getMaKe(), thuoc.getMaThuoc()) > 0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_SQL, keys);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_SQL, keys)>0;
     }
 
     @Override
@@ -64,7 +66,7 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
                 sp.setNuocSX(rs.getString("NuocSX"));
                 sp.setNhomDuocLy(new NhomDuocLy_Dao().selectById(rs.getString("MaNDL")));
                 sp.setLoaiHang(new LoaiHang_Dao().selectById(rs.getString("MaLoaiHang")));
-                sp.setHinhAnh(rs.getString("HinhAnh"));
+                sp.setHinhAnh(rs.getBytes("HinhAnh"));
                 sp.setVitri(new KeHang_Dao().selectById(rs.getString("ViTri")));
                 list.add(sp);
             }
@@ -146,5 +148,35 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
             throw new RuntimeException(e);
         }
         return tenDVT;
+    }
+
+    public List<String> layDanhSachThuocTheoKe(String maKe) {
+        List<String> danhSach = new ArrayList<>();
+        String sql = "SELECT TenThuoc FROM Thuoc_SanPham WHERE ViTri = ?";
+        try {
+            ResultSet rs = ConnectDB.query(sql, maKe);
+            while (rs.next()) {
+                danhSach.add(rs.getString("TenThuoc"));
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return danhSach;
+    }
+
+    public String getTenLoaiHangByMaThuoc(String maThuoc) {
+        String tenLoaiHang = null;
+        String sql = "SELECT lh.TenLH FROM Thuoc_SanPham ts JOIN LoaiHang lh ON ts.MaLoaiHang = lh.MaLoaiHang WHERE ts.MaThuoc = ?";
+        try {
+            ResultSet rs = ConnectDB.query(sql, maThuoc);
+            if (rs.next()) {
+                tenLoaiHang = rs.getString("TenLH");
+            }
+            rs.getStatement().close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return tenLoaiHang;
     }
 }

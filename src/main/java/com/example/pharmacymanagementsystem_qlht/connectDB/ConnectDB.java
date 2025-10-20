@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 
 public class ConnectDB {
 
-    static String url = "jdbc:sqlserver://localhost:1433;databaseName=QuanLyNhaThuoc;encrypt=true;trustServerCertificate=true";
+    static String url = "jdbc:sqlserver://localhost:1433;databaseName=QuanLyNhaThuoc;encrypt=true;trustServerCertificate=true;useUnicode=true;characterEncoding=UTF-8";
     static String user = "sa";
     static String password = "sapassword";
 
@@ -45,4 +45,19 @@ public class ConnectDB {
         return stmt.executeQuery();
     }
 
+    public static String queryTaoMa(String sql) {
+        String maGenerate = null;
+        try (Connection con = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = con.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                maGenerate = rs.getString(1);
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return maGenerate;
+    }
 }

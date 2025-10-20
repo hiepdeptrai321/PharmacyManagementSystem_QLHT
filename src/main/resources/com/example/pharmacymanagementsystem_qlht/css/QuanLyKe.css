@@ -12,7 +12,17 @@
 #lbtitle{
     -fx-border-color: transparent transparent #ccc transparent;
     -fx-border-width: 0 0 1px 0;
-    -fx-text-fill: blue;
+
+}
+#btnReset{
+-fx-background-color: green;   /* trong suốt nền */
+    -fx-border-color: transparent;       /* bỏ viền */
+    -fx-font-size: 14px;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-graphic-text-gap: 8;
+    -fx-min-height: 32px;
+    -fx-border-radius: 6;
 }
 #btnthemthuoc{
     -fx-background-color: green;   /* trong suốt nền */
@@ -63,4 +73,4 @@
     -fx-min-height: 32px;
     -fx-border-radius: 6;
     -fx-text-fill: white;
-    }
+}

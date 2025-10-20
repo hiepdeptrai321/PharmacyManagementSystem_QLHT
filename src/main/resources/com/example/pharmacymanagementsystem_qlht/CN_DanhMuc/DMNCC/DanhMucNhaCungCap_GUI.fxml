@@ -8,29 +8,29 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane prefHeight="704.0" prefWidth="1200.0" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhaCungCap.DanhMucNhaCungCap_Ctrl">
+<AnchorPane prefHeight="895.0" prefWidth="1646.0" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhaCungCap.DanhMucNhaCungCap_Ctrl">
     <children>
         <Pane id="lblpaneTitle" prefHeight="40.0" prefWidth="1200.0">
             <children>
-                <Label id="lbtitle" layoutX="10.0" layoutY="2.0" prefHeight="37.0" prefWidth="171.0" text="Nhà Cung Cấp" />
+                <Label id="lbtitle" layoutX="10.0" layoutY="2.0" prefHeight="37.0" prefWidth="397.0" text="Danh mục nhà cung cấp" />
             </children>
         </Pane>
-        <TextField layoutX="11.5" layoutY="47.0" prefHeight="30.0" prefWidth="353.0" promptText="Tìm theo mã, tên nhà cung cấp" AnchorPane.topAnchor="47.0" />
-        <Button id="btntim" layoutX="375.0" layoutY="46.0" minWidth="35.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="69.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" AnchorPane.topAnchor="46.0" />
-        <Button layoutX="941.0" layoutY="46.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="163.0" text="✚Thêm nhà cung cấp" AnchorPane.topAnchor="46.0" />
-        <TableView id="tablethuoc" fx:id="tblNhaCungCap" layoutX="12.0" layoutY="86.0" prefHeight="609.0" prefWidth="1177.0">
+        <TextField layoutX="12.0" layoutY="47.0" prefHeight="40.0" prefWidth="767.0" promptText="Tìm theo mã, tên nhà cung cấp" AnchorPane.topAnchor="47.0" />
+        <Button id="btntim" layoutX="790.0" layoutY="47.0" minWidth="35.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="69.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" AnchorPane.topAnchor="47.0" />
+        <Button id="btnthemthuoc" layoutX="1371.0" layoutY="47.0" mnemonicParsing="false" onAction="#btnThemNCC" prefHeight="40.0" prefWidth="174.0" text="✚Thêm nhà cung cấp" AnchorPane.topAnchor="47.0" />
+        <TableView id="tablethuoc" fx:id="tblNhaCungCap" layoutX="12.0" layoutY="98.0" prefHeight="789.0" prefWidth="1625.0">
             <columns>
                 <TableColumn prefWidth="48.83333206176758" text="STT" />
-                <TableColumn fx:id="colMaNCC" prefWidth="114.16667175292969" text="Mã NCC" />
-                <TableColumn fx:id="colTenNCC" prefWidth="288.0" text="Tên NCC" />
-                <TableColumn fx:id="colDiaChi" minWidth="0.0" prefWidth="193.0" text="Địa chỉ" />
-                <TableColumn fx:id="colSDT" minWidth="0.0" prefWidth="138.857177734375" text="Số điện thoại" />
-                <TableColumn fx:id="colEmail" minWidth="0.0" prefWidth="131.4285888671875" text="Email" />
-                <TableColumn fx:id="colGhiChu" minWidth="0.0" prefWidth="198.85711669921875" text="Ghi chú" />
-                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="62.857177734375" text="Chi tiết" />
+                <TableColumn fx:id="colMaNCC" prefWidth="154.0" text="Mã NCC" />
+                <TableColumn fx:id="colTenNCC" prefWidth="320.0" text="Tên NCC" />
+                <TableColumn fx:id="colDiaChi" minWidth="0.0" prefWidth="179.0" text="Địa chỉ" />
+                <TableColumn fx:id="colSDT" minWidth="0.0" prefWidth="265.0" text="Số điện thoại" />
+                <TableColumn fx:id="colEmail" minWidth="0.0" prefWidth="213.0" text="Email" />
+                <TableColumn fx:id="colGhiChu" minWidth="0.0" prefWidth="339.0" text="Ghi chú" />
+                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="104.0" text="Chi tiết" />
             </columns>
         </TableView>
-        <Button id="btnnhapxuat" layoutX="1110.0" layoutY="46.0" minWidth="46.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="45.0" text="📥" AnchorPane.topAnchor="46.0" />
-        <Button id="btnnhapxuat" layoutX="1153.0" layoutY="46.0" minWidth="27.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="39.0" text="📤" AnchorPane.topAnchor="46.0" />
+        <Button id="btnnhapxuat" layoutX="1553.0" layoutY="47.0" minWidth="46.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="45.0" text="📥" AnchorPane.topAnchor="47.0" />
+        <Button id="btnnhapxuat" layoutX="1596.0" layoutY="47.0" minWidth="27.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="43.0" text="📤" AnchorPane.topAnchor="47.0" />
     </children>
 </AnchorPane>

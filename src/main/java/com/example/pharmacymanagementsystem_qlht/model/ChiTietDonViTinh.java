@@ -5,7 +5,7 @@ import java.util.Objects;
 public class ChiTietDonViTinh {
     private Thuoc_SanPham thuoc;
     private DonViTinh dvt;
-    private int heSoQuyDoi;
+    private float heSoQuyDoi;
     private double giaNhap;
     private double giaBan;
     private boolean donViCoBan;
@@ -13,7 +13,7 @@ public class ChiTietDonViTinh {
     public ChiTietDonViTinh() {
     }
 
-    public ChiTietDonViTinh(Thuoc_SanPham thuoc, DonViTinh dvt, int heSoQuyDoi, double giaNhap, double giaBan, boolean donViCoBan) {
+    public ChiTietDonViTinh(Thuoc_SanPham thuoc, DonViTinh dvt, float heSoQuyDoi, double giaNhap, double giaBan, boolean donViCoBan) {
         this.thuoc = thuoc;
         this.dvt = dvt;
         this.heSoQuyDoi = heSoQuyDoi;
@@ -38,11 +38,11 @@ public class ChiTietDonViTinh {
         this.dvt = dvt;
     }
 
-    public int getHeSoQuyDoi() {
+    public float getHeSoQuyDoi() {
         return heSoQuyDoi;
     }
 
-    public void setHeSoQuyDoi(int heSoQuyDoi) {
+    public void setHeSoQuyDoi(float heSoQuyDoi) {
         this.heSoQuyDoi = heSoQuyDoi;
     }
 

@@ -2,6 +2,7 @@ package com.example.pharmacymanagementsystem_qlht.dao;
 
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuDoiHang;
+import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuTraHang;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -13,20 +14,21 @@ public class ChiTietPhieuDoiHang_Dao implements DaoInterface<ChiTietPhieuDoiHang
     private final String DELETE_BY_ID_SQL = "DELETE FROM ChiTietPhieuDoiHang WHERE MaLH=? AND MaPD=? AND MaThuoc=?";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM ChiTietPhieuDoiHang WHERE MaLH=? AND maPD=? AND MaThuoc=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM ChiTietPhieuDoiHang";
+    private final String SELECT_BY_MAPD_SQL = "SELECT * FROM ChiTietPhieuDoiHang WHERE MaPD = ?";
 
     @Override
-    public void insert(ChiTietPhieuDoiHang e) {
-        ConnectDB.update(INSERT_SQL, e.getLoHang().getMaLH(), e.getPhieuDoiHang().getMaPD(), e.getThuoc().getMaThuoc(), e.getSoLuong(), e.getDonGia(), e.getGiamGia());
+    public boolean insert(ChiTietPhieuDoiHang e) {
+        return ConnectDB.update(INSERT_SQL, e.getLoHang().getMaLH(), e.getPhieuDoiHang().getMaPD(), e.getThuoc().getMaThuoc(), e.getSoLuong(), e.getDonGia(), e.getGiamGia())>0;
     }
 
     @Override
-    public void update(ChiTietPhieuDoiHang e) {
-        ConnectDB.update(UPDATE_SQL, e.getSoLuong(), e.getDonGia(), e.getGiamGia(), e.getLoHang().getMaLH(), e.getPhieuDoiHang().getMaPD(), e.getThuoc().getMaThuoc());
+    public boolean update(ChiTietPhieuDoiHang e) {
+        return ConnectDB.update(UPDATE_SQL, e.getSoLuong(), e.getDonGia(), e.getGiamGia(), e.getLoHang().getMaLH(), e.getPhieuDoiHang().getMaPD(), e.getThuoc().getMaThuoc())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_BY_ID_SQL, keys[0], keys[1], keys[2]);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_BY_ID_SQL, keys[0], keys[1], keys[2])>0;
     }
 
     @Override
@@ -61,5 +63,9 @@ public class ChiTietPhieuDoiHang_Dao implements DaoInterface<ChiTietPhieuDoiHang
     @Override
     public List<ChiTietPhieuDoiHang> selectAll() {
         return selectBySql(SELECT_ALL_SQL);
+    }
+
+    public List<ChiTietPhieuDoiHang> getChiTietPhieuDoiByMaPT(String maPD) {
+        return this.selectBySql(SELECT_BY_MAPD_SQL, maPD);
     }
 }

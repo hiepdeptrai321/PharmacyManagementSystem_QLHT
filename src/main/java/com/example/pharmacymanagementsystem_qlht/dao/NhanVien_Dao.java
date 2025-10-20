@@ -15,8 +15,8 @@ public class NhanVien_Dao implements DaoInterface<NhanVien> {
     private final String SELECT_ALL_SQL = "SELECT * FROM NhanVien";
 
     @Override
-    public void insert(NhanVien e) {
-        ConnectDB.update(INSERT_SQL,
+    public boolean insert(NhanVien e) {
+        return ConnectDB.update(INSERT_SQL,
                 e.getMaNV(),
                 e.getTenNV(),
                 e.getSdt(),
@@ -26,12 +26,12 @@ public class NhanVien_Dao implements DaoInterface<NhanVien> {
                 e.getDiaChi(),
                 e.getTrangThai(),
                 e.getTaiKhoan(),
-                e.getMatKhau());
+                e.getMatKhau())>0;
     }
 
     @Override
-    public void update(NhanVien e) {
-    ConnectDB.update(UPDATE_SQL,
+    public boolean update(NhanVien e) {
+        return ConnectDB.update(UPDATE_SQL,
             e.getTenNV(),
             e.getSdt(),
             e.getEmail(),
@@ -41,12 +41,12 @@ public class NhanVien_Dao implements DaoInterface<NhanVien> {
             e.getTrangThai(),
             e.getTaiKhoan(),
             e.getMatKhau(),
-            e.getMaNV());
+            e.getMaNV())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-    ConnectDB.update(DELETE_BY_ID, keys);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_BY_ID, keys)>0;
     }
 
     @Override

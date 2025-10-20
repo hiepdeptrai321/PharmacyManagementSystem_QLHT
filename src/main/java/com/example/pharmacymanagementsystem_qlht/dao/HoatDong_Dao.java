@@ -2,7 +2,6 @@ package com.example.pharmacymanagementsystem_qlht.dao;
 
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.HoatDong;
-import com.example.pharmacymanagementsystem_qlht.model.NhanVien;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -17,18 +16,18 @@ public class HoatDong_Dao implements DaoInterface<HoatDong> {
     private final String SELECT_ALL_SQL = "SELECT * FROM HoatDong";
 
     @Override
-    public void insert(HoatDong e) {
-        ConnectDB.update(INSERT_SQL, e.getLoaiHD(), e.getBang(), e.getThoiGian(), e.getGhiChu(), e.getNhanVien().getMaNV(), e.getMaHD());
+    public boolean insert(HoatDong e) {
+        return ConnectDB.update(INSERT_SQL, e.getLoaiHD(), e.getBang(), e.getThoiGian(), e.getGhiChu(), e.getNhanVien().getMaNV(), e.getMaHD())>0;
     }
 
     @Override
-    public void update(HoatDong e) {
-        ConnectDB.update(UPDATE_SQL, e.getLoaiHD(), e.getBang(), e.getThoiGian(), e.getGhiChu(), e.getMaHD());
+    public boolean update(HoatDong e) {
+        return ConnectDB.update(UPDATE_SQL, e.getLoaiHD(), e.getBang(), e.getThoiGian(), e.getGhiChu(), e.getMaHD())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_BY_ID, keys);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_BY_ID, keys)>0;
     }
 
     @Override

@@ -3,9 +3,7 @@ package com.example.pharmacymanagementsystem_qlht.dao;
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.KhuyenMai;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,18 +16,18 @@ public class KhuyenMai_Dao implements DaoInterface<KhuyenMai> {
     private final String SELECT_BY_TUKHOA_SQL = "SELECT MaKM, MaLoai, TenKM, GiaTriKM, NgayBatDau, NgayKetThuc, MoTa FROM KhuyenMai WHERE TenKM LIKE ? OR MaKM LIKE ?";
 
     @Override
-    public void insert(KhuyenMai e) {
-        ConnectDB.update(INSERT_SQL, e.getLoaiKM(), e.getTenKM(), e.getGiaTriKM(), e.getNgayBatDau(), e.getNgayKetThuc(), e.getMoTa());
+    public boolean insert(KhuyenMai e) {
+        return ConnectDB.update(INSERT_SQL, e.getLoaiKM(), e.getTenKM(), e.getGiaTriKM(), e.getNgayBatDau(), e.getNgayKetThuc(), e.getMoTa())>0;
     }
 
     @Override
-    public void update(KhuyenMai e) {
-        ConnectDB.update(UPDATE_SQL, e.getLoaiKM(), e.getTenKM(), e.getGiaTriKM(), e.getNgayBatDau(), e.getNgayKetThuc(), e.getMoTa(), e.getMaKM());
+    public boolean update(KhuyenMai e) {
+        return ConnectDB.update(UPDATE_SQL, e.getLoaiKM(), e.getTenKM(), e.getGiaTriKM(), e.getNgayBatDau(), e.getNgayKetThuc(), e.getMoTa(), e.getMaKM())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_BY_ID_SQL, keys);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_BY_ID_SQL, keys)>0;
     }
 
     @Override

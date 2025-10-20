@@ -1,5 +1,6 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKThuoc;
 
+import com.example.pharmacymanagementsystem_qlht.dao.LoaiHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SanPham_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
 import javafx.application.Application;
@@ -61,7 +62,7 @@ public class TimKiemThuoc_Ctrl extends Application {
         cboTimKiem.setValue("Loại tìm kiếm");
         txtTimKiem.textProperty().addListener((obs, oldVal, newVal) -> TimKiemTxt());
         cboTimKiem.valueProperty().addListener((obs, oldVal, newVal) -> TimKiemTxt());
-        cbxLoaiHang.getItems().addAll(new Thuoc_SanPham_Dao().getAllLoaiHang());
+        cbxLoaiHang.getItems().addAll(new LoaiHang_Dao().getAllTenLH());
         cbxLoaiHang.getItems().addFirst("Chọn loại hàng");
         cbxLoaiHang.setValue("Chọn loại hàng");
         cbxXuatSu.getItems().addAll(new Thuoc_SanPham_Dao().getAllXuatXu());

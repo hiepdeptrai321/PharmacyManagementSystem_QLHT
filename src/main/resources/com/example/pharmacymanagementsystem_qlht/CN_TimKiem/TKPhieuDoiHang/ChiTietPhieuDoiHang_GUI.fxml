@@ -13,7 +13,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1200.0" stylesheets="@../../css/ChiTietPhieuDoi.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDoiHang.ChiTietPhieuDoiHang_Ctrl">
+<AnchorPane prefHeight="895" prefWidth="1646" stylesheets="@../../css/ChiTietPhieuDoi.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDoiHang.ChiTietPhieuDoiHang_Ctrl">
 <SplitPane dividerPositions="0.65" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
     <AnchorPane minHeight="0.0" minWidth="0.0">
@@ -23,17 +23,16 @@
                   <children>
                       <Label styleClass="bold-label" text="Mã phiếu đổi: " />
                       <Label fx:id="lblMaPhieuDoiValue" layoutX="110.0" layoutY="0.8" styleClass="value-label" text="PDH012345" />
-                      <Label fx:id="lblNgayLapValue" layoutX="346.0" layoutY="1.0" prefHeight="20.0" prefWidth="99.0" styleClass="value-label" text="08/10/2025" />
+                      <Label fx:id="lblNgayLapValue" layoutX="346.0" layoutY="1.0" prefHeight="20.0" prefWidth="317.0" styleClass="value-label" text="08/10/2025" />
                       <Label layoutX="282.0" layoutY="2.0" styleClass="bold-label label-padding" text="Ngày lập: " />
                   </children>
                </Pane>
                   <Label layoutX="5.0" layoutY="69.0" styleClass="section-label" text="DANH SÁCH SẢN PHẨM ĐỔI" />
-               <TableView fx:id="tblChiTietPhieuDoi" layoutY="103.0" prefHeight="594.0" prefWidth="774.0" styleClass="main-table">
+               <TableView fx:id="tblChiTietPhieuDoi" layoutX="13.0" layoutY="103.0" prefHeight="776.0" prefWidth="1045.0" styleClass="main-table">
                    <columns>
                        <TableColumn fx:id="colSTT" prefWidth="55.73331546783447" text="STT" />
                        <TableColumn fx:id="colTenSP" prefWidth="371.46668243408203" text="Tên sản phẩm/Hoạt chất" />
                        <TableColumn fx:id="colSoLuong" prefWidth="89.33331298828125" text="Số lượng đổi" />
-                       <TableColumn prefWidth="91.4666748046875" text="Đơn vị" />
                        <TableColumn fx:id="colLyDo" prefWidth="160.800048828125" text="Lý do đổi" />
                    </columns>
                    <columnResizePolicy>
@@ -47,7 +46,7 @@
          <Pane layoutX="27.2" layoutY="10.4" prefWidth="379.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
             <children>
                   <Label styleClass="section-label" text="THÔNG TIN PHIẾU ĐỔI" />
-               <Pane layoutY="40.8" prefHeight="160.0" styleClass="info-pane">
+               <Pane layoutY="41.0" prefHeight="160.0" prefWidth="545.0" styleClass="info-pane">
                    <Label layoutX="5.0" layoutY="5.0" styleClass="bold-label" text="Tên nhân viên lập:" />
                    <Label fx:id="lblTenNhanVienValue" layoutX="160.0" layoutY="5.0" styleClass="value-label" />
                    <Label layoutX="5.0" layoutY="35.0" styleClass="bold-label" text="Tên khách hàng:" />
@@ -55,22 +54,25 @@
                    <Label layoutX="5.0" layoutY="65.0" styleClass="bold-label" text="SĐT Khách hàng:" />
                    <Label fx:id="lblSDTKhachHangValue" layoutX="160.0" layoutY="65.0" styleClass="value-label" />
                    <Label layoutX="5.0" layoutY="95.0" styleClass="bold-label" text="Ghi chú:" />
-                   <Label fx:id="lblGhiChuValue" layoutX="160.0" layoutY="95.0" prefWidth="200.0" styleClass="value-label" text="Không có." wrapText="true" />
+                   <Label fx:id="lblGhiChuValue" layoutX="72.0" layoutY="95.0" prefHeight="9.0" prefWidth="288.0" styleClass="value-label" wrapText="true" />
+                  <Label fx:id="lblTenNV" layoutX="146.0" layoutY="7.0" prefHeight="17.0" prefWidth="205.0" />
+                  <Label fx:id="lblTenKH" layoutX="146.0" layoutY="37.0" prefHeight="17.0" prefWidth="205.0" />
+                  <Label fx:id="lblSDTKH" layoutX="146.0" layoutY="67.0" prefHeight="17.0" prefWidth="205.0" />
                </Pane>
 
                   <Separator layoutY="216.0" />
                   <Label layoutY="234.4" styleClass="section-label" text="TÓM TẮT ĐỔI HÀNG" />
-               <Pane layoutY="275.2" prefHeight="280.0" styleClass="summary-pane">
+               <Pane layoutY="275.0" prefHeight="280.0" prefWidth="545.0" styleClass="summary-pane">
                    <Label layoutX="5.0" layoutY="5.0" styleClass="label-normal" text="Tổng tiền đổi (trước CK/VAT):" />
                    <Label fx:id="lblTongTienDoiValue" layoutX="240.0" layoutY="5.0" styleClass="bold-label value-label" text="0 VNĐ" />
                    <Label layoutX="5.0" layoutY="30.0" styleClass="label-normal" text="Chiết khấu Phiếu đổi:" />
                    <Label fx:id="lblChietKhauPDoiValue" layoutX="240.0" layoutY="30.0" styleClass="label-discount bold-label value-label" text="0 VNĐ" />
                    <Label layoutX="5.0" layoutY="55.0" styleClass="label-normal" text="Thuế (VAT):" />
                    <Label fx:id="lblThueVATValue" layoutX="240.0" layoutY="55.0" styleClass="bold-label value-label" text="0 VNĐ" />
-                   <Separator layoutY="85.0" prefWidth="380.0" />
+                   <Separator layoutY="85.0" prefHeight="2.0" prefWidth="547.0" />
                    <Label layoutX="5.0" layoutY="100.0" styleClass="bold-label section-label" text="TỔNG TIỀN ĐỔI:" />
                    <Label fx:id="lblTongTienPhaiDoiValue" layoutX="240.0" layoutY="100.0" styleClass="main-value-label grand-total-value bold-label value-label" text="0 VNĐ" />
-                   <Separator layoutY="130.0" prefWidth="380.0" />
+                   <Separator layoutY="130.0" prefHeight="2.0" prefWidth="555.0" />
                    <Label layoutX="5.0" layoutY="150.0" styleClass="label-normal" text="Phương thức thanh toán:" />
                    <Label fx:id="lblPTTTValue" layoutX="240.0" layoutY="150.0" styleClass="bold-label value-label" text="Tiền mặt" />
                    <Label layoutX="5.0" layoutY="175.0" styleClass="label-normal" text="Số tiền đã thanh toán:" />
@@ -80,9 +82,9 @@
                </Pane>
 
                   <VBox alignment="BOTTOM_CENTER" layoutY="570.4">
-                  <Pane prefHeight="110.0" prefWidth="399.0">
+                  <Pane prefHeight="110.0" prefWidth="545.0">
                      <children>
-                          <Button fx:id="btnInPhieuDoi" layoutX="27.5" layoutY="31.5" prefHeight="47.0" prefWidth="132.0" styleClass="print-btn" text="In Phiếu Đổi">
+                          <Button fx:id="btnInPhieuDoi" layoutX="82.0" layoutY="15.0" prefHeight="70.0" prefWidth="132.0" styleClass="print-btn" text="In Phiếu Đổi">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -93,7 +95,7 @@
                                  </color>
                               </DropShadow>
                            </effect></Button>
-                          <Button fx:id="btnDong" layoutX="239.5" layoutY="31.5" prefHeight="47.0" prefWidth="132.0" styleClass="danger-btn" text="Đóng">
+                          <Button fx:id="btnDong" layoutX="339.0" layoutY="18.0" prefHeight="70.0" prefWidth="132.0" styleClass="danger-btn" text="Đóng">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>

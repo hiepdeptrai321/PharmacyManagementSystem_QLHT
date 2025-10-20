@@ -2,8 +2,6 @@ package com.example.pharmacymanagementsystem_qlht.dao;
 
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SP_TheoLo;
-import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuNhap;
-import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -23,23 +21,23 @@ public class Thuoc_SP_TheoLo_Dao implements DaoInterface<Thuoc_SP_TheoLo> {
                 "WHERE LOWER(t.MaThuoc) LIKE ? OR LOWER(sp.TenThuoc) LIKE ?";
 
     @Override
-    public void insert(Thuoc_SP_TheoLo e) {
-        ConnectDB.update(INSERT_SQL, e.getMaLH(), e.getSoLuongTon(), e.getNsx(), e.getHsd(),
+    public boolean insert(Thuoc_SP_TheoLo e) {
+        return ConnectDB.update(INSERT_SQL, e.getMaLH(), e.getSoLuongTon(), e.getNsx(), e.getHsd(),
                 e.getPhieuNhap() != null ? e.getPhieuNhap().getPhieuNhap().getMaPN() : null,
-                e.getThuoc() != null ? e.getThuoc().getMaThuoc() : null);
+                e.getThuoc() != null ? e.getThuoc().getMaThuoc() : null)>0;
     }
 
     @Override
-    public void update(Thuoc_SP_TheoLo e) {
-        ConnectDB.update(UPDATE_SQL, e.getSoLuongTon(), e.getNsx(), e.getHsd(),
+    public boolean update(Thuoc_SP_TheoLo e) {
+        return ConnectDB.update(UPDATE_SQL, e.getSoLuongTon(), e.getNsx(), e.getHsd(),
                 e.getPhieuNhap() != null ? e.getPhieuNhap().getPhieuNhap().getMaPN() : null,
                 e.getThuoc() != null ? e.getThuoc().getMaThuoc() : null,
-                e.getMaLH());
+                e.getMaLH())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_BY_ID, keys);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_BY_ID, keys)>0;
     }
 
     @Override

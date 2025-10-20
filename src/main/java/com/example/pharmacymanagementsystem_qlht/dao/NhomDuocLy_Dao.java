@@ -16,18 +16,18 @@ public class NhomDuocLy_Dao implements DaoInterface<NhomDuocLy> {
     private final String SELECT_ALL_SQL = "SELECT * FROM NhomDuocLy";
 
     @Override
-    public void insert(NhomDuocLy e) {
-        ConnectDB.update(INSERT_SQL, e.getMaNDL(), e.getTenNDL(), e.getMoTa());
+    public boolean insert(NhomDuocLy e) {
+        return ConnectDB.update(INSERT_SQL, e.getMaNDL(), e.getTenNDL(), e.getMoTa())>0;
     }
 
     @Override
-    public void update(NhomDuocLy e) {
-    ConnectDB.update(UPDATE_SQL, e.getTenNDL(), e.getMoTa(), e.getMaNDL());
+    public boolean update(NhomDuocLy e) {
+        return ConnectDB.update(UPDATE_SQL, e.getTenNDL(), e.getMoTa(), e.getMaNDL())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-    ConnectDB.update(DELETE_BY_ID, keys);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_BY_ID, keys)>0;
     }
 
     @Override
@@ -57,8 +57,33 @@ public class NhomDuocLy_Dao implements DaoInterface<NhomDuocLy> {
         }
         return list;
     }
+
     @Override
     public List<NhomDuocLy> selectAll() {
         return this.selectBySql(SELECT_ALL_SQL);
+    }
+
+    public List<String> getAllTenNhomDuocLy() {
+        String sql = "SELECT DISTINCT TenNDL FROM NhomDuocLy";
+        List<String> list = new ArrayList<>();
+        try {
+            ResultSet rs = ConnectDB.query(sql);
+            while (rs.next()) {
+                list.add(rs.getString("TenNDL"));
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
+    public NhomDuocLy selectByTenNhomDuocLy(String string) {
+        String sql = "SELECT * FROM NhomDuocLy WHERE TenNDL = ?";
+        List<NhomDuocLy> list = selectBySql(sql, string);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
     }
 }

@@ -26,14 +26,22 @@ module com.example.pharmacymanagementsystem_qlht {
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuTra;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuNhapHang;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_ThongKe;
-    exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuNhap;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuNhapHang;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMHoatDong;
     requires javafx.base;
     requires java.sql;
+    requires java.desktop;
+    requires javafx.swing;
 
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKeHang to javafx.fxml;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMHoatDong to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMThuoc to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuNhapHang to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhuyenMai to javafx.fxml;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDoi to javafx.fxml;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuTra to javafx.fxml;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDatHang to javafx.fxml;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKThuoc;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKThuoc to javafx.fxml;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang;
@@ -42,16 +50,18 @@ module com.example.pharmacymanagementsystem_qlht {
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoaDon to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapHoaDon to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.model to javafx.base;
+    exports com.example.pharmacymanagementsystem_qlht.model;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDatHang to javafx.fxml;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKNhaCungCap;
-    opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKNhaCungCap to javafx.fxml;
-    opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuNhap to javafx.fxml;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuNhapHang to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhaCungCap;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuTraHang to javafx.graphics, javafx.fxml;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDoiHang to javafx.graphics, javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuTraHang to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDoiHang to javafx.fxml;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDatHang to javafx.graphics, javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatKhuyenMai;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatGia;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatSoLuong;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKNhaCungCap;
 }

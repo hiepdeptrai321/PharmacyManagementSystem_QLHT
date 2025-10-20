@@ -1,5 +1,6 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDoiHang;
 
+import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDatHang.ChiTietPhieuDatHang_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.dao.PhieuDoiHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuDoiHang;
 import javafx.beans.property.SimpleStringProperty;
@@ -63,11 +64,11 @@ public class TKPhieuDoiHang_Ctrl extends Application {
     @FXML
     public void initialize() {
         cboTimKiem.getItems().addAll(
-            "Mã phiếu đổi", "Mã hóa đơn", "Tên khách hàng", "SĐT khách hàng", "Tên nhân viên", "Ngày lập"
+                "Mã phiếu đổi", "Mã hóa đơn", "Tên khách hàng", "SĐT khách hàng", "Tên nhân viên", "Ngày lập"
         );
         cboTimKiem.setValue("Tiêu chí");
         cbLoc.getItems().addAll(
-            "Tất cả", "Hôm nay", "7 ngày gần nhất", "Tháng này", "Năm nay"
+                "Tất cả", "Hôm nay", "7 ngày gần nhất", "Tháng này", "Năm nay"
         );
         cbLoc.setValue("⌛ Bộ lọc nhanh");
         tblPD.setRowFactory(tv -> {
@@ -127,16 +128,16 @@ public class TKPhieuDoiHang_Ctrl extends Application {
         tblPD.setItems(data);
     }
 
-    private void btnChiTietClick(PhieuDoiHang pd) {
+    private void btnChiTietClick(PhieuDoiHang pDoi) {
         try {
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuDoiHang/ChiTietPhieuDoiHang_GUI.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
 
-//            this.getClass();
-//            ChiTietPhieuDatHang_Ctrl ctrl = loader.getController();
-//            ctrl.load(pdh);
+            this.getClass();
+            ChiTietPhieuDoiHang_Ctrl ctrl = loader.getController();
+            ctrl.setPhieuDoiHang(pDoi);
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {

@@ -127,10 +127,10 @@ public class TimKiemNCC_Ctrl extends Application {
     public void btnChiTietClick(NhaCungCap ncc) {
         try {
             Stage stage = new Stage();
-            FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNCC/ChiTietNhaCungCap_GUI.fxml"));
+            FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKNhaCungCap/ChiTietNhaCungCap_GUI.fxml"));
             Parent root = loader.load();
-//            ChiTietNhaCungCap_Ctrl ctrl = loader.getController();
-//            ctrl.hienThiThongTin(ncc);
+            ChiTietNhaCungCap_Ctrl ctrl = loader.getController();
+            ctrl.hienThiThongTin(ncc);
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();

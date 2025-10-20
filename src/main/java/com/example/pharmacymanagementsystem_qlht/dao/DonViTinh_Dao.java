@@ -14,20 +14,21 @@ public class DonViTinh_Dao implements DaoInterface<DonViTinh>{
     private final String DELETE_BY_ID_SQL = "DELETE FROM DonViTinh WHERE MaDVT=?";
     private final String SELECT_BY_ID_SQL = "SELECT MaDVT, TenDonViTinh, KiHieu FROM DonViTinh WHERE MaDVT = ?";
     private final String SELECT_ALL_SQL = "SELECT MaDVT, TenDonViTinh, KiHieu FROM DonViTinh";
+    private final String SELECT_BY_TEN_SQL = "SELECT MaDVT, TenDonViTinh, KiHieu FROM DonViTinh WHERE TenDonViTinh = ?";
 
     @Override
-    public void insert(DonViTinh e) {
-        ConnectDB.update(INSERT_SQL, e.getMaDVT(), e.getTenDonViTinh(), e.getKiHieu());
+    public boolean insert(DonViTinh e) {
+        return ConnectDB.update(INSERT_SQL, e.getMaDVT(), e.getTenDonViTinh(), e.getKiHieu())>0;
     }
 
     @Override
-    public void update(DonViTinh e) {
-        ConnectDB.update(UPDATE_SQL, e.getTenDonViTinh(), e.getKiHieu(), e.getMaDVT());
+    public boolean update(DonViTinh e) {
+        return ConnectDB.update(UPDATE_SQL, e.getTenDonViTinh(), e.getKiHieu(), e.getMaDVT())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_BY_ID_SQL, keys);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_BY_ID_SQL, keys)>0;
     }
 
     @Override
@@ -58,5 +59,8 @@ public class DonViTinh_Dao implements DaoInterface<DonViTinh>{
     @Override
     public List<DonViTinh> selectAll() {
         return selectBySql(SELECT_ALL_SQL);
+    }
+    public DonViTinh selectByTenDVT(String tenDVT) {
+        return selectBySql(SELECT_BY_TEN_SQL, tenDVT).get(0);
     }
 }

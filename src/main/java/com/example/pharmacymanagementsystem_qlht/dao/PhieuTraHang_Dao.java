@@ -15,18 +15,18 @@ public class PhieuTraHang_Dao implements DaoInterface<PhieuTraHang> {
     private final String SELECT_ALL_SQL = "SELECT * FROM PhieuTraHang";
 
     @Override
-    public void insert(PhieuTraHang e) {
-        ConnectDB.update(INSERT_SQL, e.getMaPT(), e.getNhanVien().getMaNV(), e.getKhachHang().getMaKH(), e.getNgayLap(), e.getLyDoTra(), e.getGhiChu(), e.getHoaDon().getMaHD());
+    public boolean insert(PhieuTraHang e) {
+        return ConnectDB.update(INSERT_SQL, e.getMaPT(), e.getNhanVien().getMaNV(), e.getKhachHang().getMaKH(), e.getNgayLap(), e.getLyDoTra(), e.getGhiChu(), e.getHoaDon().getMaHD())>0;
     }
 
     @Override
-    public void update(PhieuTraHang e) {
-        ConnectDB.update(UPDATE_SQL, e.getNhanVien().getMaNV(), e.getKhachHang().getMaKH(), e.getNgayLap(), e.getLyDoTra(), e.getGhiChu(), e.getHoaDon().getMaHD(), e.getMaPT());
+    public boolean update(PhieuTraHang e) {
+        return ConnectDB.update(UPDATE_SQL, e.getNhanVien().getMaNV(), e.getKhachHang().getMaKH(), e.getNgayLap(), e.getLyDoTra(), e.getGhiChu(), e.getHoaDon().getMaHD(), e.getMaPT())>0;
     }
 
     @Override
-    public void deleteById(Object... keys) {
-        ConnectDB.update(DELETE_BY_ID_SQL, keys);
+    public boolean deleteById(Object... keys) {
+        return ConnectDB.update(DELETE_BY_ID_SQL, keys)>0;
     }
 
     @Override

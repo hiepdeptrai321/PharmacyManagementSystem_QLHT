@@ -20,12 +20,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" stylesheets="@../css/ThongKeBanHang.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_ThongKe.ThongKeBanHang_Ctrl">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="895" prefWidth="1646" stylesheets="@../css/ThongKeBanHang.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_ThongKe.ThongKeBanHang_Ctrl">
 
    <children>
-      <HBox layoutX="14.0" layoutY="14.0">
+      <HBox layoutX="14.0" layoutY="14.0" prefHeight="1126.0" prefWidth="1627.0">
          <children>
-            <VBox prefHeight="1126.0" prefWidth="282.0">
+            <VBox prefHeight="1126.0" prefWidth="449.0">
                <children>
                   <HBox>
                      <children>
@@ -53,12 +53,12 @@
                   </Label>
                   <HBox alignment="CENTER">
                      <children>
-                        <Button fx:id="btnBang" layoutX="117.0" layoutY="10.0" mnemonicParsing="false" onAction="#hienThiBang" prefHeight="25.0" prefWidth="63.0" text="Bảng">
+                        <Button fx:id="btnBang" layoutX="117.0" layoutY="10.0" mnemonicParsing="false" onAction="#hienThiBang" prefHeight="37.0" prefWidth="63.0" text="Bảng">
                            <HBox.margin>
                               <Insets left="40.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="btnBieuDo" mnemonicParsing="false" onAction="#hienThiBieuDo" prefHeight="25.0" prefWidth="63.0" text="Biểu đồ">
+                        <Button fx:id="btnBieuDo" mnemonicParsing="false" onAction="#hienThiBieuDo" prefHeight="36.0" prefWidth="63.0" text="Biểu đồ">
                            <HBox.margin>
                               <Insets left="30.0" />
                            </HBox.margin>
@@ -76,7 +76,7 @@
                         <Insets top="5.0" />
                      </VBox.margin>
                   </Label>
-                  <ComboBox fx:id="cboMQT" prefHeight="26.0" prefWidth="240.0" promptText="Lợi nhuận">
+                  <ComboBox fx:id="cboMQT" prefHeight="49.0" prefWidth="445.0" promptText="Lợi nhuận">
                      <VBox.margin>
                         <Insets top="5.0" />
                      </VBox.margin>
@@ -89,9 +89,9 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <RadioButton mnemonicParsing="false" prefHeight="26.0" prefWidth="238.0">
+                  <RadioButton mnemonicParsing="false" prefHeight="49.0" prefWidth="437.0">
                      <graphic>
-                        <ComboBox fx:id="cboThoiGian" prefHeight="25.0" prefWidth="222.0" promptText="Hôm nay" />
+                        <ComboBox fx:id="cboThoiGian" prefHeight="49.0" prefWidth="418.0" promptText="Hôm nay" />
                      </graphic>
                      <VBox.margin>
                         <Insets top="10.0" />
@@ -100,9 +100,9 @@
                         <ToggleGroup fx:id="date" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton mnemonicParsing="false" prefHeight="26.0" prefWidth="240.0" toggleGroup="$date">
+                  <RadioButton mnemonicParsing="false" prefHeight="39.0" prefWidth="435.0" toggleGroup="$date">
                      <graphic>
-                        <DatePicker prefHeight="25.0" prefWidth="222.0" />
+                        <DatePicker prefHeight="39.0" prefWidth="415.0" />
                      </graphic>
                      <VBox.margin>
                         <Insets top="10.0" />
@@ -116,28 +116,33 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <ComboBox fx:id="cboXuatfile" prefHeight="26.0" prefWidth="240.0" promptText="Excel" />
-                  <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="240.0" text="Xuất File 💾">
+                  <ComboBox fx:id="cboXuatfile" prefHeight="49.0" prefWidth="441.0" promptText="Excel" />
+                  <Button mnemonicParsing="false" prefHeight="53.0" prefWidth="438.0" text="Xuất File 💾">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Button>
                </children>
             </VBox>
-            <VBox prefHeight="1126.0" prefWidth="885.0">
+            <VBox prefHeight="1126.0" prefWidth="1161.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="934.0" text="Doanh thu">
+                  <Label alignment="CENTER" prefHeight="23.0" prefWidth="1167.0" text="Doanh thu">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TableView fx:id="tableDoanhThu" prefHeight="400.0" prefWidth="934.0">
+                  <TableView fx:id="tableDoanhThu" prefHeight="510.0" prefWidth="1161.0">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
+                      <TableColumn prefWidth="147.3333740234375" text="Thời gian" />
+                        <TableColumn prefWidth="170.6666259765625" text="Số lượng HĐ" />
+                        <TableColumn prefWidth="129.6666259765625" text="Tổng giá trị" />
+                        <TableColumn prefWidth="142.99993896484375" text="Giảm giá" />
+                        <TableColumn prefWidth="150.6666259765625" text="Số lượng đơn trả" />
+                        <TableColumn prefWidth="193.3333740234375" text="Giá trị đơn trả" />
+                        <TableColumn prefWidth="229.6666259765625" text="Doanh thu" />
                     </columns>
                   </TableView>
-                  <AreaChart fx:id="chartDoanhThu" prefHeight="400.0" prefWidth="934.0" visible="false">
+                  <AreaChart fx:id="chartDoanhThu" prefHeight="510.0" prefWidth="1161.0" visible="false">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
@@ -153,12 +158,12 @@
                         <Insets bottom="8.0" left="10.0" top="8.0" />
                      </VBox.margin>
                   </Label>
-                  <TableView prefHeight="200.0" prefWidth="877.0">
+                  <TableView prefHeight="273.0" prefWidth="1161.0">
                     <columns>
-                      <TableColumn prefWidth="98.0" text="Mã thuốc" />
-                      <TableColumn prefWidth="475.0" text="Tên thuốc" />
-                        <TableColumn minWidth="0.0" prefWidth="88.0" text="Số lượng" />
-                        <TableColumn prefWidth="262.0" text="Thành tiền" />
+                      <TableColumn prefWidth="153.0" text="Mã thuốc" />
+                      <TableColumn prefWidth="507.0" text="Tên thuốc" />
+                        <TableColumn minWidth="0.0" prefWidth="129.0" text="Số lượng" />
+                        <TableColumn prefWidth="370.0" text="Thành tiền" />
                     </columns>
                   </TableView>
                </children>

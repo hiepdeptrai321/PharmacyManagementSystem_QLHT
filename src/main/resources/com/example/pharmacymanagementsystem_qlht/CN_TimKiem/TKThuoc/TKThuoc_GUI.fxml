@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="704.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKThuoc.TimKiemThuoc_Ctrl">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../../css/TimKiemThuoc.css" prefHeight="895" prefWidth="1646" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKThuoc.TimKiemThuoc_Ctrl">
     <children>
         <VBox layoutX="10.0" layoutY="14.0">
             <children>
@@ -27,9 +27,6 @@
                           <font>
                               <Font size="36.0" />
                           </font>
-                          <cursor>
-                              <Cursor fx:constant="NONE" />
-                          </cursor>
                       </Label>
                   <Label>
                      <graphic>
@@ -43,13 +40,13 @@
                </children>
             </HBox>
                 <Separator prefWidth="200.0" />
-            <Pane prefHeight="46.0" prefWidth="1179.0">
+            <Pane prefHeight="62.0" prefWidth="1610.0">
                <VBox.margin>
                   <Insets bottom="5.0" />
                </VBox.margin>
                <children>
-                        <TextField fx:id="txtTimKiem" layoutX="121.0" layoutY="8.0" prefHeight="30.0" prefWidth="371.0" promptText="Tìm kiếm" />
-                        <Button id="btnhuy" layoutX="1124.0" layoutY="8.0" mnemonicParsing="false" onAction="#btnXoaRong" prefHeight="30.0" prefWidth="52.0">
+                        <TextField fx:id="txtTimKiem" layoutX="121.0" layoutY="8.0" prefHeight="40.0" prefWidth="371.0" promptText="Tìm kiếm" />
+                        <Button id="btnhuy" layoutX="1536.0" layoutY="9.0" mnemonicParsing="false" onAction="#btnXoaRong" prefHeight="40.0" prefWidth="52.0">
                             <graphic>
                                 <ImageView fitHeight="20.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -63,27 +60,27 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <ComboBox id="cbo" fx:id="cboTimKiem" layoutY="8.0" prefHeight="30.0" prefWidth="117.0" promptText="Loại tìm kiếm" />
-                  <ComboBox fx:id="cbxLoaiHang" layoutX="548.0" layoutY="8.0" prefHeight="30.0" prefWidth="203.0" promptText="Chọn loại hàng" />
-                  <ComboBox fx:id="cbxXuatSu" layoutX="756.0" layoutY="8.0" prefHeight="30.0" prefWidth="129.0" promptText="Chọn xuất xứ" />
+                  <ComboBox id="cbo" fx:id="cboTimKiem" layoutY="8.0" prefHeight="40.0" prefWidth="117.0" promptText="Loại tìm kiếm" />
+                  <ComboBox fx:id="cbxLoaiHang" layoutX="548.0" layoutY="8.0" prefHeight="40.0" prefWidth="203.0" promptText="Chọn loại hàng" />
+                  <ComboBox fx:id="cbxXuatSu" layoutX="756.0" layoutY="8.0" prefHeight="40.0" prefWidth="129.0" promptText="Chọn xuất xứ" />
                   <Label layoutX="890.0" layoutY="14.0" text="Hàm lượng:" />
-                  <TextField fx:id="txtHamLuongMin" layoutX="954.0" layoutY="8.0" prefHeight="30.0" prefWidth="74.0" promptText="Từ" />
-                  <TextField fx:id="txtHamLuongMax" layoutX="1038.0" layoutY="8.0" prefHeight="30.0" prefWidth="74.0" promptText="Đến" />
+                  <TextField fx:id="txtHamLuongMin" layoutX="954.0" layoutY="8.0" prefHeight="40.0" prefWidth="74.0" promptText="Từ" />
+                  <TextField fx:id="txtHamLuongMax" layoutX="1038.0" layoutY="8.0" prefHeight="40.0" prefWidth="74.0" promptText="Đến" />
                   <Label layoutX="1028.0" layoutY="14.0" text="--" />
                </children>
             </Pane>
                 <ScrollPane>
                     <content>
-                        <TableView fx:id="tbl_Thuoc" prefHeight="572.0" prefWidth="1177.0">
+                        <TableView fx:id="tbl_Thuoc" prefHeight="749.0" prefWidth="1608.0">
                             <columns>
                                 <TableColumn fx:id="colMaThuoc" prefWidth="149.0" text="Mã thuốc" />
                                 <TableColumn fx:id="colTenThuoc" minWidth="0.0" prefWidth="238.28570556640625" text="Tên Thuốc" />
                                 <TableColumn fx:id="colHamLuong" prefWidth="89.71435546875" text="Hàm lượng" />
-                                <TableColumn fx:id="colSDK_GPNK" prefWidth="150.28564453125" text="SDK_GPNK" />
-                                <TableColumn fx:id="colXuatXu" prefWidth="158.28570556640625" text="Xuất xứ" />
-                                <TableColumn fx:id="colLoaiHang" prefWidth="205.71429443359375" text="Loại hàng" />
-                                <TableColumn fx:id="colViTri" prefWidth="104.5716552734375" text="Vị trí" />
-                                <TableColumn fx:id="colChiTiet" prefWidth="78.28567940848211" text="Chi tiết" />
+                                <TableColumn fx:id="colSDK_GPNK" prefWidth="273.66668701171875" text="SDK_GPNK" />
+                                <TableColumn fx:id="colXuatXu" prefWidth="239.33331298828125" text="Xuất xứ" />
+                                <TableColumn fx:id="colLoaiHang" prefWidth="287.33331298828125" text="Loại hàng" />
+                                <TableColumn fx:id="colViTri" prefWidth="189.00006103515625" text="Vị trí" />
+                                <TableColumn fx:id="colChiTiet" prefWidth="140.0" text="Chi tiết" />
                             </columns>
                         </TableView>
                     </content>

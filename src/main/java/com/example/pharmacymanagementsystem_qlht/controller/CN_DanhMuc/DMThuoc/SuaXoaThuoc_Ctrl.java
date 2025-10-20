@@ -7,11 +7,10 @@ import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class SuaXoaThuoc_Ctrl {
@@ -33,6 +32,8 @@ public class SuaXoaThuoc_Ctrl {
     public TextField txtDonViHamLuong;
     public ListView listViewHoatChat;
     public TextField txtTimKiemHoatChat;
+    private ObservableList<HoatChat> allHoatChat;
+    private List<ChiTietHoatChat> listChiTietHoatChat;
 
     @FXML
     public void initialize(Thuoc_SanPham thuoc) {
@@ -41,17 +42,17 @@ public class SuaXoaThuoc_Ctrl {
         txtTimKiemHoatChat.textProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null && !newVal.trim().isEmpty()) {
                 listViewHoatChat.setVisible(true);
-                filterList(newVal, oldVal);
+                locDanhSachHoatChat(newVal, oldVal);
             } else {
                 listViewHoatChat.setVisible(false);
             }
         });
-        String maHoatChat = listViewHoatChat.getSelectionModel().getSelectedItem() != null ? ((HoatChat) listViewHoatChat.getSelectionModel().getSelectedItem()).getMaHoatChat() : null;
         listViewHoatChat.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 HoatChat hoatChat = ((HoatChat) newVal);
                 txtTimKiemHoatChat.clear();
                 listViewHoatChat.setVisible(false);
+                listViewHoatChat.getItems().clear();
                 if(tblHoatChat.getItems().stream().noneMatch(item -> item.getHoatChat().getMaHoatChat().equals(hoatChat.getMaHoatChat()))) {
                     ChiTietHoatChat chtc = new ChiTietHoatChat();
                     chtc.setThuoc(thuoc);
@@ -62,7 +63,7 @@ public class SuaXoaThuoc_Ctrl {
                     dialog.setContentText("Hàm lượng:");
                     dialog.showAndWait().ifPresent(hamLuong -> {
                         chtc.setHamLuong(Float.parseFloat(hamLuong));
-                        new ChiTietHoatChat_Dao().insert(chtc);
+                        listChiTietHoatChat.add(chtc);
                         tblHoatChat.getItems().add(chtc);
                     });
                 } else {
@@ -119,10 +120,12 @@ public class SuaXoaThuoc_Ctrl {
         tblHoatChat.setItems(data);
     }
 
-    public void listView(){
+//  Hiển thị danh sách hoạt chất
+    public void listView() {
         List<HoatChat> listHoatChat = new HoatChat_Dao().selectAll();
-        ObservableList<HoatChat> dataHoatChat = FXCollections.observableArrayList(listHoatChat);
-        listViewHoatChat.setItems(dataHoatChat);
+        allHoatChat = FXCollections.observableArrayList(listHoatChat);
+        listViewHoatChat.setItems(allHoatChat);
+
         listViewHoatChat.setCellFactory(data -> new ListCell<HoatChat>() {
             @Override
             protected void updateItem(HoatChat item, boolean empty) {
@@ -130,29 +133,32 @@ public class SuaXoaThuoc_Ctrl {
                 if (item == null || empty) {
                     setText(null);
                 } else {
-                    setText(item.getMaHoatChat() +" - "+  item.getTenHoatChat());
+                    setText(item.getMaHoatChat() + " - " + item.getTenHoatChat());
                 }
             }
         });
     }
 
-    private void filterList(String newVal, String oldVal) {
+//  Lọc danh sách hoạt chất
+    private void locDanhSachHoatChat(String newVal, String oldVal) {
         if (newVal == null || newVal.isEmpty()) {
-            listView();
+            listViewHoatChat.setItems(allHoatChat);
             return;
-        } else if (oldVal != null && newVal.length() < oldVal.length()) {
-            listView();
         }
 
-        ObservableList<HoatChat> filteredList = FXCollections.observableArrayList();
-        for (Object items : listViewHoatChat.getItems()) {
-            HoatChat hoatChat = (HoatChat) items;
-            if (items.toString().toLowerCase().contains(newVal.toLowerCase())
-                    || hoatChat.getMaHoatChat().toLowerCase().contains(newVal.toLowerCase())
-                    || hoatChat.getTenHoatChat().toLowerCase().contains(newVal.toLowerCase())) {
-                filteredList.add(hoatChat);
+        String keyword = newVal.toLowerCase();
+        ObservableList<HoatChat> danhSachHoatChatDaLoc = FXCollections.observableArrayList();
+
+        for (HoatChat hoatChat : allHoatChat) {
+            if (hoatChat.getMaHoatChat().toLowerCase().contains(keyword) || hoatChat.getTenHoatChat().toLowerCase().contains(keyword)) {
+                danhSachHoatChatDaLoc.add(hoatChat);
             }
         }
-        listViewHoatChat.setItems(filteredList);
+
+        listViewHoatChat.setItems(danhSachHoatChatDaLoc);
+    }
+
+    public void btnCapNhat(ActionEvent actionEvent) {
+
     }
 }

@@ -37,7 +37,7 @@ public class DanhMucThuoc_Ctrl extends Application {
     public Button btnTimThuoc;
     public Button btnThemThuoc;
 
-//  2. KHỞI TẠO (INITIALIZE)
+//  2. Khởi tạo
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/DanhMucThuoc_GUI.fxml"));
@@ -50,7 +50,7 @@ public class DanhMucThuoc_Ctrl extends Application {
         loadTable();
     }
 
-//  3. XỬ LÝ SỰ KIỆN GIAO DIỆN
+//  3. Tải bảng
     public void loadTable() {
         Thuoc_SanPham_Dao thuocDao = new Thuoc_SanPham_Dao();
         List<Thuoc_SanPham> list = thuocDao.selectAllSLTheoDonViCoBan_ChiTietDVT();
@@ -86,7 +86,7 @@ public class DanhMucThuoc_Ctrl extends Application {
         tbl_Thuoc.setItems(data);
     }
 
-//  4. XỬ LÝ NGHIỆP VỤ
+//  4. Các xử lý nghiệp vụ
 //  Tìm thuốc
     public void timThuoc(){
         String keyword = tfTimThuoc.getText().trim().toLowerCase();

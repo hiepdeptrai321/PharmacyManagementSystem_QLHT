@@ -80,20 +80,6 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
         return this.selectBySql(SELECT_ALL_SQL);
     }
 
-    public List<String> getAllLoaiHang() {
-        String sql = "SELECT TenLH FROM LoaiHang";
-        List<String> list = new ArrayList<>();
-        try {
-            ResultSet rs = ConnectDB.query(sql);
-            while (rs.next()) {
-                list.add(rs.getString("TenLH"));
-            }
-            rs.getStatement().getConnection().close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return list;
-    }
     public List<String> getAllXuatXu() {
         String sql = "SELECT DISTINCT NuocSX FROM Thuoc_SanPham";
         List<String> list = new ArrayList<>();
@@ -146,5 +132,20 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
             throw new RuntimeException(e);
         }
         return tenDVT;
+    }
+
+    public String getTenLoaiHangByMaThuoc(String maThuoc) {
+        String tenLoaiHang = null;
+        String sql = "SELECT lh.TenLH FROM Thuoc_SanPham ts JOIN LoaiHang lh ON ts.MaLoaiHang = lh.MaLoaiHang WHERE ts.MaThuoc = ?";
+        try {
+            ResultSet rs = ConnectDB.query(sql, maThuoc);
+            if (rs.next()) {
+                tenLoaiHang = rs.getString("TenLH");
+            }
+            rs.getStatement().close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return tenLoaiHang;
     }
 }

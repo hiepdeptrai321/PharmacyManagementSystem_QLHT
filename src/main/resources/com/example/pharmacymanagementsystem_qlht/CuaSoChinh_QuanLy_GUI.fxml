@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<Pane id="main" prefHeight="825.0" prefWidth="1200.0" stylesheets="@css/TrangChu.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CuaSoChinh_QuanLy_Ctrl">
+<Pane id="main" prefHeight="825.0" prefWidth="1200.0" stylesheets="@css/TrangChu.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CuaSoChinh_QuanLy_Ctrl">
     <children>
         <AnchorPane prefHeight="825.0" prefWidth="1200.0">
             <children>
@@ -66,9 +66,9 @@
                         <Menu mnemonicParsing="false" styleClass="menu" text="Bán hàng">
                            <items>
                               <MenuItem mnemonicParsing="false" onAction="#LapHoaDon" text="Lập hóa đơn" />
-                              <MenuItem mnemonicParsing="false" onAction="#LapHoaDon" text="lập phiếu đổi hàng" />
+                              <MenuItem mnemonicParsing="false" onAction="#LapHoaDon" text="Lập phiếu đổi hàng" />
                               <MenuItem mnemonicParsing="false" onAction="#LapHoaDon" text="Lập piếu trả hàng" />
-                              <MenuItem mnemonicParsing="false" onAction="#LapHoaDon" text="Lập phiếu đặng hàng" />
+                              <MenuItem mnemonicParsing="false" onAction="#LapHoaDon" text="Lập phiếu đặt hàng" />
                            </items>
                         </Menu>
                                 <MenuItem mnemonicParsing="false" onAction="#LapHoaDon" text="Nhập hàng" />

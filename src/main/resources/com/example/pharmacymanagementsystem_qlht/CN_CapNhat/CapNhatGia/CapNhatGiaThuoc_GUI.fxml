@@ -22,9 +22,9 @@
           <TableColumn fx:id="colSTT" prefWidth="54.0" text="STT" />
           <TableColumn fx:id="colMaThuoc" prefWidth="135.0" text="Mã thuốc" />
             <TableColumn fx:id="colTenThuoc" prefWidth="337.0" text="Tên thuốc" />
-            <TableColumn fx:id="colDVT" minWidth="0.0" prefWidth="191.0" text="Đơn vị tính" />
-            <TableColumn fx:id="colGiaNhap" minWidth="0.0" prefWidth="185.0" text="Giá nhập" />
-            <TableColumn fx:id="colGiaBan" minWidth="0.0" prefWidth="205.0" text="Giá bán" />
+            <TableColumn fx:id="colGiaNhap" minWidth="0.0" prefWidth="197.6666259765625" text="Giá nhập" />
+            <TableColumn fx:id="colGiaBan" minWidth="0.0" prefWidth="223.3333740234375" text="Giá bán" />
+            <TableColumn fx:id="colDVT" minWidth="0.0" prefWidth="160.3333740234375" text="Đơn vị tính" />
             <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="68.0" />
         </columns>
       </TableView>

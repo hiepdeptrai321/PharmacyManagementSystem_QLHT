@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
     private final String INSERT_SQL = "INSERT INTO Thuoc_SanPham (TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaNDL, MaLoaiHang, HinhAnh, ViTri) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE Thuoc_SanPham SET TenThuoc=?, HamLuong=?, DonViHL=?, DuongDung=?, QuyCachDongGoi=?, SDK_GPNK=?, HangSX=?, NuocSX=?, HinhAnh=? WHERE MaThuoc=?";
+    private final String UPDATE_SQL = "UPDATE Thuoc_SanPham SET TenThuoc=?, HamLuong=?, DonViHL=?, DuongDung=?, QuyCachDongGoi=?, SDK_GPNK=?, HangSX=?, NuocSX=?, MaNDL=?, MaLoaiHang=?, HinhAnh=?, ViTri=? WHERE MaThuoc=?";
     private final String DELETE_SQL = "DELETE FROM Thuoc_SanPham WHERE MaThuoc=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM Thuoc_SanPham";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM Thuoc_SanPham WHERE MaThuoc=?";
@@ -34,8 +34,8 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
     }
 
     @Override
-    public boolean update(Thuoc_SanPham e) {
-        return ConnectDB.update(UPDATE_SQL, e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(), e.getHinhAnh(), e.getMaThuoc())>0;
+    public boolean update(Thuoc_SanPham thuoc) {
+        return ConnectDB.update(UPDATE_SQL, thuoc.getTenThuoc(), thuoc.getHamLuong(), thuoc.getDonViHamLuong(), thuoc.getDuongDung(), thuoc.getQuyCachDongGoi(), thuoc.getSDK_GPNK(), thuoc.getHangSX(), thuoc.getNuocSX(), thuoc.getNhomDuocLy().getMaNDL(), thuoc.getLoaiHang().getMaLoaiHang(), thuoc.getHinhAnh(), thuoc.getVitri().getMaKe(), thuoc.getMaThuoc()) > 0;
     }
 
     @Override

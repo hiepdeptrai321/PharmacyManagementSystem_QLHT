@@ -76,6 +76,15 @@ public class LoaiHang_Dao implements DaoInterface<LoaiHang>{
     public List<LoaiHang> selectAll() {
         return this.selectBySql(SELECT_ALL_SQL);
     }
+
+    public LoaiHang selectByTenLH(String string) {
+        String sql = "SELECT * FROM LoaiHang WHERE TenLH = ?";
+        List<LoaiHang> list = selectBySql(sql, string);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
 }
 
 

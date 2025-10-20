@@ -94,4 +94,13 @@ public class KeHang_Dao implements DaoInterface<KeHang> {
         }
         return list;
     }
+
+    public KeHang selectByTenKe(String string) {
+        String sql = "SELECT * FROM KeHang WHERE TenKe = ?";
+        List<KeHang> list = selectBySql(sql, string);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
 }

@@ -97,7 +97,7 @@ public class ChiTietPhieuDoiHang_Ctrl  {
     private void hienThiThongTin() {
         if (phieuDoiHang != null) {
             lblMaPhieuDoiValue.setText(phieuDoiHang.getMaPD());
-            lblNgayLapValue.setText(DoiNgay.formatTimestamp(phieuDoiHang.getNgayLap()));
+            lblNgayLapValue.setText(DoiNgay.dinhDangThoiGian(phieuDoiHang.getNgayLap()));
             lblTenNhanVienValue.setText(phieuDoiHang.getNhanVien().getTenNV());
             lblTenKhachHangValue.setText(phieuDoiHang.getKhachHang() != null ? phieuDoiHang.getKhachHang().getTenKH() : "Khách lẻ");
             lblSDTKhachHangValue.setText(phieuDoiHang.getKhachHang() != null ? phieuDoiHang.getKhachHang().getSdt() : "");

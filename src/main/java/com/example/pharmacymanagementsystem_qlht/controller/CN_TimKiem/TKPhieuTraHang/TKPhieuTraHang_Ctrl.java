@@ -99,7 +99,7 @@ public class TKPhieuTraHang_Ctrl extends Application {
                 return new SimpleStringProperty("---");
             }
         });
-        colNgayLap.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.formatTimestamp(cellData.getValue().getNgayLap())));
+        colNgayLap.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.dinhDangThoiGian(cellData.getValue().getNgayLap())));
         colTenKH.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKhachHang().getTenKH()));
         colSdtKH.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKhachHang().getSdt()));
         colTenNV.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNhanVien().getTenNV()));
@@ -167,7 +167,7 @@ public class TKPhieuTraHang_Ctrl extends Application {
                     match = pt.getNhanVien() != null && pt.getNhanVien().getTenNV().toLowerCase().contains(noiDung);
                     break;
                 case "Ngày lập":
-                    match = pt.getNgayLap() != null && DoiNgay.formatTimestamp(pt.getNgayLap()).contains(noiDung);
+                    match = pt.getNgayLap() != null && DoiNgay.dinhDangThoiGian(pt.getNgayLap()).contains(noiDung);
                     break;
             }
             if (tuNgay != null && pt.getNgayLap() != null) {

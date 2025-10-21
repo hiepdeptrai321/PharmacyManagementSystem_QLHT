@@ -272,13 +272,9 @@ public class LapHoaDon_Ctrl extends Application {
                     } catch (Exception ignored) {
                     }
                 });
-
                 st.show();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
     }
-
-
 }

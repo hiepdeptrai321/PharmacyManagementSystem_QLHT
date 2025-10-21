@@ -116,7 +116,7 @@ public class TimKiemKhachHang_Ctrl extends Application {
         cotTenKH.setCellValueFactory(new PropertyValueFactory<>("tenKH"));
         cotGT.setCellValueFactory(new PropertyValueFactory<>("gioiTinh"));
         // format date as dd-MM-yyyy
-        cotNgaySinh.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.formatDate(cellData.getValue().getNgaySinh())));
+        cotNgaySinh.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.dinhDangNgay(cellData.getValue().getNgaySinh())));
         cotSDT.setCellValueFactory(new PropertyValueFactory<>("sdt"));
         cotEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         cotDiaChi.setCellValueFactory(new PropertyValueFactory<>("diaChi"));

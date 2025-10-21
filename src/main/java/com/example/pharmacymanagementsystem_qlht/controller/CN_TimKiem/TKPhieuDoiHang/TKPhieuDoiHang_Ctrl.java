@@ -95,7 +95,7 @@ public class TKPhieuDoiHang_Ctrl extends Application {
         );
         colMaPD.setCellValueFactory(new PropertyValueFactory<>("maPD"));
         colMaHD.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getHoaDon().getMaHD()));
-        colNgayLap.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.formatTimestamp(cellData.getValue().getNgayLap())));
+        colNgayLap.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.dinhDangThoiGian(cellData.getValue().getNgayLap())));
         colTenKH.setCellValueFactory(cellData -> {
             if (cellData.getValue().getKhachHang() != null) {
                 return new SimpleStringProperty(cellData.getValue().getKhachHang().getTenKH());
@@ -174,7 +174,7 @@ public class TKPhieuDoiHang_Ctrl extends Application {
                     match = pd.getNhanVien() != null && pd.getNhanVien().getTenNV().toLowerCase().contains(noiDung);
                     break;
                 case "Ngày lập":
-                    match = pd.getNgayLap() != null && DoiNgay.formatTimestamp(pd.getNgayLap()).contains(noiDung);
+                    match = pd.getNgayLap() != null && DoiNgay.dinhDangThoiGian(pd.getNgayLap()).contains(noiDung);
                     break;
             }
             if (tuNgay != null && pd.getNgayLap() != null) {

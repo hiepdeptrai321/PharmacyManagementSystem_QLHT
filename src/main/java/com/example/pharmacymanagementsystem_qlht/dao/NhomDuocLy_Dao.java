@@ -105,4 +105,5 @@ public class NhomDuocLy_Dao implements DaoInterface<NhomDuocLy> {
         }
         return list.get(0);
     }
+
 }

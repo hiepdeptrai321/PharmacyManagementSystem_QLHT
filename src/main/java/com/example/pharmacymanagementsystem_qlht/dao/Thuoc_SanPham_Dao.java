@@ -216,4 +216,19 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
         }
         return danhSach;
     }
+
+    public String generatekeyThuocSanPham() {
+        String key = "TH001";
+        try {
+            String lastKey = ConnectDB.queryTaoMa(SELECT_TOP1_MATHUOC);
+                if (lastKey != null && lastKey.startsWith("TH")) {
+                    int stt = Integer.parseInt(lastKey.substring(2));
+                    stt++;
+                    key = String.format("TH%03d", stt);
+                }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return key;
+    }
 }

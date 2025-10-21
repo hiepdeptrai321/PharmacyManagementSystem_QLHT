@@ -87,7 +87,7 @@ CREATE TABLE NhomDuocLy (
 -- =========================
 CREATE TABLE KeHang (
     MaKe      VARCHAR(10) PRIMARY KEY,
-    TenKe     NVARCHAR(50)
+    TenKe     NVARCHAR(50),
     MoTa       NVARCHAR(255)
 );
 

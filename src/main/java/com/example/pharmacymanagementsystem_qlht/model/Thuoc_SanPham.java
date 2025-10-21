@@ -7,7 +7,7 @@ import java.util.Objects;
 public class Thuoc_SanPham {
     private String maThuoc;
     private String tenThuoc;
-    private int hamLuong;
+    private float hamLuong;
     private String donViHamLuong;
     private String duongDung;
     private String quyCachDongGoi;
@@ -24,7 +24,7 @@ public class Thuoc_SanPham {
     public Thuoc_SanPham(){
     }
 
-    public Thuoc_SanPham(String maThuoc, String tenThuoc, int hamLuong, String donViHamLuong, String duongDung, String quyCachDongGoi, String SDK_GPNK, String hangSX, String nuocSX, NhomDuocLy nhomDuocLy, LoaiHang loaiHang, byte[] hinhAnh, KeHang vitri) {
+    public Thuoc_SanPham(String maThuoc, String tenThuoc, float hamLuong, String donViHamLuong, String duongDung, String quyCachDongGoi, String SDK_GPNK, String hangSX, String nuocSX, NhomDuocLy nhomDuocLy, LoaiHang loaiHang, byte[] hinhAnh, KeHang vitri) {
         this.maThuoc = maThuoc;
         this.tenThuoc = tenThuoc;
         this.hamLuong = hamLuong;
@@ -56,11 +56,11 @@ public class Thuoc_SanPham {
         this.tenThuoc = tenThuoc;
     }
 
-    public int getHamLuong() {
+    public float getHamLuong() {
         return hamLuong;
     }
 
-    public void setHamLuong(int hamLuong) {
+    public void setHamLuong(float hamLuong) {
         this.hamLuong = hamLuong;
     }
 

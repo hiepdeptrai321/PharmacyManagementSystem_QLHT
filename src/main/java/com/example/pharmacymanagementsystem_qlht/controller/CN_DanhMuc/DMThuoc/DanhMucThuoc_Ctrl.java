@@ -131,6 +131,8 @@ public class DanhMucThuoc_Ctrl extends Application {
         }
     }
 
+
+
     public void refestTable(){
         loadTable();
     }

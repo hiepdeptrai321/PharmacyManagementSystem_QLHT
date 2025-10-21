@@ -23,6 +23,9 @@ public class DanhMucKhachHang_Ctrl extends Application {
     private Button btnTim;
 
     @FXML
+    private Button btnLamMoi;
+
+    @FXML
     private Button btnthemKH;
 
     @FXML
@@ -62,7 +65,10 @@ public class DanhMucKhachHang_Ctrl extends Application {
     }
     public void initialize() {
         loadTable();
-        btn
+        btnLamMoi.setOnAction(e -> LamMoi());
+        btnTim.setOnAction(e -> TimKiem());
+        btnthemKH.setOnAction(e -> btnThemClick(new KhachHang()));
+
 
     }
     public void loadTable() {
@@ -73,7 +79,12 @@ public class DanhMucKhachHang_Ctrl extends Application {
         );
         cotMaKH.setCellValueFactory(new PropertyValueFactory<>("MaKH"));
         cotTenKH.setCellValueFactory(new PropertyValueFactory<>("TenKH"));
-        cotGioiTinh.setCellValueFactory(new PropertyValueFactory<>("GioiTinh"));
+        cotGioiTinh.setCellValueFactory(cellData -> {
+            Boolean gt = cellData.getValue().getGioiTinh();
+            String gioiTinhText = (gt != null && gt) ? "Nam" : "Nữ";
+            return new SimpleStringProperty(gioiTinhText);
+        });
+
         cotDiaChi.setCellValueFactory(new PropertyValueFactory<>("DiaChi"));
         cotSDT.setCellValueFactory(new PropertyValueFactory<>("sdt"));
 
@@ -110,10 +121,46 @@ public class DanhMucKhachHang_Ctrl extends Application {
             e.printStackTrace();
         }
     }
+
+    public void btnThemClick(KhachHang kh) {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhachHang/ThemKhachHang_GUI.fxml"));
+            Parent root = loader.load();
+            //ChiTietNhaCungCap_Ctrl ctrl = loader.getController();
+            //ctrl.hienThiThongTin(ncc);
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.showAndWait();
+            loadTable();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     private void LamMoi() {
         txtTim.clear();
         loadTable();
+    }
+    private void TimKiem() {
+        String keyword = txtTim.getText().trim().toLowerCase();
+        List<KhachHang> list = khachHangDao.selectAll();
+        if (keyword.isEmpty()) {
+            tbKhachHang.setItems(FXCollections.observableArrayList(list));
+            return;
+        }
+
+
+        List<KhachHang> filtered = list.stream()
+                .filter(keHang ->
+                        (keHang.getMaKH() != null && keHang.getMaKH().toLowerCase().contains(keyword)) ||
+                                (keHang.getTenKH() != null && keHang.getTenKH().toLowerCase().contains(keyword))
+
+                )
+                .toList();
+
+        tbKhachHang.setItems(FXCollections.observableArrayList(filtered));
     }
 
 }

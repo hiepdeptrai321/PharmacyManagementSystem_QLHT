@@ -206,10 +206,11 @@ public class ThemKhachHang_Ctrl extends Application implements Initializable {
             kh.setSdt(sdt);
             kh.setEmail(email);
             kh.setDiaChi(diaChi);
-            if (ns != null) kh.setNgaySinh(Date.valueOf(ns));
-            kh.setGioiTinh(gioiTinh);
-            kh.setTrangThai(trangThai == null ? "Hoạt động" : trangThai);
-
+            if (ns != null) kh.setNgaySinh(ns);
+            if (gioiTinh != null) {
+                kh.setGioiTinh(gioiTinh.equals("Nam")); // "Nam" → true, "Nữ" → false
+            }
+            kh.setTrangThai(true);
             boolean ok = khDao.insert(kh);
             if (!ok) {
                 showError("Thêm khách hàng thất bại (lỗi cơ sở dữ liệu).");

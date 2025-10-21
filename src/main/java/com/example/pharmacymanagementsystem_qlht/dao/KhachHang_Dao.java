@@ -12,36 +12,47 @@ public class KhachHang_Dao implements DaoInterface<KhachHang> {
 
     private final String INSERT_SQL = "INSERT INTO KhachHang (MaKH, TenKH, SDT, Email, NgaySinh, GioiTinh, DiaChi, TrangThai) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE KhachHang SET TenKH=?, SDT=?, Email=?, NgaySinh=?, GioiTinh=?, DiaChi=? WHERE MaKH=?";
-    private final String DELETE_BY_ID = "DELETE FROM KhachHang WHERE MaKH=?";
+    private final String DELETE_BY_ID = "UPDATE KhachHang SET TrangThai = 0 WHERE MaKH = ?";
     private final String SELECT_BY_ID = "SELECT * FROM KhachHang WHERE MaKH=?";
-    private final String SELECT_ALL_SQL = "SELECT * FROM KhachHang";
+    private final String SELECT_ALL_SQL = "SELECT * FROM KhachHang WHERE TrangThai = 1" ;
 
     @Override
     public boolean insert(KhachHang e) {
-        // ensure default status when inserting
-        String tt = e.getTrangThai() == null ? "Hoạt động" : e.getTrangThai();
-        // ensure MaKH exists; generate if missing
+        // Nếu MaKH chưa có -> tự động sinh
         if (e.getMaKH() == null || e.getMaKH().trim().isEmpty()) {
             e.setMaKH(generateNewMaKH());
         }
+
+        // Nếu trạng thái null -> mặc định là hoạt động (true)
+        Boolean trangThai = e.getTrangThai() == null ? true : e.getTrangThai();
+
+        // Nếu giới tính null -> mặc định là Nam (true)
+        Boolean gioiTinh = e.getGioiTinh() == null ? true : e.getGioiTinh();
+
         final int MAX_RETRY = 5;
         int attempt = 0;
         while (attempt < MAX_RETRY) {
             try {
-                int rows = ConnectDB.update(INSERT_SQL, e.getMaKH(), e.getTenKH(), e.getSdt(), e.getEmail(), e.getNgaySinh(), e.getGioiTinh(), e.getDiaChi(), tt);
+                int rows = ConnectDB.update(INSERT_SQL,
+                        e.getMaKH(),
+                        e.getTenKH(),
+                        e.getSdt(),
+                        e.getEmail(),
+                        e.getNgaySinh(),
+                        gioiTinh,
+                        e.getDiaChi(),
+                        trangThai
+                );
                 return rows > 0;
             } catch (RuntimeException ex) {
                 attempt++;
-                // On duplicate key/PK violation, regenerate MaKH and retry; otherwise rethrow after max attempts
-                if (attempt >= MAX_RETRY) {
-                    throw ex;
-                }
-                // generate a new MaKH and retry
+                if (attempt >= MAX_RETRY) throw ex;
                 e.setMaKH(generateNewMaKH());
             }
         }
-        return false; // unreachable but required by compiler
+        return false;
     }
+
 
     @Override
     public boolean update(KhachHang e) {
@@ -74,10 +85,10 @@ public class KhachHang_Dao implements DaoInterface<KhachHang> {
                 kh.setSdt(rs.getString("SDT"));
                 kh.setEmail(rs.getString("Email"));
                 kh.setNgaySinh(rs.getObject("NgaySinh", LocalDate.class));
-                kh.setGioiTinh(rs.getString("GioiTinh"));
+                kh.setGioiTinh(rs.getBoolean("GioiTinh"));
                 kh.setDiaChi(rs.getString("DiaChi"));
                 // map TrangThai from DB
-                kh.setTrangThai(rs.getString("TrangThai"));
+                kh.setTrangThai(rs.getBoolean("TrangThai"));
                 list.add(kh);
             }
             rs.getStatement().getConnection().close();

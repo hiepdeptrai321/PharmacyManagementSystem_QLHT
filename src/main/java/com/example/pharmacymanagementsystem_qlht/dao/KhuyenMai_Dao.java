@@ -8,21 +8,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KhuyenMai_Dao implements DaoInterface<KhuyenMai> {
-    private final String INSERT_SQL = "INSERT INTO KhuyenMai (MaLoai, TenKM, GiaTriKM, NgayBatDau, NgayKetThuc, MoTa) VALUES ( ?, ?, ?, ?, ?, ?)";
+    private final String INSERT_SQL = "INSERT INTO KhuyenMai (MaKM, MaLoai, TenKM, GiaTriKM, NgayBatDau, NgayKetThuc, MoTa) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE KhuyenMai SET MaLoai=?, TenKM=?, GiaTriKM=?, NgayBatDau=?, NgayKetThuc=?, MoTa=? WHERE MaKM=?";
     private final String DELETE_BY_ID_SQL = "DELETE FROM KhuyenMai WHERE MaKM=?";
-    private final String SELECT_BY_ID_SQL = "SELECT MaKM, MaLoai, TenKM, GiaTriKM, NgayBatDau, NgayKetThuc, MoTa FROM KhuyenMai WHERE MaKM = ?";
-    private final String SELECT_ALL_SQL = "SELECT MaKM, MaLoai, TenKM, GiaTriKM, NgayBatDau, NgayKetThuc, MoTa FROM KhuyenMai";
-    private final String SELECT_BY_TUKHOA_SQL = "SELECT MaKM, MaLoai, TenKM, GiaTriKM, NgayBatDau, NgayKetThuc, MoTa FROM KhuyenMai WHERE TenKM LIKE ? OR MaKM LIKE ?";
+    private final String SELECT_BY_ID_SQL = "SELECT * FROM KhuyenMai WHERE MaKM = ?";
+    private final String SELECT_ALL_SQL = "SELECT * FROM KhuyenMai";
+    private final String SELECT_BY_TUKHOA_SQL = "SELECT * FROM KhuyenMai WHERE TenKM LIKE ? OR MaKM LIKE ?";
+    private final String DElETE_BY_MAKM_SQL = "DELETE FROM KhuyenMai WHERE MaKM=?";
 
     @Override
     public boolean insert(KhuyenMai e) {
-        return ConnectDB.update(INSERT_SQL, e.getLoaiKM(), e.getTenKM(), e.getGiaTriKM(), e.getNgayBatDau(), e.getNgayKetThuc(), e.getMoTa())>0;
+        return ConnectDB.update(INSERT_SQL, e.getMaKM(), e.getLoaiKM().getMaLoai(), e.getTenKM(), e.getGiaTriKM(), e.getNgayBatDau(), e.getNgayKetThuc(), e.getMoTa())>0;
     }
 
     @Override
     public boolean update(KhuyenMai e) {
-        return ConnectDB.update(UPDATE_SQL, e.getLoaiKM(), e.getTenKM(), e.getGiaTriKM(), e.getNgayBatDau(), e.getNgayKetThuc(), e.getMoTa(), e.getMaKM())>0;
+        return ConnectDB.update(UPDATE_SQL, e.getLoaiKM().getMaLoai(), e.getTenKM(), e.getGiaTriKM(), e.getNgayBatDau(), e.getNgayKetThuc(), e.getMoTa(), e.getMaKM())>0;
     }
 
     @Override
@@ -49,6 +50,7 @@ public class KhuyenMai_Dao implements DaoInterface<KhuyenMai> {
                 khuyenMai.setNgayBatDau(rs.getDate("NgayBatDau"));
                 khuyenMai.setNgayKetThuc(rs.getDate("NgayKetThuc"));
                 khuyenMai.setMoTa(rs.getString("MoTa"));
+                khuyenMai.setNgayTao(rs.getTimestamp("NgayTao"));
                 khuyenMaiList.add(khuyenMai);
             }
             rs.getStatement().close();
@@ -83,5 +85,8 @@ public class KhuyenMai_Dao implements DaoInterface<KhuyenMai> {
 
     public List<KhuyenMai> selectByTuKhoa(String tuKhoa){
         return this.selectBySql(SELECT_BY_TUKHOA_SQL, "%" + tuKhoa + "%", "%" + tuKhoa + "%");
+    }
+    public boolean deleteByMaKM(String maKM) {
+        return ConnectDB.update(DElETE_BY_MAKM_SQL, maKM)>0;
     }
 }

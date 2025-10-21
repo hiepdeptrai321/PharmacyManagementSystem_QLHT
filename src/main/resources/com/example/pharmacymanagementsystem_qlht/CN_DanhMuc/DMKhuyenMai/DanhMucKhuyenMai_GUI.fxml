@@ -19,10 +19,10 @@
                 <TableColumn fx:id="colSTT" prefWidth="48.83333206176758" styleClass="a-center" text="STT" />
                 <TableColumn fx:id="colMaKM" prefWidth="114.16667175292969" styleClass="a-center" text="Mã khuyến mãi" />
                 <TableColumn fx:id="colTenKM" prefWidth="348.0" text="Tên khuyến mãi" />
-                <TableColumn fx:id="colLoaiKM" minWidth="0.0" prefWidth="246.0" styleClass="a-center" text="Loại khuyến mãi" />
-                <TableColumn fx:id="colGiaTri" minWidth="0.0" prefWidth="184.0" text="Giá trị " />
-                <TableColumn fx:id="colNBD" minWidth="0.0" prefWidth="301.0" styleClass="a-center" text="Ngày bắt đầu" />
-                <TableColumn fx:id="colNKT" minWidth="0.0" prefWidth="296.0" styleClass="a-center" text="Ngày kết thúc" />
+                <TableColumn fx:id="colLoaiKM" minWidth="0.0" prefWidth="253.0" styleClass="a-center" text="Loại khuyến mãi" />
+                <TableColumn fx:id="colNBD" minWidth="0.0" prefWidth="285.0" styleClass="a-center" text="Ngày bắt đầu" />
+                <TableColumn fx:id="colNKT" minWidth="0.0" prefWidth="236.0" styleClass="a-center" text="Ngày kết thúc" />
+                <TableColumn fx:id="colNgayTao" minWidth="0.0" prefWidth="253.0" text="Ngày tạo khuyến mãi" />
             <TableColumn fx:id="colChiTiet" prefWidth="82.0" styleClass="a-center" />
             </columns>
         </TableView>

@@ -13,6 +13,8 @@ public class Thuoc_SP_TangKem_Dao implements DaoInterface<Thuoc_SP_TangKem> {
     private final String DELETE_BY_ID_SQL = "DELETE FROM Thuoc_SP_TangKem WHERE MaThuocTangKem=? AND MaKM=?";
     private final String SELECT_BY_ID_SQL = "SELECT MaThuocTangKem, MaKM, Sơ'ưoLuong FROM Thuoc_SP_TangKem WHERE MaThuocTangKem=? AND MaKM=?";
     private final String SELECT_ALL_SQL = "SELECT MaThuocTangKem, MaKM, SoLuong FROM Thuoc_SP_TangKem";
+    private final String SELECT_BY_MAKM_SQL = "SELECT MaThuocTangKem, MaKM, SoLuong FROM Thuoc_SP_TangKem WHERE MaKM=?";
+    private final String DELETE_BY_MAKM_SQL = "DELETE FROM Thuoc_SP_TangKem WHERE MaKM=?";
 
     @Override
     public boolean insert(Thuoc_SP_TangKem e) {
@@ -57,6 +59,12 @@ public class Thuoc_SP_TangKem_Dao implements DaoInterface<Thuoc_SP_TangKem> {
     @Override
     public List<Thuoc_SP_TangKem> selectAll() {
         return selectBySql(SELECT_ALL_SQL);
+    }
+    public List<Thuoc_SP_TangKem> selectByMaKM(String maKM) {
+        return selectBySql(SELECT_BY_MAKM_SQL, maKM);
+    }
+    public boolean deleteByMaKM(String maKM) {
+        return ConnectDB.update(DELETE_BY_MAKM_SQL, maKM)>0;
     }
 }
 

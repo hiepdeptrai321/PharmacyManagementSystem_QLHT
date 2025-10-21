@@ -85,6 +85,11 @@ public class LoaiHang_Dao implements DaoInterface<LoaiHang>{
         }
         return list.get(0);
     }
+
+    public List<LoaiHang> selectTenLoaiHang() {
+        String sql = "SELECT TenLH FROM LoaiHang";
+        return this.selectBySql(sql);
+    }
 }
 
 

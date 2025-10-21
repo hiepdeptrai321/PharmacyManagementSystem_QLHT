@@ -11,8 +11,8 @@
 
 <AnchorPane prefHeight="895.0" prefWidth="1646.0" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhachHang.DanhMucKhachHang_Ctrl">
     <children>
-        <TextField layoutX="12.0" layoutY="47.0" prefHeight="40.0" prefWidth="768.0" promptText="Tìm theo mã, tên hoặc SĐT khách hàng" />
-        <Button id="btntim" layoutX="790.0" layoutY="47.0" minWidth="35.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="76.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" />
+        <TextField fx:id="txtTim" layoutX="12.0" layoutY="47.0" prefHeight="40.0" prefWidth="768.0" promptText="Tìm theo mã, tên hoặc SĐT khách hàng" />
+        <Button id="btntim" fx:id="btnTim" layoutX="790.0" layoutY="47.0" minWidth="35.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="76.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" />
         <Pane id="lblpaneTitle" layoutX="11.0" prefHeight="40.0" prefWidth="1624.0">
             <children>
                 <Label id="lbtitle" layoutY="2.0" prefHeight="36.0" prefWidth="306.0" text="Danh mục khách hàng">
@@ -21,17 +21,16 @@
                </font></Label>
             </children>
         </Pane>
-        <Button id="btnthemthuoc" fx:id="btnthemthuoc" layoutX="1477.0" layoutY="47.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="158.0" text="✚Thêm khách hàng" AnchorPane.topAnchor="47.0" />
-        <TableView id="tablethuoc" layoutX="12.0" layoutY="97.0" prefHeight="791.0" prefWidth="1624.0">
+        <Button id="btnthemthuoc" fx:id="btnthemKH" layoutX="1477.0" layoutY="47.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="158.0" text="✚Thêm khách hàng" AnchorPane.topAnchor="47.0" />
+        <TableView id="tablethuoc" fx:id="tbKhachHang" layoutX="12.0" layoutY="97.0" prefHeight="791.0" prefWidth="1624.0">
             <columns>
-                <TableColumn prefWidth="48.83333206176758" text="STT" />
-                <TableColumn prefWidth="219.0" text="Mã khách hàng" />
-                <TableColumn prefWidth="362.0" text="Tên khách hàng" />
-                <TableColumn minWidth="0.0" prefWidth="148.0" text="Giới tính" />
-                <TableColumn minWidth="0.0" prefWidth="242.0" text="SĐT" />
-                <TableColumn minWidth="0.0" prefWidth="272.0" text="Ngày sinh" />
-                <TableColumn prefWidth="250.0" text="Trạng thái" />
-            <TableColumn />
+                <TableColumn fx:id="cotSTT" prefWidth="91.66666412353516" text="STT" />
+                <TableColumn fx:id="cotMaKH" prefWidth="261.0" text="Mã khách hàng" />
+                <TableColumn fx:id="cotTenKH" prefWidth="401.0" text="Tên khách hàng" />
+                <TableColumn fx:id="cotGioiTinh" minWidth="0.0" prefWidth="172.33331298828125" text="Giới tính" />
+                <TableColumn fx:id="cotSDT" minWidth="0.0" prefWidth="327.33331298828125" text="SĐT" />
+                <TableColumn fx:id="cotNgaySinh" minWidth="0.0" prefWidth="278.0" text="Ngày sinh" />
+            <TableColumn fx:id="cotChiTiet" prefWidth="92.6666259765625" />
             </columns>
         </TableView>
     </children>

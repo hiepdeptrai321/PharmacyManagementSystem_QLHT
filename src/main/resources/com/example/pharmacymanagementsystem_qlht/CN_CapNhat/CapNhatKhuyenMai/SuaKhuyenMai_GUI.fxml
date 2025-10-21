@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -18,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane stylesheets="@../../css/ThemThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatKhuyenMai.SuaKhuyenMai_Ctrl">
+<AnchorPane prefHeight="444.0" prefWidth="954.0" stylesheets="@../../css/ThemThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatKhuyenMai.SuaKhuyenMai_Ctrl">
     <children>
         <Label layoutX="14.0" layoutY="8.0" prefHeight="25.0" prefWidth="925.0" styleClass="lbtitle" text="Cập nhật khuyến mãi">
             <font>
@@ -27,7 +28,7 @@
         </Label>
 
         <!-- Thông tin chung: không dùng TabPane, trực tiếp show form -->
-        <VBox spacing="8.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="36.0">
+        <VBox layoutX="14.857142857142858" prefHeight="364.0" prefWidth="932.0" spacing="8.0" AnchorPane.bottomAnchor="44.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="36.0">
             <children>
                 <!-- GridPane chứa các trường Thông tin chung, các tf sẽ co dãn theo tỷ lệ cột -->
                 <GridPane hgap="10" prefHeight="135.0" prefWidth="925.0" vgap="8">
@@ -42,18 +43,19 @@
                         <RowConstraints />
                         <RowConstraints />
                         <RowConstraints />
+                  <RowConstraints />
                     </rowConstraints>
 
                     <!-- Tên KM -->
                     <Label text="Tên KM" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                     <TextField fx:id="tfTenKM" prefWidth="365.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                    <Label text="Loại KM" GridPane.columnIndex="2" GridPane.rowIndex="0" />
-                    <ComboBox fx:id="cbLoaiKM" prefHeight="25.0" prefWidth="380.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                    <Label text="Loại KM" GridPane.rowIndex="1" />
+                    <ComboBox fx:id="cbLoaiKM" prefHeight="25.0" prefWidth="380.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                     <!-- Giá trị và ngày -->
-                    <Label text="Giá trị KM" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <TextField fx:id="tfGiaTri" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label text="Giá trị KM" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                    <TextField fx:id="tfGiaTri" GridPane.columnIndex="3" GridPane.rowIndex="1" />
 
                     <Label text="Từ:" GridPane.rowIndex="2" />
                     <DatePicker fx:id="dpTuNgay" prefHeight="25.0" prefWidth="387.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -63,71 +65,68 @@
 
                     <Label text="Mô tả" GridPane.columnIndex="0" GridPane.rowIndex="3" />
                     <TextField fx:id="tfMoTa" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
+               <Label text="Mã KM" GridPane.columnIndex="2" />
+               <TextField fx:id="tfMaKM" editable="false" prefWidth="365.0" GridPane.columnIndex="3" />
                <VBox.margin>
                   <Insets top="8.0" />
                </VBox.margin>
                 </GridPane>
 
                 <!-- TabPane chỉ chứa phần sản phẩm / danh sách thuốc -->
-                <TabPane fx:id="tabPaneProducts" prefHeight="296.0" prefWidth="925.0">
+                <TabPane fx:id="tabPaneProducts" prefHeight="216.0" prefWidth="969.0">
                     <tabs>
                         <Tab closable="false" text="Danh sách thuốc">
                             <content>
-                                <VBox spacing="8.0" style="-fx-padding: 8;">
+                                <AnchorPane fx:id="paneThuocArea" prefHeight="194.0" prefWidth="923.0">
                                     <children>
-                                        <HBox alignment="CENTER_RIGHT" spacing="8.0">
-                                            <Label text="Tìm thuốc" />
-                                            <TextField fx:id="tfTimThuoc" HBox.hgrow="ALWAYS" />
-                                        </HBox>
-
-                                        <TableView fx:id="tbDSThuoc" VBox.vgrow="ALWAYS">
-                                            <columns>
-                                                <TableColumn fx:id="colMaThuoc" prefWidth="120.0" text="Mã thuốc" />
-                                                <TableColumn fx:id="colTenThuoc" prefWidth="313.0" text="Tên thuốc" />
-                                                <TableColumn fx:id="colSLAP" prefWidth="207.0" text="Số lượng áp dụng" />
-                                                <TableColumn fx:id="colSLTD" prefWidth="175.0" text="Số lượng tối đa" />
-                                                <TableColumn fx:id="colXoaCT" prefWidth="92.0" text="" />
-                                            </columns>
-                                        </TableView>
+                                          <HBox alignment="CENTER_RIGHT" layoutX="8.0" layoutY="8.0" spacing="8.0">
+                                              <Label text="Tìm thuốc" />
+                                              <TextField fx:id="tfTimThuoc" prefWidth="854.0" HBox.hgrow="ALWAYS" />
+                                          </HBox>
+                                          <TableView fx:id="tbDSThuoc" layoutX="8.0" layoutY="43.0" prefHeight="133.0" prefWidth="915.0">
+                                              <columns>
+                                                  <TableColumn fx:id="colMaThuoc" prefWidth="120.0" text="Mã thuốc" />
+                                                  <TableColumn fx:id="colTenThuoc" prefWidth="313.0" text="Tên thuốc" />
+                                                  <TableColumn fx:id="colSLAP" prefWidth="207.0" text="Số lượng áp dụng" />
+                                                  <TableColumn fx:id="colSLTD" prefWidth="175.0" text="Số lượng tối đa" />
+                                                  <TableColumn fx:id="colXoaCT" prefWidth="92.0" text="" />
+                                              </columns>
+                                          </TableView>
+                              <ListView fx:id="listViewThuoc" layoutX="69.0" layoutY="33.0" prefHeight="121.0" prefWidth="854.0" />
                                     </children>
-                                </VBox>
+                                </AnchorPane>
                             </content>
                         </Tab>
 
                         <!-- Tab Sản phẩm tặng kèm: controller sẽ show/hide hoặc enable/disable tab này khi Loại KM = LKM001 -->
                         <Tab fx:id="tabTangKem" closable="false" text="Sản phẩm tặng kèm (chỉ áp dụng cho loại KM: LKM001)">
                             <content>
-                                <VBox spacing="8.0" style="-fx-padding: 8;">
-                                    <children>
-                                        <HBox spacing="8.0">
-                                            <Label prefHeight="23.0" prefWidth="73.0" text="Tìm quà tặng" />
-                                            <TextField fx:id="tfTimQua" promptText="Tìm quà tặng" HBox.hgrow="ALWAYS" />
-                                        </HBox>
+                                <AnchorPane>
+                                   <children>
+                                                <HBox layoutX="8.0" layoutY="8.0" prefHeight="25.0" prefWidth="925.0" spacing="8.0">
+                                                    <Label prefHeight="23.0" prefWidth="73.0" text="Tìm quà tặng" />
+                                                    <TextField fx:id="tfTimQua" prefHeight="25.0" prefWidth="844.0" promptText="Tìm quà tặng" HBox.hgrow="ALWAYS" />
+                                                </HBox>
 
-                                        <TableView fx:id="tbTangKem" VBox.vgrow="ALWAYS">
-                                            <columns>
-                                                <TableColumn fx:id="colMaQua" prefWidth="120.0" text="Mã SP" />
-                                                <TableColumn fx:id="colTenQua" prefWidth="400.0" text="Tên SP" />
-                                                <TableColumn fx:id="colSLTang" prefWidth="200.0" text="Số lượng tặng" />
-                                                <TableColumn fx:id="colXoaQua" prefWidth="120.0" text="Xóa" />
-                                            </columns>
-                                        </TableView>
-                                    </children>
-                                </VBox>
+                                                      <TableView fx:id="tbTangKem" layoutX="8.0" layoutY="42.0" prefHeight="133.0" prefWidth="922.0">
+                                                    <columns>
+                                                        <TableColumn fx:id="colMaQua" prefWidth="120.0" text="Mã thuốc" />
+                                                        <TableColumn fx:id="colTenQua" prefWidth="400.0" text="Tên thuốc" />
+                                                        <TableColumn fx:id="colSLTang" prefWidth="300.5714111328125" text="Số lượng tặng" />
+                                                        <TableColumn fx:id="colXoaQua" prefWidth="100.57135881696433" text="Xóa" />
+                                                    </columns>
+                                                </TableView>
+                                      <ListView fx:id="listViewQua" layoutX="90.0" layoutY="33.0" prefHeight="133.0" prefWidth="845.0" />
+                                   </children>
+                                </AnchorPane>
                             </content>
                         </Tab>
                     </tabs>
                 </TabPane>
             </children>
         </VBox>
-
-        <!-- Nút Hủy / Lưu ở cuối trang -->
-        <HBox alignment="CENTER_RIGHT" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="14.0">
-            <children>
-                <Button fx:id="btnHuy" mnemonicParsing="false" onMouseClicked="#btnHuyClick" prefWidth="80.0" text="Hủy" />
-                <Button fx:id="btnLuu" mnemonicParsing="false" onMouseClicked="#btnLuuClick" prefWidth="80.0" style="-fx-background-color: #2e7d32; -fx-text-fill: white;" text="Lưu" />
-            </children>
-        </HBox>
+          <Button fx:id="btnLuu" layoutX="859.0" layoutY="410.0" mnemonicParsing="false" onMouseClicked="#btnLuuClick" prefWidth="80.0" style="-fx-background-color: #2e7d32; -fx-text-fill: white;" text="Lưu" />
+          <Button fx:id="btnHuy" layoutX="768.0" layoutY="410.0" mnemonicParsing="false" onMouseClicked="#btnHuyClick" prefWidth="80.0" text="Hủy" />
 
     </children>
 </AnchorPane>

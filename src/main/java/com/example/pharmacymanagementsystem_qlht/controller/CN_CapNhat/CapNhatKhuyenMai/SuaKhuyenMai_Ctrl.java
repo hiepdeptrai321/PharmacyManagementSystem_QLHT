@@ -1,215 +1,367 @@
+// java
 package com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatKhuyenMai;
 
 import com.example.pharmacymanagementsystem_qlht.dao.ChiTietKhuyenMai_Dao;
+import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SanPham_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.ChiTietKhuyenMai;
 import com.example.pharmacymanagementsystem_qlht.model.KhuyenMai;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SP_TangKem;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
-import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Region;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
 
-public class SuaKhuyenMai_Ctrl extends Application {
+public class SuaKhuyenMai_Ctrl {
 
     // FXML controls
-    public Button btnHuy;
-    public Button btnLuu;
+    @FXML private Button btnHuy;
+    @FXML private Button btnLuu;
 
-    public TableView<ChiTietKhuyenMai> tbDSThuoc;
-    public TableColumn<ChiTietKhuyenMai,String> colMaThuoc;
-    public TableColumn<ChiTietKhuyenMai,String> colTenThuoc;
-    public TableColumn<ChiTietKhuyenMai,Integer> colSLAP;
-    public TableColumn<ChiTietKhuyenMai,Integer> colSLTD;
-    @FXML private TabPane tabPane;
-    @FXML private Tab tabTangKem; // tab quà tặng (thêm/xóa khỏi tabPane tuỳ loại KM)
+    @FXML private TableView<ChiTietKhuyenMai> tbDSThuoc;
+    @FXML private TableColumn<ChiTietKhuyenMai, String>  colMaThuoc;
+    @FXML private TableColumn<ChiTietKhuyenMai, String>  colTenThuoc;
+    @FXML private TableColumn<ChiTietKhuyenMai, Integer> colSLAP;
+    @FXML private TableColumn<ChiTietKhuyenMai, Integer> colSLTD;
+    @FXML private TableColumn<ChiTietKhuyenMai, Void>    colXoaCT;
+
+    @FXML private TabPane tabPaneProducts;
+    @FXML private Tab tabTangKem;
     @FXML private TableView<Thuoc_SP_TangKem> tbTangKem;
-    @FXML private TableColumn<Thuoc_SP_TangKem, String> colMaQua;
-    @FXML private TableColumn<Thuoc_SP_TangKem, String> colTenQua;
+    @FXML private TableColumn<Thuoc_SP_TangKem, String>  colMaQua;
+    @FXML private TableColumn<Thuoc_SP_TangKem, String>  colTenQua;
     @FXML private TableColumn<Thuoc_SP_TangKem, Integer> colSLTang;
-    @FXML private TableColumn<Thuoc_SP_TangKem, Void> colXoaQua;
+    @FXML private TableColumn<Thuoc_SP_TangKem, Void>    colXoaQua;
+
+    @FXML private TextField tfTimThuoc;
+    @FXML private ListView<Thuoc_SanPham> listViewThuoc;
+
     @FXML private TextField tfTimQua;
     @FXML private ListView<Thuoc_SanPham> listViewQua;
-    private final ObservableList<Thuoc_SanPham> allThuocForGifts = FXCollections.observableArrayList();
-    private FilteredList<Thuoc_SanPham> filteredThuocForGifts;
-    private final ObservableList<Thuoc_SP_TangKem> giftItems = FXCollections.observableArrayList();
-    @FXML
-    private ListView<?> listViewThuoc;
-    @FXML
-    private TextField tfTimThuoc;
 
-    @FXML
-    private TextField tfTenKM;
-    @FXML
-    private ComboBox<String> cbLoaiKM;
-    @FXML
-    private TextField tfGiaTri;
-    @FXML
-    private DatePicker dpTuNgay;
-    @FXML
-    private DatePicker dpDenNgay;
-    @FXML
-    private TextField tfMoTa;
+    @FXML private TextField tfTenKM;
+    @FXML private TextField tfMaKM;
+    @FXML private ComboBox<String> cbLoaiKM;
+    @FXML private TextField tfGiaTri;
+    @FXML private DatePicker dpTuNgay;
+    @FXML private DatePicker dpDenNgay;
+    @FXML private TextField tfMoTa;
+
+    // Data sources
+    private final ObservableList<ChiTietKhuyenMai>  ctItems   = FXCollections.observableArrayList();
+    private final ObservableList<Thuoc_SP_TangKem>  giftItems = FXCollections.observableArrayList();
+    private final ObservableList<Thuoc_SanPham>     allThuoc  = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
-        // 1. Thiết lập listView tìm thuốc
-        listViewThuoc.setVisible(false);
-        listViewThuoc.setManaged(false);
-        tfTimThuoc.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            listViewThuoc.setVisible(newVal);
-            listViewThuoc.setManaged(newVal);
-        });
+        // Load thuốc source once
+        loadAllThuoc();
 
-        // 2. Table chỉnh sửa số lượng
-        tbDSThuoc.setEditable(true);
-        colSLAP.setEditable(true);
-        colSLTD.setEditable(true);
-        colSLAP.setCellValueFactory(new PropertyValueFactory<>("slApDung"));
-        colSLTD.setCellValueFactory(new PropertyValueFactory<>("slToiDa"));
+        // Bind thuốc table
+        setupThuocTable();
 
-        installSpinnerColumn(
-                colSLAP, 0, 1_000_000, 1,
-                ChiTietKhuyenMai::getSlApDung,
-                ChiTietKhuyenMai::setSlApDung
-        );
-        installSpinnerColumn(
-                colSLTD, 0, 1_000_000, 1,
-                ChiTietKhuyenMai::getSlToiDa,
-                ChiTietKhuyenMai::setSlToiDa
-        );
+        // Bind quà tặng table
+        setupGiftTable();
 
-        // 3. Thiết lập behavior cho tab quà tặng theo loại KM
-        //    Nếu loại = LKM001 => có tab quà tặng, ngược lại remove tab
-        cbLoaiKM.valueProperty().addListener((obs, oldVal, newVal) -> updateGiftTabVisibility());
-        // đảm bảo trạng thái ban đầu
-        updateGiftTabVisibility();
-    }
+        // ListView behaviors like SuaXoaThuoc_Ctrl
+        initThuocListViewLikeSuaXoa();
+        initQuaListViewLikeSuaXoa();
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatKhuyenMai/SuaKhuyenMai_GUI.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    // Hiển thị / ẩn tab tặng kèm dựa trên giá trị cbLoaiKM
-    private void updateGiftTabVisibility() {
-        boolean show = "LKM001".equalsIgnoreCase(cbLoaiKM.getValue());
-        if (show) {
-            if (!tabPane.getTabs().contains(tabTangKem)) {
-                tabPane.getTabs().add(tabTangKem);
-            }
-        } else {
-            tabPane.getTabs().remove(tabTangKem);
+        // Gift tab visibility follows Loại KM (LKM001)
+        if (cbLoaiKM != null) {
+            cbLoaiKM.valueProperty().addListener((obs, o, n) -> updateGiftTabVisibility());
+            updateGiftTabVisibility();
         }
     }
 
-    public void loadData(KhuyenMai km) {
-        if (km == null) return;
-        tfTenKM.setText(km.getTenKM());
-        cbLoaiKM.setValue(km.getLoaiKM().getMaLoai()); // sẽ trigger updateGiftTabVisibility
-        tfGiaTri.setText(String.valueOf(km.getGiaTriKM()));
-        dpTuNgay.setValue(km.getNgayBatDau().toLocalDate());
-        dpDenNgay.setValue(km.getNgayKetThuc().toLocalDate());
-        tfMoTa.setText(km.getMoTa());
-        ChiTietKhuyenMai_Dao ctkm_dao = new ChiTietKhuyenMai_Dao();
+    private void loadAllThuoc() {
+        try {
+            List<Thuoc_SanPham> ds = new Thuoc_SanPham_Dao().selectAll();
+            if (ds != null) allThuoc.setAll(ds);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
-    public void loadDatatbCTKM(List<ChiTietKhuyenMai> dsCTKM){
-        ObservableList<ChiTietKhuyenMai> listCTKM = FXCollections.observableArrayList(dsCTKM);
-        colMaThuoc.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getThuoc().getMaThuoc()));
-        colTenThuoc.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getThuoc().getTenThuoc()));
-        colSLAP.setCellValueFactory(new PropertyValueFactory<>("slApDung"));
-        colSLTD.setCellValueFactory(new PropertyValueFactory<>("slToiDa"));
-        tbDSThuoc.setItems(listCTKM);
-    }
+    private void setupThuocTable() {
+        if (tbDSThuoc == null) return;
+        tbDSThuoc.setItems(ctItems);
+        tbDSThuoc.setEditable(true);
 
-    // Đóng cửa sổ khi nhấn Hủy
-    public void btnHuyClick(){
-        Stage stage = (Stage) tfTimThuoc.getScene().getWindow();
-        stage.close();
-    }
-
-    // TODO: xử lý lưu
-    public void btnLuuClick(){
-        // TODO implement save logic
-    }
-
-    private void installSpinnerColumn(
-            TableColumn<ChiTietKhuyenMai, Integer> column,
-            int min, int max, int step,
-            Function<ChiTietKhuyenMai, Integer> getter,
-            BiConsumer<ChiTietKhuyenMai, Integer> setter
-    ) {
-        column.setCellFactory(tc -> new TableCell<>() {
-            private final Spinner<Integer> spinner = new Spinner<>();
-
-            {
-                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-                spinner.setEditable(true);
-                spinner.setMaxWidth(Double.MAX_VALUE);
-                spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max, min, step));
-
-                spinner.valueProperty().addListener((obs, oldV, newV) -> {
-                    int row = getIndex();
-                    if (row >= 0 && row < getTableView().getItems().size()) {
-                        ChiTietKhuyenMai item = getTableView().getItems().get(row);
-                        if (item != null && newV != null) {
-                            setter.accept(item, newV);
-                        }
-                    }
-                });
-
-                spinner.focusedProperty().addListener((obs, was, is) -> {
-                    if (!is) {
-                        try {
-                            Integer typed = Integer.valueOf(spinner.getEditor().getText());
-                            SpinnerValueFactory.IntegerSpinnerValueFactory vf = (SpinnerValueFactory.IntegerSpinnerValueFactory) spinner.getValueFactory();
-                            if (typed < vf.getMin()) typed = vf.getMin();
-                            if (typed > vf.getMax()) typed = vf.getMax();
-                            vf.setValue(typed);
-                        } catch (NumberFormatException ex) {
-                            spinner.getEditor().setText(String.valueOf(spinner.getValue()));
-                        }
-                    }
-                });
-            }
-
-            @Override
-            protected void updateItem(Integer value, boolean empty) {
-                super.updateItem(value, empty);
-                if (empty) {
-                    setGraphic(null);
-                    return;
+        if (colMaThuoc != null) {
+            colMaThuoc.setCellValueFactory(cd ->
+                    new SimpleStringProperty(cd.getValue() != null && cd.getValue().getThuoc() != null
+                            ? cd.getValue().getThuoc().getMaThuoc() : "")
+            );
+        }
+        if (colTenThuoc != null) {
+            colTenThuoc.setCellValueFactory(cd ->
+                    new SimpleStringProperty(cd.getValue() != null && cd.getValue().getThuoc() != null
+                            ? cd.getValue().getThuoc().getTenThuoc() : "")
+            );
+        }
+        if (colSLAP != null) {
+            colSLAP.setCellValueFactory(cd ->
+                    new SimpleIntegerProperty(cd.getValue() != null && cd.getValue().getSlApDung() != null
+                            ? cd.getValue().getSlApDung() : 0).asObject()
+            );
+            colSLAP.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+            colSLAP.setOnEditCommit(e -> {
+                ChiTietKhuyenMai row = e.getRowValue();
+                Integer v = e.getNewValue() == null ? 0 : Math.max(0, e.getNewValue());
+                row.setSlApDung(v);
+                tbDSThuoc.refresh();
+            });
+        }
+        if (colSLTD != null) {
+            colSLTD.setCellValueFactory(cd ->
+                    new SimpleIntegerProperty(cd.getValue() != null && cd.getValue().getSlToiDa() != null
+                            ? cd.getValue().getSlToiDa() : 0).asObject()
+            );
+            colSLTD.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+            colSLTD.setOnEditCommit(e -> {
+                ChiTietKhuyenMai row = e.getRowValue();
+                Integer v = e.getNewValue() == null ? 0 : Math.max(0, e.getNewValue());
+                row.setSlToiDa(v);
+                tbDSThuoc.refresh();
+            });
+        }
+        if (colXoaCT != null) {
+            colXoaCT.setCellFactory(col -> new TableCell<>() {
+                private final Button btn = new Button("Xóa");
+                {
+                    btn.setOnAction(ev -> {
+                        ChiTietKhuyenMai item = getTableView().getItems().get(getIndex());
+                        getTableView().getItems().remove(item);
+                    });
                 }
-                ChiTietKhuyenMai item = getTableView().getItems().get(getIndex());
-                int current = 0;
-                if (item != null) {
-                    Integer v = getter.apply(item);
-                    current = v == null ? 0 : v;
+                @Override protected void updateItem(Void v, boolean empty) {
+                    super.updateItem(v, empty);
+                    setGraphic(empty ? null : btn);
                 }
-                SpinnerValueFactory.IntegerSpinnerValueFactory vf = (SpinnerValueFactory.IntegerSpinnerValueFactory) spinner.getValueFactory();
-                vf.setMin(min);
-                vf.setMax(max);
-                vf.setAmountToStepBy(step);
-                vf.setValue(current);
-                setGraphic(spinner);
+            });
+        }
+    }
+
+    private void setupGiftTable() {
+        if (tbTangKem == null) return;
+        tbTangKem.setItems(giftItems);
+        tbTangKem.setEditable(true);
+
+        if (colMaQua != null) {
+            colMaQua.setCellValueFactory(cd ->
+                    new SimpleStringProperty(cd.getValue() != null && cd.getValue().getThuocTangKem() != null
+                            ? cd.getValue().getThuocTangKem().getMaThuoc() : "")
+            );
+        }
+        if (colTenQua != null) {
+            colTenQua.setCellValueFactory(cd ->
+                    new SimpleStringProperty(cd.getValue() != null && cd.getValue().getThuocTangKem() != null
+                            ? cd.getValue().getThuocTangKem().getTenThuoc() : "")
+            );
+        }
+        if (colSLTang != null) {
+            colSLTang.setCellValueFactory(cd ->
+                    new SimpleIntegerProperty(cd.getValue() != null && cd.getValue().getSoLuong() != null
+                            ? cd.getValue().getSoLuong() : 0).asObject()
+            );
+            colSLTang.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+            colSLTang.setOnEditCommit(e -> {
+                Thuoc_SP_TangKem row = e.getRowValue();
+                Integer v = e.getNewValue() == null ? 0 : Math.max(0, e.getNewValue());
+                row.setSoLuong(v);
+                tbTangKem.refresh();
+            });
+        }
+        if (colXoaQua != null) {
+            colXoaQua.setCellFactory(col -> new TableCell<>() {
+                private final Button btn = new Button("Xóa");
+                {
+                    btn.setOnAction(ev -> {
+                        Thuoc_SP_TangKem item = getTableView().getItems().get(getIndex());
+                        getTableView().getItems().remove(item);
+                    });
+                }
+                @Override protected void updateItem(Void v, boolean empty) {
+                    super.updateItem(v, empty);
+                    setGraphic(empty ? null : btn);
+                }
+            });
+        }
+    }
+
+    // ListView behaviors similar to SuaXoaThuoc_Ctrl
+    private void initThuocListViewLikeSuaXoa() {
+        if (tfTimThuoc == null || listViewThuoc == null) return;
+
+        listViewThuoc.setVisible(false);
+        listViewThuoc.setManaged(false);
+        listViewThuoc.setPrefHeight(0);
+        listViewThuoc.setItems(allThuoc);
+
+        listViewThuoc.setCellFactory(data -> new ListCell<>() {
+            @Override protected void updateItem(Thuoc_SanPham item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : item.getMaThuoc() + " - " + item.getTenThuoc());
             }
         });
+
+        tfTimThuoc.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null && !newVal.trim().isEmpty()) {
+                String keyword = newVal.toLowerCase();
+                ObservableList<Thuoc_SanPham> filtered = FXCollections.observableArrayList();
+                for (Thuoc_SanPham sp : allThuoc) {
+                    String ma = sp.getMaThuoc() == null ? "" : sp.getMaThuoc().toLowerCase();
+                    String ten = sp.getTenThuoc() == null ? "" : sp.getTenThuoc().toLowerCase();
+                    if (ma.contains(keyword) || ten.contains(keyword)) filtered.add(sp);
+                }
+                listViewThuoc.setItems(filtered);
+                listViewThuoc.setVisible(!filtered.isEmpty());
+                listViewThuoc.setPrefHeight(filtered.isEmpty() ? 0 : 160);
+                listViewThuoc.toFront();
+            } else {
+                listViewThuoc.setVisible(false);
+                listViewThuoc.setPrefHeight(0);
+                listViewThuoc.setItems(allThuoc);
+            }
+        });
+
+        listViewThuoc.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
+            if (newSel != null) {
+                addThuocToCTKM(newSel);
+                tfTimThuoc.clear();
+                listViewThuoc.setVisible(false);
+                listViewThuoc.setPrefHeight(0);
+                Platform.runLater(() -> {
+                    listViewThuoc.getSelectionModel().clearSelection();
+                    listViewThuoc.refresh();
+                });
+            }
+        });
+    }
+
+    private void initQuaListViewLikeSuaXoa() {
+        if (tfTimQua == null || listViewQua == null) return;
+
+        listViewQua.setVisible(false);
+        listViewQua.setManaged(false);
+        listViewQua.setPrefHeight(0);
+        listViewQua.setItems(allThuoc);
+
+        listViewQua.setCellFactory(data -> new ListCell<>() {
+            @Override protected void updateItem(Thuoc_SanPham item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : item.getMaThuoc() + " - " + item.getTenThuoc());
+            }
+        });
+
+        tfTimQua.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null && !newVal.trim().isEmpty()) {
+                String keyword = newVal.toLowerCase();
+                ObservableList<Thuoc_SanPham> filtered = FXCollections.observableArrayList();
+                for (Thuoc_SanPham sp : allThuoc) {
+                    String ma = sp.getMaThuoc() == null ? "" : sp.getMaThuoc().toLowerCase();
+                    String ten = sp.getTenThuoc() == null ? "" : sp.getTenThuoc().toLowerCase();
+                    if (ma.contains(keyword) || ten.contains(keyword)) filtered.add(sp);
+                }
+                listViewQua.setItems(filtered);
+                listViewQua.setVisible(!filtered.isEmpty());
+                listViewQua.setPrefHeight(filtered.isEmpty() ? 0 : 160);
+                listViewQua.toFront();
+            } else {
+                listViewQua.setVisible(false);
+                listViewQua.setPrefHeight(0);
+                listViewQua.setItems(allThuoc);
+            }
+        });
+
+        listViewQua.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
+            if (newSel != null) {
+                addGiftItem(newSel);
+                tfTimQua.clear();
+                listViewQua.setVisible(false);
+                listViewQua.setPrefHeight(0);
+                Platform.runLater(() -> {
+                    listViewQua.getSelectionModel().clearSelection();
+                    listViewQua.refresh();
+                });
+            }
+        });
+    }
+
+    private void addThuocToCTKM(Thuoc_SanPham sp) {
+        if (sp == null) return;
+        boolean exists = ctItems.stream().anyMatch(ct ->
+                ct.getThuoc() != null &&
+                        sp.getMaThuoc().equals(ct.getThuoc().getMaThuoc())
+        );
+        if (exists) return;
+
+        ChiTietKhuyenMai ct = new ChiTietKhuyenMai();
+        ct.setThuoc(sp);
+        ct.setSlApDung(1);
+        ct.setSlToiDa(1);
+        ctItems.add(ct);
+    }
+
+    private void addGiftItem(Thuoc_SanPham sp) {
+        if (sp == null) return;
+        boolean exists = giftItems.stream().anyMatch(g ->
+                g.getThuocTangKem() != null &&
+                        sp.getMaThuoc().equals(g.getThuocTangKem().getMaThuoc())
+        );
+        if (exists) return;
+
+        Thuoc_SP_TangKem gift = new Thuoc_SP_TangKem();
+        gift.setThuocTangKem(sp);
+        gift.setSoLuong(1);
+        giftItems.add(gift);
+    }
+
+    private void updateGiftTabVisibility() {
+        if (tabTangKem == null || cbLoaiKM == null) return;
+        boolean enable = "LKM001".equalsIgnoreCase(String.valueOf(cbLoaiKM.getValue()));
+        tabTangKem.setDisable(!enable);
+    }
+
+    // Reusable load methods for CTKM table
+    public void loadDatatbCTKM(List<ChiTietKhuyenMai> list) {
+        ctItems.setAll(list == null ? List.of() : list);
+    }
+
+    public void loadTableCTKM(String maKM) {
+        List<ChiTietKhuyenMai> ds = new ChiTietKhuyenMai_Dao().selectByMaKM(maKM);
+        loadDatatbCTKM(ds);
+    }
+
+    // Populate form from KhuyenMai
+    public void loadData(KhuyenMai km) {
+        if (km == null) return;
+        if (tfMaKM  != null) tfMaKM.setText(km.getMaKM());
+        if (tfTenKM != null) tfTenKM.setText(km.getTenKM());
+        if (cbLoaiKM != null && km.getLoaiKM() != null) cbLoaiKM.setValue(km.getLoaiKM().getMaLoai());
+        if (tfGiaTri != null) tfGiaTri.setText(String.valueOf(km.getGiaTriKM()));
+        if (dpTuNgay != null && km.getNgayBatDau() != null) dpTuNgay.setValue(km.getNgayBatDau().toLocalDate());
+        if (dpDenNgay != null && km.getNgayKetThuc() != null) dpDenNgay.setValue(km.getNgayKetThuc().toLocalDate());
+        if (tfMoTa != null) tfMoTa.setText(km.getMoTa());
+    }
+
+    // UI events
+    public void btnHuyClick() {
+        Stage stage = (Stage) (btnHuy != null ? btnHuy.getScene().getWindow()
+                : (tfTenKM != null ? tfTenKM.getScene().getWindow() : null));
+        if (stage != null) stage.close();
+    }
+
+    public void btnLuuClick() {
+        // Implement persist logic for KhuyenMai + ctItems + giftItems if/when needed
     }
 }

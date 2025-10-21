@@ -14,19 +14,22 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
-import java.util.ArrayList;
+import javafx.util.Callback;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class SuaGiaThuoc_Ctrl extends Application {
-    // FXML controls
+
+    // 1. KHAI BÁO THÀNH PHẦN GIAO DIỆN (FXML)
+
     @FXML
     private TextField tfMaThuoc;
     @FXML
     private TextField tfTenThuoc;
     @FXML
-    private ComboBox<String> cbLoaiHang;
+    private TextField tfLoaiHang;
 
     @FXML
     private TableView<ChiTietDonViTinh> tbDVT;
@@ -44,10 +47,14 @@ public class SuaGiaThuoc_Ctrl extends Application {
     private TableColumn<ChiTietDonViTinh, Object> colDVCB;
     @FXML
     private TableColumn<ChiTietDonViTinh, Void> colXoa;
-
+    public Button btnLuu;
+    public Button btnHuy;
     private Thuoc_SanPham thuoc;
     private ObservableList<ChiTietDonViTinh> listGia = FXCollections.observableArrayList();
     private final ChiTietDonViTinh_Dao ctDVTDao = new ChiTietDonViTinh_Dao();
+
+
+    // 2. KHỞI TẠO (INITIALIZE)
 
     @FXML
     public void initialize() {
@@ -58,46 +65,9 @@ public class SuaGiaThuoc_Ctrl extends Application {
         colGiaBan.setCellValueFactory(new PropertyValueFactory<>("giaBan"));
         colDVCB.setCellValueFactory(new PropertyValueFactory<>("donViCoBan"));
 
-        addDeleteButtonToTable();
+        addDetailButtonToTable();
 
         tbDVT.setItems(listGia);
-    }
-
-    private void addDeleteButtonToTable() {
-        Callback<TableColumn<ChiTietDonViTinh, Void>, TableCell<ChiTietDonViTinh, Void>> cellFactory = new Callback<>() {
-            @Override
-            public TableCell<ChiTietDonViTinh, Void> call(final TableColumn<ChiTietDonViTinh, Void> param) {
-                return new TableCell<>() {
-                    private final Button btn = new Button("Xóa");
-
-                    {
-                        btn.setOnAction(event -> {
-                            ChiTietDonViTinh ct = getTableView().getItems().get(getIndex());
-                            if (ct != null) {
-                                // remove from UI list
-                                listGia.remove(ct);
-                                // TODO: delete from database if desired, e.g. ctDVTDao.delete(ct.getId() or appropriate key)
-                                // Example (uncomment and adapt if DAO method exists):
-                                // ctDVTDao.deleteById(ct.getId());
-                            }
-                        });
-                        btn.getStyleClass().add("btn-delete");
-                    }
-
-                    @Override
-                    protected void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(btn);
-                        }
-                    }
-                };
-            }
-        };
-
-        colXoa.setCellFactory(cellFactory);
     }
 
     @Override
@@ -108,24 +78,175 @@ public class SuaGiaThuoc_Ctrl extends Application {
         stage.show();
     }
 
-    // called by caller to supply Thuoc_SanPham to edit
+    // 3. XỬ LÝ SỰ KIỆN GIAO DIỆN
+
+    // Set thuốc lên tf và load bảng giá
     public void setThuoc(Thuoc_SanPham thuoc) {
         this.thuoc = thuoc;
-        if (tfMaThuoc != null) {
-            tfMaThuoc.setText(thuoc.getMaThuoc());
-        }
-        if (tfTenThuoc != null) {
-            tfTenThuoc.setText(thuoc.getTenThuoc());
-        }
-        // load list of prices/units
+        tfMaThuoc.setText(thuoc.getMaThuoc());
+        tfTenThuoc.setText(thuoc.getTenThuoc());
+        tfLoaiHang.setText(thuoc.getLoaiHang().getTenLoaiHang());
         loadListGia(this.thuoc.getMaThuoc());
     }
 
-    // load list from DAO into observable list and refresh table
+    //Hàm thêm nút chi tiết vào bảng giá
+    private void addDetailButtonToTable() {
+        Callback<TableColumn<ChiTietDonViTinh, Void>, TableCell<ChiTietDonViTinh, Void>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<ChiTietDonViTinh, Void> call(final TableColumn<ChiTietDonViTinh, Void> param) {
+                return new TableCell<>() {
+                    private final Button btn = new Button("Chi tiết");
+
+                    {
+                        btn.setOnAction(event -> {
+                            int row = getIndex();
+                            ChiTietDonViTinh ct = getTableView().getItems().get(row);
+                            if (ct == null || thuoc == null) return;
+
+                            try {
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                                        "/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatGia/ThietLapDonViTinh_SuaXoa_GUI.fxml"));
+                                Parent root = loader.load();
+                                ThietLapDonViTinh_SuaXoa_Ctrl ctrl = loader.getController();
+
+                                // Sử dụng setContext để thiết lập callback và thông tin cần thiết
+                                ctrl.setContext(
+                                        thuoc.getMaThuoc(),
+                                        updated -> {
+                                            listGia.set(row, updated);
+                                            tbDVT.refresh();
+                                        },
+                                        deleted -> {
+                                            listGia.remove(ct);
+                                            tbDVT.refresh();
+                                        }
+                                );
+
+                                ctrl.setCtdvt(ct);
+
+                                Stage dialog = new Stage();
+                                dialog.initOwner(tbDVT.getScene().getWindow());
+                                //Set modality để chặn tương tác với cửa sổ cha, có thể dùng APPPLICATION_MODAL để chặn tất cả cửa sổ khác
+                                dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+                                dialog.setScene(new Scene(root));
+                                dialog.setTitle("Chi tiết đơn vị tính");
+                                dialog.showAndWait();
+                            } catch (Exception e) {
+                                new Alert(Alert.AlertType.ERROR, "Không mở được cửa sổ chi tiết.").showAndWait();
+                            }
+                        });
+                        btn.getStyleClass().add("btnChiTiet");
+                    }
+
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setGraphic(empty ? null : btn);
+                    }
+                };
+            }
+        };
+        colXoa.setCellFactory(cellFactory);
+    }
+
+    // load danh sách giá từ qua ctdvt dao
     public void loadListGia(String maThuoc) {
         List<ChiTietDonViTinh> loaded = ctDVTDao.selectByMaThuoc(maThuoc);
         listGia.setAll(loaded);
     }
 
-    // optional save/cancel handlers can be added here
+    public void btnThietLapGiaClick() {
+        if (thuoc == null) return;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                    "/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatGia/ThietLapDonViTinh_Them_GUI.fxml"));
+            Parent root = loader.load();
+            ThietLapDonViTinh_Them_Ctrl ctrl = loader.getController();
+
+            // Sử dụng setContext để thiết lập callback lấy về chi tiết đơn vị tính vừa thêm và cập nhật table
+            ctrl.setContext(thuoc.getMaThuoc(), newItem -> {
+                listGia.add(newItem);
+                tbDVT.refresh();
+            });
+
+            Stage dialog = new Stage();
+            dialog.initOwner(tbDVT.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Thiết lập đơn vị tính");
+            dialog.showAndWait();
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, "Không mở được cửa sổ thiết lập đơn vị tính.").showAndWait();
+        }
+    }
+
+    public void btnLuuClick() {
+        if (thuoc == null) {
+            new Alert(Alert.AlertType.WARNING, "Chưa chọn thuốc.").showAndWait();
+            return;
+        }
+        if(!donViCoBanCheck()) {
+            return;
+        }
+        try {
+            // setThuoc đang chọn cho tất cả object chi tiết dvt trong listGia
+            listGia.forEach(ct -> ct.setThuoc(thuoc));
+
+            //Lấy danh sách chi tiết đơn vị tính hiện có trong database
+            List<ChiTietDonViTinh> existing = ctDVTDao.selectByMaThuoc(thuoc.getMaThuoc());
+            //Tạo các khóa đã có và hiện tại để so sánh
+            Set<String> existingKeys = existing.stream().map(this::keyOf).collect(Collectors.toSet());
+            Set<String> currentKeys  = listGia.stream().map(this::keyOf).collect(Collectors.toSet());
+
+            //Kiểm tra và thực hiện insert hoặc update
+            for (ChiTietDonViTinh ct : listGia) {
+                String key = keyOf(ct);
+                if (existingKeys.contains(key)) {
+                    ctDVTDao.update(ct);
+                } else {
+                    ctDVTDao.insert(ct);
+                }
+            }
+            //Xoá các chi tiết đơn vị tính đã bị xoá khỏi danh sách hiện tại
+            for (ChiTietDonViTinh ex : existing) {
+                if (!currentKeys.contains(keyOf(ex))) {
+                    ctDVTDao.deleteById(ex.getThuoc().getMaThuoc(), ex.getDvt().getMaDVT());
+                }
+            }
+
+            loadListGia(this.thuoc.getMaThuoc());
+            tbDVT.refresh();
+            new Alert(Alert.AlertType.INFORMATION, "Lưu thành công.").showAndWait();
+            Stage stage = (Stage) btnLuu.getScene().getWindow();
+            stage.close();
+        } catch (Exception ex) {
+            new Alert(Alert.AlertType.ERROR, "Lỗi khi lưu dữ liệu: " + ex.getMessage()).showAndWait();
+        }
+    }
+    private boolean donViCoBanCheck() {
+        long baseCount = listGia.stream().filter(ChiTietDonViTinh::isDonViCoBan).count();
+
+        if (baseCount == 0) {
+            new Alert(Alert.AlertType.WARNING,
+                    "Chưa có đơn vị cơ bản. Vui lòng chọn 1 đơn vị làm cơ bản (DVCB).").showAndWait();
+            return false;
+        }
+        if (baseCount > 1) {
+            new Alert(Alert.AlertType.WARNING,
+                    "Chỉ được có đúng 1 đơn vị cơ bản. Vui lòng bỏ chọn DVCB ở các đơn vị còn lại.").showAndWait();
+            return false;
+        }
+        return true;
+    }
+
+    private String keyOf(ChiTietDonViTinh ct) {
+        return (ct.getThuoc() != null ? ct.getThuoc().getMaThuoc() : "") + "#" +
+                (ct.getDvt() != null ? ct.getDvt().getMaDVT() : "");
+    }
+
+    public void btnHuyClick() {
+        Stage stage = (Stage) tfMaThuoc.getScene().getWindow();
+        stage.close();
+    }
+
 }

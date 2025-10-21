@@ -4,6 +4,7 @@ import com.example.pharmacymanagementsystem_qlht.dao.ChiTietKhuyenMai_Dao;
 import com.example.pharmacymanagementsystem_qlht.dao.KhuyenMai_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.KhuyenMai;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -88,6 +89,7 @@ public class CapNhatKhuyenMai_Ctrl extends Application {
         });
         tbKM.setItems(data);
     }
+
     public void btnChiTietClick(KhuyenMai km) {
         try {
             Stage stage = new Stage();
@@ -95,12 +97,18 @@ public class CapNhatKhuyenMai_Ctrl extends Application {
             Parent root = loader.load();
             Scene scene = new Scene(root);
 
-            this.getClass();
             SuaKhuyenMai_Ctrl ctrl = loader.getController();
             ctrl.loadData(km);
             ctrl.loadDatatbCTKM(new ChiTietKhuyenMai_Dao().selectByMaKM(km.getMaKM()));
+
+            stage.initOwner(tbKM.getScene().getWindow()); // set owner so modality/parent exists
             stage.setScene(scene);
+            stage.setResizable(true); // must be true to allow sizeToScene to change size
+
             stage.show();
+
+            // run later to ensure all CSS/layout completed
+            Platform.runLater(stage::sizeToScene);
         } catch (Exception e) {
             e.printStackTrace();
         }

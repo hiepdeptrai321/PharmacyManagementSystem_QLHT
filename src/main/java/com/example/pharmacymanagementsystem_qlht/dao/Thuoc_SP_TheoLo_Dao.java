@@ -25,6 +25,7 @@ public class Thuoc_SP_TheoLo_Dao implements DaoInterface<Thuoc_SP_TheoLo> {
     private static final String UPDATE_TON_KHO_SQL =
             "UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - ? WHERE MaThuoc   = ? AND MaLH= ? AND SoLuongTon >= ?";
 
+
     @Override
     public boolean insert(Thuoc_SP_TheoLo e) {
         return ConnectDB.update(INSERT_SQL, e.getMaLH(), e.getSoLuongTon(), e.getNsx(), e.getHsd(),
@@ -107,7 +108,6 @@ public class Thuoc_SP_TheoLo_Dao implements DaoInterface<Thuoc_SP_TheoLo> {
         if (soLuongCanGiam <= 0) {
             return false;
         }
-
         try (PreparedStatement ps = conn.prepareStatement(UPDATE_TON_KHO_SQL)) {
             ps.setInt(1, soLuongCanGiam);
             ps.setString(2, loHang.getThuoc().getMaThuoc());

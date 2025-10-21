@@ -5,12 +5,14 @@ import java.util.Objects;
 public class KeHang {
     private String maKe;
     private String tenKe;
+    private String moTa;
 
     public KeHang() {
     }
-    public KeHang(String maKe, String tenKe) {
+    public KeHang(String maKe, String tenKe,String moTa) {
         this.maKe = maKe;
         this.tenKe = tenKe;
+        this.moTa = moTa;
     }
 
     public String getMaKe() {
@@ -28,6 +30,12 @@ public class KeHang {
     public void setTenKe(String tenKe) {
         this.tenKe = tenKe;
     }
+    public String getMoTa() {
+        return moTa;
+    }
+    public void setMoTa(String moTa) {
+        this.moTa = moTa;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -43,9 +51,10 @@ public class KeHang {
 
     @Override
     public String toString() {
-        return "keHang{" +
+        return "KeHang{" +
                 "maKe='" + maKe + '\'' +
                 ", tenKe='" + tenKe + '\'' +
+                ", moTa='" + moTa + '\'' +
                 '}';
     }
 }

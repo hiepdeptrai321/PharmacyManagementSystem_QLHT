@@ -57,8 +57,33 @@ public class NhomDuocLy_Dao implements DaoInterface<NhomDuocLy> {
         }
         return list;
     }
+
     @Override
     public List<NhomDuocLy> selectAll() {
         return this.selectBySql(SELECT_ALL_SQL);
+    }
+
+    public List<String> getAllTenNhomDuocLy() {
+        String sql = "SELECT DISTINCT TenNDL FROM NhomDuocLy";
+        List<String> list = new ArrayList<>();
+        try {
+            ResultSet rs = ConnectDB.query(sql);
+            while (rs.next()) {
+                list.add(rs.getString("TenNDL"));
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
+    public NhomDuocLy selectByTenNhomDuocLy(String string) {
+        String sql = "SELECT * FROM NhomDuocLy WHERE TenNDL = ?";
+        List<NhomDuocLy> list = selectBySql(sql, string);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
     }
 }

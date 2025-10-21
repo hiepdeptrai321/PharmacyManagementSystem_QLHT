@@ -37,6 +37,9 @@ module com.example.pharmacymanagementsystem_qlht {
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMThuoc to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuNhapHang to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhuyenMai to javafx.fxml;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDoi to javafx.fxml;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuTra to javafx.fxml;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDatHang to javafx.fxml;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKThuoc;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKThuoc to javafx.fxml;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang;
@@ -59,7 +62,5 @@ module com.example.pharmacymanagementsystem_qlht {
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatGia;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatSoLuong;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKNhaCungCap;
-    opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuTra to javafx.fxml;
-    opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDoi to javafx.fxml;
-    opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDatHang to javafx.fxml;
+
 }

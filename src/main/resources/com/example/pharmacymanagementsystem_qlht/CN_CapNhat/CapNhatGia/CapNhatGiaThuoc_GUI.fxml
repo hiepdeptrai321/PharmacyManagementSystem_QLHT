@@ -12,9 +12,9 @@
     <children>
         <TextField fx:id="tfTimThuoc" layoutX="12.0" layoutY="47.0" prefHeight="40.0" prefWidth="793.0" promptText="Tìm theo mã, tên thuốc" />
         <Button id="btntim" fx:id="btnTimThuoc" layoutX="817.0" layoutY="47.0" maxHeight="40.0" minHeight="40.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timThuoc" prefHeight="40.0" prefWidth="78.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" />
-        <Pane id="lblpaneTitle" prefHeight="40.0" prefWidth="1200.0">
+        <Pane id="lblpaneTitle" layoutX="-1.0" prefHeight="40.0" prefWidth="1646.0">
             <children>
-                <Label id="lbtitle" layoutX="12.0" layoutY="2.0" prefHeight="36.0" prefWidth="310.0" text="Cập nhật giá thuốc" />
+                <Label id="lbtitle" layoutX="15.0" layoutY="2.0" prefHeight="36.0" prefWidth="307.0" text="Cập nhật giá thuốc" />
             </children>
         </Pane>
         <TableView id="tablethuoc" fx:id="tbThuoc" layoutX="12.0" layoutY="96.0" prefHeight="791.0" prefWidth="1623.0">

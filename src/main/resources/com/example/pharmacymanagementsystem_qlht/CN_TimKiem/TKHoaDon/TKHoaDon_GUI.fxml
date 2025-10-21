@@ -23,7 +23,7 @@
     <children>
         <VBox layoutX="10.0" layoutY="14.0">
             <children>
-                <HBox prefHeight="73.0" prefWidth="1618.0">
+                <HBox prefHeight="58.0" prefWidth="1618.0">
                     <children>
                         <Label id="lbTimKiem" ellipsisString="" prefHeight="53.0" prefWidth="328.0" styleClass="title" text="Tìm kiếm hóa đơn">
                             <font>
@@ -44,7 +44,7 @@
                 <Separator prefWidth="200.0" />
                 <HBox prefHeight="63.0" prefWidth="1618.0">
                     <children>
-                        <ComboBox fx:id="cboTieuChiTimKiem" prefHeight="40.0" prefWidth="130.0" promptText="Tiêu chí tìm kiếm" styleClass="btntim">
+                        <ComboBox fx:id="cboTieuChiTimKiem" prefHeight="40.0" prefWidth="165.0" promptText="Tiêu chí tìm kiếm" styleClass="btntim">
                             <HBox.margin>
                                 <Insets right="5.0" top="10.0" />
                             </HBox.margin>
@@ -54,7 +54,7 @@
                                 <Insets top="10.0" />
                             </HBox.margin>
                         </TextField>
-                  <Region prefHeight="51.0" prefWidth="30.0" />
+                  <Region prefHeight="63.0" prefWidth="73.0" />
                   <ImageView fitHeight="20.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../img/time-2623.png" />
@@ -63,7 +63,7 @@
                         <Insets right="4.0" top="16.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Label prefHeight="32.0" prefWidth="20.0" styleClass="tftim" text="Từ: ">
+                  <Label prefHeight="37.0" prefWidth="47.0" styleClass="tftim" text="Từ: ">
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
@@ -111,7 +111,7 @@
                                 </ImageView>
                             </graphic>
                         </Button>
-                  <Region prefHeight="63.0" prefWidth="528.0" />
+                  <Region prefHeight="63.0" prefWidth="432.0" />
                   <ComboBox fx:id="cboBoLocNhanh" prefHeight="40.0" prefWidth="208.0" promptText="⌛ Bộ lọc nhanh" styleClass="btntim">
                      <HBox.margin>
                         <Insets top="10.0" />
@@ -124,7 +124,7 @@
                 </HBox>
                 <ScrollPane>
                     <content>
-                        <TableView fx:id="tblHD" prefHeight="717.0" prefWidth="1616.0">
+                        <TableView fx:id="tblHD" prefHeight="730.0" prefWidth="1616.0">
                             <columns>
                                 <TableColumn fx:id="colMaHD" minWidth="0.0" prefWidth="169.3333282470703" text="Mã hóa đơn" />
                                 <TableColumn fx:id="colNgayLap" minWidth="6.0" prefWidth="226.6666717529297" text="Ngày lập" />

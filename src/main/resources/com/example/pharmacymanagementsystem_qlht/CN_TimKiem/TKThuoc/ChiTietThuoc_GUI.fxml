@@ -22,7 +22,7 @@
       </Pane>
                 <TextField fx:id="txtMaThuoc" layoutX="16.0" layoutY="70.0" maxHeight="31.0" prefHeight="31.0" prefWidth="256.0" style="-fx-max-height: 30;" />
                 <TextField fx:id="txtTenThuoc" layoutX="276.0" layoutY="70.0" maxHeight="31.0" prefHeight="31.0" prefWidth="410.0" style="-fx-max-height: 30;" />
-            <ImageView fitHeight="270.0" fitWidth="266.0" layoutX="707.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imgThuoc" fitHeight="270.0" fitWidth="266.0" layoutX="707.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
                 <image>
                     <Image url="@../../img/noimage.jpg" />
                 </image>

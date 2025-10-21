@@ -353,23 +353,4 @@ public class SuaXoaThuoc_Ctrl {
             imgThuoc_SanPham.setImage(image);
         }
     }
-
-    private void capNhatThuoc() {
-        Thuoc_SanPham thuoc = new Thuoc_SanPham();
-        thuoc.setMaThuoc(txtMaThuoc.getText());
-        thuoc.setTenThuoc(txtTenThuoc.getText().trim());
-        thuoc.setLoaiHang(new LoaiHang_Dao().selectByTenLH(cbxLoaiHang.getSelectionModel().getSelectedItem().toString()));
-        thuoc.setVitri(new KeHang_Dao().selectByTenKe(cbxViTri.getSelectionModel().getSelectedItem().toString()));
-        thuoc.setHamLuong(Float.parseFloat(txtHamLuong.getText().trim()));
-        thuoc.setHangSX(txtHangSanXuat.getText().trim());
-        thuoc.setDonViHamLuong(txtDonViHamLuong.getText().trim());
-        thuoc.setDuongDung(txtDuongDung.getText().trim());
-        thuoc.setNhomDuocLy(new NhomDuocLy_Dao().selectByTenNhomDuocLy(cbxNhomDuocLy.getSelectionModel().getSelectedItem().toString()));
-        thuoc.setNuocSX(txtNuocSanXuat.getText().trim());
-        thuoc.setQuyCachDongGoi(txtQuyCachDongGoi.getText().trim());
-        thuoc.setSDK_GPNK(txtSDK_GPNK.getText().trim());
-
-        danhMucThuoc_Ctrl.refestTable();
-        dong();
-    }
 }

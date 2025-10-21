@@ -61,9 +61,6 @@ public class SuaXoaThuoc_Ctrl {
     public ImageView imgThuoc_SanPham;
     private ObservableList<HoatChat> allHoatChat;
     private List<ChiTietHoatChat> listChiTietHoatChat = new ArrayList<>();
-    private String maThuoc;
-    private Consumer<Thuoc_SanPham> onAdded;
-    private Consumer<Thuoc_SanPham> onDeleted;
     private DanhMucThuoc_Ctrl danhMucThuoc_Ctrl;
 
     @FXML
@@ -83,9 +80,11 @@ public class SuaXoaThuoc_Ctrl {
                 }
             }
         });
+//      Tạo sự kiện cho listViewHoatChat
         listViewHoatChat.setVisible(false);
         listView();
         txtTimKiemHoatChat.textProperty().addListener((obs, oldVal, newVal) -> {
+//          Nếu txtTimKiemHoatChat được nhập thì listViewHoatChat sẽ hiện còn nếu txtTimKiemHoatChat trống thì sẽ tắt
             if (newVal != null && !newVal.trim().isEmpty()) {
                 listViewHoatChat.setVisible(true);
                 locDanhSachHoatChat(newVal, oldVal);
@@ -98,17 +97,18 @@ public class SuaXoaThuoc_Ctrl {
                 HoatChat hoatChat = ((HoatChat) newVal);
                 txtTimKiemHoatChat.clear();
                 listViewHoatChat.setVisible(false);
-                if(tblHoatChat.getItems().stream().noneMatch(item ->
-                        item.getHoatChat().getMaHoatChat().equals(hoatChat.getMaHoatChat()))) {
+//              Kiểm tra nếu Hoạt chất đã có trong bảng chưa
+                if(tblHoatChat.getItems().stream().noneMatch(item -> item.getHoatChat().getMaHoatChat().equals(hoatChat.getMaHoatChat()))) {
                     ChiTietHoatChat chtc = new ChiTietHoatChat();
-                    chtc.setThuoc(thuoc);
                     chtc.setHoatChat(hoatChat);
+//                  Tạo dialog để nhập hàm lượng cho hoạt chất
                     TextInputDialog dialog = new TextInputDialog();
                     dialog.setTitle("Nhập hàm lượng");
                     dialog.setHeaderText("Vui lòng nhập hàm lượng cho hoạt chất: " + hoatChat.getTenHoatChat());
                     dialog.setContentText("Hàm lượng:");
                     dialog.showAndWait().ifPresent(hamLuong -> {
                         chtc.setHamLuong(Float.parseFloat(hamLuong));
+//                      Thêm chiTietHoatChat vào list để lưu lại khi thêm thuốc sẽ được thêm vào chi tiết hoạt chất
                         listChiTietHoatChat.add(chtc);
                         tblHoatChat.getItems().add(chtc);
                     });
@@ -117,11 +117,13 @@ public class SuaXoaThuoc_Ctrl {
                         listViewHoatChat.refresh();
                     });
                 } else {
+//                  Thông báo lỗi khi hoạt chất đã tồn tại trong bảng
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Thông báo");
                     alert.setHeaderText(null);
                     alert.setContentText("Hoạt chất đã tồn tại trong danh sách!");
                     alert.showAndWait();
+//                  Clear listViewHoatChat để lần sau thêm 1 hoạt chất khác
                     Platform.runLater(() -> {
                         listViewHoatChat.getSelectionModel().clearSelection();
                         listViewHoatChat.refresh();
@@ -183,7 +185,6 @@ public class SuaXoaThuoc_Ctrl {
         List<HoatChat> listHoatChat = new HoatChat_Dao().selectAll();
         allHoatChat = FXCollections.observableArrayList(listHoatChat);
         listViewHoatChat.setItems(allHoatChat);
-
         listViewHoatChat.setCellFactory(data -> new ListCell<HoatChat>() {
             @Override
             protected void updateItem(HoatChat item, boolean empty) {
@@ -327,17 +328,17 @@ public class SuaXoaThuoc_Ctrl {
     }
 
     public void btnXoa(ActionEvent actionEvent) {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Bạn có chắc muốn xoá thuốc này?", ButtonType.YES, ButtonType.NO);
-        confirm.setHeaderText(null);
-        confirm.showAndWait().ifPresent(btn -> {
-            if (btn == ButtonType.YES) {
-                Thuoc_SanPham_Dao thuoc_dao = new Thuoc_SanPham_Dao();
-                thuoc_dao.deleteById(txtMaThuoc.getText().trim());
-                if (onDeleted != null) onDeleted.accept(thuoc_dao.selectById(txtMaThuoc.getText().trim()));
-                danhMucThuoc_Ctrl.refestTable();
-                dong();
-            }
-        });
+//        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Bạn có chắc muốn xoá thuốc này?", ButtonType.YES, ButtonType.NO);
+//        confirm.setHeaderText(null);
+//        confirm.showAndWait().ifPresent(btn -> {
+//            if (btn == ButtonType.YES) {
+//                Thuoc_SanPham_Dao thuoc_dao = new Thuoc_SanPham_Dao();
+//                thuoc_dao.deleteById(txtMaThuoc.getText().trim());
+//                if (onDeleted != null) onDeleted.accept(thuoc_dao.selectById(txtMaThuoc.getText().trim()));
+//                danhMucThuoc_Ctrl.refestTable();
+//                dong();
+//            }
+//        });
     }
 
     public void chonFile(ActionEvent actionEvent) {
@@ -352,5 +353,79 @@ public class SuaXoaThuoc_Ctrl {
             Image image = new Image(selectedFile.toURI().toString());
             imgThuoc_SanPham.setImage(image);
         }
+    }
+
+    public boolean kiemTraHopLe(Thuoc_SanPham thuoc) {
+        if(thuoc.getTenThuoc().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Tên thuốc không được để trống!");
+            alert.showAndWait();
+            return false;
+        }else if(cbxLoaiHang.getSelectionModel().getSelectedIndex() == 0){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng chọn loại hàng!");
+            alert.showAndWait();
+            return false;
+        }else if(cbxViTri.getSelectionModel().getSelectedIndex() == 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng chọn vị trí!");
+            alert.showAndWait();
+            return false;
+        }else if(listChiTietHoatChat.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng thêm ít nhất một hoạt chất cho thuốc!");
+            alert.showAndWait();
+            return false;
+        }else if(cbxNhomDuocLy.getSelectionModel().getSelectedIndex() == 0){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng chọn nhóm dược lý!");
+            alert.showAndWait();
+            return false;
+        }else if(txtHamLuong.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Hàm lượng không được để trống!");
+            alert.showAndWait();
+            return false;
+        }else if(!txtHamLuong.getText().matches("\\d+(\\.\\d+)?")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Hàm lượng không hợp lệ! Vui lòng nhập số.");
+            alert.showAndWait();
+            return false;
+        }else if(txtDonViHamLuong.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Đơn vị hàm lượng không được để trống!");
+            alert.showAndWait();
+            return false;
+        }else if(txtDuongDung.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Đường dùng không được để trống!");
+            alert.showAndWait();
+            return false;
+        }else if(txtSDK_GPNK.getText().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("SĐK/GPNK không được để trống!");
+            alert.showAndWait();
+        }
+        return true;
     }
 }

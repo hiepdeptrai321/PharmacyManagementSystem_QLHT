@@ -1024,3 +1024,4 @@ VALUES
 
 -- PT003: Trả Găng tay y tế (LH00014/TS451) từ HD006
 ('LH00014', 'PT003', 'TS451', 1, 1800, 0);   -- Trả Găng tay y tế
+

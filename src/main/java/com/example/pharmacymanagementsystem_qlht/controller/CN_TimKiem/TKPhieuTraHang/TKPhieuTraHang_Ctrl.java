@@ -1,9 +1,8 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuTraHang;
 
-import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDatHang.ChiTietPhieuDatHang_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.dao.PhieuTraHang_Dao;
-import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuTraHang;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuTraHang;
+import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
@@ -100,7 +99,7 @@ public class TKPhieuTraHang_Ctrl extends Application {
                 return new SimpleStringProperty("---");
             }
         });
-        colNgayLap.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNgayLap().toString()));
+        colNgayLap.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.dinhDangThoiGian(cellData.getValue().getNgayLap())));
         colTenKH.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKhachHang().getTenKH()));
         colSdtKH.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKhachHang().getSdt()));
         colTenNV.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNhanVien().getTenNV()));
@@ -168,7 +167,7 @@ public class TKPhieuTraHang_Ctrl extends Application {
                     match = pt.getNhanVien() != null && pt.getNhanVien().getTenNV().toLowerCase().contains(noiDung);
                     break;
                 case "Ngày lập":
-                    match = pt.getNgayLap() != null && pt.getNgayLap().toString().contains(noiDung);
+                    match = pt.getNgayLap() != null && DoiNgay.dinhDangThoiGian(pt.getNgayLap()).contains(noiDung);
                     break;
             }
             if (tuNgay != null && pt.getNgayLap() != null) {

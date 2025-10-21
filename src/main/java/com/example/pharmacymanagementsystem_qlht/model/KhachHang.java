@@ -1,7 +1,6 @@
 package com.example.pharmacymanagementsystem_qlht.model;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.Objects;
 
 public class KhachHang {
@@ -12,6 +11,8 @@ public class KhachHang {
     private Date ngaySinh;
     private String gioiTinh;
     private String diaChi;
+    // new field to represent status (matches DB NVARCHAR(10))
+    private String trangThai;
 
     public KhachHang() {
     }
@@ -24,6 +25,16 @@ public class KhachHang {
         this.ngaySinh = ngaySinh;
         this.gioiTinh = gioiTinh;
         this.diaChi = diaChi;
+        this.trangThai = "Hoạt động";
+    }
+
+    // getter/setter for TrangThai
+    public String getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(String trangThai) {
+        this.trangThai = trangThai;
     }
 
     public String getMaKH() {
@@ -83,18 +94,6 @@ public class KhachHang {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        KhachHang khachHang = (KhachHang) o;
-        return Objects.equals(maKH, khachHang.maKH);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(maKH);
-    }
-
-    @Override
     public String toString() {
         return "KhachHang{" +
                 "maKH='" + maKH + '\'' +
@@ -104,6 +103,19 @@ public class KhachHang {
                 ", ngaySinh=" + ngaySinh +
                 ", gioiTinh=" + gioiTinh +
                 ", diaChi='" + diaChi + '\'' +
+                ", trangThai='" + trangThai + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        KhachHang khachHang = (KhachHang) o;
+        return Objects.equals(maKH, khachHang.maKH);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(maKH);
     }
 }

@@ -1,7 +1,9 @@
+// java
 package com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhuyenMai;
 
 import com.example.pharmacymanagementsystem_qlht.dao.ChiTietKhuyenMai_Dao;
 import com.example.pharmacymanagementsystem_qlht.dao.KhuyenMai_Dao;
+import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SP_TangKem_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.KhuyenMai;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,31 +21,21 @@ import java.util.List;
 
 public class DanhMucKhuyenMai_Ctrl extends Application {
 
-    // 1. KHAI BÁO THÀNH PHẦN GIAO DIỆN (FXML)
-    @FXML
-    public TableView<KhuyenMai> tbKM;
+    @FXML public TableView<KhuyenMai> tbKM;
     public TextField tfTimKM;
-    @FXML
-    private Button btnthemKM;
-    @FXML
-    public TableColumn<KhuyenMai, String> colChiTiet;
-    @FXML
-    public TableColumn<KhuyenMai, String> colSTT;
-    @FXML
-    private TableColumn<KhuyenMai, String> colMaKM;
-    @FXML
-    private TableColumn<KhuyenMai, String> colTenKM;
-    @FXML
-    private TableColumn<KhuyenMai, String> colLoaiKM;
-    @FXML
-    private TableColumn<KhuyenMai, Float> colGiaTri;
-    @FXML
-    private TableColumn<KhuyenMai, java.sql.Date> colNBD;
-    @FXML
-    private TableColumn<KhuyenMai, java.sql.Date> colNKT;
+    @FXML private Button btnthemKM;
+    @FXML public TableColumn<KhuyenMai, String> colChiTiet;
+    @FXML public TableColumn<KhuyenMai, String> colSTT;
+    @FXML private TableColumn<KhuyenMai, String> colMaKM;
+    @FXML private TableColumn<KhuyenMai, String> colTenKM;
+    @FXML private TableColumn<KhuyenMai, String> colLoaiKM;
+    @FXML private TableColumn<KhuyenMai, Float> colGiaTri;
+    @FXML private TableColumn<KhuyenMai, java.sql.Date> colNBD;
+    @FXML private TableColumn<KhuyenMai, java.sql.Date> colNKT;
+    @FXML private TableColumn<KhuyenMai, java.sql.Date> colNgayTao;
+
     private KhuyenMai_Dao khuyenMaiDao = new KhuyenMai_Dao();
 
-    // 2. KHỞI TẠO (INITIALIZE)
     public void initialize() {
         loadTable();
     }
@@ -55,29 +47,30 @@ public class DanhMucKhuyenMai_Ctrl extends Application {
         stage.setScene(scene);
         stage.show();
     }
-    // 3. XỬ LÝ SỰ KIỆN GIAO DIỆN
 
     public void loadTable() {
-
         List<KhuyenMai> list = khuyenMaiDao.selectAll();
         ObservableList<KhuyenMai> data = FXCollections.observableArrayList(list);
+
         colSTT.setCellValueFactory(cellData ->
                 new SimpleStringProperty(String.valueOf(tbKM.getItems().indexOf(cellData.getValue()) + 1))
         );
         colMaKM.setCellValueFactory(new PropertyValueFactory<>("maKM"));
         colTenKM.setCellValueFactory(new PropertyValueFactory<>("tenKM"));
         colLoaiKM.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLoaiKM().getMaLoai()));
-        colGiaTri.setCellValueFactory(new PropertyValueFactory<>("giaTriKM"));
         colNBD.setCellValueFactory(new PropertyValueFactory<>("ngayBatDau"));
         colNKT.setCellValueFactory(new PropertyValueFactory<>("ngayKetThuc"));
-        colChiTiet.setCellFactory(col-> new TableCell<KhuyenMai, String>() {
-            private final Button btn = new Button("Chi tiết");
+        colNgayTao.setCellValueFactory(new PropertyValueFactory<>("ngayTao"));
+
+        // Change to red "Xóa" button and hook delete handler
+        colChiTiet.setCellFactory(col -> new TableCell<KhuyenMai, String>() {
+            private final Button btn = new Button("Xóa");
             {
                 btn.setOnAction(event -> {
                     KhuyenMai km = getTableView().getItems().get(getIndex());
-                    btnChiTietClick(km);
+                    btnXoaClick(km);
                 });
-                btn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white;");
+                btn.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
                 btn.getStyleClass().add("btn");
             }
             @Override
@@ -86,24 +79,29 @@ public class DanhMucKhuyenMai_Ctrl extends Application {
                 setGraphic(empty ? null : btn);
             }
         });
+
         tbKM.setItems(data);
     }
-    public void btnChiTietClick(KhuyenMai km) {
-        try {
-            Stage stage = new Stage();
-            FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhuyenMai/XoaKhuyenMai_GUI.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
 
-            this.getClass();
-            XoaKhuyenMai_Ctrl ctrl = loader.getController();
-            ctrl.loadData(km);
-            ctrl.loadDatatbCTKM(new ChiTietKhuyenMai_Dao().selectByMaKM(km.getMaKM()));
-            stage.setScene(scene);
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    // Confirm and delete promotion (and related details/gifts if applicable)
+    public void btnXoaClick(KhuyenMai km) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                "Xác nhận xóa khuyến mãi " + km.getMaKM() + "?", ButtonType.YES, ButtonType.NO);
+        confirm.setHeaderText("Xác nhận xóa");
+        confirm.showAndWait().ifPresent(res -> {
+            if (res != ButtonType.YES) return;
+            try {
+                // \*Adjust these DAO calls to your actual API if method names differ\*
+                new Thuoc_SP_TangKem_Dao().deleteByMaKM(km.getMaKM());
+                new ChiTietKhuyenMai_Dao().deleteByMaKM(km.getMaKM());
+                khuyenMaiDao.deleteByMaKM(km.getMaKM());
+
+                loadTable();
+                new Alert(Alert.AlertType.INFORMATION, "Đã xóa khuyến mãi.", ButtonType.OK).showAndWait();
+            } catch (Exception ex) {
+                new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.OK).showAndWait();
+            }
+        });
     }
 
     public void btnThemKMClick() {
@@ -112,19 +110,18 @@ public class DanhMucKhuyenMai_Ctrl extends Application {
             Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhuyenMai/ThemKhuyenMai_GUI.fxml"));
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setOnHidden(e -> loadTable());
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void timKhuyenMai(){
+    public void timKhuyenMai() {
         String keyword = tfTimKM.getText().trim().toLowerCase();
         KhuyenMai_Dao km_dao = new KhuyenMai_Dao();
         List<KhuyenMai> dsKMLoc = km_dao.selectByTuKhoa(keyword);
         ObservableList<KhuyenMai> data = FXCollections.observableArrayList(dsKMLoc);
         tbKM.setItems(data);
     }
-
-    // 4. XỬ LÝ NGHIỆP VỤ
 }

@@ -19,7 +19,7 @@ CREATE TABLE KhachHang (
     NgaySinh   DATE,
     GioiTinh   NVARCHAR(5) NOT NULL,
     DiaChi     NVARCHAR(50),
-    TrangThai  NVARCHAR(10) NOT NULL
+    TrangThai  BIT NOT NULL
 );
 -- =========================
 -- Bảng NhanVien
@@ -156,7 +156,7 @@ CREATE TABLE Thuoc_SP_TheoLo (
 -- =========================
 CREATE TABLE HoaDon (
     MaHD       VARCHAR(10) PRIMARY KEY,
-    NgayLap    DATE NOT NULL,
+    NgayLap    DATETIME NOT NULL,
     TrangThai  NVARCHAR(10) NOT NULL,
 	MaKH       VARCHAR(10) FOREIGN KEY REFERENCES KhachHang(MaKH),
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV)
@@ -179,12 +179,12 @@ CREATE TABLE ChiTietHoaDon (
 -- Bảng HoatDong
 -- =========================
 CREATE TABLE HoatDong (
-    MaHDong    VARCHAR(10) PRIMARY KEY,
-    LoaiHD     VARCHAR(20),
-    ThoiGian   DATE NOT NULL,
-    MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV),
-    BangDL	   VARCHAR(20),
-	GhiChu     NVARCHAR(255)
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    MaHDong AS ('HD' + RIGHT('0000' + CAST(ID AS VARCHAR(4)), 4)) PERSISTED,
+    LoaiHD NVARCHAR(20),
+    ThoiGian DATETIME DEFAULT GETDATE(),
+    BangDL NVARCHAR(50),
+    NoiDung NVARCHAR(MAX)
 );
 
 -- =========================
@@ -308,8 +308,8 @@ CREATE TABLE ChiTietDonViTinh (
 -- =========================
 CREATE TABLE LoaiKhuyenMai (
     MaLoai     VARCHAR(10) PRIMARY KEY,
-    TenLoai    VARCHAR(50),
-    MoTa       VARCHAR(255)
+    TenLoai    NVARCHAR(50),
+    MoTa       NVARCHAR(255)
 );
 
 -- =========================
@@ -323,6 +323,7 @@ CREATE TABLE KhuyenMai (
     NgayBatDau DATE NOT NULL,
     NgayKetThuc DATE NOT NULL,
     MoTa       NVARCHAR(255),
+	NgayTao	   DATETIME NOT NULL DEFAULT GETDATE(),
     MaLoai     VARCHAR(10) FOREIGN KEY REFERENCES LoaiKhuyenMai(MaLoai)
 );
 
@@ -359,17 +360,18 @@ CREATE TABLE Thuoc_SP_TangKem (
 
 
 INSERT INTO KhachHang (MaKH, TenKH, SDT, Email, NgaySinh, GioiTinh, DiaChi, TrangThai) VALUES
-('KH001', N'Nguyễn Văn An', '0905123456', 'an.nguyen@gmail.com', '1990-05-12', N'Nam', N'Hà Nội', N'Hoạt động'),
-('KH002', N'Lê Thị Hoa', '0905789456', 'hoa.le@gmail.com', '1995-08-21', N'Nữ', N'Hải Phòng', N'Hoạt động'),
-('KH003', N'Trần Văn Bình', '0912457896', 'binh.tran@gmail.com', '1988-11-03', N'Nam', N'TP HCM', N'Hoạt động'),
-('KH004', N'Phạm Thị Mai', '0932458976', 'mai.pham@gmail.com', '1992-02-15', N'Nữ', N'Đà Nẵng', N'Hoạt động'),
-('KH005', N'Hoàng Văn Nam', '0987654321', 'nam.hoang@gmail.com', '1985-12-20', N'Nam', N'Cần Thơ', N'Hoạt động'),
-('KH006', N'Vũ Thị Lan', '0978456123', 'lan.vu@gmail.com', '1998-09-09', N'Nữ', N'Hải Dương', N'Hoạt động'),
-('KH007', N'Đặng Văn Hùng', '0934567890', 'hung.dang@gmail.com', '1993-07-01', N'Nam', N'Bắc Ninh', N'Hoạt động'),
-('KH008', N'Bùi Thị Thảo', '0967451230', 'thao.bui@gmail.com', '1996-01-22', N'Nữ', N'Quảng Ninh', N'Hoạt động'),
-('KH009', N'Ngô Văn Tuấn', '0945789632', 'tuan.ngo@gmail.com', '1991-04-17', N'Nam', N'Thái Bình', N'Hoạt động'),
-('KH010', N'Đỗ Thị Hạnh', '0923456789', 'hanh.do@gmail.com', '1994-03-05', N'Nữ', N'Ninh Bình', N'Hoạt động'),
-('KH011', N'Nguyễn Nhựt Hảo', '0825902972', 'hao.dep.dzai3105@gmail.com', '2005-05-31', N'Nam', N'Đồng Tháp', N'Hoạt động');
+('KH001', N'Nguyễn Văn An', '0905123456', 'an.nguyen@gmail.com', '1990-05-12', N'Nam', N'Hà Nội', 1),
+('KH002', N'Lê Thị Hoa', '0905789456', 'hoa.le@gmail.com', '1995-08-21', N'Nữ', N'Hải Phòng', 1),
+('KH003', N'Trần Văn Bình', '0912457896', 'binh.tran@gmail.com', '1988-11-03', N'Nam', N'TP HCM', 1),
+('KH004', N'Phạm Thị Mai', '0932458976', 'mai.pham@gmail.com', '1992-02-15', N'Nữ', N'Đà Nẵng', 1),
+('KH005', N'Hoàng Văn Nam', '0987654321', 'nam.hoang@gmail.com', '1985-12-20', N'Nam', N'Cần Thơ', 1),
+('KH006', N'Vũ Thị Lan', '0978456123', 'lan.vu@gmail.com', '1998-09-09', N'Nữ', N'Hải Dương', 1),
+('KH007', N'Đặng Văn Hùng', '0934567890', 'hung.dang@gmail.com', '1993-07-01', N'Nam', N'Bắc Ninh', 1),
+('KH008', N'Bùi Thị Thảo', '0967451230', 'thao.bui@gmail.com', '1996-01-22', N'Nữ', N'Quảng Ninh', 1),
+('KH009', N'Ngô Văn Tuấn', '0945789632', 'tuan.ngo@gmail.com', '1991-04-17', N'Nam', N'Thái Bình', 1),
+('KH010', N'Đỗ Thị Hạnh', '0923456789', 'hanh.do@gmail.com', '1994-03-05', N'Nữ', N'Ninh Bình', 1),
+('KH011', N'Nguyễn Nhựt Hảo', '0825902972', 'hao.dep.dzai3105@gmail.com', '2005-05-31', N'Nam', N'Đồng Tháp', 1);
+
 
 
 INSERT INTO NhanVien (MaNV, TenNV, SDT, Email, NgaySinh, GioiTinh, DiaChi, TrangThai, TaiKhoan, MatKhau) VALUES
@@ -868,7 +870,7 @@ VALUES
 -- Thêm dữ liệu vào bảng LoaiKhuyenMai
 INSERT INTO LoaiKhuyenMai (MaLoai, TenLoai, MoTa)
 VALUES
-('LKM001', N'Mua sản phẩm tặng sản phẩm', N'Khi khách hàng mua sản phẩm nhất định sẽ được tặng kèm thêm sản phẩm khác'),
+('LKM001', N'Tặng kèm sản phẩm', N'Khi khách hàng mua sản phẩm nhất định sẽ được tặng kèm thêm sản phẩm khác'),
 ('LKM002', N'Giảm giá trực tiếp', N'Giảm trực tiếp một số tiền nhất định trên tổng hóa đơn hoặc sản phẩm'),
 ('LKM003', N'Giảm giá phần trăm', N'Khách hàng được giảm theo tỷ lệ phần trăm trên giá trị sản phẩm hoặc hóa đơn');
 
@@ -1023,3 +1025,153 @@ VALUES
 
 -- PT003: Trả Găng tay y tế (LH00014/TS451) từ HD006
 ('LH00014', 'PT003', 'TS451', 1, 1800, 0);   -- Trả Găng tay y tế
+
+
+
+
+
+
+
+
+
+
+--=======================================================================================================================
+--=======================================================================================================================
+--TRIGGER------------------------------------------------------------------------------------------------------------------------
+GO
+CREATE TRIGGER trg_ThuocSanPham_Audit
+ON Thuoc_SanPham
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @LoaiHD NVARCHAR(20);
+    DECLARE @BangDL NVARCHAR(50) = 'Thuoc_SanPham';
+    DECLARE @NoiDung NVARCHAR(MAX) = N'';
+
+    -- 🔹 1. Xác định loại hoạt động
+    IF EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
+        SET @LoaiHD = N'Cập nhật';
+    ELSE IF EXISTS (SELECT 1 FROM inserted)
+        SET @LoaiHD = N'Thêm mới';
+    ELSE
+        SET @LoaiHD = N'Xóa';
+
+    -- 🔹 2. Tạo nội dung mô tả chi tiết thay đổi
+    IF @LoaiHD = N'Thêm mới'
+    BEGIN
+        SELECT @NoiDung = STRING_AGG(
+            CONCAT(
+                'Thêm: [MaThuoc=', MaThuoc,
+                ', TenThuoc=', TenThuoc,
+                ', HamLuong=', HamLuong,
+                ', DonViHL=', DonViHL,
+                ', HangSX=', HangSX,
+                ', NuocSX=', NuocSX, ']'
+            ), '; '
+        )
+        FROM inserted;
+    END
+    ELSE IF @LoaiHD = N'Cập nhật'
+    BEGIN
+        SELECT @NoiDung = STRING_AGG(
+            CONCAT(
+                'Sửa: [MaThuoc=', i.MaThuoc,
+                '] (Tên: ', d.TenThuoc, ' → ', i.TenThuoc,
+                ', Hàm lượng: ', d.HamLuong, ' → ', i.HamLuong,
+                ', Đơn vị: ', d.DonViHL, ' → ', i.DonViHL, ')'
+            ), '; '
+        )
+        FROM inserted i
+        JOIN deleted d ON i.MaThuoc = d.MaThuoc;
+    END
+    ELSE IF @LoaiHD = N'Xóa'
+    BEGIN
+        SELECT @NoiDung = STRING_AGG(
+            CONCAT(
+                'Xóa: [MaThuoc=', MaThuoc,
+                ', TenThuoc=', TenThuoc,
+                ', HamLuong=', HamLuong,
+                ', DonViHL=', DonViHL, ']'
+            ), '; '
+        )
+        FROM deleted;
+    END
+
+    -- 🔹 3. Ghi vào bảng HoatDong (ID tự tăng, ThoiGian tự động)
+    INSERT INTO HoatDong (LoaiHD, BangDL, NoiDung)
+    VALUES (@LoaiHD, @BangDL, @NoiDung);
+END;
+GO
+
+CREATE TRIGGER trg_ThuocSPTheoLo_Audit
+ON Thuoc_SP_TheoLo
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @LoaiHD NVARCHAR(20);
+    DECLARE @BangDL NVARCHAR(50) = 'Thuoc_SP_TheoLo';
+    DECLARE @NoiDung NVARCHAR(MAX) = N'';
+
+    -- 🔹 1. Xác định loại hoạt động
+    IF EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
+        SET @LoaiHD = N'Cập nhật';
+    ELSE IF EXISTS (SELECT 1 FROM inserted)
+        SET @LoaiHD = N'Thêm mới';
+    ELSE
+        SET @LoaiHD = N'Xóa';
+
+    -- 🔹 2. Ghi nội dung mô tả (tập trung vào SoLuongTon)
+    IF @LoaiHD = N'Thêm mới'
+    BEGIN
+        SELECT @NoiDung = STRING_AGG(
+            CONCAT(
+                'Thêm lô: [MaLH=', MaLH,
+                ', MaThuoc=', MaThuoc,
+                ', MaPN=', MaPN,
+                ', Số lượng tồn=', SoLuongTon,
+                ', NSX=', FORMAT(NSX, 'yyyy-MM-dd'),
+                ', HSD=', FORMAT(HSD, 'yyyy-MM-dd'), ']'
+            ), '; '
+        )
+        FROM inserted;
+    END
+    ELSE IF @LoaiHD = N'Cập nhật'
+    BEGIN
+        -- Chỉ ghi log khi số lượng tồn thay đổi
+        SELECT @NoiDung = STRING_AGG(
+            CONCAT(
+                'Cập nhật lô: [MaLH=', i.MaLH,
+                ', MaThuoc=', i.MaThuoc,
+                '] (Số lượng tồn: ', d.SoLuongTon, ' → ', i.SoLuongTon, ')'
+            ), '; '
+        )
+        FROM inserted i
+        JOIN deleted d ON i.MaLH = d.MaLH
+        WHERE ISNULL(i.SoLuongTon, 0) <> ISNULL(d.SoLuongTon, 0);
+    END
+    ELSE IF @LoaiHD = N'Xóa'
+    BEGIN
+        SELECT @NoiDung = STRING_AGG(
+            CONCAT(
+                'Xóa lô: [MaLH=', MaLH,
+                ', MaThuoc=', MaThuoc,
+                ', Số lượng tồn=', SoLuongTon, ']'
+            ), '; '
+        )
+        FROM deleted;
+    END
+
+    -- 🔹 3. Ghi vào bảng HoatDong (chỉ ghi khi có nội dung thực sự)
+    IF (@NoiDung IS NOT NULL AND @NoiDung <> N'')
+    BEGIN
+        INSERT INTO HoatDong (LoaiHD, BangDL, NoiDung)
+        VALUES (@LoaiHD, @BangDL, @NoiDung);
+    END
+END;
+GO
+
+

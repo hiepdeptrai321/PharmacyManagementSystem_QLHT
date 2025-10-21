@@ -14,6 +14,7 @@ public class ChiTietKhuyenMai_Dao implements DaoInterface<ChiTietKhuyenMai> {
     private final String SELECT_BY_ID_SQL = "SELECT MaThuoc, MaKM, SLApDung, SLToiDa FROM ChiTietKhuyenMai WHERE MaThuoc=? AND MaKM=?";
     private final String SELECT_ALL_SQL = "SELECT MaThuoc, MaKM, SLApDung, SLToiDa FROM ChiTietKhuyenMai";
     private final String SELECT_BY_MAKM_SQL = "SELECT MaThuoc, MaKM, SLApDung, SLToiDa FROM ChiTietKhuyenMai WHERE MaKM=?";
+    private final String DELETE_BY_MAKM_SQL = "DELETE FROM ChiTietKhuyenMai WHERE MaKM=?";
 
     @Override
     public boolean insert(ChiTietKhuyenMai e) {
@@ -63,5 +64,8 @@ public class ChiTietKhuyenMai_Dao implements DaoInterface<ChiTietKhuyenMai> {
     @Override
     public List<ChiTietKhuyenMai> selectAll() {
         return selectBySql(SELECT_ALL_SQL);
+    }
+    public boolean deleteByMaKM(String maKM) {
+        return ConnectDB.update(DELETE_BY_MAKM_SQL, maKM)>0;
     }
 }

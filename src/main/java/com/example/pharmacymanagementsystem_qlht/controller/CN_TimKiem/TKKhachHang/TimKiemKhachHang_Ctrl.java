@@ -2,7 +2,7 @@ package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachH
 
 import com.example.pharmacymanagementsystem_qlht.dao.KhachHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.KhachHang;
-import com.example.pharmacymanagementsystem_qlht.model.NhaCungCap;
+import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Observer;
+import java.util.function.Consumer;
 
 public class TimKiemKhachHang_Ctrl extends Application {
     // 1. KHAI BÁO THÀNH PHẦN GIAO DIỆN (FXML)
@@ -64,6 +64,11 @@ public class TimKiemKhachHang_Ctrl extends Application {
     @FXML
     private TextField txtTimKiem;
     private KhachHang_Dao khachHangDao = new KhachHang_Dao();
+    private Consumer<KhachHang> onSelected;
+
+    public void setOnSelected(Consumer<KhachHang> onSelected) {
+        this.onSelected = onSelected;
+    }
     // 2. KHỞI TẠO (INITIALIZE)
     @FXML
     public void initialize() {
@@ -77,6 +82,19 @@ public class TimKiemKhachHang_Ctrl extends Application {
         loadTable();
         btnLamMoi.setOnAction(e -> LamMoi());
         btnTim.setOnAction(e -> TimKiem());
+        tbKhachHang.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
+            chonKhachHang(newSel);
+        });
+
+    }
+    public void chonKhachHang(KhachHang kh) {
+        if (kh == null) return;
+        if (onSelected != null) onSelected.accept(kh);
+        // Close this window
+        if (tbKhachHang != null && tbKhachHang.getScene() != null) {
+            Stage st = (Stage) tbKhachHang.getScene().getWindow();
+            if (st != null) st.close();
+        }
     }
 
     @Override
@@ -97,7 +115,8 @@ public class TimKiemKhachHang_Ctrl extends Application {
         cotMaKH.setCellValueFactory(new PropertyValueFactory<>("maKH"));
         cotTenKH.setCellValueFactory(new PropertyValueFactory<>("tenKH"));
         cotGT.setCellValueFactory(new PropertyValueFactory<>("gioiTinh"));
-        cotNgaySinh.setCellValueFactory(new PropertyValueFactory<>("ngaySinh"));
+        // format date as dd-MM-yyyy
+        cotNgaySinh.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.dinhDangNgay(cellData.getValue().getNgaySinh())));
         cotSDT.setCellValueFactory(new PropertyValueFactory<>("sdt"));
         cotEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         cotDiaChi.setCellValueFactory(new PropertyValueFactory<>("diaChi"));
@@ -129,4 +148,5 @@ public class TimKiemKhachHang_Ctrl extends Application {
         }).toList();
         tbKhachHang.setItems(FXCollections.observableArrayList(filtered));
     }
+
 }

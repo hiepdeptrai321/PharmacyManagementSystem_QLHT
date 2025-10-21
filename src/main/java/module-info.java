@@ -10,6 +10,8 @@ module com.example.pharmacymanagementsystem_qlht {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
+    requires javafx.swing;
+    requires java.desktop;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_ThongKe to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller to javafx.fxml;
     exports com.example.pharmacymanagementsystem_qlht.controller;
@@ -19,6 +21,7 @@ module com.example.pharmacymanagementsystem_qlht {
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhachHang;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhuyenMai;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhaCungCap;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhomDuocLy;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhanVien;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapHoaDon;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDatHang;
@@ -31,12 +34,15 @@ module com.example.pharmacymanagementsystem_qlht {
     requires java.sql;
     requires java.desktop;
     requires javafx.swing;
+    requires com.example.pharmacymanagementsystem_qlht;
 
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKeHang to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMThuoc to javafx.fxml;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhachHang to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuNhapHang to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhuyenMai to javafx.fxml;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhomDuocLy to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDoi to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuTra to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDatHang to javafx.fxml;
@@ -62,4 +68,5 @@ module com.example.pharmacymanagementsystem_qlht {
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatGia;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatSoLuong;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKNhaCungCap;
+
 }

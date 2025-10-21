@@ -24,6 +24,7 @@ import javafx.scene.control.DatePicker;
 
 import java.io.IOException;
 import java.util.List;
+import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
 
 public class TKPhieuDatHang_Ctrl extends Application {
     @FXML
@@ -99,7 +100,7 @@ public class TKPhieuDatHang_Ctrl extends Application {
         );
         colSTT.setSortable(false);
         colMaPD.setCellValueFactory(new PropertyValueFactory<>("maPDat"));
-        colNgayLap.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNgayLap().toString()));
+        colNgayLap.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.dinhDangThoiGian(cellData.getValue().getNgayLap())));
         colTenKH.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKhachHang().getTenKH()));
         colSdtKH.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKhachHang().getSdt()));
         colSoTienCoc.setCellValueFactory(new PropertyValueFactory<>("soTienCoc"));
@@ -164,7 +165,7 @@ public class TKPhieuDatHang_Ctrl extends Application {
                     match = pd.getNhanVien() != null && pd.getNhanVien().getTenNV().toLowerCase().contains(noiDung);
                     break;
                 case "Ngày lập":
-                    match = pd.getNgayLap() != null && pd.getNgayLap().toString().contains(noiDung);
+                    match = pd.getNgayLap() != null && DoiNgay.dinhDangThoiGian(pd.getNgayLap()).contains(noiDung);
                     break;
             }
             if (tuNgay != null && pd.getNgayLap() != null) {

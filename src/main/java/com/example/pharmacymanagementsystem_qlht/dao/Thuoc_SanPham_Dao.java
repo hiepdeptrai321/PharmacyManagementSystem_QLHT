@@ -149,6 +149,29 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
         }
         return tenDVT;
     }
+    public List<String> timTheoTen(String keyword, int limit) {
+        if (keyword == null) keyword = "";
+        keyword = keyword.trim();
+        if (keyword.isEmpty() || limit <= 0) return new ArrayList<>();
+
+        String sql = "SELECT TenThuoc " +
+                "FROM Thuoc_SanPham " +
+                "WHERE TenThuoc LIKE ? OR MaThuoc LIKE ? " +
+                "ORDER BY TenThuoc " +
+                "OFFSET 0 ROWS FETCH NEXT " + limit + " ROWS ONLY";
+
+        List<String> names = new ArrayList<>();
+        try (ResultSet rs = ConnectDB.query(sql, "%" + keyword + "%", "%" + keyword + "%")) {
+            while (rs.next()) {
+                names.add(rs.getString("TenThuoc"));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return names;
+    }
+
+
 
     public List<String> layDanhSachThuocTheoKe(String maKe) {
         List<String> danhSach = new ArrayList<>();
@@ -178,5 +201,19 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
             throw new RuntimeException(e);
         }
         return tenLoaiHang;
+    }
+    public List<String> layDanhSachThuocTheoNDL(String maKe) {
+        List<String> danhSach = new ArrayList<>();
+        String sql = "SELECT TenThuoc FROM Thuoc_SanPham WHERE MaNDL = ?";
+        try {
+            ResultSet rs = ConnectDB.query(sql, maKe);
+            while (rs.next()) {
+                danhSach.add(rs.getString("TenThuoc"));
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return danhSach;
     }
 }

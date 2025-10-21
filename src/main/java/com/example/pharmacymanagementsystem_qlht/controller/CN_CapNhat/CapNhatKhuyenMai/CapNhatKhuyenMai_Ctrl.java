@@ -122,5 +122,5 @@ public class CapNhatKhuyenMai_Ctrl extends Application {
         tbKM.setItems(data);
     }
 
-    // 4. XỬ LÝ NGHIỆP VỤ
+
 }

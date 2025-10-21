@@ -4,6 +4,7 @@ import com.example.pharmacymanagementsystem_qlht.dao.HoaDon_Dao;
 import com.example.pharmacymanagementsystem_qlht.dao.PhieuDoiHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.dao.PhieuTraHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.HoaDon;
+import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
 import javafx.application.Application;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -121,7 +122,7 @@ public class TimKiemHoaDon_Ctrl extends Application {
 
         colMaHD.setCellValueFactory(new PropertyValueFactory<>("maHD"));
         colNgayLap.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getNgayLap().toString())
+                new SimpleStringProperty(DoiNgay.formatTimestamp(cellData.getValue().getNgayLap()))
         );
         colTenKH.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getMaKH().getTenKH())
@@ -204,7 +205,7 @@ public class TimKiemHoaDon_Ctrl extends Application {
                         match = hd.getMaNV() != null && hd.getMaNV().getTenNV().toLowerCase().contains(noiDung);
                         break;
                     case "Ngày lập":
-                        match = hd.getNgayLap() != null && hd.getNgayLap().toLocalDateTime().toLocalDate().toString().contains(noiDung);
+                        match = hd.getNgayLap() != null && DoiNgay.formatTimestamp(hd.getNgayLap()).contains(noiDung);
                         break;
                     case "Khách vãng lai":
                         match = (hd.getMaKH() == null) || (hd.getMaKH().getMaKH() == null) || ("".equals(hd.getMaKH().getMaKH()));

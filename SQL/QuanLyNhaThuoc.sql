@@ -16,7 +16,7 @@ CREATE TABLE KhachHang (
     NgaySinh   DATE,
     GioiTinh   NVARCHAR(5) NOT NULL,
     DiaChi     NVARCHAR(50),
-    TrangThai  NVARCHAR(10) NOT NULL
+    TrangThai  NVARCHAR(30) NOT NULL
 );
 -- =========================
 -- Bảng NhanVien
@@ -986,3 +986,4 @@ VALUES
 
 -- PT003: Trả Găng tay y tế (LH00014/TS451) từ HD006
 ('LH00014', 'PT003', 'TS451', 1, 1800, 0);   -- Trả Găng tay y tế
+

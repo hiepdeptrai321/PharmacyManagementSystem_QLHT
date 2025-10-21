@@ -1,6 +1,8 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapHoaDon;
 
+import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang.TimKiemKhachHang_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SanPham_Dao;
+import com.example.pharmacymanagementsystem_qlht.model.KhachHang;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -19,6 +21,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -28,15 +33,21 @@ public class LapHoaDon_Ctrl extends Application {
     @FXML
     private Button btnThemKH;
     @FXML
+    private DatePicker dpNgayKeDon;
+    @FXML
     private ChoiceBox<String> cbPhuongThucTT;
     @FXML
     private Pane paneTienMat;
     @FXML
     private TextField txtTimThuoc;
+    @FXML
+    private TextField txtTenKH;
+    @FXML
+    private TextField txtSDT;
 
     // popup suggestions
     private final ContextMenu suggestionsPopup = new ContextMenu();
-    private final PauseTransition pause = new PauseTransition(Duration.millis(250));
+    private final PauseTransition pause = new PauseTransition(Duration.millis(100));
     private final Thuoc_SanPham_Dao thuocDao = new Thuoc_SanPham_Dao();
 
 
@@ -50,6 +61,9 @@ public class LapHoaDon_Ctrl extends Application {
 
     @FXML
     public void initialize() {
+        if (dpNgayKeDon != null) {
+            dpNgayKeDon.setValue(LocalDate.now());
+        }
         if (cbPhuongThucTT != null) {
             cbPhuongThucTT.getItems().clear();
             cbPhuongThucTT.getItems().addAll("Phương thức thanh toán", "Tiền mặt", "Chuyển khoản");
@@ -192,9 +206,13 @@ public class LapHoaDon_Ctrl extends Application {
         vbox.setStyle("-fx-padding: 20; -fx-alignment: center;");
         Label label = new Label("Quét mã QR dưới đây để thanh toán");
         // Link ma QR
-        ImageView qrImage = new ImageView(new Image("https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=DemoQRCode"));
+        InputStream is = getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/qr_mb.jpg");
+        Image qrImg = (is != null) ? new Image(is) : new Image(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/img/qr_mb.jpg").toExternalForm());
+        ImageView qrImage = new ImageView(qrImg);
+        qrImage.setFitWidth(500);
+        qrImage.setPreserveRatio(true);
         vbox.getChildren().addAll(label, qrImage);
-        Scene scene = new Scene(vbox, 300, 300);
+        Scene scene = new Scene(vbox, 600, 600);
         qrStage.setScene(scene);
         qrStage.show();
     }
@@ -202,23 +220,65 @@ public class LapHoaDon_Ctrl extends Application {
     @FXML
     private void xuLyTimKhachHang() {
         try {
-            // Goi giap dien
-            com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang.TimKiemKhachHang_Ctrl ctrl = new com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang.TimKiemKhachHang_Ctrl();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKKhachHang/TKKhachHang_GUI.fxml"));
+            Parent root = loader.load();
+            TimKiemKhachHang_Ctrl ctrl = loader.getController();
+
             Stage stage = new Stage();
-            ctrl.start(stage);
+            ctrl.setOnSelected((KhachHang kh) -> {
+                if (txtTenKH != null) txtTenKH.setText(kh.getTenKH());
+                if (txtSDT != null) txtSDT.setText(kh.getSdt());
+                stage.close();
+            });
+
+            stage.setScene(new Scene(root));
+            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void xuLyThemKH(ActionEvent actionEvent) {
-        try {
-            // Goi giap dien
-            com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhachHang.ThemKhachHang_Ctrl ctrl = new com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhachHang.ThemKhachHang_Ctrl();
-            Stage stage = new Stage();
-            ctrl.start(stage);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        public void xuLyThemKH(ActionEvent actionEvent) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                        "/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhachHang/ThemKhachHang_GUI.fxml"));
+                Parent root = loader.load();
+                Object ctrl = loader.getController();
+
+                Stage st = new Stage();
+                st.setScene(new Scene(root));
+                if (btnThemKH != null && btnThemKH.getScene() != null) {
+                    st.initOwner(btnThemKH.getScene().getWindow());
+                }
+
+                st.setOnHidden(e -> {
+                    try {
+                        Object o = null;
+                        try {
+                            java.lang.reflect.Method m1 = ctrl.getClass().getMethod("getKhachHangMoi");
+                            o = m1.invoke(ctrl);
+                        } catch (NoSuchMethodException ignore) {
+                            try {
+                                java.lang.reflect.Method m2 = ctrl.getClass().getMethod("getSavedKhachHang");
+                                o = m2.invoke(ctrl);
+                            } catch (NoSuchMethodException ignored) { }
+                        }
+                        if (o instanceof KhachHang kh) {
+                            Platform.runLater(() -> {
+                                if (txtTenKH != null) txtTenKH.setText(kh.getTenKH());
+                                if (txtSDT != null) txtSDT.setText(kh.getSdt());
+                            });
+                        }
+                    } catch (Exception ignored) {
+                    }
+                });
+
+                st.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
     }
+
+
 }

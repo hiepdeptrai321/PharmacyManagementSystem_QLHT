@@ -1,15 +1,11 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDoiHang;
 
 import com.example.pharmacymanagementsystem_qlht.dao.ChiTietPhieuDoiHang_Dao;
-import com.example.pharmacymanagementsystem_qlht.dao.ChiTietPhieuTraHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuDoiHang;
-import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuTraHang;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuDoiHang;
-import com.example.pharmacymanagementsystem_qlht.model.PhieuTraHang;
-import javafx.application.Application;
+import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -101,7 +97,7 @@ public class ChiTietPhieuDoiHang_Ctrl  {
     private void hienThiThongTin() {
         if (phieuDoiHang != null) {
             lblMaPhieuDoiValue.setText(phieuDoiHang.getMaPD());
-            lblNgayLapValue.setText(phieuDoiHang.getNgayLap().toString());
+            lblNgayLapValue.setText(DoiNgay.formatTimestamp(phieuDoiHang.getNgayLap()));
             lblTenNhanVienValue.setText(phieuDoiHang.getNhanVien().getTenNV());
             lblTenKhachHangValue.setText(phieuDoiHang.getKhachHang() != null ? phieuDoiHang.getKhachHang().getTenKH() : "Khách lẻ");
             lblSDTKhachHangValue.setText(phieuDoiHang.getKhachHang() != null ? phieuDoiHang.getKhachHang().getSdt() : "");
@@ -130,4 +126,3 @@ public class ChiTietPhieuDoiHang_Ctrl  {
         }
     }
 }
-

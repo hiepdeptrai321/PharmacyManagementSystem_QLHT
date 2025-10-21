@@ -1,8 +1,8 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDoiHang;
 
-import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDatHang.ChiTietPhieuDatHang_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.dao.PhieuDoiHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuDoiHang;
+import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -95,7 +95,7 @@ public class TKPhieuDoiHang_Ctrl extends Application {
         );
         colMaPD.setCellValueFactory(new PropertyValueFactory<>("maPD"));
         colMaHD.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getHoaDon().getMaHD()));
-        colNgayLap.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNgayLap().toString()));
+        colNgayLap.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.formatTimestamp(cellData.getValue().getNgayLap())));
         colTenKH.setCellValueFactory(cellData -> {
             if (cellData.getValue().getKhachHang() != null) {
                 return new SimpleStringProperty(cellData.getValue().getKhachHang().getTenKH());
@@ -136,7 +136,7 @@ public class TKPhieuDoiHang_Ctrl extends Application {
             Scene scene = new Scene(root);
 
             this.getClass();
-            ChiTietPhieuDoiHang_Ctrl ctrl = loader.getController();
+            com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDoiHang.ChiTietPhieuDoiHang_Ctrl ctrl = loader.getController();
             ctrl.setPhieuDoiHang(pDoi);
             stage.setScene(scene);
             stage.show();
@@ -174,7 +174,7 @@ public class TKPhieuDoiHang_Ctrl extends Application {
                     match = pd.getNhanVien() != null && pd.getNhanVien().getTenNV().toLowerCase().contains(noiDung);
                     break;
                 case "Ngày lập":
-                    match = pd.getNgayLap() != null && pd.getNgayLap().toString().contains(noiDung);
+                    match = pd.getNgayLap() != null && DoiNgay.formatTimestamp(pd.getNgayLap()).contains(noiDung);
                     break;
             }
             if (tuNgay != null && pd.getNgayLap() != null) {

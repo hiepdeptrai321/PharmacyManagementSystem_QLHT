@@ -14,6 +14,8 @@ import java.util.List;
 
 public class HoaDon_Dao implements DaoInterface<HoaDon>{
 
+    private final KhachHang_Dao khDao = new KhachHang_Dao();
+
     private final String INSERT_SQL = "INSERT INTO HoaDon (MaHD, MaNV, NgayLap, MaKH, TrangThai) VALUES (?, ?, ?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE HoaDon SET MaNV=?, NgayLap=?, MaKH=?, TrangThai=? WHERE MaHD=?";
     private final String DELETE_BY_ID_SQL = "DELETE FROM HoaDon WHERE MaHD=?";
@@ -50,7 +52,17 @@ public class HoaDon_Dao implements DaoInterface<HoaDon>{
     }
     @Override
     public boolean insert(HoaDon e) {
-        return ConnectDB.update(INSERT_SQL, e.getMaHD(), e.getMaNV().getMaNV(), e.getNgayLap(), e.getMaKH().getMaKH(), e.getTrangThai())>0;
+        boolean ok = ConnectDB.update(INSERT_SQL, e.getMaHD(), e.getMaNV().getMaNV(), e.getNgayLap(), e.getMaKH().getMaKH(), e.getTrangThai())>0;
+        if (ok) {
+            // update customer statuses after a successful sale
+            try {
+                khDao.refreshTrangThai();
+            } catch (Exception ex) {
+                // non-fatal: log and continue
+                System.err.println("Không thể cập nhật trạng thái Khách Hàng sau khi tạo Hóa Đơn: " + ex.getMessage());
+            }
+        }
+        return ok;
     }
 
     @Override

@@ -89,6 +89,7 @@ public class CapNhatKhuyenMai_Ctrl extends Application {
         });
         tbKM.setItems(data);
     }
+
     public void btnChiTietClick(KhuyenMai km) {
         try {
             Stage stage = new Stage();

@@ -21,6 +21,7 @@ module com.example.pharmacymanagementsystem_qlht {
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhachHang;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhuyenMai;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhaCungCap;
+    exports com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhomDuocLy;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhanVien;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapHoaDon;
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDatHang;
@@ -32,13 +33,18 @@ module com.example.pharmacymanagementsystem_qlht {
     exports com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMHoatDong;
     requires javafx.base;
     requires java.sql;
-    opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhachHang to javafx.fxml;
+    requires java.desktop;
+    requires javafx.swing;
+    requires com.example.pharmacymanagementsystem_qlht;
+
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKeHang to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMHoatDong to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMThuoc to javafx.fxml;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhachHang to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuNhapHang to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhuyenMai to javafx.fxml;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhomDuocLy to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDoi to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuTra to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDatHang to javafx.fxml;

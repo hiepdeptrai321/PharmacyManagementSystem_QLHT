@@ -202,4 +202,18 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
         }
         return tenLoaiHang;
     }
+    public List<String> layDanhSachThuocTheoNDL(String maKe) {
+        List<String> danhSach = new ArrayList<>();
+        String sql = "SELECT TenThuoc FROM Thuoc_SanPham WHERE MaNDL = ?";
+        try {
+            ResultSet rs = ConnectDB.query(sql, maKe);
+            while (rs.next()) {
+                danhSach.add(rs.getString("TenThuoc"));
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return danhSach;
+    }
 }

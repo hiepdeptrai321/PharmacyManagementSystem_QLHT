@@ -110,8 +110,7 @@ public class SuaKhuyenMai_Ctrl {
         }
         if (colSLAP != null) {
             colSLAP.setCellValueFactory(cd ->
-                    new SimpleIntegerProperty(cd.getValue() != null && cd.getValue().getSlApDung() != null
-                            ? cd.getValue().getSlApDung() : 0).asObject()
+                    new SimpleIntegerProperty(cd.getValue() != null ? cd.getValue().getSlApDung() : 0).asObject()
             );
             colSLAP.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
             colSLAP.setOnEditCommit(e -> {
@@ -123,8 +122,7 @@ public class SuaKhuyenMai_Ctrl {
         }
         if (colSLTD != null) {
             colSLTD.setCellValueFactory(cd ->
-                    new SimpleIntegerProperty(cd.getValue() != null && cd.getValue().getSlToiDa() != null
-                            ? cd.getValue().getSlToiDa() : 0).asObject()
+                    new SimpleIntegerProperty(cd.getValue() != null ? cd.getValue().getSlToiDa() : 0).asObject()
             );
             colSLTD.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
             colSLTD.setOnEditCommit(e -> {
@@ -170,8 +168,7 @@ public class SuaKhuyenMai_Ctrl {
         }
         if (colSLTang != null) {
             colSLTang.setCellValueFactory(cd ->
-                    new SimpleIntegerProperty(cd.getValue() != null && cd.getValue().getSoLuong() != null
-                            ? cd.getValue().getSoLuong() : 0).asObject()
+                    new SimpleIntegerProperty(cd.getValue() != null ? cd.getValue().getSoLuong() : 0).asObject()
             );
             colSLTang.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
             colSLTang.setOnEditCommit(e -> {

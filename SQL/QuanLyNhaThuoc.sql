@@ -6,7 +6,7 @@ USE QuanLyNhaThuoc;
 GO
 
 --Link thư mục hình ảnh thuốc 
-DECLARE @path NVARCHAR(255) = N'C:\Users\Hiep\Desktop\hk1_2025-2026\QLHT\SQL\imgThuoc\';
+DECLARE @path NVARCHAR(255) = N'C:\Users\hiepdeptrai\Desktop\hk1_2025-2026\QLHT\SQL\imgThuoc\';
 
 -- =========================
 -- Bảng KhachHang

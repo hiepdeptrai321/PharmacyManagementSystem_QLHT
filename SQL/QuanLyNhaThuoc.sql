@@ -6,7 +6,7 @@ USE QuanLyNhaThuoc;
 GO
 
 --Link thư mục hình ảnh thuốc 
-DECLARE @path NVARCHAR(255) = N'C:\Users\hiepdeptrai\Desktop\hk1_2025-2026\QLHT\SQL\imgThuoc\';
+DECLARE @path NVARCHAR(255) = N'G:\hk5\PTUD_Java\Project\PharmacyManagementSystem_QLHT\SQL\imgThuoc\';
 
 -- =========================
 -- Bảng KhachHang
@@ -1039,6 +1039,7 @@ VALUES
 --=======================================================================================================================
 --=======================================================================================================================
 --TRIGGER------------------------------------------------------------------------------------------------------------------------
+GO
 CREATE TRIGGER trg_ThuocSanPham_Audit
 ON Thuoc_SanPham
 AFTER INSERT, UPDATE, DELETE
@@ -1063,11 +1064,11 @@ BEGIN
     BEGIN
         SELECT @NoiDung = STRING_AGG(
             CONCAT(
-                'Thêm: [MaThuoc=', MaThuoc, 
-                ', TenThuoc=', TenThuoc, 
-                ', HamLuong=', HamLuong, 
-                ', DonViHL=', DonViHL, 
-                ', HangSX=', HangSX, 
+                'Thêm: [MaThuoc=', MaThuoc,
+                ', TenThuoc=', TenThuoc,
+                ', HamLuong=', HamLuong,
+                ', DonViHL=', DonViHL,
+                ', HangSX=', HangSX,
                 ', NuocSX=', NuocSX, ']'
             ), '; '
         )
@@ -1090,9 +1091,9 @@ BEGIN
     BEGIN
         SELECT @NoiDung = STRING_AGG(
             CONCAT(
-                'Xóa: [MaThuoc=', MaThuoc, 
-                ', TenThuoc=', TenThuoc, 
-                ', HamLuong=', HamLuong, 
+                'Xóa: [MaThuoc=', MaThuoc,
+                ', TenThuoc=', TenThuoc,
+                ', HamLuong=', HamLuong,
                 ', DonViHL=', DonViHL, ']'
             ), '; '
         )
@@ -1129,10 +1130,10 @@ BEGIN
     BEGIN
         SELECT @NoiDung = STRING_AGG(
             CONCAT(
-                'Thêm lô: [MaLH=', MaLH, 
+                'Thêm lô: [MaLH=', MaLH,
                 ', MaThuoc=', MaThuoc,
                 ', MaPN=', MaPN,
-                ', Số lượng tồn=', SoLuongTon, 
+                ', Số lượng tồn=', SoLuongTon,
                 ', NSX=', FORMAT(NSX, 'yyyy-MM-dd'),
                 ', HSD=', FORMAT(HSD, 'yyyy-MM-dd'), ']'
             ), '; '
@@ -1144,7 +1145,7 @@ BEGIN
         -- Chỉ ghi log khi số lượng tồn thay đổi
         SELECT @NoiDung = STRING_AGG(
             CONCAT(
-                'Cập nhật lô: [MaLH=', i.MaLH, 
+                'Cập nhật lô: [MaLH=', i.MaLH,
                 ', MaThuoc=', i.MaThuoc,
                 '] (Số lượng tồn: ', d.SoLuongTon, ' → ', i.SoLuongTon, ')'
             ), '; '
@@ -1157,8 +1158,8 @@ BEGIN
     BEGIN
         SELECT @NoiDung = STRING_AGG(
             CONCAT(
-                'Xóa lô: [MaLH=', MaLH, 
-                ', MaThuoc=', MaThuoc, 
+                'Xóa lô: [MaLH=', MaLH,
+                ', MaThuoc=', MaThuoc,
                 ', Số lượng tồn=', SoLuongTon, ']'
             ), '; '
         )
@@ -1173,3 +1174,5 @@ BEGIN
     END
 END;
 GO
+
+

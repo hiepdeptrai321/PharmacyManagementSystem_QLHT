@@ -187,12 +187,12 @@ public class ThemThuoc_Ctrl {
             thuoc.setHamLuong(Float.parseFloat(txtHamLuong.getText()));
             thuoc.setDonViHamLuong(txtDonViHamLuong.getText());
             thuoc.setHangSX(txtHangSanXuat.getText());
-            thuoc.setNhomDuocLy(new NhomDuocLy_Dao().getNhomDuocLyByTen(cbxNhomDuocLy.getSelectionModel().getSelectedItem().toString()));
+            thuoc.setNhomDuocLy(new NhomDuocLy_Dao().selectByTenNhomDuocLy(cbxNhomDuocLy.getSelectionModel().getSelectedItem().toString()));
             thuoc.setNuocSX(txtNuocSanXuat.getText());
             thuoc.setQuyCachDongGoi(txtQuyCachDongGoi.getText());
             thuoc.setSDK_GPNK(txtSDK_GPNK.getText());
             thuoc.setDuongDung(txtDuongDung.getText());
-            thuoc.setLoaiHang(new LoaiHang_Dao().getLoaiHangByTen(cbxLoaiHang.getSelectionModel().getSelectedItem().toString()));
+            thuoc.setLoaiHang(new LoaiHang_Dao().selectByTenLoaiHang(cbxLoaiHang.getSelectionModel().getSelectedItem().toString()));
             thuoc.setVitri(new KeHang_Dao().selectByTenKe(cbxViTri.getSelectionModel().getSelectedItem().toString()));
 
 //          Get image

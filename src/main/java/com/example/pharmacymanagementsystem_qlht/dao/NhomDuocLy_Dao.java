@@ -106,8 +106,4 @@ public class NhomDuocLy_Dao implements DaoInterface<NhomDuocLy> {
         return list.get(0);
     }
 
-    public NhomDuocLy getNhomDuocLyByTen(String tenNDL) {
-        String sql = "SELECT * FROM NhomDuocLy WHERE TenNDL = ?";
-        return selectBySql(sql, tenNDL).get(0);
-    }
 }

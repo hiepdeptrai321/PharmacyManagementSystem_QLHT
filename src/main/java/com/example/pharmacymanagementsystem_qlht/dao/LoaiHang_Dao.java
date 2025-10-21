@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LoaiHang_Dao implements DaoInterface<LoaiHang>{
+
     private final String INSERT_SQL = "INSERT INTO LoaiHang(MaLoaiHang, TenLH, MoTa) VALUES (?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE LoaiHang SET TenLH=?, MoTa=? WHERE MaLoaiHang=?";
     private final String DELETE_BY_ID = "DELETE FROM LoaiHang WHERE MaLoaiHang = ?";
@@ -86,6 +87,11 @@ public class LoaiHang_Dao implements DaoInterface<LoaiHang>{
         return list.get(0);
     }
 
+    public List<LoaiHang> selectTenLoaiHang() {
+        String sql = "SELECT TenLH FROM LoaiHang";
+        return this.selectBySql(sql);
+    }
+
     public List<String> getAllLoaiHang() {
         String sql = "SELECT TenLH FROM LoaiHang";
         List<String> list = new ArrayList<>();
@@ -100,10 +106,13 @@ public class LoaiHang_Dao implements DaoInterface<LoaiHang>{
         }
         return list;
     }
-
-    public LoaiHang getLoaiHangByTen(String tenLH) {
+    public LoaiHang selectByTenLoaiHang(String string) {
         String sql = "SELECT * FROM LoaiHang WHERE TenLH = ?";
-        return selectBySql(sql, tenLH).get(0);
+        List<LoaiHang> list = selectBySql(sql, string);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
     }
 }
 

@@ -10,13 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
-    private final String INSERT_SQL = "INSERT INTO Thuoc_SanPham (TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaNDL, MaLoaiHang, HinhAnh, ViTri) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String INSERT_SQL = "INSERT INTO Thuoc_SanPham (MaThuoc,TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaNDL, MaLoaiHang, HinhAnh, ViTri) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE Thuoc_SanPham SET TenThuoc=?, HamLuong=?, DonViHL=?, DuongDung=?, QuyCachDongGoi=?, SDK_GPNK=?, HangSX=?, NuocSX=?, MaNDL=?, MaLoaiHang=?, HinhAnh=?, ViTri=? WHERE MaThuoc=?";
     private final String DELETE_SQL = "DELETE FROM Thuoc_SanPham WHERE MaThuoc=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM Thuoc_SanPham";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM Thuoc_SanPham WHERE MaThuoc=?";
     private final String SELECT_BY_TUKHOA_SQL = "SELECT * FROM Thuoc_SanPham WHERE TenThuoc LIKE ? OR MaThuoc LIKE ?";
-    private final String SELECT_TOP1_MATHUOC = "SELECT TOP 1 MaThuoc FROM Thuoc_SanPham ORDER BY MaThuoc DESC";
     private final String SELECT_THUOC_SANPHAM_DONVICOBAN_SQL =
             "SELECT * FROM Thuoc_SanPham ts " +
                     "JOIN ChiTietDonViTinh ctdvt ON ts.MaThuoc = ctdvt.MaThuoc " +
@@ -28,10 +27,10 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
             "WHERE ctdvt.DonViCoBan = 1 AND (ts.TenThuoc LIKE ? OR ts.MaThuoc LIKE ?)";
 
     private final String SELECT_TENDVT_BYMA_SQL = "SELECT TenDonViTinh FROM ChiTietDonViTinh ctdvt JOIN DonViTinh dvt ON ctdvt.MaDVT = dvt.MaDVT WHERE MaThuoc = ? AND DonViCoBan = 1";
-
+    private final String SELECT_TOP1_MATHUOC = "SELECT TOP 1 MaThuoc FROM Thuoc_SanPham ORDER BY MaThuoc DESC";
     @Override
     public boolean insert(Thuoc_SanPham e) {
-        return ConnectDB.update(INSERT_SQL, e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(),e.getNhomDuocLy().getMaNDL(), e.getLoaiHang().getMaLoaiHang(), e.getHinhAnh(),e.getVitri().getMaKe())>0;
+        return ConnectDB.update(INSERT_SQL,e.getMaThuoc(), e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(),e.getNhomDuocLy().getMaNDL(), e.getLoaiHang().getMaLoaiHang(), e.getHinhAnh(),e.getVitri().getMaKe())>0;
     }
 
     @Override
@@ -150,6 +149,29 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
         }
         return tenDVT;
     }
+    public List<String> timTheoTen(String keyword, int limit) {
+        if (keyword == null) keyword = "";
+        keyword = keyword.trim();
+        if (keyword.isEmpty() || limit <= 0) return new ArrayList<>();
+
+        String sql = "SELECT TenThuoc " +
+                "FROM Thuoc_SanPham " +
+                "WHERE TenThuoc LIKE ? OR MaThuoc LIKE ? " +
+                "ORDER BY TenThuoc " +
+                "OFFSET 0 ROWS FETCH NEXT " + limit + " ROWS ONLY";
+
+        List<String> names = new ArrayList<>();
+        try (ResultSet rs = ConnectDB.query(sql, "%" + keyword + "%", "%" + keyword + "%")) {
+            while (rs.next()) {
+                names.add(rs.getString("TenThuoc"));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return names;
+    }
+
+
 
     public List<String> layDanhSachThuocTheoKe(String maKe) {
         List<String> danhSach = new ArrayList<>();
@@ -180,44 +202,6 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
         }
         return tenLoaiHang;
     }
-
-    public List<String> timTheoTen(String keyword, int limit) {
-        if (keyword == null) keyword = "";
-        keyword = keyword.trim();
-        if (keyword.isEmpty() || limit <= 0) return new ArrayList<>();
-
-        String sql = "SELECT TenThuoc " +
-                "FROM Thuoc_SanPham " +
-                "WHERE TenThuoc LIKE ? OR MaThuoc LIKE ? " +
-                "ORDER BY TenThuoc " +
-                "OFFSET 0 ROWS FETCH NEXT " + limit + " ROWS ONLY";
-
-        List<String> names = new ArrayList<>();
-        try (ResultSet rs = ConnectDB.query(sql, "%" + keyword + "%", "%" + keyword + "%")) {
-            while (rs.next()) {
-                names.add(rs.getString("TenThuoc"));
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return names;
-    }
-
-    public String generatekeyThuocSanPham() {
-        String key = "TS001";
-        try {
-            String lastKey = ConnectDB.queryTaoMa(SELECT_TOP1_MATHUOC);
-            if (lastKey != null && lastKey.startsWith("TS")) {
-                int numericPart = Integer.parseInt(lastKey.substring(2));
-                numericPart++;
-                key = String.format("TS%03d", numericPart);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return key;
-    }
-
     public List<String> layDanhSachThuocTheoNDL(String maKe) {
         List<String> danhSach = new ArrayList<>();
         String sql = "SELECT TenThuoc FROM Thuoc_SanPham WHERE MaNDL = ?";
@@ -231,5 +215,20 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
             e.printStackTrace();
         }
         return danhSach;
+    }
+
+    public String generatekeyThuocSanPham() {
+        String key = "TH001";
+        try {
+            String lastKey = ConnectDB.queryTaoMa(SELECT_TOP1_MATHUOC);
+                if (lastKey != null && lastKey.startsWith("TH")) {
+                    int stt = Integer.parseInt(lastKey.substring(2));
+                    stt++;
+                    key = String.format("TH%03d", stt);
+                }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return key;
     }
 }

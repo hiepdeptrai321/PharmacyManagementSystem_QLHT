@@ -61,6 +61,9 @@ public class SuaXoaThuoc_Ctrl {
     public ImageView imgThuoc_SanPham;
     private ObservableList<HoatChat> allHoatChat;
     private List<ChiTietHoatChat> listChiTietHoatChat = new ArrayList<>();
+    private String maThuoc;
+    private Consumer<Thuoc_SanPham> onAdded;
+    private Consumer<Thuoc_SanPham> onDeleted;
     private DanhMucThuoc_Ctrl danhMucThuoc_Ctrl;
 
     @FXML

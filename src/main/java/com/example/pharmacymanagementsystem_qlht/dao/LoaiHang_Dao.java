@@ -86,9 +86,24 @@ public class LoaiHang_Dao implements DaoInterface<LoaiHang>{
         return list.get(0);
     }
 
-    public List<LoaiHang> selectTenLoaiHang() {
+    public List<String> getAllLoaiHang() {
         String sql = "SELECT TenLH FROM LoaiHang";
-        return this.selectBySql(sql);
+        List<String> list = new ArrayList<>();
+        try {
+            ResultSet rs = ConnectDB.query(sql);
+            while (rs.next()) {
+                list.add(rs.getString("TenLH"));
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
+    public LoaiHang getLoaiHangByTen(String tenLH) {
+        String sql = "SELECT * FROM LoaiHang WHERE TenLH = ?";
+        return selectBySql(sql, tenLH).get(0);
     }
 }
 

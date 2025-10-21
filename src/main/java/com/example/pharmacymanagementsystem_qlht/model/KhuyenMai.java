@@ -12,7 +12,6 @@ public class KhuyenMai {
     private Date ngayBatDau;
     private Date ngayKetThuc;
     private String moTa;
-    private Timestamp ngayTao;
 
     public KhuyenMai() {
     }
@@ -79,13 +78,6 @@ public class KhuyenMai {
 
     public void setMoTa(String moTa) {
         this.moTa = moTa;
-    }
-
-    public Timestamp getNgayTao() {
-        return ngayTao;
-    }
-    public void setNgayTao(Timestamp ngayTao) {
-        this.ngayTao = ngayTao;
     }
 
     @Override

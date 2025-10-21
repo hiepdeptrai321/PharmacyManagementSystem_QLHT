@@ -99,7 +99,7 @@
                         </Tab>
 
                         <!-- Tab Sản phẩm tặng kèm: controller sẽ show/hide hoặc enable/disable tab này khi Loại KM = LKM001 -->
-                        <Tab fx:id="tabTangKem" closable="false" text="Sản phẩm tặng kèm">
+                        <Tab fx:id="tabTangKem" closable="false" text="Sản phẩm tặng kèm (chỉ áp dụng cho loại KM: LKM001)">
                             <content>
                                 <AnchorPane>
                                    <children>

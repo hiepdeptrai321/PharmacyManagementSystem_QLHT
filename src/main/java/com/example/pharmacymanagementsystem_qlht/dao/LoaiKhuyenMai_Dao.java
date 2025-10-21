@@ -11,7 +11,6 @@ public class LoaiKhuyenMai_Dao implements DaoInterface<LoaiKhuyenMai> {
     private final String INSERT_SQL = "INSERT INTO LoaiKhuyenMai (MaLoai, TenLoai, MoTa) VALUES (?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE LoaiKhuyenMai SET TenLoai=?, MoTa=? WHERE MaLoai=?";
     private final String DELETE_BY_ID_SQL = "DELETE FROM LoaiKhuyenMai WHERE MaLoai=?";
-    private final String SELECT_ALL_SQL = "SELECT MaLoai, TenLoai, MoTa FROM LoaiKhuyenMai";
     private final String SELECT_BY_ID_SQL = "SELECT MaLoai, TenLoai, MoTa FROM LoaiKhuyenMai WHERE MaLoai = ?";
     @Override
     public boolean insert(LoaiKhuyenMai e) {
@@ -54,6 +53,6 @@ public class LoaiKhuyenMai_Dao implements DaoInterface<LoaiKhuyenMai> {
 
     @Override
     public List<LoaiKhuyenMai> selectAll() {
-        return selectBySql(SELECT_ALL_SQL);
+        return List.of();
     }
 }

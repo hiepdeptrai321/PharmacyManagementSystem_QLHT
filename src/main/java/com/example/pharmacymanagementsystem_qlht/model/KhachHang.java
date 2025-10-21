@@ -2,6 +2,7 @@ package com.example.pharmacymanagementsystem_qlht.model;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class KhachHang {
@@ -9,14 +10,14 @@ public class KhachHang {
     private String tenKH;
     private String sdt;
     private String email;
-    private Date ngaySinh;
+    private LocalDate ngaySinh;
     private String gioiTinh;
     private String diaChi;
 
     public KhachHang() {
     }
 
-    public KhachHang(String maKH, String tenKH, String sdt, String email, Date ngaySinh, String gioiTinh, String diaChi) {
+    public KhachHang(String maKH, String tenKH, String sdt, String email, LocalDate ngaySinh, String gioiTinh, String diaChi) {
         this.maKH = maKH;
         this.tenKH = tenKH;
         this.sdt = sdt;
@@ -58,11 +59,11 @@ public class KhachHang {
         this.email = email;
     }
 
-    public Date getNgaySinh() {
+    public LocalDate getNgaySinh() {
         return ngaySinh;
     }
 
-    public void setNgaySinh(Date ngaySinh) {
+    public void setNgaySinh(LocalDate ngaySinh) {
         this.ngaySinh = ngaySinh;
     }
 

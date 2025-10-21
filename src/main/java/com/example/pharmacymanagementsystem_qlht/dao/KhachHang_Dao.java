@@ -4,6 +4,7 @@ import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.KhachHang;
 
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class KhachHang_Dao implements DaoInterface<KhachHang> {
                 kh.setTenKH(rs.getString("TenKH"));
                 kh.setSdt(rs.getString("SDT"));
                 kh.setEmail(rs.getString("Email"));
-                kh.setNgaySinh(rs.getDate("NgaySinh"));
+                kh.setNgaySinh(rs.getObject("NgaySinh", LocalDate.class));
                 kh.setGioiTinh(rs.getString("GioiTinh"));
                 kh.setDiaChi(rs.getString("DiaChi"));
                 list.add(kh);

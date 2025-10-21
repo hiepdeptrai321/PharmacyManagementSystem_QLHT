@@ -17,7 +17,7 @@ CREATE TABLE KhachHang (
     SDT        VARCHAR(15) NOT NULL,
     Email      VARCHAR(50),
     NgaySinh   DATE,
-    GioiTinh   NVARCHAR(5) NOT NULL,
+    GioiTinh   BIT NOT NULL,
     DiaChi     NVARCHAR(50),
     TrangThai  BIT NOT NULL
 );

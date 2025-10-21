@@ -33,7 +33,6 @@ module com.example.pharmacymanagementsystem_qlht {
     requires java.sql;
     requires java.desktop;
     requires javafx.swing;
-    requires com.example.pharmacymanagementsystem_qlht;
 
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKeHang to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMHoatDong to javafx.fxml;

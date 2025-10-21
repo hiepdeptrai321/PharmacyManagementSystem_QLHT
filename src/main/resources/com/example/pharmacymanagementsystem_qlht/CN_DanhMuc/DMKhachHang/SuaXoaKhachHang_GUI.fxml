@@ -15,16 +15,15 @@
                 <Font name="System Bold" size="18.0" />
             </font>
         </Label>
-        <TextField layoutX="14.0" layoutY="66.0" prefHeight="25.0" prefWidth="232.0" />
+        <TextField fx:id="txtTenKH" layoutX="14.0" layoutY="66.0" prefHeight="25.0" prefWidth="232.0" />
         <Label layoutX="13.5" layoutY="49.0" text="Tên khách hàng" />
         <Label layoutX="258.0" layoutY="49.0" text="Ngày sinh" />
-        <TextField layoutX="14.0" layoutY="119.0" prefHeight="25.0" prefWidth="299.0" />
+        <TextField fx:id="txtSDT" layoutX="14.0" layoutY="119.0" prefHeight="25.0" prefWidth="299.0" />
         <Label layoutX="14.0" layoutY="102.0" text="Số điện thoại" />
-        <TextField layoutX="324.0" layoutY="119.0" prefHeight="25.0" prefWidth="245.0" />
+        <TextField fx:id="txtEmail" layoutX="324.0" layoutY="119.0" prefHeight="25.0" prefWidth="245.0" />
         <Label layoutX="322.0" layoutY="102.0" text="Email" />
-        <TextField layoutX="14.0" layoutY="173.0" prefHeight="25.0" prefWidth="373.0" />
+        <TextField fx:id="txtDiaChi" layoutX="14.0" layoutY="173.0" prefHeight="25.0" prefWidth="555.0" />
         <Label layoutX="14.0" layoutY="156.0" text="Địa chỉ" />
-        <Label layoutX="397.0" layoutY="156.0" text="Trạng thái" />
         <Pane id="NutHuy" layoutX="378.0" layoutY="227.0" prefHeight="25.0" prefWidth="91.0">
             <children>
                 <Label id="txtDen_Bold" layoutX="34.0" layoutY="4.0" text="Hủy" />
@@ -40,10 +39,9 @@
                 <Label id="txtTrang_Bold" layoutX="34.0" layoutY="4.0" text="Xóa" />
             </children>
         </Pane>
-      <DatePicker layoutX="258.0" layoutY="66.0" prefHeight="25.0" prefWidth="156.0" />
+      <DatePicker fx:id="txtNgaySinh" layoutX="258.0" layoutY="66.0" prefHeight="25.0" prefWidth="156.0" />
       <Label layoutX="424.0" layoutY="49.0" text="Giới tính" />
       <ComboBox layoutX="424.0" layoutY="66.0" prefHeight="25.0" prefWidth="142.0" />
-      <ComboBox layoutX="397.0" layoutY="173.0" prefHeight="25.0" prefWidth="172.0" />
     </children>
     <stylesheets>
         <URL value="@../../css/ThemThuoc.css" />

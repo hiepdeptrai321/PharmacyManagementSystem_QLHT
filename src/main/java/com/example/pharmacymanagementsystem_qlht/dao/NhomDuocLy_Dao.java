@@ -58,6 +58,25 @@ public class NhomDuocLy_Dao implements DaoInterface<NhomDuocLy> {
         return list;
     }
 
+    public String generateNewMaNhomDL() {
+        String newMaNhomDuocLy = "NDL001"; // Default value if no records exist
+        String SELECT_TOP1_SQL = "SELECT TOP 1 MaNDL FROM NhomDuocLy ORDER BY MaNDL DESC";
+        try {
+            ResultSet rs = ConnectDB.query(SELECT_TOP1_SQL);
+            if (rs.next()) {
+                String lastMaNDL = rs.getString("maNDL");
+                int stt = Integer.parseInt(lastMaNDL.substring(3)); // Extract numeric part
+                stt++; // Increment the numeric part
+                newMaNhomDuocLy = String.format("NDL%03d", stt); // Format with leading zeros
+            }
+            rs.getStatement().close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return newMaNhomDuocLy;
+    }
+
+
     @Override
     public List<NhomDuocLy> selectAll() {
         return this.selectBySql(SELECT_ALL_SQL);

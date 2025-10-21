@@ -96,10 +96,10 @@ public class SuaXoaNhomDuocLy extends Application {
 
         try {
             // Lấy danh sách thuốc còn trong kệ
-            List<String> thuocTrongKe = thuocDao.layDanhSachThuocTheoKe(nhomDuocLyhientai.getMaNDL());
+            List<String> thuocTrongNDL = thuocDao.layDanhSachThuocTheoNDL(nhomDuocLyhientai.getMaNDL());
 
-            if (thuocTrongKe != null && !thuocTrongKe.isEmpty()) {
-                showThuocConTrongKe(thuocTrongKe);
+            if (thuocTrongNDL != null && !thuocTrongNDL.isEmpty()) {
+                showThuocConTrongNDL(thuocTrongNDL);
                 return;
             }
 
@@ -126,7 +126,7 @@ public class SuaXoaNhomDuocLy extends Application {
         }
     }
 
-    private void showThuocConTrongKe(List<String> thuocTrongKe) {
+    private void showThuocConTrongNDL(List<String> thuocTrongKe) {
         StringBuilder sb = new StringBuilder("Nhóm dược lý này vẫn còn các thuốc sau:\n\n");
         for (String tenThuoc : thuocTrongKe) {
             sb.append("- ").append(tenThuoc).append("\n");

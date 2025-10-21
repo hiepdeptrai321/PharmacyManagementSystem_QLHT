@@ -179,12 +179,12 @@ CREATE TABLE ChiTietHoaDon (
 -- Bảng HoatDong
 -- =========================
 CREATE TABLE HoatDong (
-    MaHDong    VARCHAR(10) PRIMARY KEY,
-    LoaiHD     VARCHAR(20),
-    ThoiGian   DATE NOT NULL,
-    MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV),
-    BangDL	   VARCHAR(20),
-	GhiChu     NVARCHAR(255)
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    MaHDong AS ('HD' + RIGHT('0000' + CAST(ID AS VARCHAR(4)), 4)) PERSISTED,
+    LoaiHD NVARCHAR(20),
+    ThoiGian DATETIME DEFAULT GETDATE(),
+    BangDL NVARCHAR(50),
+    NoiDung NVARCHAR(MAX)
 );
 
 -- =========================
@@ -308,8 +308,8 @@ CREATE TABLE ChiTietDonViTinh (
 -- =========================
 CREATE TABLE LoaiKhuyenMai (
     MaLoai     VARCHAR(10) PRIMARY KEY,
-    TenLoai    VARCHAR(50),
-    MoTa       VARCHAR(255)
+    TenLoai    NVARCHAR(50),
+    MoTa       NVARCHAR(255)
 );
 
 -- =========================
@@ -323,6 +323,7 @@ CREATE TABLE KhuyenMai (
     NgayBatDau DATE NOT NULL,
     NgayKetThuc DATE NOT NULL,
     MoTa       NVARCHAR(255),
+	NgayTao	   DATETIME NOT NULL DEFAULT GETDATE(),
     MaLoai     VARCHAR(10) FOREIGN KEY REFERENCES LoaiKhuyenMai(MaLoai)
 );
 
@@ -869,7 +870,7 @@ VALUES
 -- Thêm dữ liệu vào bảng LoaiKhuyenMai
 INSERT INTO LoaiKhuyenMai (MaLoai, TenLoai, MoTa)
 VALUES
-('LKM001', N'Mua sản phẩm tặng sản phẩm', N'Khi khách hàng mua sản phẩm nhất định sẽ được tặng kèm thêm sản phẩm khác'),
+('LKM001', N'Tặng kèm sản phẩm', N'Khi khách hàng mua sản phẩm nhất định sẽ được tặng kèm thêm sản phẩm khác'),
 ('LKM002', N'Giảm giá trực tiếp', N'Giảm trực tiếp một số tiền nhất định trên tổng hóa đơn hoặc sản phẩm'),
 ('LKM003', N'Giảm giá phần trăm', N'Khách hàng được giảm theo tỷ lệ phần trăm trên giá trị sản phẩm hoặc hóa đơn');
 
@@ -1024,3 +1025,150 @@ VALUES
 
 -- PT003: Trả Găng tay y tế (LH00014/TS451) từ HD006
 ('LH00014', 'PT003', 'TS451', 1, 1800, 0);   -- Trả Găng tay y tế
+
+
+
+
+
+
+
+
+
+
+--=======================================================================================================================
+--=======================================================================================================================
+--TRIGGER------------------------------------------------------------------------------------------------------------------------
+CREATE TRIGGER trg_ThuocSanPham_Audit
+ON Thuoc_SanPham
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @LoaiHD NVARCHAR(20);
+    DECLARE @BangDL NVARCHAR(50) = 'Thuoc_SanPham';
+    DECLARE @NoiDung NVARCHAR(MAX) = N'';
+
+    -- 🔹 1. Xác định loại hoạt động
+    IF EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
+        SET @LoaiHD = N'Cập nhật';
+    ELSE IF EXISTS (SELECT 1 FROM inserted)
+        SET @LoaiHD = N'Thêm mới';
+    ELSE
+        SET @LoaiHD = N'Xóa';
+
+    -- 🔹 2. Tạo nội dung mô tả chi tiết thay đổi
+    IF @LoaiHD = N'Thêm mới'
+    BEGIN
+        SELECT @NoiDung = STRING_AGG(
+            CONCAT(
+                'Thêm: [MaThuoc=', MaThuoc, 
+                ', TenThuoc=', TenThuoc, 
+                ', HamLuong=', HamLuong, 
+                ', DonViHL=', DonViHL, 
+                ', HangSX=', HangSX, 
+                ', NuocSX=', NuocSX, ']'
+            ), '; '
+        )
+        FROM inserted;
+    END
+    ELSE IF @LoaiHD = N'Cập nhật'
+    BEGIN
+        SELECT @NoiDung = STRING_AGG(
+            CONCAT(
+                'Sửa: [MaThuoc=', i.MaThuoc,
+                '] (Tên: ', d.TenThuoc, ' → ', i.TenThuoc,
+                ', Hàm lượng: ', d.HamLuong, ' → ', i.HamLuong,
+                ', Đơn vị: ', d.DonViHL, ' → ', i.DonViHL, ')'
+            ), '; '
+        )
+        FROM inserted i
+        JOIN deleted d ON i.MaThuoc = d.MaThuoc;
+    END
+    ELSE IF @LoaiHD = N'Xóa'
+    BEGIN
+        SELECT @NoiDung = STRING_AGG(
+            CONCAT(
+                'Xóa: [MaThuoc=', MaThuoc, 
+                ', TenThuoc=', TenThuoc, 
+                ', HamLuong=', HamLuong, 
+                ', DonViHL=', DonViHL, ']'
+            ), '; '
+        )
+        FROM deleted;
+    END
+
+    -- 🔹 3. Ghi vào bảng HoatDong (ID tự tăng, ThoiGian tự động)
+    INSERT INTO HoatDong (LoaiHD, BangDL, NoiDung)
+    VALUES (@LoaiHD, @BangDL, @NoiDung);
+END;
+GO
+
+CREATE TRIGGER trg_ThuocSPTheoLo_Audit
+ON Thuoc_SP_TheoLo
+AFTER INSERT, UPDATE, DELETE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @LoaiHD NVARCHAR(20);
+    DECLARE @BangDL NVARCHAR(50) = 'Thuoc_SP_TheoLo';
+    DECLARE @NoiDung NVARCHAR(MAX) = N'';
+
+    -- 🔹 1. Xác định loại hoạt động
+    IF EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
+        SET @LoaiHD = N'Cập nhật';
+    ELSE IF EXISTS (SELECT 1 FROM inserted)
+        SET @LoaiHD = N'Thêm mới';
+    ELSE
+        SET @LoaiHD = N'Xóa';
+
+    -- 🔹 2. Ghi nội dung mô tả (tập trung vào SoLuongTon)
+    IF @LoaiHD = N'Thêm mới'
+    BEGIN
+        SELECT @NoiDung = STRING_AGG(
+            CONCAT(
+                'Thêm lô: [MaLH=', MaLH, 
+                ', MaThuoc=', MaThuoc,
+                ', MaPN=', MaPN,
+                ', Số lượng tồn=', SoLuongTon, 
+                ', NSX=', FORMAT(NSX, 'yyyy-MM-dd'),
+                ', HSD=', FORMAT(HSD, 'yyyy-MM-dd'), ']'
+            ), '; '
+        )
+        FROM inserted;
+    END
+    ELSE IF @LoaiHD = N'Cập nhật'
+    BEGIN
+        -- Chỉ ghi log khi số lượng tồn thay đổi
+        SELECT @NoiDung = STRING_AGG(
+            CONCAT(
+                'Cập nhật lô: [MaLH=', i.MaLH, 
+                ', MaThuoc=', i.MaThuoc,
+                '] (Số lượng tồn: ', d.SoLuongTon, ' → ', i.SoLuongTon, ')'
+            ), '; '
+        )
+        FROM inserted i
+        JOIN deleted d ON i.MaLH = d.MaLH
+        WHERE ISNULL(i.SoLuongTon, 0) <> ISNULL(d.SoLuongTon, 0);
+    END
+    ELSE IF @LoaiHD = N'Xóa'
+    BEGIN
+        SELECT @NoiDung = STRING_AGG(
+            CONCAT(
+                'Xóa lô: [MaLH=', MaLH, 
+                ', MaThuoc=', MaThuoc, 
+                ', Số lượng tồn=', SoLuongTon, ']'
+            ), '; '
+        )
+        FROM deleted;
+    END
+
+    -- 🔹 3. Ghi vào bảng HoatDong (chỉ ghi khi có nội dung thực sự)
+    IF (@NoiDung IS NOT NULL AND @NoiDung <> N'')
+    BEGIN
+        INSERT INTO HoatDong (LoaiHD, BangDL, NoiDung)
+        VALUES (@LoaiHD, @BangDL, @NoiDung);
+    END
+END;
+GO

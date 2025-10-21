@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="690.0" prefWidth="1004.0" stylesheets="@../../css/ThemThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMThuoc.ThemThuoc_Ctrl">
+<AnchorPane prefHeight="690.0" prefWidth="1004.0" stylesheets="@../../css/ThemThuoc.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMThuoc.ThemThuoc_Ctrl">
     <children>
         <Label layoutX="14.0" layoutY="8.0" prefHeight="31.0" prefWidth="977.0" styleClass="lbtitle" text="Thông tin chung">
             <font>
@@ -53,7 +53,7 @@
                                                 <Font size="14.0" />
                                             </font>
                                         </Label>
-                                        <TextField fx:id="txtMaThuoc" editable="false" layoutX="74.0" layoutY="-28.0" prefHeight="25.0" prefWidth="120.0" style="-fx-max-height: 30;" />
+                                        <TextField fx:id="txtMaThuoc" disable="true" editable="false" layoutX="74.0" layoutY="-28.0" prefHeight="25.0" prefWidth="120.0" style="-fx-max-height: 30;" />
                                     </children>
                                 </Pane>
                             </children>

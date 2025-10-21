@@ -55,10 +55,12 @@ public class DanhMucThuoc_Ctrl extends Application {
 
 //  3. Tải bảng
     public void loadTable() {
-        list = thuocDao.selectAll();
+        list = thuocDao.selectAllSLTheoDonViCoBan_ChiTietDVT();
         ObservableList<Thuoc_SanPham> data = FXCollections.observableArrayList(list);
 
-        colSTT.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(tbl_Thuoc.getItems().indexOf(cellData.getValue()) + 1)));
+        colSTT.setCellValueFactory(cellData ->
+                new SimpleStringProperty(String.valueOf(tbl_Thuoc.getItems().indexOf(cellData.getValue()) + 1))
+        );
         colMaThuoc.setCellValueFactory(new PropertyValueFactory<Thuoc_SanPham,String>("maThuoc"));
         colTenThuoc.setCellValueFactory(new PropertyValueFactory<Thuoc_SanPham,String>("tenThuoc"));
         colHamLuong.setCellValueFactory(new PropertyValueFactory<Thuoc_SanPham,String>("hamLuongDonVi"));
@@ -95,16 +97,11 @@ public class DanhMucThuoc_Ctrl extends Application {
     }
 
 //  Thêm thuốc
-    public void btnThemThuoc(ActionEvent actionEvent) {
+    public void btnThemThuocClick() {
         try {
             Stage stage = new Stage();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/ThemThuoc_GUI.fxml"));
-            Parent root = loader.load();
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/ThemThuoc_GUI.fxml"));
             Scene scene = new Scene(root);
-
-            ThemThuoc_Ctrl ctrl = loader.getController();
-            ctrl.setParent(this);
-
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {
@@ -129,6 +126,11 @@ public class DanhMucThuoc_Ctrl extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    public void themthuoc(ActionEvent actionEvent) {
+
     }
 
     public void refestTable(){

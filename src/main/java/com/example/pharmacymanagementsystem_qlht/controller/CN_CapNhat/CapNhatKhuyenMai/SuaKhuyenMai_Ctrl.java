@@ -1,8 +1,7 @@
 // java
 package com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatKhuyenMai;
 
-import com.example.pharmacymanagementsystem_qlht.dao.ChiTietKhuyenMai_Dao;
-import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SanPham_Dao;
+import com.example.pharmacymanagementsystem_qlht.dao.*;
 import com.example.pharmacymanagementsystem_qlht.model.ChiTietKhuyenMai;
 import com.example.pharmacymanagementsystem_qlht.model.KhuyenMai;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SP_TangKem;
@@ -72,8 +71,8 @@ public class SuaKhuyenMai_Ctrl {
         setupGiftTable();
 
         // ListView behaviors like SuaXoaThuoc_Ctrl
-        initThuocListViewLikeSuaXoa();
-        initQuaListViewLikeSuaXoa();
+        initThuocListView();
+        initQuaListView();
 
         // Gift tab visibility follows Loại KM (LKM001)
         if (cbLoaiKM != null) {
@@ -196,7 +195,7 @@ public class SuaKhuyenMai_Ctrl {
     }
 
     // ListView behaviors similar to SuaXoaThuoc_Ctrl
-    private void initThuocListViewLikeSuaXoa() {
+    private void initThuocListView() {
         if (tfTimThuoc == null || listViewThuoc == null) return;
 
         listViewThuoc.setVisible(false);
@@ -222,10 +221,12 @@ public class SuaKhuyenMai_Ctrl {
                 }
                 listViewThuoc.setItems(filtered);
                 listViewThuoc.setVisible(!filtered.isEmpty());
+                listViewThuoc.setManaged(!filtered.isEmpty());
                 listViewThuoc.setPrefHeight(filtered.isEmpty() ? 0 : 160);
                 listViewThuoc.toFront();
             } else {
                 listViewThuoc.setVisible(false);
+                listViewThuoc.setManaged(false);
                 listViewThuoc.setPrefHeight(0);
                 listViewThuoc.setItems(allThuoc);
             }
@@ -245,7 +246,7 @@ public class SuaKhuyenMai_Ctrl {
         });
     }
 
-    private void initQuaListViewLikeSuaXoa() {
+    private void initQuaListView() {
         if (tfTimQua == null || listViewQua == null) return;
 
         listViewQua.setVisible(false);
@@ -271,10 +272,12 @@ public class SuaKhuyenMai_Ctrl {
                 }
                 listViewQua.setItems(filtered);
                 listViewQua.setVisible(!filtered.isEmpty());
+                listViewQua.setManaged(!filtered.isEmpty());
                 listViewQua.setPrefHeight(filtered.isEmpty() ? 0 : 160);
                 listViewQua.toFront();
             } else {
                 listViewQua.setVisible(false);
+                listViewQua.setManaged(false);
                 listViewQua.setPrefHeight(0);
                 listViewQua.setItems(allThuoc);
             }
@@ -359,6 +362,54 @@ public class SuaKhuyenMai_Ctrl {
     }
 
     public void btnLuuClick() {
-        // Implement persist logic for KhuyenMai + ctItems + giftItems if/when needed
+        try {
+            // 1. Lấy dữ liệu từ form
+            String maKM = tfMaKM.getText();
+            String tenKM = tfTenKM.getText();
+            String maLoai = cbLoaiKM.getValue();
+            float giaTri = Float.parseFloat(tfGiaTri.getText());
+            java.sql.Date tuNgay = java.sql.Date.valueOf(dpTuNgay.getValue());
+            java.sql.Date denNgay = java.sql.Date.valueOf(dpDenNgay.getValue());
+            String moTa = tfMoTa.getText();
+
+            KhuyenMai km = new KhuyenMai(maKM, new LoaiKhuyenMai_Dao().selectById(maLoai), tenKM, giaTri, tuNgay, denNgay, moTa);
+
+            KhuyenMai_Dao kmDao = new KhuyenMai_Dao();
+            ChiTietKhuyenMai_Dao ctDao = new ChiTietKhuyenMai_Dao();
+            Thuoc_SP_TangKem_Dao giftDao = new Thuoc_SP_TangKem_Dao();
+
+            // 2. Lưu hoặc cập nhật Khuyến mãi
+            if (kmDao.selectById(maKM) != null) {
+                kmDao.update(km);
+            } else {
+                kmDao.insert(km);
+            }
+
+            // 3. Xóa chi tiết cũ và thêm mới
+            List<ChiTietKhuyenMai> oldCT = ctDao.selectByMaKM(maKM);
+            for (ChiTietKhuyenMai ct : oldCT) {
+                ctDao.deleteById(ct.getThuoc().getMaThuoc(), maKM);
+            }
+            for (ChiTietKhuyenMai ct : ctItems) {
+                ct.setKhuyenMai(km);
+                ctDao.insert(ct);
+            }
+
+            // 4. Xử lý quà tặng (nếu có tab quà tặng)
+            List<Thuoc_SP_TangKem> oldGifts = giftDao.selectByMaKM(maKM);
+            for (Thuoc_SP_TangKem g : oldGifts) {
+                giftDao.deleteById(g.getThuocTangKem().getMaThuoc(), maKM);
+            }
+            for (Thuoc_SP_TangKem g : giftItems) {
+                g.setKhuyenmai(km);
+                giftDao.insert(g);
+            }
+
+            // 5. Đóng form hoặc thông báo thành công
+            btnHuyClick();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            // Có thể show alert ở đây nếu muốn
+        }
     }
 }

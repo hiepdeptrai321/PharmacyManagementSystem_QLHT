@@ -55,7 +55,7 @@ public class DanhMucThuoc_Ctrl extends Application {
 
 //  3. Tải bảng
     public void loadTable() {
-        list = thuocDao.selectAllSLTheoDonViCoBan_ChiTietDVT();
+        list = thuocDao.selectAll();
         ObservableList<Thuoc_SanPham> data = FXCollections.observableArrayList(list);
 
         colSTT.setCellValueFactory(cellData ->
@@ -100,8 +100,13 @@ public class DanhMucThuoc_Ctrl extends Application {
     public void btnThemThuocClick() {
         try {
             Stage stage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/ThemThuoc_GUI.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/ThemThuoc_GUI.fxml"));
+            Parent root = loader.load();
             Scene scene = new Scene(root);
+
+            ThemThuoc_Ctrl ctrl = loader.getController();
+            ctrl.setParent(this);
+
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {

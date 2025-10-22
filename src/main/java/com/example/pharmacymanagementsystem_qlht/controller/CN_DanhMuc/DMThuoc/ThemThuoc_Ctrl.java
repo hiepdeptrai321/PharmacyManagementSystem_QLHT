@@ -326,13 +326,6 @@ public class ThemThuoc_Ctrl {
             alert.setContentText("Vui lòng chọn vị trí!");
             alert.showAndWait();
             return false;
-        }else if(listChiTietHoatChat.isEmpty()){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi");
-            alert.setHeaderText(null);
-            alert.setContentText("Vui lòng thêm ít nhất một hoạt chất cho thuốc!");
-            alert.showAndWait();
-            return false;
         }else if(cbxNhomDuocLy.getSelectionModel().getSelectedIndex() == 0){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Lỗi");

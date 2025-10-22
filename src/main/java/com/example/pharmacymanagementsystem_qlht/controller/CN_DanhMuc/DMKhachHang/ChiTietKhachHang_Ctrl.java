@@ -1,7 +1,6 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhachHang;
 
 import com.example.pharmacymanagementsystem_qlht.dao.KhachHang_Dao;
-import com.example.pharmacymanagementsystem_qlht.model.KeHang;
 import com.example.pharmacymanagementsystem_qlht.model.KhachHang;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -43,9 +42,12 @@ public class ChiTietKhachHang_Ctrl extends Application {
     @FXML
     private ComboBox<String> cboGioiTinh;
 
-    private final KhachHang_Dao khachHangDao = new KhachHang_Dao();
+    @FXML
+    private Label errTenKH, errDiaChi, errEmail, errSDT;
 
+    private final KhachHang_Dao khachHangDao = new KhachHang_Dao();
     private KhachHang khachHang;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -62,25 +64,64 @@ public class ChiTietKhachHang_Ctrl extends Application {
     public void initialize() {
         cboGioiTinh.setItems(FXCollections.observableArrayList("Nam", "Nữ"));
         btnHuy.setOnAction(e -> HuyClick());
-        btnXoa.setOnAction(e-> XoaClick());
+        btnXoa.setOnAction(e -> XoaClick());
         btnLuu.setOnAction(e -> LuuClick());
-
     }
 
-    public void hienThiThongTin(KhachHang kh) {
-        if (kh != null) {
-            khachHang = kh;
-            txtTenKH.setText(kh.getTenKH());
-            txtDiaChi.setText(kh.getDiaChi() != null ? kh.getDiaChi() : "");
-            txtEmail.setText(kh.getEmail() != null ? kh.getEmail() : "");
-            txtSDT.setText(kh.getSdt() != null ? kh.getSdt() : "");
-            txtNgaySinh.setValue(kh.getNgaySinh());
-            cboGioiTinh.setValue(Boolean.TRUE.equals(kh.getGioiTinh()) ? "Nam" : "Nữ");
+
+    private boolean validateFields() {
+        boolean isValid = true;
+
+        // Reset lỗi
+        errTenKH.setText("");
+        errSDT.setText("");
+        errEmail.setText("");
+        errDiaChi.setText("");
+
+        // Tên KH
+        if (txtTenKH.getText().trim().isEmpty()) {
+            errTenKH.setText("Tên khách hàng không được để trống.");
+            isValid = false;
         }
+
+        // Số điện thoại
+        String sdt = txtSDT.getText().trim();
+        if (sdt.isEmpty()) {
+            errSDT.setText("Số điện thoại không được để trống.");
+            isValid = false;
+        } else if (!sdt.matches("\\d{10}")) {
+            errSDT.setText("Số điện thoại không hợp lệ (10số).");
+            isValid = false;
+        }
+
+        // Email
+        String email = txtEmail.getText().trim();
+        if (email.isEmpty()) {
+            errEmail.setText("Email không được để trống.");
+            isValid = false;
+        } else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            errEmail.setText("Email không hợp lệ.");
+            isValid = false;
+        }
+
+        // Địa chỉ
+        if (txtDiaChi.getText().trim().isEmpty()) {
+            errDiaChi.setText("Địa chỉ không được để trống.");
+            isValid = false;
+        }
+
+        return isValid;
     }
+
+
     @FXML
     private void LuuClick() {
         try {
+            // Kiểm tra dữ liệu trước khi lưu
+            if (!validateFields()) {
+                return;
+            }
+
             if (khachHang == null) {
                 khachHang = new KhachHang();
             }
@@ -91,7 +132,7 @@ public class ChiTietKhachHang_Ctrl extends Application {
             khachHang.setSdt(txtSDT.getText().trim());
             khachHang.setNgaySinh(txtNgaySinh.getValue() != null ? txtNgaySinh.getValue() : LocalDate.now());
             khachHang.setGioiTinh("Nam".equals(cboGioiTinh.getValue()));
-            khachHang.setTrangThai(true); // luôn là hoạt động
+            khachHang.setTrangThai(true);
 
             boolean success;
             if (khachHang.getMaKH() == null || khachHang.getMaKH().trim().isEmpty()) {
@@ -110,6 +151,7 @@ public class ChiTietKhachHang_Ctrl extends Application {
             thongBao("Lỗi khi lưu: " + e.getMessage());
         }
     }
+
 
     @FXML
     private void XoaClick() {
@@ -142,7 +184,20 @@ public class ChiTietKhachHang_Ctrl extends Application {
         dongCuaSo();
     }
 
-    // =================== HÀM PHỤ ====================
+
+    public void hienThiThongTin(KhachHang kh) {
+        if (kh != null) {
+            khachHang = kh;
+            txtTenKH.setText(kh.getTenKH());
+            txtDiaChi.setText(kh.getDiaChi() != null ? kh.getDiaChi() : "");
+            txtEmail.setText(kh.getEmail() != null ? kh.getEmail() : "");
+            txtSDT.setText(kh.getSdt() != null ? kh.getSdt() : "");
+            txtNgaySinh.setValue(kh.getNgaySinh());
+            cboGioiTinh.setValue(Boolean.TRUE.equals(kh.getGioiTinh()) ? "Nam" : "Nữ");
+        }
+    }
+
+
     private void thongBao(String msg) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
@@ -155,5 +210,4 @@ public class ChiTietKhachHang_Ctrl extends Application {
         Stage stage = (Stage) btnHuy.getScene().getWindow();
         stage.close();
     }
-
 }

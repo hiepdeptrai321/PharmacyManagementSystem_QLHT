@@ -60,7 +60,7 @@ public class ThemKhachHang_Ctrl extends Application implements Initializable {
         // Populate gender and status combos
         if (cbGioiTinh != null) {
             cbGioiTinh.getItems().clear();
-            cbGioiTinh.getItems().addAll("Nam", "Nữ", "Khác");
+            cbGioiTinh.getItems().addAll("Nam", "Nữ");
             cbGioiTinh.setValue("Nam");
         }
         if (cbTrangThai != null) {

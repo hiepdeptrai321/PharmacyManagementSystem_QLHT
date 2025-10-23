@@ -32,9 +32,13 @@ CREATE TABLE NhanVien (
     NgaySinh   DATE NOT NULL,
     GioiTinh   NVARCHAR(5) NOT NULL,
     DiaChi     NVARCHAR(50),
-    TrangThai  NVARCHAR(30) NOT NULL,
+    TrangThai  BIT NOT NULL,
     TaiKhoan   VARCHAR(50) NOT NULL,
-    MatKhau    VARCHAR(50) NOT NULL
+    MatKhau    VARCHAR(50) NOT NULL,
+	NgayVaoLam Date NOT NULL,
+	NgayKetThuc Date,
+	TrangThaiXoa BIT NOT NULL
+
 );
 -- =========================
 -- Bảng LuongNhanVien
@@ -42,7 +46,7 @@ CREATE TABLE NhanVien (
 CREATE TABLE LuongNhanVien (
     MaLNV      VARCHAR(10) PRIMARY KEY,
     TuNgay     DATE NOT NULL,
-    DenNgay    DATE NOT NULL,
+    DenNgay    DATE ,
     LuongCoBan FLOAT NOT NULL,
     PhuCap     FLOAT NOT NULL,
     GhiChu     NVARCHAR(255) NOT NULL,
@@ -375,17 +379,17 @@ INSERT INTO KhachHang (MaKH, TenKH, SDT, Email, NgaySinh, GioiTinh, DiaChi, Tran
 
 
 
-INSERT INTO NhanVien (MaNV, TenNV, SDT, Email, NgaySinh, GioiTinh, DiaChi, TrangThai, TaiKhoan, MatKhau) VALUES
-('NV001', N'Đàm Thái An', '0912345678', 'thaian@gmail.com', '2005-01-01', N'Nam', N'Củ Chi', N'Hoạt động', 'thaian', '123'),
-('NV002', N'Hoàng Phước Thành Công', '0363636363', 'thanhcong@gmail.com', '2005-02-02', N'Nữ', N'Huế', N'Hoạt động', 'thanhcong', '123'),
-('NV003', N'Đỗ Phú Hiệp', '0181818181', 'phuhiep@gmail.com', '2003-03-03', N'Nam', N'An Giang', N'Hoạt động', 'phuhiep', '123'),
-('NV004', N'Nguyễn Nhựt Hảo', '0636363636', 'nhuthao@gmail.com', '2005-05-31', N'Nam', N'Đồng Tháp', N'Không hoạt động', 'nhuthao', '123');
+INSERT INTO NhanVien (MaNV, TenNV, SDT, Email, NgaySinh, GioiTinh, DiaChi, TrangThai, TaiKhoan, MatKhau, NgayVaoLam, NgayKetThuc,TrangThaiXoa) VALUES
+('NV001', N'Đàm Thái An', '0912345678', 'thaian@gmail.com', '2005-01-01', N'Nam', N'Củ Chi', 1, 'thaian', '123', '2025-1-12', null,0),
+('NV002', N'Hoàng Phước Thành Công', '0363636363', 'thanhcong@gmail.com', '2005-02-02', N'Nữ', N'Huế', 1, 'thanhcong', '123', '2025-1-12', null,0),
+('NV003', N'Đỗ Phú Hiệp', '0181818181', 'phuhiep@gmail.com', '2003-03-03', N'Nam', N'An Giang', 1, 'phuhiep', '123', '2025-1-12', null,0),
+('NV004', N'Nguyễn Nhựt Hảo', '0636363636', 'nhuthao@gmail.com', '2005-05-31', N'Nam', N'Đồng Tháp',1, 'nhuthao', '123', '2025-1-12', null,0);
 
 INSERT INTO LuongNhanVien (MaLNV, TuNgay, DenNgay, LuongCoBan, PhuCap, GhiChu, MaNV) VALUES
-('LNV001', '2025-01-01', '2025-01-31', 8000000, 500000, N'Lương tháng 1', 'NV001'),
-('LNV002', '2025-01-01', '2025-01-31', 7500000, 400000, N'Lương tháng 1', 'NV002'),
-('LNV003', '2025-01-01', '2025-01-31', 9000000, 600000, N'Lương tháng 1', 'NV003'),
-('LNV004', '2025-01-01', '2025-01-31', 7000000, 350000, N'Lương tháng 1', 'NV004');
+('LNV001', '2025-01-01', null, 8000000, 500000, N'Lương tháng 1', 'NV001'),
+('LNV002', '2025-01-01', null, 7500000, 400000, N'Lương tháng 1', 'NV002'),
+('LNV003', '2025-01-01', null, 9000000, 600000, N'Lương tháng 1', 'NV003'),
+('LNV004', '2025-01-01', null, 7000000, 350000, N'Lương tháng 1', 'NV004');
 
 INSERT INTO LoaiHang (MaLoaiHang, TenLH, MoTa) VALUES
 ('LH01', N'Thuốc Tây', N'Thuốc kê đơn, thuốc không kê đơn, thuốc điều trị bệnh lý thông thường...'),
@@ -1174,5 +1178,45 @@ BEGIN
     END
 END;
 GO
+
+CREATE PROCEDURE sp_InsertNhanVien
+    @HoTen NVARCHAR(50),
+    @SDT VARCHAR(15),
+    @Email VARCHAR(100),
+    @NamSinh DATE,
+	@GioiTinh BIT,
+    @DiaChi NVARCHAR(100),
+	@TrangThai BIT,
+    @NgayVaoLam DATE,
+    @MaTK VARCHAR(30),
+	@MatKhau VARCHAR(30)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @NewMaNV VARCHAR(10);
+    DECLARE @MaxMaNV VARCHAR(10);
+    DECLARE @NumPart INT;
+
+    -- Lấy mã cao nhất hiện có (ví dụ NV012)
+    SELECT @MaxMaNV = MAX(MaNV)
+    FROM NhanVien;
+
+    IF @MaxMaNV IS NULL
+        SET @NewMaNV = 'NV001';
+    ELSE
+    BEGIN
+        -- Cắt phần số, +1 và định dạng lại
+        SET @NumPart = CAST(SUBSTRING(@MaxMaNV, 3, LEN(@MaxMaNV)) AS INT) + 1;
+        SET @NewMaNV = 'NV' + RIGHT('000' + CAST(@NumPart AS VARCHAR(3)), 3);
+    END
+
+    -- Thêm nhân viên mới
+    INSERT INTO NhanVien(MaNV, TenNV, SDT, Email, NgaySinh, GioiTinh, DiaChi, TrangThai, TaiKhoan, MatKhau, NgayVaoLam, NgayKetThuc)
+    VALUES(@NewMaNV, @HoTen, @SDT, @Email, @NamSinh,@GioiTinh, @DiaChi, @TrangThai,@MaTK,@MatKhau,@NgayVaoLam,null);
+
+    -- Xuất mã nhân viên mới
+    SELECT @NewMaNV AS MaNhanVienMoi;
+END;
 
 

@@ -278,13 +278,13 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
     }
 
     public String generatekeyThuocSanPham() {
-        String key = "TH001";
+        String key = "TS001";
         try {
             String lastKey = ConnectDB.queryTaoMa(SELECT_TOP1_MATHUOC);
-                if (lastKey != null && lastKey.startsWith("TH")) {
+                if (lastKey != null && lastKey.startsWith("TS")) {
                     int stt = Integer.parseInt(lastKey.substring(2));
                     stt++;
-                    key = String.format("TH%03d", stt);
+                    key = String.format("TS%03d", stt);
                 }
         } catch (Exception e) {
             throw new RuntimeException(e);

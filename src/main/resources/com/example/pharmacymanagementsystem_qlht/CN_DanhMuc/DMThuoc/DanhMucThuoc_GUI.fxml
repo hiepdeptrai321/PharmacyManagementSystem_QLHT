@@ -8,30 +8,30 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane prefHeight="895.0" prefWidth="1646.0" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMThuoc.DanhMucThuoc_Ctrl">
+<AnchorPane prefHeight="895.0" prefWidth="1646.0" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMThuoc.DanhMucThuoc_Ctrl">
    <children>
-      <TextField fx:id="tfTimThuoc" layoutX="11.5" layoutY="47.0" prefHeight="30.0" prefWidth="353.0" promptText="Tìm theo mã, tên thuốc" />
-      <Button id="btntim" fx:id="btnTimThuoc" layoutX="375.0" layoutY="46.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timThuoc" prefHeight="30.0" prefWidth="69.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" />
-      <Pane id="lblpaneTitle" prefHeight="40.0" prefWidth="1200.0">
+      <TextField fx:id="tfTimThuoc" layoutX="12.0" layoutY="48.0" prefHeight="36.0" prefWidth="353.0" promptText="Tìm theo mã, tên thuốc" />
+      <Button id="btntim" fx:id="btnTimThuoc" layoutX="375.0" layoutY="46.0" minHeight="16.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timThuoc" prefHeight="16.0" prefWidth="69.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" />
+      <Pane id="lblpaneTitle" prefHeight="40.0" prefWidth="1646.0">
          <children>
             <Label id="lbtitle" layoutX="12.0" layoutY="2.0" prefHeight="36.0" prefWidth="269.0" text="Danh mục thuốc" />
          </children>
       </Pane>
-      <Button id="btnthemthuoc" fx:id="btnThemThuoc" layoutX="956.0" layoutY="46.0" mnemonicParsing="false" onAction="#themthuoc" onMouseClicked="#btnThemThuocClick" prefHeight="30.0" prefWidth="144.0" text="✚Thêm thuốc" AnchorPane.topAnchor="46.0" />
-       <TableView fx:id="tbl_Thuoc" layoutX="11.0" layoutY="86.0" prefHeight="786.0" prefWidth="1614.0">
+      <Button id="btnthemthuoc" fx:id="btnThemThuoc" layoutX="1397.0" layoutY="46.0" mnemonicParsing="false" onAction="#themthuoc" prefHeight="30.0" prefWidth="144.0" text="✚Thêm thuốc" AnchorPane.topAnchor="46.0" />
+       <TableView fx:id="tbl_Thuoc" layoutX="12.0" layoutY="95.0" prefHeight="786.0" prefWidth="1618.0">
            <columns>
             <TableColumn fx:id="colSTT" prefWidth="54.28570747375488" text="STT" />
                <TableColumn fx:id="colMaThuoc" prefWidth="144.0" text="Mã thuốc" />
-               <TableColumn fx:id="colTenThuoc" minWidth="0.0" prefWidth="260.3809814453125" text="Tên Thuốc" />
-               <TableColumn fx:id="colHamLuong" prefWidth="78.09521484375" text="Hàm lượng" />
-               <TableColumn fx:id="colSDK_GPNK" prefWidth="148.76190185546875" text="SDK_GPNK" />
-               <TableColumn fx:id="colXuatXu" prefWidth="165.90478515625" text="Xuất xứ" />
-               <TableColumn fx:id="colLoaiHang" prefWidth="204.57135009765625" text="Loại hàng" />
-               <TableColumn fx:id="colViTri" prefWidth="123.2379150390625" text="Vị trí" />
-               <TableColumn fx:id="colChiTiet" prefWidth="152.1904296875" text="Chi tiết" />
+               <TableColumn fx:id="colTenThuoc" minWidth="0.0" prefWidth="291.6666564941406" text="Tên Thuốc" />
+               <TableColumn fx:id="colHamLuong" prefWidth="78.33331298828125" text="Hàm lượng" />
+               <TableColumn fx:id="colSDK_GPNK" prefWidth="243.66668701171875" text="SDK_GPNK" />
+               <TableColumn fx:id="colXuatXu" prefWidth="102.0" text="Xuất xứ" />
+               <TableColumn fx:id="colLoaiHang" prefWidth="315.3333740234375" text="Loại hàng" />
+               <TableColumn fx:id="colViTri" prefWidth="308.6666259765625" text="Vị trí" />
+               <TableColumn fx:id="colChiTiet" prefWidth="82.0" text="Chi tiết" />
            </columns>
        </TableView>
-      <Button id="btnnhapxuat" fx:id="btnImport" layoutX="1106.0" layoutY="46.0" minWidth="46.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="45.0" text="📥" AnchorPane.topAnchor="46.0" />
-      <Button id="btnnhapxuat" fx:id="btnExport" layoutX="1150.0" layoutY="46.0" minWidth="27.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="39.0" text="📤" AnchorPane.topAnchor="46.0" />
+      <Button id="btnnhapxuat" fx:id="btnImport" layoutX="1550.0" layoutY="46.0" minWidth="46.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="45.0" text="📥" AnchorPane.topAnchor="46.0" />
+      <Button id="btnnhapxuat" fx:id="btnExport" layoutX="1594.0" layoutY="46.0" minWidth="27.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" text="📤" AnchorPane.topAnchor="46.0" />
    </children>
 </AnchorPane>

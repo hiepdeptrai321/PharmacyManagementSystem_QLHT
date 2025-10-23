@@ -1,23 +1,48 @@
 #menuBar{
     -fx-background-color: #1e90ff;
 }
+
 #menu > .label {
     -fx-text-fill: white;
-    -fx-font-size: 16px;
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
+
 .menu-bar {
     -fx-background-color: #1e90ff;
     -fx-padding: 0;
 }
 
-.menu-bar .menu {
-    -fx-padding: 5 15 5 15;
+#menu:hover {
+    -fx-background-color: #003cff;
+}
+
+#menu{
+    -fx-padding: 10 15 10 15;
     -fx-alignment: center;
 }
+
+#menu.showing {
+    -fx-background-color: #003cff;
+}
+
+#menuItems{
+    -fx-background-color: #ffffff;
+    -fx-text-fill: black;
+}
+
+#menuItems:hover {
+    -fx-background-color: #efefef;
+}
+
 .menu.active {
     -fx-background-color: #003cff;
 }
+
+.menu-item{
+    -fx-font-size: 16px;
+}
+
 #pnlGrid{
     -fx-background-color: #efefef;
 }
@@ -26,6 +51,32 @@
     -fx-background-color: #ffffff;
     -fx-background-radius: 20px;
 }
+
 .table-view {
     -fx-focus-traversable: false;
+}
+
+.context-menu {
+    -fx-padding: 0;
+    -fx-background-color: #ffffff;
+    -fx-background-insets: 0;
+    -fx-border-width: 0;
+}
+
+.menu-item:hover .label {
+    -fx-text-fill: black;
+}
+
+.menu-item .arrow,
+.menu-item:hover .arrow {
+    -fx-background-color: black; /* hoặc màu bạn muốn */
+}
+
+.menu .arrow,
+.menu:hover .arrow {
+    -fx-background-color: black;
+}
+
+.menu-item .label {
+    -fx-text-fill: black; /* màu chữ bình thường */
 }

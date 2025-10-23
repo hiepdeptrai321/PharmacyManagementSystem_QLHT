@@ -18,11 +18,12 @@ public class NhanVien {
     private Date ngayVaoLam;
     private Date ngayNghiLam;
     private boolean trangThaiXoa;
+    private String vaiTro;
 
     public NhanVien() {
     }
 
-    public NhanVien(String maNV, String tenNV, String sdt, String email, Date ngaySinh, boolean gioiTinh, String diaChi, boolean trangThai, String taiKhoan, String matKhau, Date ngayVaoLam, Date ngayNghiLam,boolean trangThaiXoa) {
+    public NhanVien(String maNV, String tenNV, String sdt, String email, Date ngaySinh, boolean gioiTinh, String diaChi, boolean trangThai, String taiKhoan, String matKhau, Date ngayVaoLam, Date ngayNghiLam,boolean trangThaiXoa, String vaiTro) {
         this.maNV = maNV;
         this.tenNV = tenNV;
         this.sdt = sdt;
@@ -36,6 +37,7 @@ public class NhanVien {
         this.ngayVaoLam = ngayVaoLam;
         this.ngayNghiLam = ngayNghiLam;
         this.trangThaiXoa = trangThaiXoa;
+        this.vaiTro = vaiTro;
     }
 
     public NhanVien(NhanVien nhanVien) {
@@ -156,6 +158,13 @@ public class NhanVien {
 
     public void setTrangThaiXoa(boolean trangThaiXoa) {
         this.trangThaiXoa = trangThaiXoa;
+    }
+
+    public String getVaiTro() {
+        return vaiTro;
+    }
+    public void setVaiTro(String vaiTro) {
+        this.vaiTro = vaiTro;
     }
 
     @Override

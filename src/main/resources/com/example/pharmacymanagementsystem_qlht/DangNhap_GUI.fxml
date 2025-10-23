@@ -13,16 +13,16 @@
 
 <AnchorPane prefHeight="649.0" prefWidth="488.0" stylesheets="@css/DangNhap.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.DangNhap_Ctrl">
    <children>
-      <TextField layoutX="93.0" layoutY="261.0" prefHeight="26.0" prefWidth="318.0" />
-      <Label layoutX="93.0" layoutY="243.0" text="Tài khoản" />
-      <Label id="lbhotline" fx:id="lbhotline" layoutX="291.0" layoutY="365.0" text="Hotline: 1800 6868 " />
-      <Label layoutX="93.0" layoutY="307.0" text="Mật khẩu" />
-      <Label layoutX="62.0" layoutY="627.0" text="Nhóm 2_DHKTPM19BTT_Khoa Công nghệ thông tin_Trường DHCN TPHCM">
+      <TextField fx:id="tfTaiKhoan" layoutX="93.0" layoutY="261.0" prefHeight="26.0" prefWidth="318.0" />
+       <PasswordField fx:id="tfMatKhauAn" layoutX="93.0" layoutY="325.0" prefHeight="26.0" prefWidth="318.0" />
+       <TextField fx:id="tfMatKhau" layoutX="93.0" layoutY="325.0" prefHeight="26.0" prefWidth="318.0" visible="false" />
+
+       <!-- Nút ẩn mật khẩu -->
+       <Button id="btnanmk" fx:id="btnAnMK" layoutX="373.0" layoutY="323.0" minWidth="37.0" onAction="#anmatkhau" prefHeight="27.0" prefWidth="38.0" text="👁">
          <font>
-            <Font size="11.0" />
-         </font></Label>
-      <Button id="btndn" fx:id="btndn" layoutX="168.0" layoutY="406.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="165.0" text="Đăng nhập" />
-      <CheckBox fx:id="checkdn" graphicTextGap="2.0" layoutX="93.0" layoutY="365.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="165.0" text="Ghi nhớ đăng nhập">
+            <Font size="13.0" />
+         </font></Button>
+      <CheckBox fx:id="checkDangNhap" graphicTextGap="2.0" layoutX="93.0" layoutY="365.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="165.0" text="Ghi nhớ đăng nhập">
          <font>
             <Font size="10.0" />
          </font>
@@ -30,18 +30,18 @@
             <Insets />
          </opaqueInsets>
       </CheckBox>
+      <Button id="btndn" fx:id="btnDangNhap" layoutX="168.0" layoutY="406.0" mnemonicParsing="false" onMouseClicked="#btnDangNhapClick" prefHeight="38.0" prefWidth="165.0" text="Đăng nhập" />
+      <Label layoutX="93.0" layoutY="243.0" text="Tài khoản" />
+      <Label id="lbhotline" fx:id="lbhotline" layoutX="291.0" layoutY="365.0" text="Hotline: 1800 6868 " />
+      <Label layoutX="93.0" layoutY="307.0" text="Mật khẩu" />
+      <Label layoutX="62.0" layoutY="627.0" text="Nhóm 2_DHKTPM19BTT_Khoa Công nghệ thông tin_Trường DHCN TPHCM">
+         <font>
+            <Font size="11.0" />
+         </font></Label>
       <ImageView fitHeight="193.0" fitWidth="175.0" layoutX="168.0" layoutY="58.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@img/LogoDung.png" />
          </image>
       </ImageView>
-       <PasswordField fx:id="tfmkan" layoutX="93.0" layoutY="325.0" prefHeight="26.0" prefWidth="318.0" />
-       <TextField fx:id="tfmk" layoutX="93.0" layoutY="325.0" prefHeight="26.0" prefWidth="318.0" visible="false" />
-
-       <!-- Nút ẩn mật khẩu -->
-       <Button id="btnanmk" fx:id="btnanmk" layoutX="373.0" layoutY="323.0" minWidth="37.0" onAction="#anmatkhau" prefHeight="27.0" prefWidth="38.0" text="👁">
-         <font>
-            <Font size="13.0" />
-         </font></Button>
    </children>
 </AnchorPane>

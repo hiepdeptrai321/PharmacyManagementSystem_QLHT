@@ -1,5 +1,7 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatSoLuong;
 
+import com.example.pharmacymanagementsystem_qlht.controller.DangNhap_Ctrl;
+import com.example.pharmacymanagementsystem_qlht.dao.HoatDong_Dao;
 import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SP_TheoLo_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SP_TheoLo;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;

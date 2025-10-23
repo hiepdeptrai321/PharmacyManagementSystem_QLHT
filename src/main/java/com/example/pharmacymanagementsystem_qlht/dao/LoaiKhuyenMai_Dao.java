@@ -13,6 +13,7 @@ public class LoaiKhuyenMai_Dao implements DaoInterface<LoaiKhuyenMai> {
     private final String DELETE_BY_ID_SQL = "DELETE FROM LoaiKhuyenMai WHERE MaLoai=?";
     private final String SELECT_ALL_SQL = "SELECT MaLoai, TenLoai, MoTa FROM LoaiKhuyenMai";
     private final String SELECT_BY_ID_SQL = "SELECT MaLoai, TenLoai, MoTa FROM LoaiKhuyenMai WHERE MaLoai = ?";
+    private final String SElECT_BY_TEN_SQL = "SELECT MaLoai, TenLoai, MoTa FROM LoaiKhuyenMai WHERE TenLoai = ?";
     @Override
     public boolean insert(LoaiKhuyenMai e) {
         return ConnectDB.update(INSERT_SQL, e.getMaLoai(), e.getTenLoai(), e.getMoTa())>0;
@@ -55,5 +56,8 @@ public class LoaiKhuyenMai_Dao implements DaoInterface<LoaiKhuyenMai> {
     @Override
     public List<LoaiKhuyenMai> selectAll() {
         return selectBySql(SELECT_ALL_SQL);
+    }
+    public LoaiKhuyenMai selectByTen(String tenLoai) {
+        return this.selectBySql(SElECT_BY_TEN_SQL, tenLoai).get(0);
     }
 }

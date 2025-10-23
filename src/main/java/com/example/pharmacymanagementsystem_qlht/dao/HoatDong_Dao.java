@@ -17,12 +17,12 @@ public class HoatDong_Dao implements DaoInterface<HoatDong> {
 
     @Override
     public boolean insert(HoatDong e) {
-        return ConnectDB.update(INSERT_SQL, e.getLoaiHD(), e.getBang(), e.getThoiGian(), e.getGhiChu(), e.getNhanVien().getMaNV(), e.getMaHD())>0;
+        return ConnectDB.update(INSERT_SQL, e.getLoaiHD(), e.getBang(), e.getThoiGian(), e.getNoiDung(), e.getNhanVien().getMaNV(), e.getMaHD())>0;
     }
 
     @Override
     public boolean update(HoatDong e) {
-        return ConnectDB.update(UPDATE_SQL, e.getLoaiHD(), e.getBang(), e.getThoiGian(), e.getGhiChu(), e.getMaHD())>0;
+        return ConnectDB.update(UPDATE_SQL, e.getLoaiHD(), e.getBang(), e.getThoiGian(), e.getNoiDung(), e.getMaHD())>0;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class HoatDong_Dao implements DaoInterface<HoatDong> {
                 hd.setLoaiHD(rs.getString("LoaiHD"));
                 hd.setBang(rs.getString("BangDL"));
                 hd.setThoiGian(rs.getTimestamp("ThoiGian"));
-                hd.setGhiChu(rs.getString("GhiChu"));
+                hd.setNoiDung(rs.getString("NoiDung"));
                 hd.setNhanVien(new NhanVien_Dao().selectById(rs.getString("MaNV")));
                 list.add(hd);
             }
@@ -65,6 +65,7 @@ public class HoatDong_Dao implements DaoInterface<HoatDong> {
     public List<HoatDong> selectAll() {
         return this.selectBySql(SELECT_ALL_SQL);
     }
+
 }
 
 

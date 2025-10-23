@@ -15,12 +15,15 @@ public class NhanVien {
     private boolean trangThai;
     private String taiKhoan;
     private String matKhau;
+    private Date ngayVaoLam;
+    private Date ngayNghiLam;
+    private boolean trangThaiXoa;
     private String vaiTro;
 
     public NhanVien() {
     }
 
-    public NhanVien(String maNV, String tenNV, String sdt, String email, Date ngaySinh, boolean gioiTinh, String diaChi, boolean trangThai, String taiKhoan, String matKhau, String vaiTro) {
+    public NhanVien(String maNV, String tenNV, String sdt, String email, Date ngaySinh, boolean gioiTinh, String diaChi, boolean trangThai, String taiKhoan, String matKhau, Date ngayVaoLam, Date ngayNghiLam,boolean trangThaiXoa, String vaiTro) {
         this.maNV = maNV;
         this.tenNV = tenNV;
         this.sdt = sdt;
@@ -31,6 +34,26 @@ public class NhanVien {
         this.trangThai = trangThai;
         this.taiKhoan = taiKhoan;
         this.matKhau = matKhau;
+        this.ngayVaoLam = ngayVaoLam;
+        this.ngayNghiLam = ngayNghiLam;
+        this.trangThaiXoa = trangThaiXoa;
+        this.vaiTro = vaiTro;
+    }
+
+    public NhanVien(NhanVien nhanVien) {
+        this.maNV = nhanVien.maNV;
+        this.tenNV = nhanVien.tenNV;
+        this.sdt = nhanVien.sdt;
+        this.email = nhanVien.email;
+        this.ngaySinh = nhanVien.ngaySinh;
+        this.gioiTinh = nhanVien.gioiTinh;
+        this.diaChi = nhanVien.diaChi;
+        this.trangThai = nhanVien.trangThai;
+        this.taiKhoan = nhanVien.taiKhoan;
+        this.matKhau = nhanVien.matKhau;
+        this.ngayVaoLam = nhanVien.ngayVaoLam;
+        this.ngayNghiLam = nhanVien.ngayNghiLam;
+        this.trangThaiXoa = nhanVien.trangThaiXoa;
     }
 
     public String getMaNV() {
@@ -73,7 +96,7 @@ public class NhanVien {
         this.ngaySinh = ngaySinh;
     }
 
-    public boolean getGioiTinh() {
+    public boolean isGioiTinh() {
         return gioiTinh;
     }
 
@@ -89,7 +112,7 @@ public class NhanVien {
         this.diaChi = diaChi;
     }
 
-    public boolean getTrangThai() {
+    public boolean isTrangThai() {
         return trangThai;
     }
 
@@ -111,6 +134,30 @@ public class NhanVien {
 
     public void setMatKhau(String matKhau) {
         this.matKhau = matKhau;
+    }
+
+    public Date getNgayVaoLam() {
+        return ngayVaoLam;
+    }
+
+    public void setNgayVaoLam(Date ngayVaoLam) {
+        this.ngayVaoLam = ngayVaoLam;
+    }
+
+    public Date getNgayNghiLam() {
+        return ngayNghiLam;
+    }
+
+    public void setNgayNghiLam(Date ngayNghiLam) {
+        this.ngayNghiLam = ngayNghiLam;
+    }
+
+    public boolean isTrangThaiXoa() {
+        return trangThaiXoa;
+    }
+
+    public void setTrangThaiXoa(boolean trangThaiXoa) {
+        this.trangThaiXoa = trangThaiXoa;
     }
 
     public String getVaiTro() {
@@ -145,6 +192,8 @@ public class NhanVien {
                 ", trangThai=" + trangThai +
                 ", taiKhoan='" + taiKhoan + '\'' +
                 ", matKhau='" + matKhau + '\'' +
+                ", ngayVaoLam=" + ngayVaoLam +
+                ", ngayNghiLam=" + ngayNghiLam +
                 '}';
     }
 }

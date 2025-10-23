@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
-    private final String INSERT_SQL = "INSERT INTO Thuoc_SanPham (TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaNDL, MaLoaiHang, HinhAnh, ViTri) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String INSERT_SQL = "INSERT INTO Thuoc_SanPham (MaThuoc,TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaNDL, MaLoaiHang, HinhAnh, ViTri) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE Thuoc_SanPham SET TenThuoc=?, HamLuong=?, DonViHL=?, DuongDung=?, QuyCachDongGoi=?, SDK_GPNK=?, HangSX=?, NuocSX=?, MaNDL=?, MaLoaiHang=?, HinhAnh=?, ViTri=? WHERE MaThuoc=?";
     private final String DELETE_SQL = "DELETE FROM Thuoc_SanPham WHERE MaThuoc=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM Thuoc_SanPham";
@@ -27,10 +27,19 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
             "WHERE ctdvt.DonViCoBan = 1 AND (ts.TenThuoc LIKE ? OR ts.MaThuoc LIKE ?)";
 
     private final String SELECT_TENDVT_BYMA_SQL = "SELECT TenDonViTinh FROM ChiTietDonViTinh ctdvt JOIN DonViTinh dvt ON ctdvt.MaDVT = dvt.MaDVT WHERE MaThuoc = ? AND DonViCoBan = 1";
-
+    private final String SELECT_TOP1_MATHUOC = "SELECT TOP 1 MaThuoc FROM Thuoc_SanPham ORDER BY MaThuoc DESC";
+    private final String SELECT_THONG_TIN_GOI_Y_SQL =
+            "SELECT TOP ? ts.MaThuoc, ts.TenThuoc, SUM(tspl.SoLuongTon) AS TongSoLuongTon, dvt.TenDonViTinh " +
+                    "FROM Thuoc_SanPham ts " +
+                    "LEFT JOIN ChiTietDonViTinh ctdvt ON ts.MaThuoc = ctdvt.MaThuoc AND ctdvt.DonViCoBan = 1 " +
+                    "LEFT JOIN DonViTinh dvt ON ctdvt.MaDVT = dvt.MaDVT " +
+                    "LEFT JOIN Thuoc_SP_TheoLo tspl ON ts.MaThuoc = tspl.MaThuoc " +
+                    "WHERE ts.TenThuoc LIKE ? OR ts.MaThuoc LIKE ? " +
+                    "GROUP BY ts.MaThuoc, ts.TenThuoc, dvt.TenDonViTinh " +
+                    "ORDER BY ts.TenThuoc";
     @Override
     public boolean insert(Thuoc_SanPham e) {
-        return ConnectDB.update(INSERT_SQL, e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(),e.getNhomDuocLy().getMaNDL(), e.getLoaiHang().getMaLoaiHang(), e.getHinhAnh(),e.getVitri().getMaKe())>0;
+        return ConnectDB.update(INSERT_SQL,e.getMaThuoc(), e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(),e.getNhomDuocLy().getMaNDL(), e.getLoaiHang().getMaLoaiHang(), e.getHinhAnh(),e.getVitri().getMaKe())>0;
     }
 
     @Override
@@ -149,6 +158,57 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
         }
         return tenDVT;
     }
+    // Java
+    public List<String> timTheoTenChiTiet(String keyword, int limit) {
+        if (keyword == null) keyword = "";
+        keyword = keyword.trim();
+        if (keyword.isEmpty()) return new ArrayList<>();
+
+        // Clamp limit and avoid injection by inlining only a validated integer
+        if (limit <= 0) limit = 10;
+        if (limit > 50) limit = 50;
+
+        String sql =
+                "SELECT ts.MaThuoc, ts.TenThuoc, COALESCE(SUM(tspl.SoLuongTon), 0) AS TongSoLuongTon, dvt.TenDonViTinh " +
+                        "FROM Thuoc_SanPham ts " +
+                        "LEFT JOIN ChiTietDonViTinh ctdvt ON ts.MaThuoc = ctdvt.MaThuoc AND ctdvt.DonViCoBan = 1 " +
+                        "LEFT JOIN DonViTinh dvt ON ctdvt.MaDVT = dvt.MaDVT " +
+                        "LEFT JOIN Thuoc_SP_TheoLo tspl ON ts.MaThuoc = tspl.MaThuoc " +
+                        "WHERE ts.TenThuoc LIKE ? OR ts.MaThuoc LIKE ? " +
+                        "GROUP BY ts.MaThuoc, ts.TenThuoc, dvt.TenDonViTinh " +
+                        "ORDER BY ts.TenThuoc " +
+                        "OFFSET 0 ROWS FETCH NEXT " + limit + " ROWS ONLY";
+
+        List<String> details = new ArrayList<>();
+        try (ResultSet rs = ConnectDB.query(sql, "%" + keyword + "%", "%" + keyword + "%")) {
+            while (rs.next()) {
+                String maThuoc = rs.getString("MaThuoc");
+                String tenThuoc = rs.getString("TenThuoc");
+                int tongTon = rs.getInt("TongSoLuongTon");
+                String tenDVTCoBan = rs.getString("TenDonViTinh");
+
+                String line1 = String.format("%s - %d %s", tenThuoc, tongTon, tenDVTCoBan != null ? tenDVTCoBan : "ĐVT");
+
+                StringBuilder sbUnits = new StringBuilder();
+                ChiTietDonViTinh_Dao ctdvtDao = new ChiTietDonViTinh_Dao();
+                List<ChiTietDonViTinh> dsCTDVT = ctdvtDao.selectByMaThuoc(maThuoc);
+
+                for (ChiTietDonViTinh ctdvt : dsCTDVT) {
+                    if (!ctdvt.isDonViCoBan()) {
+                        int slQuyDoi = (int) (tongTon / ctdvt.getHeSoQuyDoi());
+                        if (slQuyDoi > 0) {
+                            sbUnits.append(String.format(" | %d %s", slQuyDoi, ctdvt.getDvt().getTenDonViTinh()));
+                        }
+                    }
+                }
+                details.add(line1 + sbUnits);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Lỗi khi tìm kiếm chi tiết thuốc: " + e.getMessage(), e);
+        }
+        return details;
+    }
+
     public List<String> timTheoTen(String keyword, int limit) {
         if (keyword == null) keyword = "";
         keyword = keyword.trim();
@@ -215,5 +275,20 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
             e.printStackTrace();
         }
         return danhSach;
+    }
+
+    public String generatekeyThuocSanPham() {
+        String key = "TS001";
+        try {
+            String lastKey = ConnectDB.queryTaoMa(SELECT_TOP1_MATHUOC);
+                if (lastKey != null && lastKey.startsWith("TS")) {
+                    int stt = Integer.parseInt(lastKey.substring(2));
+                    stt++;
+                    key = String.format("TS%03d", stt);
+                }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return key;
     }
 }

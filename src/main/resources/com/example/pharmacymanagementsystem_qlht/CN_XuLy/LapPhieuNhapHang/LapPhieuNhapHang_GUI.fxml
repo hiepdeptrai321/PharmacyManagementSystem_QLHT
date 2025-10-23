@@ -20,9 +20,9 @@
 
 <Pane prefHeight="895.0" prefWidth="1646.0" stylesheets="@../../css/LapPhieuNhapHang.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuNhapHang.LapPhieuNhapHang_Ctrl">
    <children>
-      <AnchorPane prefHeight="704.0" prefWidth="1200.0">
+      <AnchorPane prefHeight="895.0" prefWidth="1646.0">
          <children>
-            <Pane id="lbtitle" prefHeight="44.0" prefWidth="1200.0">
+            <Pane id="lbtitle" prefHeight="44.0" prefWidth="1646.0">
                <children>
                   <Label layoutX="14.0" prefHeight="44.0" prefWidth="247.0" text="Lập phiếu nhập hàng">
                      <font>
@@ -50,30 +50,30 @@
             </Pane>
             <Pane layoutY="44.0">
                <children>
-                  <GridPane id="pnlGrid" prefHeight="660.0" prefWidth="1200.0" stylesheets="@../../css/LapPhieuNhapHang.css">
+                  <GridPane id="pnlGrid" prefHeight="851.0" prefWidth="1646.0" stylesheets="@../../css/LapPhieuNhapHang.css">
                     <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="916.0" minWidth="10.0" prefWidth="876.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="595.0" minWidth="10.0" prefWidth="324.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1308.0" minWidth="10.0" prefWidth="1308.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="595.0" minWidth="10.0" prefWidth="203.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints maxHeight="500.0" minHeight="10.0" prefHeight="179.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="549.0" minHeight="10.0" prefHeight="481.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="500.0" minHeight="10.0" prefHeight="177.3333282470703" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="693.6666717529297" minHeight="10.0" prefHeight="673.6666717529297" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <Pane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
                            <children>
-                              <TableView layoutX="14.0" layoutY="-52.0" prefHeight="521.0" prefWidth="848.0">
+                              <TableView layoutX="12.0" layoutY="9.0" prefHeight="655.0" prefWidth="1281.0">
                                 <columns>
-                                  <TableColumn prefWidth="31.0" text="STT" />
-                                  <TableColumn prefWidth="83.0" text="Mã thuốc" />
-                                    <TableColumn prefWidth="157.0" text="Tên thuốc" />
-                                    <TableColumn prefWidth="66.0" text="Số lô" />
-                                    <TableColumn prefWidth="79.0" text="HSD" />
-                                    <TableColumn prefWidth="74.0" text="Số lượng" />
-                                    <TableColumn prefWidth="127.0" text="Giá nhập" />
-                                    <TableColumn prefWidth="104.0" text="Chiết khấu" />
-                                    <TableColumn prefWidth="97.0" text="Thuế" />
-                                    <TableColumn prefWidth="29.0" />
+                                  <TableColumn prefWidth="44.33333206176758" text="STT" />
+                                  <TableColumn prefWidth="128.66666412353516" text="Mã thuốc" />
+                                    <TableColumn prefWidth="298.0" text="Tên thuốc" />
+                                    <TableColumn minWidth="0.0" prefWidth="153.0" text="Số lô" />
+                                    <TableColumn minWidth="0.666656494140625" prefWidth="169.0" text="HSD" />
+                                    <TableColumn prefWidth="68.0" text="Số lượng" />
+                                    <TableColumn prefWidth="164.0" text="Giá nhập" />
+                                    <TableColumn prefWidth="116.0" text="Chiết khấu" />
+                                    <TableColumn prefWidth="90.0" text="Thuế" />
+                                    <TableColumn prefWidth="57.33331298828125" />
                                 </columns>
                               </TableView>
                            </children>
@@ -106,7 +106,7 @@
                                     </Label>
                                  </children>
                               </Pane>
-                              <ListView id="listViewTimKiemThuoc" fx:id="listViewThuoc" layoutX="14.0" layoutY="109.0" prefHeight="255.0" prefWidth="394.0" />
+                              <ListView id="listViewTimKiemThuoc" fx:id="listViewThuoc" layoutX="14.0" layoutY="109.0" prefHeight="45.0" prefWidth="394.0" />
                               <DatePicker layoutX="603.0" layoutY="29.0" prefHeight="30.0" prefWidth="259.0" />
                            </children>
                         </Pane>

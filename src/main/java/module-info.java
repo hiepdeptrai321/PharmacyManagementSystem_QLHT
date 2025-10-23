@@ -67,5 +67,6 @@ module com.example.pharmacymanagementsystem_qlht {
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatGia;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatSoLuong;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKNhaCungCap;
+    opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhanVien to javafx.fxml, javafx.graphics;
 
 }

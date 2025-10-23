@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NhanVien_Dao implements DaoInterface<NhanVien> {
-    private final String INSERT_SQL = "INSERT INTO NhanVien(MaNV, TenNV, SDT,Email, NgaySinh, GioiTinh, DiaChi, TrangThai, TaiKhoan, MatKhau, VaiTro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE NhanVien SET TenNV=?, SDT=?, Email=?, NgaySinh=?, GioiTinh=?, DiaChi=?, TrangThai=?, TaiKhoan=?, MatKhau=? WHERE MaNV=?";
+    private final String INSERT_SQL = "INSERT INTO NhanVien(MaNV, TenNV, SDT,Email, NgaySinh, GioiTinh, DiaChi, TrangThai, TaiKhoan,MatKhau, NgayVaoLam, NgayKetThuc, VaiTro) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE NhanVien SET TenNV=?, SDT=?, Email=?, NgaySinh=?, GioiTinh=?, DiaChi=?, TrangThai=?, TaiKhoan=?, MatKhau=?, NgayVaoLam=?, NgayKetThuc=?, TrangThaiXoa =? WHERE MaNV=?";
     private final String DELETE_BY_ID = "DELETE FROM NhanVien WHERE MaNV = ?";
     private final String SELECT_BY_ID = "SELECT * FROM NhanVien WHERE MaNV=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM NhanVien";
@@ -23,11 +23,14 @@ public class NhanVien_Dao implements DaoInterface<NhanVien> {
                 e.getSdt(),
                 e.getEmail(),
                 e.getNgaySinh(),
-                e.getGioiTinh(),
+                e.isGioiTinh(),
                 e.getDiaChi(),
-                e.getTrangThai(),
+                e.isTrangThai(),
                 e.getTaiKhoan(),
-                e.getMatKhau())>0;
+                e.getMatKhau(),
+                e.getNgayVaoLam(),
+                e.getNgayNghiLam(),e.isTrangThaiXoa(),
+                e.getMaNV())>0;
     }
 
     @Override
@@ -37,11 +40,13 @@ public class NhanVien_Dao implements DaoInterface<NhanVien> {
             e.getSdt(),
             e.getEmail(),
             e.getNgaySinh(),
-            e.getGioiTinh(),
+            e.isGioiTinh(),
             e.getDiaChi(),
-            e.getTrangThai(),
+            e.isTrangThai(),
             e.getTaiKhoan(),
             e.getMatKhau(),
+                e.getNgayVaoLam(),
+                e.getNgayNghiLam(),e.isTrangThaiXoa(),
             e.getMaNV())>0;
     }
 
@@ -76,6 +81,9 @@ public class NhanVien_Dao implements DaoInterface<NhanVien> {
                 nv.setTrangThai(rs.getBoolean("TrangThai"));
                 nv.setTaiKhoan(rs.getString("TaiKhoan"));
                 nv.setMatKhau(rs.getString("MatKhau"));
+                nv.setNgayVaoLam(rs.getDate("NgayVaoLam"));
+                nv.setNgayNghiLam(rs.getDate("NgayKetThuc"));
+                nv.setTrangThaiXoa(rs.getBoolean("TrangThaiXoa"));
                 nv.setVaiTro(rs.getString("VaiTro"));
                 list.add(nv);
             }
@@ -84,6 +92,24 @@ public class NhanVien_Dao implements DaoInterface<NhanVien> {
             throw new RuntimeException(e);
         }
         return list;
+    }
+
+    public String insertNhanVienProc(NhanVien nhanVien) {
+        String maMoi = null;
+        try {
+            // Gọi procedure (ConnectDB sẽ tự nhận ra là CallableStatement)
+            ResultSet rs = ConnectDB.query(
+                    "{CALL sp_InsertNhanVien(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}",
+                    nhanVien.getTenNV(), nhanVien.getSdt(), nhanVien.getEmail(), nhanVien.getNgaySinh(), nhanVien.isGioiTinh(), nhanVien.getDiaChi(),
+                    nhanVien.isTrangThai(),nhanVien.getNgayVaoLam() , nhanVien.getTaiKhoan(), nhanVien.getMatKhau()
+            );
+
+            rs.getStatement().getConnection().close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return maMoi;
     }
 
     @Override

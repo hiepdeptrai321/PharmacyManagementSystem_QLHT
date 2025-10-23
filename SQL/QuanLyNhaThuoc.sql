@@ -17,7 +17,7 @@ CREATE TABLE KhachHang (
     SDT        VARCHAR(15) NOT NULL,
     Email      VARCHAR(50),
     NgaySinh   DATE,
-    GioiTinh   NVARCHAR(5) NOT NULL,
+    GioiTinh   BIT NOT NULL,
     DiaChi     NVARCHAR(50),
     TrangThai  BIT NOT NULL
 );
@@ -32,10 +32,14 @@ CREATE TABLE NhanVien (
     NgaySinh   DATE NOT NULL,
     GioiTinh   NVARCHAR(5) NOT NULL,
     DiaChi     NVARCHAR(50),
-    TrangThai  NVARCHAR(30) NOT NULL,
 	VaiTro	   NVARCHAR(20) NOT NULL,
+    TrangThai  BIT NOT NULL,
     TaiKhoan   VARCHAR(50) NOT NULL,
-    MatKhau    VARCHAR(50) NOT NULL
+    MatKhau    VARCHAR(50) NOT NULL,
+	NgayVaoLam Date NOT NULL,
+	NgayKetThuc Date,
+	TrangThaiXoa BIT NOT NULL
+
 );
 -- =========================
 -- Bảng LuongNhanVien
@@ -43,7 +47,7 @@ CREATE TABLE NhanVien (
 CREATE TABLE LuongNhanVien (
     MaLNV      VARCHAR(10) PRIMARY KEY,
     TuNgay     DATE NOT NULL,
-    DenNgay    DATE NOT NULL,
+    DenNgay    DATE ,
     LuongCoBan FLOAT NOT NULL,
     PhuCap     FLOAT NOT NULL,
     GhiChu     NVARCHAR(255) NOT NULL,
@@ -360,32 +364,34 @@ CREATE TABLE Thuoc_SP_TangKem (
 
 
 
+
 INSERT INTO KhachHang (MaKH, TenKH, SDT, Email, NgaySinh, GioiTinh, DiaChi, TrangThai) VALUES
-('KH001', N'Nguyễn Văn An', '0905123456', 'an.nguyen@gmail.com', '1990-05-12', N'Nam', N'Hà Nội', 1),
-('KH002', N'Lê Thị Hoa', '0905789456', 'hoa.le@gmail.com', '1995-08-21', N'Nữ', N'Hải Phòng', 1),
-('KH003', N'Trần Văn Bình', '0912457896', 'binh.tran@gmail.com', '1988-11-03', N'Nam', N'TP HCM', 1),
-('KH004', N'Phạm Thị Mai', '0932458976', 'mai.pham@gmail.com', '1992-02-15', N'Nữ', N'Đà Nẵng', 1),
-('KH005', N'Hoàng Văn Nam', '0987654321', 'nam.hoang@gmail.com', '1985-12-20', N'Nam', N'Cần Thơ', 1),
-('KH006', N'Vũ Thị Lan', '0978456123', 'lan.vu@gmail.com', '1998-09-09', N'Nữ', N'Hải Dương', 1),
-('KH007', N'Đặng Văn Hùng', '0934567890', 'hung.dang@gmail.com', '1993-07-01', N'Nam', N'Bắc Ninh', 1),
-('KH008', N'Bùi Thị Thảo', '0967451230', 'thao.bui@gmail.com', '1996-01-22', N'Nữ', N'Quảng Ninh', 1),
-('KH009', N'Ngô Văn Tuấn', '0945789632', 'tuan.ngo@gmail.com', '1991-04-17', N'Nam', N'Thái Bình', 1),
-('KH010', N'Đỗ Thị Hạnh', '0923456789', 'hanh.do@gmail.com', '1994-03-05', N'Nữ', N'Ninh Bình', 1),
-('KH011', N'Nguyễn Nhựt Hảo', '0825902972', 'hao.dep.dzai3105@gmail.com', '2005-05-31', N'Nam', N'Đồng Tháp', 1);
+('KH001', N'Nguyễn Văn An', '0905123456', 'an.nguyen@gmail.com', '1990-05-12', 1, N'Hà Nội', 1),
+('KH002', N'Lê Thị Hoa', '0905789456', 'hoa.le@gmail.com', '1995-08-21', 0, N'Hải Phòng', 1),
+('KH003', N'Trần Văn Bình', '0912457896', 'binh.tran@gmail.com', '1988-11-03', 1, N'TP HCM', 1),
+('KH004', N'Phạm Thị Mai', '0932458976', 'mai.pham@gmail.com', '1992-02-15', 0, N'Đà Nẵng', 1),
+('KH005', N'Hoàng Văn Nam', '0987654321', 'nam.hoang@gmail.com', '1985-12-20', 1, N'Cần Thơ', 1),
+('KH006', N'Vũ Thị Lan', '0978456123', 'lan.vu@gmail.com', '1998-09-09', 0, N'Hải Dương', 1),
+('KH007', N'Đặng Văn Hùng', '0934567890', 'hung.dang@gmail.com', '1993-07-01', 1, N'Bắc Ninh', 1),
+('KH008', N'Bùi Thị Thảo', '0967451230', 'thao.bui@gmail.com', '1996-01-22', 0, N'Quảng Ninh', 1),
+('KH009', N'Ngô Văn Tuấn', '0945789632', 'tuan.ngo@gmail.com', '1991-04-17', 1, N'Thái Bình', 1),
+('KH010', N'Đỗ Thị Hạnh', '0923456789', 'hanh.do@gmail.com', '1994-03-05', 0, N'Ninh Bình', 1),
+('KH011', N'Nguyễn Nhựt Hảo', '0825902972', 'hao.dep.dzai3105@gmail.com', '2005-05-31', 1, N'Đồng Tháp', 0);
 
 
 
-INSERT INTO NhanVien (MaNV, TenNV, SDT, Email, NgaySinh, GioiTinh, DiaChi, TrangThai, TaiKhoan, MatKhau, VaiTro) VALUES
-('NV001', N'Đàm Thái An', '0912345678', 'thaian@gmail.com', '2005-01-01', N'Nam', N'Củ Chi', N'Hoạt động', 'thaian', '123',N'Quản lý'),
-('NV002', N'Hoàng Phước Thành Công', '0363636363', 'thanhcong@gmail.com', '2005-02-02', N'Nữ', N'Huế', N'Hoạt động', 'thanhcong', '123',N'Quản lý'),
-('NV003', N'Đỗ Phú Hiệp', '0181818181', 'phuhiep@gmail.com', '2003-03-03', N'Nam', N'An Giang', N'Hoạt động', 'phuhiep', '123',N'Nhân viên'),
-('NV004', N'Nguyễn Nhựt Hảo', '0636363636', 'nhuthao@gmail.com', '2005-05-31', N'Nam', N'Đồng Tháp', N'Không hoạt động', 'nhuthao', '123',N'Nhân viên');
+
+INSERT INTO NhanVien (MaNV, TenNV, SDT, Email, NgaySinh, GioiTinh, DiaChi, TrangThai, TaiKhoan, MatKhau, NgayVaoLam, NgayKetThuc,TrangThaiXoa, VaiTro) VALUES
+('NV001', N'Đàm Thái An', '0912345678', 'thaian@gmail.com', '2005-01-01', N'Nam', N'Củ Chi', 1, 'thaian', '123', '2025-1-12', null,0,N'Quản lý'),
+('NV002', N'Hoàng Phước Thành Công', '0363636363', 'thanhcong@gmail.com', '2005-02-02', N'Nữ', N'Huế', 1, 'thanhcong', '123', '2025-1-12', null,0,N'Quản lý'),
+('NV003', N'Đỗ Phú Hiệp', '0181818181', 'phuhiep@gmail.com', '2003-03-03', N'Nam', N'An Giang', 1, 'phuhiep', '123', '2025-1-12', null,0,N'Nhân viên'),
+('NV004', N'Nguyễn Nhựt Hảo', '0636363636', 'nhuthao@gmail.com', '2005-05-31', N'Nam', N'Đồng Tháp',1, 'nhuthao', '123', '2025-1-12', null,0,N'Nhân viên');
 
 INSERT INTO LuongNhanVien (MaLNV, TuNgay, DenNgay, LuongCoBan, PhuCap, GhiChu, MaNV) VALUES
-('LNV001', '2025-01-01', '2025-01-31', 8000000, 500000, N'Lương tháng 1', 'NV001'),
-('LNV002', '2025-01-01', '2025-01-31', 7500000, 400000, N'Lương tháng 1', 'NV002'),
-('LNV003', '2025-01-01', '2025-01-31', 9000000, 600000, N'Lương tháng 1', 'NV003'),
-('LNV004', '2025-01-01', '2025-01-31', 7000000, 350000, N'Lương tháng 1', 'NV004');
+('LNV001', '2025-01-01', null, 8000000, 500000, N'Lương tháng 1', 'NV001'),
+('LNV002', '2025-01-01', null, 7500000, 400000, N'Lương tháng 1', 'NV002'),
+('LNV003', '2025-01-01', null, 9000000, 600000, N'Lương tháng 1', 'NV003'),
+('LNV004', '2025-01-01', null, 7000000, 350000, N'Lương tháng 1', 'NV004');
 
 INSERT INTO LoaiHang (MaLoaiHang, TenLH, MoTa) VALUES
 ('LH01', N'Thuốc Tây', N'Thuốc kê đơn, thuốc không kê đơn, thuốc điều trị bệnh lý thông thường...'),
@@ -1167,8 +1173,8 @@ BEGIN
         IF @NoiDungCu LIKE N'%hoạt chất=['
         BEGIN
             UPDATE HoatDong
-            SET NoiDung = 
-                STUFF(NoiDung, 
+            SET NoiDung =
+                STUFF(NoiDung,
                       CHARINDEX(N'hoạt chất=[', NoiDung),
                       LEN(NoiDung),
                       N'hoạt chất=[' + @NoiDung + N']')
@@ -1177,9 +1183,9 @@ BEGIN
         ELSE
         BEGIN
             UPDATE HoatDong
-            SET NoiDung = NoiDung + 
+            SET NoiDung = NoiDung +
                 N'; ' +
-                CASE 
+                CASE
                     WHEN @LoaiHD = N'Cập nhật hoạt chất' THEN N'Cập nhật hoạt chất=[' + @NoiDung + N']'
                     WHEN @LoaiHD = N'Thêm hoạt chất' THEN N'Thêm hoạt chất=[' + @NoiDung + N']'
                     WHEN @LoaiHD = N'Xóa hoạt chất' THEN N'Xóa hoạt chất=[' + @NoiDung + N']'
@@ -1195,7 +1201,7 @@ BEGIN
             @LoaiHD,
             'Thuoc_SanPham',
             N'[MaThuoc=' + @MaThuoc + N'] ' +
-            CASE 
+            CASE
                 WHEN @LoaiHD = N'Cập nhật hoạt chất' THEN N'Cập nhật hoạt chất=[' + @NoiDung + N']'
                 WHEN @LoaiHD = N'Thêm hoạt chất' THEN N'Thêm hoạt chất=[' + @NoiDung + N']'
                 WHEN @LoaiHD = N'Xóa hoạt chất' THEN N'Xóa hoạt chất=[' + @NoiDung + N']'
@@ -1233,6 +1239,7 @@ BEGIN
     ELSE
         SET @LoaiHD = N'Xóa';
 
+    -- 🔹 2. Ghi nội dung mô tả (tập trung vào SoLuongTon)
     IF @LoaiHD = N'Thêm mới'
     BEGIN
         SELECT @NoiDung = STRING_AGG(
@@ -1272,6 +1279,7 @@ BEGIN
         FROM deleted;
     END
 
+    -- 🔹 3. Ghi vào bảng HoatDong (chỉ ghi khi có nội dung thực sự)
     IF (@NoiDung IS NOT NULL AND @NoiDung <> N'')
     BEGIN
         INSERT INTO HoatDong (LoaiHD, BangDL, NoiDung, MaNV)
@@ -1344,8 +1352,8 @@ BEGIN
         IF @NoiDungCu LIKE N'%đơn vị tính = %'
         BEGIN
             UPDATE HoatDong
-            SET NoiDung = 
-                STUFF(NoiDung, 
+            SET NoiDung =
+                STUFF(NoiDung,
                       CHARINDEX(N'đơn vị tính = ', NoiDung),
                       LEN(NoiDung),
                       N'đơn vị tính = [' + @NoiDung + N']')
@@ -1354,9 +1362,9 @@ BEGIN
         ELSE
         BEGIN
             UPDATE HoatDong
-            SET NoiDung = NoiDung + 
+            SET NoiDung = NoiDung +
                 N'; ' +
-                CASE 
+                CASE
                     WHEN @LoaiHD = N'Cập nhật đơn vị tính' THEN N'Cập nhật đơn vị tính = [' + @NoiDung + N']'
                     WHEN @LoaiHD = N'Thêm đơn vị tính' THEN N'Thêm đơn vị tính = [' + @NoiDung + N']'
                     WHEN @LoaiHD = N'Xóa đơn vị tính' THEN N'Xóa đơn vị tính = [' + @NoiDung + N']'
@@ -1372,7 +1380,7 @@ BEGIN
             @LoaiHD,
             'Thuoc_SanPham',
             N'[MaThuoc=' + @MaThuoc + N'] ' +
-            CASE 
+            CASE
                 WHEN @LoaiHD = N'Cập nhật đơn vị tính' THEN N'Cập nhật đơn vị tính = [' + @NoiDung + N']'
                 WHEN @LoaiHD = N'Thêm đơn vị tính' THEN N'Thêm đơn vị tính = [' + @NoiDung + N']'
                 WHEN @LoaiHD = N'Xóa đơn vị tính' THEN N'Xóa đơn vị tính = [' + @NoiDung + N']'
@@ -1383,4 +1391,45 @@ BEGIN
     END
 END;
 GO
+
+CREATE PROCEDURE sp_InsertNhanVien
+    @HoTen NVARCHAR(50),
+    @SDT VARCHAR(15),
+    @Email VARCHAR(100),
+    @NamSinh DATE,
+	@GioiTinh BIT,
+    @DiaChi NVARCHAR(100),
+	@TrangThai BIT,
+    @NgayVaoLam DATE,
+    @MaTK VARCHAR(30),
+	@MatKhau VARCHAR(30)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @NewMaNV VARCHAR(10);
+    DECLARE @MaxMaNV VARCHAR(10);
+    DECLARE @NumPart INT;
+
+    -- Lấy mã cao nhất hiện có (ví dụ NV012)
+    SELECT @MaxMaNV = MAX(MaNV)
+    FROM NhanVien;
+
+    IF @MaxMaNV IS NULL
+        SET @NewMaNV = 'NV001';
+    ELSE
+    BEGIN
+        -- Cắt phần số, +1 và định dạng lại
+        SET @NumPart = CAST(SUBSTRING(@MaxMaNV, 3, LEN(@MaxMaNV)) AS INT) + 1;
+        SET @NewMaNV = 'NV' + RIGHT('000' + CAST(@NumPart AS VARCHAR(3)), 3);
+    END
+
+    -- Thêm nhân viên mới
+    INSERT INTO NhanVien(MaNV, TenNV, SDT, Email, NgaySinh, GioiTinh, DiaChi, TrangThai, TaiKhoan, MatKhau, NgayVaoLam, NgayKetThuc)
+    VALUES(@NewMaNV, @HoTen, @SDT, @Email, @NamSinh,@GioiTinh, @DiaChi, @TrangThai,@MaTK,@MatKhau,@NgayVaoLam,null);
+
+    -- Xuất mã nhân viên mới
+    SELECT @NewMaNV AS MaNhanVienMoi;
+END;
+
 

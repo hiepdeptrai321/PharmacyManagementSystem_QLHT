@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -14,6 +15,65 @@ import java.util.Objects;
 
 public class CuaSoChinh_QuanLy_Ctrl extends Application {
     public Pane pnlChung;
+    public Menu menuTimKiem;
+    public Menu menuDanhMuc;
+    public Menu menuCapNhat;
+    public Menu menuThongKe;
+    public Menu menuXuLy;
+    private int viTri;
+
+    public void selectMenu(int viTriGiaoDien){
+        switch (viTriGiaoDien){
+            case 0:{
+                menuTimKiem.setStyle("-fx-background-color: #1e90ff");
+                menuDanhMuc.setStyle("-fx-background-color: #1e90ff");
+                menuCapNhat.setStyle("-fx-background-color: #1e90ff");
+                menuThongKe.setStyle("-fx-background-color: #1e90ff");
+                menuXuLy.setStyle("-fx-background-color: #1e90ff");
+                break;
+            }
+            case 1:{
+                menuTimKiem.setStyle("-fx-background-color: #003cff");
+                menuDanhMuc.setStyle("-fx-background-color: #1e90ff");
+                menuCapNhat.setStyle("-fx-background-color: #1e90ff");
+                menuThongKe.setStyle("-fx-background-color: #1e90ff");
+                menuXuLy.setStyle("-fx-background-color: #1e90ff");
+                break;
+            }
+            case 2:{
+                menuTimKiem.setStyle("-fx-background-color: #1e90ff");
+                menuDanhMuc.setStyle("-fx-background-color: #003cff");
+                menuCapNhat.setStyle("-fx-background-color: #1e90ff");
+                menuThongKe.setStyle("-fx-background-color: #1e90ff");
+                menuXuLy.setStyle("-fx-background-color: #1e90ff");
+                break;
+            }
+            case 3:{
+                menuTimKiem.setStyle("-fx-background-color: #1e90ff");
+                menuDanhMuc.setStyle("-fx-background-color: #1e90ff");
+                menuCapNhat.setStyle("-fx-background-color: #003cff");
+                menuThongKe.setStyle("-fx-background-color: #1e90ff");
+                menuXuLy.setStyle("-fx-background-color: #1e90ff");
+                break;
+            }
+            case 4:{
+                menuTimKiem.setStyle("-fx-background-color: #1e90ff");
+                menuDanhMuc.setStyle("-fx-background-color: #1e90ff");
+                menuCapNhat.setStyle("-fx-background-color: #1e90ff");
+                menuThongKe.setStyle("-fx-background-color: #003cff");
+                menuXuLy.setStyle("-fx-background-color: #1e90ff");
+                break;
+            }
+            case 5: {
+                menuTimKiem.setStyle("-fx-background-color: #1e90ff");
+                menuDanhMuc.setStyle("-fx-background-color: #1e90ff");
+                menuCapNhat.setStyle("-fx-background-color: #1e90ff");
+                menuThongKe.setStyle("-fx-background-color: #1e90ff");
+                menuXuLy.setStyle("-fx-background-color: #003cff");
+                break;
+            }
+        }
+    }
 
     @Override
     public void start (Stage primaryStage) throws Exception {
@@ -25,9 +85,13 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
     }
 
     public void LapHoaDon(ActionEvent actionEvent) {
+        viTri=5;
+        selectMenu(viTri);
     }
 
     public void AnhChuyenTrangChu(MouseEvent mouseEvent) {
+        viTri=0;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try{
             Pane pane = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/TrangChu_GUI.fxml"));
@@ -35,11 +99,14 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
         }catch (Exception e){
             e.printStackTrace();
         }
+
     }
 
 //  1.Chức năng tìm kiếm
 //  Tìm kiếm hóa đơn
     public void timKiemHoaDon(ActionEvent actionEvent) {
+        viTri=1;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKHoaDon/TKHoaDon_GUI.fxml")));
@@ -51,6 +118,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 
 //  Tìm kiếm phiếu nhập
     public void timKiemPhieuNhap(ActionEvent actionEvent) {
+        viTri=1;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuNhapHang/TKPhieuNhapHang_GUI.fxml")));
@@ -62,6 +131,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 
 //  Tìm kiếm phiếu đổi hàng
     public void timKiemPhieuDoiHang(ActionEvent actionEvent) {
+        viTri=1;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuDoiHang/TKPhieuDoiHang_GUI.fxml")));
@@ -73,6 +144,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 
 //  Tìm kiếm phiếu trả hàng
     public void timKiemPhieuTraHang(ActionEvent actionEvent) {
+        viTri=1;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuTraHang/TKPhieuTraHang_GUI.fxml")));
@@ -84,6 +157,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 
 //  Tìm kiếm phiếu đặt hàng
     public void timKiemPhieuDatHang(ActionEvent actionEvent) {
+        viTri=1;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuDatHang/TKPhieuDatHang_GUI.fxml")));
@@ -95,6 +170,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 
 //  Tìm kiếm nhà cung cấp
     public void timKiemNhaCungCap(ActionEvent actionEvent) {
+        viTri=1;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKNhaCungCap/TKNCC_GUI.fxml")));
@@ -106,6 +183,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 
 //  Tìm kiếm thuốc
     public void timKiemThuoc(ActionEvent actionEvent) {
+        viTri=1;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKThuoc/TKThuoc_GUI.fxml")));
@@ -117,6 +196,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 
 //  Tìm kiếm khách hàng
     public void timKiemKhachHang(ActionEvent actionEvent) {
+        viTri=1;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKKhachHang/TKKhachHang_GUI.fxml")));
@@ -129,6 +210,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 //  2.Chức năng danh mục
 //  Danh mục thuốc
     public void danhMucThuoc(ActionEvent actionEvent) {
+        viTri=2;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/DanhMucThuoc_GUI.fxml")));
@@ -140,6 +223,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 
 //  Danh mục nhân viên
     public void danhMucNhanVien(ActionEvent actionEvent) {
+        viTri=2;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNhanVien/DanhMucNhanVien_GUI.fxml")));
@@ -151,6 +236,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 
 //  Danh mục khách hàng
     public void danhMucKhachHang(ActionEvent actionEvent) {
+        viTri=2;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhachHang/DanhMucKhachHang_GUI.fxml")));
@@ -162,6 +249,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 
 //  Danh mục kệ hàng
     public void danhMucKeHang(ActionEvent actionEvent) {
+        viTri=2;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKeHang/DanhMucKeHang_GUI.fxml")));
@@ -173,6 +262,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 
 //  Danh mục nhà cung cấp
     public void danhMucNhaCungCap(ActionEvent actionEvent) {
+        viTri=2;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNCC/DanhMucNhaCungCap_GUI.fxml")));
@@ -184,6 +275,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 
 //  Danh mục hoạt động
     public void danhMucHoatDong(ActionEvent actionEvent) {
+        viTri=2;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMHoatDong/DanhMucHoatDong_GUI.fxml")));
@@ -195,6 +288,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 
 //  Danh mục khuyến mãi
     public void danhMucKhuyenMai(ActionEvent actionEvent) {
+        viTri=2;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhuyenMai/DanhMucKhuyenMai_GUI.fxml")));
@@ -207,6 +302,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 //  3.Chức năng cập nhật
 //  Cập nhật giá bán
     public void CapNhatGiaBan(ActionEvent actionEvent) {
+        viTri=3;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatGia/CapNhatGiaThuoc_GUI.fxml")));
@@ -218,6 +315,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 
 //  Cập nhật tồn kho
     public void capNhatTonKho(ActionEvent actionEvent) {
+        viTri=3;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatSoLuong/CapNhatSoLuongThuoc_GUI.fxml")));
@@ -228,6 +327,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
     }
 
     public void capNhatKhuyenMai(ActionEvent actionEvent) {
+        viTri=3;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatKhuyenMai/CapNhatKhuyenMai_GUI.fxml")));
@@ -240,6 +341,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 //  4.Chức năng thống kê và báo cáo
 //  Thống kê doanh thu
     public void thongKeDoanhThu(ActionEvent actionEvent) {
+        viTri=4;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_ThongKe/ThongKeBanHang_GUI.fxml")));
@@ -250,6 +353,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
     }
 
     public void thongKeXuatNhap(ActionEvent actionEvent) {
+        viTri=4;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_ThongKe/ThongKeXNT_GUI.fxml")));
@@ -262,6 +367,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 //  5.Chức năng xử lý
 //  Lập hóa đơn
     public void lapHoaDon(ActionEvent actionEvent) {
+        viTri=5;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapHoaDon/LapHoaDon_GUI.fxml")));
@@ -273,6 +380,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 
 //  Lập phiếu đổi hàng
     public void lapPhieuDoiHang(ActionEvent actionEvent) {
+        viTri=5;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapPhieuDoi/LapPhieuDoiHang_GUI.fxml")));
@@ -284,6 +393,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 
 //  Lập phiếu trả hàng
     public void lapPhieuTraHang(ActionEvent actionEvent) {
+        viTri=5;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapPhieuTra/LapPhieuTraHang_GUI.fxml")));
@@ -295,6 +406,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 
 //  Lập phiếu đặt hàng
     public void lapPhieuDatHang(ActionEvent actionEvent) {
+        viTri=5;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapPhieuDat/LapPhieuDatHang_GUI.fxml")));
@@ -306,6 +419,8 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
 
 //  Lập phiếu nhập hàng
     public void nhapHang(ActionEvent actionEvent) {
+        viTri=5;
+        selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapPhieuNhapHang/LapPhieuNhapHang_GUI.fxml")));

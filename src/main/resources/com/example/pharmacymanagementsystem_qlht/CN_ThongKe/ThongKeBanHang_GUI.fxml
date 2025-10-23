@@ -89,7 +89,7 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <RadioButton mnemonicParsing="false" prefHeight="49.0" prefWidth="437.0">
+                  <RadioButton fx:id="rbtnChon" mnemonicParsing="false" prefHeight="49.0" prefWidth="437.0">
                      <graphic>
                         <ComboBox fx:id="cboThoiGian" prefHeight="49.0" prefWidth="418.0" promptText="Hôm nay" />
                      </graphic>
@@ -102,7 +102,7 @@
                   </RadioButton>
                   <RadioButton mnemonicParsing="false" prefHeight="39.0" prefWidth="435.0" toggleGroup="$date">
                      <graphic>
-                        <DatePicker prefHeight="39.0" prefWidth="415.0" />
+                        <DatePicker fx:id="rbtnNgay" prefHeight="39.0" prefWidth="415.0" />
                      </graphic>
                      <VBox.margin>
                         <Insets top="10.0" />
@@ -117,7 +117,7 @@
                      </VBox.margin>
                   </Label>
                   <ComboBox fx:id="cboXuatfile" prefHeight="49.0" prefWidth="441.0" promptText="Excel" />
-                  <Button mnemonicParsing="false" prefHeight="53.0" prefWidth="438.0" text="Xuất File 💾">
+                  <Button fx:id="btnXuat" mnemonicParsing="false" prefHeight="53.0" prefWidth="438.0" text="Xuất File 💾">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
@@ -133,13 +133,13 @@
                   </Label>
                   <TableView fx:id="tableDoanhThu" prefHeight="510.0" prefWidth="1161.0">
                     <columns>
-                      <TableColumn prefWidth="147.3333740234375" text="Thời gian" />
-                        <TableColumn prefWidth="170.6666259765625" text="Số lượng HĐ" />
-                        <TableColumn prefWidth="129.6666259765625" text="Tổng giá trị" />
-                        <TableColumn prefWidth="142.99993896484375" text="Giảm giá" />
-                        <TableColumn prefWidth="150.6666259765625" text="Số lượng đơn trả" />
-                        <TableColumn prefWidth="193.3333740234375" text="Giá trị đơn trả" />
-                        <TableColumn prefWidth="229.6666259765625" text="Doanh thu" />
+                      <TableColumn fx:id="cotTG" prefWidth="147.3333740234375" text="Thời gian" />
+                        <TableColumn fx:id="cotSLHoaDon" prefWidth="170.6666259765625" text="Số lượng HĐ" />
+                        <TableColumn fx:id="cotTongGT" prefWidth="129.6666259765625" text="Tổng giá trị" />
+                        <TableColumn fx:id="cotGG" prefWidth="142.99993896484375" text="Giảm giá" />
+                        <TableColumn fx:id="cotDT" prefWidth="150.6666259765625" text="Số lượng đơn trả" />
+                        <TableColumn fx:id="cotGTDonTra" prefWidth="193.3333740234375" text="Giá trị đơn trả" />
+                        <TableColumn fx:id="cotDoanhThu" prefWidth="229.6666259765625" text="Doanh thu" />
                     </columns>
                   </TableView>
                   <AreaChart fx:id="chartDoanhThu" prefHeight="510.0" prefWidth="1161.0" visible="false">
@@ -160,10 +160,10 @@
                   </Label>
                   <TableView prefHeight="273.0" prefWidth="1161.0">
                     <columns>
-                      <TableColumn prefWidth="153.0" text="Mã thuốc" />
-                      <TableColumn prefWidth="507.0" text="Tên thuốc" />
-                        <TableColumn minWidth="0.0" prefWidth="129.0" text="Số lượng" />
-                        <TableColumn prefWidth="370.0" text="Thành tiền" />
+                      <TableColumn fx:id="cotMaThuoc" prefWidth="153.0" text="Mã thuốc" />
+                      <TableColumn fx:id="cotTenThuoc" prefWidth="507.0" text="Tên thuốc" />
+                        <TableColumn fx:id="cotSL" minWidth="0.0" prefWidth="129.0" text="Số lượng" />
+                        <TableColumn fx:id="cotThanhTien" prefWidth="370.0" text="Thành tiền" />
                     </columns>
                   </TableView>
                </children>

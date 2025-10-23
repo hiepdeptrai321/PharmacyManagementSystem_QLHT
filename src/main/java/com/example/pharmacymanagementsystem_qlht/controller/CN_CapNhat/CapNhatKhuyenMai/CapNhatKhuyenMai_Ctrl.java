@@ -2,6 +2,7 @@ package com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatK
 
 import com.example.pharmacymanagementsystem_qlht.dao.ChiTietKhuyenMai_Dao;
 import com.example.pharmacymanagementsystem_qlht.dao.KhuyenMai_Dao;
+import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SP_TangKem_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.KhuyenMai;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -100,6 +101,8 @@ public class CapNhatKhuyenMai_Ctrl extends Application {
             SuaKhuyenMai_Ctrl ctrl = loader.getController();
             ctrl.loadData(km);
             ctrl.loadDatatbCTKM(new ChiTietKhuyenMai_Dao().selectByMaKM(km.getMaKM()));
+            if("LKM001".equalsIgnoreCase(km.getLoaiKM().getMaLoai()))
+                ctrl.loadDatatbQuaTang(new Thuoc_SP_TangKem_Dao().selectByMaKM(km.getMaKM()));
 
             stage.initOwner(tbKM.getScene().getWindow()); // set owner so modality/parent exists
             stage.setScene(scene);

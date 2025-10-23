@@ -66,4 +66,28 @@ public class LuongNhanVien_Dao implements DaoInterface<LuongNhanVien> {
     public List<LuongNhanVien> selectAll() {
         return this.selectBySql(SELECT_ALL_SQL);
     }
+
+    public List<LuongNhanVien> selectByMaNV(String maNV) {
+        String sql = "SELECT * FROM LuongNhanVien WHERE MaNV = ?";
+        return this.selectBySql(sql, maNV);
+    }
+
+    public String getNewMaLNV() {
+        String sql = "SELECT TOP 1 MaLNV FROM LuongNhanVien ORDER BY MaLNV DESC";
+        try {
+            ResultSet rs = ConnectDB.query(sql);
+            if (rs.next()) {
+                String lastMaLNV = rs.getString("MaLNV");
+                int numericPart = Integer.parseInt(lastMaLNV.substring(3));
+                String newMaLNV = String.format("LNV%03d", numericPart + 1);
+                rs.getStatement().getConnection().close();
+                return newMaLNV;
+            } else {
+                rs.getStatement().getConnection().close();
+                return "LNV001";
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

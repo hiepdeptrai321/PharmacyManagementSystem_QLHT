@@ -8,18 +8,18 @@ public class HoatDong {
     private String loaiHD;
     private String bang;
     private Timestamp thoiGian;
-    private String ghiChu;
+    private String noiDung;
     private NhanVien nhanVien;
 
     public HoatDong() {
     }
 
-    public HoatDong(String maHD, String loaiHD, String bang, Timestamp thoiGian, String ghiChu, NhanVien nhanVien) {
+    public HoatDong(String maHD, String loaiHD, String bang, Timestamp thoiGian, String noiDung, NhanVien nhanVien) {
         this.maHD = maHD;
         this.loaiHD = loaiHD;
         this.bang = bang;
         this.thoiGian = thoiGian;
-        this.ghiChu = ghiChu;
+        this.noiDung = noiDung;
         this.nhanVien = nhanVien;
     }
 
@@ -55,12 +55,12 @@ public class HoatDong {
         this.thoiGian = thoiGian;
     }
 
-    public String getGhiChu() {
-        return ghiChu;
+    public String getNoiDung() {
+        return noiDung;
     }
 
-    public void setGhiChu(String ghiChu) {
-        this.ghiChu = ghiChu;
+    public void setNoiDung(String noiDung) {
+        this.noiDung = noiDung;
     }
 
     public NhanVien getNhanVien() {
@@ -90,7 +90,7 @@ public class HoatDong {
                 ", loaiHD='" + loaiHD + '\'' +
                 ", bang='" + bang + '\'' +
                 ", thoiGian=" + thoiGian +
-                ", ghiChu='" + ghiChu + '\'' +
+                ", ghiChu='" + noiDung + '\'' +
                 ", nhanVien=" + nhanVien +
                 '}';
     }

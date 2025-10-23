@@ -104,7 +104,9 @@ public class LapHoaDon_Ctrl extends Application {
         Task<List<String>> task = new Task<>() {
             @Override
             protected List<String> call() {
-                return thuocDao.timTheoTen(keyword, 10);
+                List<String> result = thuocDao.timTheoTenChiTiet(keyword, 10);
+                System.out.println("Từ khóa: " + keyword + ", Số gợi ý: " + result.size());
+                return result;
             }
         };
 
@@ -115,26 +117,37 @@ public class LapHoaDon_Ctrl extends Application {
                 return;
             }
             suggestionsPopup.getItems().clear();
-            for (String name : results) {
-                MenuItem mi = new MenuItem(name);
+            suggestionsPopup.setStyle("-fx-min-width: " + (txtTimThuoc.getWidth() > 300 ? txtTimThuoc.getWidth() : 300) + "px;");
+
+            for (String detail : results) {
+                MenuItem mi = new MenuItem(detail);
+                String medicineName = detail.split(" - ")[0];
                 mi.setOnAction(ae -> {
-                    txtTimThuoc.setText(name);
+                    txtTimThuoc.setText(medicineName);
                     suggestionsPopup.hide();
-                    xuLyChonThuoc(name);
+                    xuLyChonThuoc(medicineName);
                 });
                 suggestionsPopup.getItems().add(mi);
             }
-            if (!suggestionsPopup.isShowing()) {
+            if (!suggestionsPopup.isShowing() && txtTimThuoc.isFocused()) {
                 suggestionsPopup.show(txtTimThuoc, Side.BOTTOM, 0, 0);
             }
         });
 
-        task.setOnFailed(evt -> suggestionsPopup.hide());
+        task.setOnFailed(evt -> {
+            suggestionsPopup.hide();
+            System.err.println("Không thể tải gợi ý: " + task.getException());
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Không thể tải gợi ý thuốc.\nVui lòng thử lại.", ButtonType.OK);
+            if (txtTimThuoc != null && txtTimThuoc.getScene() != null) alert.initOwner(txtTimThuoc.getScene().getWindow());
+            alert.showAndWait();
+        });
 
         Thread th = new Thread(task);
         th.setDaemon(true);
         th.start();
     }
+
+    // Replace the whole xuLyChonThuoc method
     private void xuLyChonThuoc(String medicineName) {
         if (medicineName == null || medicineName.trim().isEmpty()) return;
 
@@ -151,27 +164,24 @@ public class LapHoaDon_Ctrl extends Application {
 
             Platform.runLater(() -> {
                 if (sp == null) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Product not found: " + medicineName, ButtonType.OK);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Không tìm thấy thuốc: " + medicineName, ButtonType.OK);
                     if (txtTimThuoc != null && txtTimThuoc.getScene() != null) alert.initOwner(txtTimThuoc.getScene().getWindow());
                     alert.showAndWait();
                     return;
                 }
 
-                // store selected product for later use (e.g. when adding to invoice)
                 if (txtTimThuoc != null) txtTimThuoc.setUserData(sp);
 
-                // Try to call an addToInvoice method if it exists in this controller
                 try {
                     java.lang.reflect.Method m = LapHoaDon_Ctrl.this.getClass().getDeclaredMethod("addToInvoice", sp.getClass());
                     m.setAccessible(true);
                     m.invoke(LapHoaDon_Ctrl.this, sp);
                 } catch (NoSuchMethodException ex) {
-                    // No addToInvoice method found: show confirmation and log selection
-                    Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Add selected product to invoice?\n" + sp.toString(), ButtonType.YES, ButtonType.NO);
+                    Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Thêm thuốc đã chọn vào hóa đơn?\n" + sp, ButtonType.YES, ButtonType.NO);
                     if (txtTimThuoc != null && txtTimThuoc.getScene() != null) confirm.initOwner(txtTimThuoc.getScene().getWindow());
                     confirm.showAndWait().ifPresent(btn -> {
                         if (btn == ButtonType.YES) {
-                            System.out.println("Selected product (no addToInvoice method): " + sp);
+                            System.out.println("Đã chọn thuốc (chưa có hàm addToInvoice): " + sp);
                         }
                     });
                 } catch (Exception ex) {
@@ -182,7 +192,7 @@ public class LapHoaDon_Ctrl extends Application {
 
         task.setOnFailed(evt -> {
             Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to fetch product suggestions", ButtonType.OK);
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Không thể lấy thông tin thuốc.", ButtonType.OK);
                 if (txtTimThuoc != null && txtTimThuoc.getScene() != null) alert.initOwner(txtTimThuoc.getScene().getWindow());
                 alert.showAndWait();
             });

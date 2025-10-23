@@ -7,6 +7,8 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
@@ -14,7 +16,14 @@
 <AnchorPane prefHeight="895.0" prefWidth="1646.0" stylesheets="@../../css/LapPhieuDoiHang.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDoi.LapPhieuDoiHang_Ctrl">
     <children>
         <!-- Decorative header background (spans across content) -->
-        <Pane layoutX="28.0" prefHeight="54.0" prefWidth="1598.0" styleClass="header-pane" AnchorPane.leftAnchor="28.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="8.0" />
+        <Pane layoutX="28.0" prefHeight="54.0" prefWidth="1598.0" styleClass="header-pane" AnchorPane.leftAnchor="28.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="8.0">
+         <children>
+            <ImageView fitHeight="44.0" fitWidth="61.0" layoutX="288.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/exchange_6049036.png" />
+               </image>
+            </ImageView>
+         </children></Pane>
 
         <!-- Tiêu đề (kept at top-left) -->
         <Label layoutX="40.0" layoutY="21.0" styleClass="title-label" text="LẬP PHIẾU ĐỔI HÀNG" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="18.0" />

@@ -58,6 +58,8 @@ public class TimKiemKhachHang_Ctrl extends Application {
     @FXML
     private TableView<KhachHang> tbKhachHang;
 
+
+
     @FXML
     private Pane mainPane;
 

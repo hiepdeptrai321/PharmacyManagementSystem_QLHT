@@ -12,17 +12,21 @@ public final class DoiNgay {
 
     private DoiNgay() {}
 
-    public static String dinhDangNgay(Date d) {
-        if (d == null) return "";
-        LocalDate ld = d.toLocalDate();
-        return ld.format(DATE_FORMATTER);
-    }
+    //public static String dinhDangNgay(Date d) {
+      //  if (d == null) return "";
+     //   LocalDate ld = d.toLocalDate();
+    //    return ld.format(DATE_FORMATTER);
+   // }
 
     public static String dinhDangThoiGian(Timestamp ts) {
         if (ts == null) return "";
         Instant instant = ts.toInstant();
         LocalDate ld = instant.atZone(ZoneId.systemDefault()).toLocalDate();
         return ld.format(DATE_FORMATTER);
+    }
+    public static String dinhDangNgay(LocalDate ld) {
+        if (ld == null) return "";
+        return ld.format(DATE_FORMATTER); // Dùng luôn formatter bạn đã khai báo
     }
 }
 

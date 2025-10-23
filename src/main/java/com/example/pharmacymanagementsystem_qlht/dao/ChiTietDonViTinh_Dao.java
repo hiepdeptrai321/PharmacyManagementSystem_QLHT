@@ -44,7 +44,7 @@ public class ChiTietDonViTinh_Dao implements DaoInterface<ChiTietDonViTinh> {
                 ChiTietDonViTinh ct = new ChiTietDonViTinh();
                 ct.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getString("MaThuoc")));
                 ct.setDvt(new DonViTinh_Dao().selectById(rs.getString("MaDVT")));
-                ct.setHeSoQuyDoi(rs.getInt("HeSoQuyDoi"));
+                ct.setHeSoQuyDoi(rs.getFloat("HeSoQuyDoi"));
                 ct.setGiaNhap(rs.getDouble("GiaNhap"));
                 ct.setGiaBan(rs.getDouble("GiaBan"));
                 ct.setDonViCoBan(rs.getBoolean("DonViCoBan"));

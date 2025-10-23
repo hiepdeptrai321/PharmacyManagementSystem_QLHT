@@ -158,55 +158,62 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
         }
         return tenDVT;
     }
-    // Java
     public List<String> timTheoTenChiTiet(String keyword, int limit) {
         if (keyword == null) keyword = "";
         keyword = keyword.trim();
         if (keyword.isEmpty()) return new ArrayList<>();
 
-        // Clamp limit and avoid injection by inlining only a validated integer
+        // Clamp limit to number of products to fetch
         if (limit <= 0) limit = 10;
         if (limit > 50) limit = 50;
 
+        // Lấy tổng tồn theo sản phẩm, không join đơn vị để tránh nhân bản dữ liệu
         String sql =
-                "SELECT ts.MaThuoc, ts.TenThuoc, COALESCE(SUM(tspl.SoLuongTon), 0) AS TongSoLuongTon, dvt.TenDonViTinh " +
+                "SELECT ts.MaThuoc, ts.TenThuoc, COALESCE(SUM(tspl.SoLuongTon), 0) AS TongSoLuongTon " +
                         "FROM Thuoc_SanPham ts " +
-                        "LEFT JOIN ChiTietDonViTinh ctdvt ON ts.MaThuoc = ctdvt.MaThuoc AND ctdvt.DonViCoBan = 1 " +
-                        "LEFT JOIN DonViTinh dvt ON ctdvt.MaDVT = dvt.MaDVT " +
                         "LEFT JOIN Thuoc_SP_TheoLo tspl ON ts.MaThuoc = tspl.MaThuoc " +
                         "WHERE ts.TenThuoc LIKE ? OR ts.MaThuoc LIKE ? " +
-                        "GROUP BY ts.MaThuoc, ts.TenThuoc, dvt.TenDonViTinh " +
+                        "GROUP BY ts.MaThuoc, ts.TenThuoc " +
                         "ORDER BY ts.TenThuoc " +
                         "OFFSET 0 ROWS FETCH NEXT " + limit + " ROWS ONLY";
 
-        List<String> details = new ArrayList<>();
+        List<String> suggestions = new ArrayList<>();
         try (ResultSet rs = ConnectDB.query(sql, "%" + keyword + "%", "%" + keyword + "%")) {
+            ChiTietDonViTinh_Dao ctdvtDao = new ChiTietDonViTinh_Dao();
+
             while (rs.next()) {
                 String maThuoc = rs.getString("MaThuoc");
                 String tenThuoc = rs.getString("TenThuoc");
-                int tongTon = rs.getInt("TongSoLuongTon");
-                String tenDVTCoBan = rs.getString("TenDonViTinh");
+                int tongTonCoBan = rs.getInt("TongSoLuongTon"); // tồn theo đơn vị cơ bản
 
-                String line1 = String.format("%s - %d %s", tenThuoc, tongTon, tenDVTCoBan != null ? tenDVTCoBan : "ĐVT");
-
-                StringBuilder sbUnits = new StringBuilder();
-                ChiTietDonViTinh_Dao ctdvtDao = new ChiTietDonViTinh_Dao();
+                // Lấy tất cả DVT của thuốc và sắp xếp: đơn vị lớn -> nhỏ (cơ bản ở cuối)
                 List<ChiTietDonViTinh> dsCTDVT = ctdvtDao.selectByMaThuoc(maThuoc);
+                dsCTDVT.sort((a, b) -> {
+                    int cmp = Double.compare(b.getHeSoQuyDoi(), a.getHeSoQuyDoi());
+                    if (cmp != 0) return cmp;
+                    // Đưa đơn vị cơ bản (DonViCoBan=true, hệ số nhỏ nhất) về cuối nếu hệ số bằng nhau
+                    return Boolean.compare(a.isDonViCoBan(), b.isDonViCoBan());
+                });
 
                 for (ChiTietDonViTinh ctdvt : dsCTDVT) {
-                    if (!ctdvt.isDonViCoBan()) {
-                        int slQuyDoi = (int) (tongTon / ctdvt.getHeSoQuyDoi());
-                        if (slQuyDoi > 0) {
-                            sbUnits.append(String.format(" | %d %s", slQuyDoi, ctdvt.getDvt().getTenDonViTinh()));
-                        }
-                    }
+                    double heSo = ctdvt.getHeSoQuyDoi(); // ví dụ: 1 hộp = 10 vỉ => heSo= số đơn vị cơ bản/1 đơn vị này
+                    if (heSo <= 0) continue;
+
+                    int soLuongTheoDVT = (int) Math.floor(tongTonCoBan / heSo);
+                    if (soLuongTheoDVT <= 0) continue; // không hiển thị dòng 0
+
+                    String tenDVT = (ctdvt.getDvt() != null && ctdvt.getDvt().getTenDonViTinh() != null)
+                            ? ctdvt.getDvt().getTenDonViTinh()
+                            : "ĐVT";
+
+                    // Mỗi đơn vị là một dòng: "<Tên thuốc> | Số lượng tồn: <n> <đvt>"
+                    suggestions.add(tenThuoc + " | Số lượng tồn: " + soLuongTheoDVT + " " + tenDVT);
                 }
-                details.add(line1 + sbUnits);
             }
         } catch (Exception e) {
             throw new RuntimeException("Lỗi khi tìm kiếm chi tiết thuốc: " + e.getMessage(), e);
         }
-        return details;
+        return suggestions;
     }
 
     public List<String> timTheoTen(String keyword, int limit) {

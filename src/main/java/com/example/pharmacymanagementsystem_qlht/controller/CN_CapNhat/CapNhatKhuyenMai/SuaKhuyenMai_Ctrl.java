@@ -23,7 +23,6 @@ public class SuaKhuyenMai_Ctrl {
 
     // FXML controls
     @FXML private Button btnHuy;
-    @FXML private Button btnLuu;
 
     @FXML private TableView<ChiTietKhuyenMai> tbDSThuoc;
     @FXML private TableColumn<ChiTietKhuyenMai, String>  colMaThuoc;
@@ -70,6 +69,8 @@ public class SuaKhuyenMai_Ctrl {
         // Bind quà tặng table
         setupGiftTable();
 
+       if("Tặng kèm sản phẩm".equalsIgnoreCase(cbLoaiKM.getValue())) {setupGiftTable();}
+
         // ListView behaviors like SuaXoaThuoc_Ctrl
         initThuocListView();
         initQuaListView();
@@ -79,6 +80,7 @@ public class SuaKhuyenMai_Ctrl {
             cbLoaiKM.valueProperty().addListener((obs, o, n) -> updateGiftTabVisibility());
             updateGiftTabVisibility();
         }
+        cbLoaiKM.setEditable(false);
     }
 
     private void loadAllThuoc() {
@@ -328,7 +330,7 @@ public class SuaKhuyenMai_Ctrl {
 
     private void updateGiftTabVisibility() {
         if (tabTangKem == null || cbLoaiKM == null) return;
-        boolean enable = "LKM001".equalsIgnoreCase(String.valueOf(cbLoaiKM.getValue()));
+        boolean enable = "Tặng kèm sản phẩm".equalsIgnoreCase(String.valueOf(cbLoaiKM.getValue()));
         tabTangKem.setDisable(!enable);
     }
 
@@ -337,17 +339,17 @@ public class SuaKhuyenMai_Ctrl {
         ctItems.setAll(list == null ? List.of() : list);
     }
 
-    public void loadTableCTKM(String maKM) {
-        List<ChiTietKhuyenMai> ds = new ChiTietKhuyenMai_Dao().selectByMaKM(maKM);
-        loadDatatbCTKM(ds);
+    public void loadDatatbQuaTang(List<Thuoc_SP_TangKem> list) {
+        giftItems.setAll(list == null ? List.of() : list);
     }
+
 
     // Populate form from KhuyenMai
     public void loadData(KhuyenMai km) {
         if (km == null) return;
         if (tfMaKM  != null) tfMaKM.setText(km.getMaKM());
         if (tfTenKM != null) tfTenKM.setText(km.getTenKM());
-        if (cbLoaiKM != null && km.getLoaiKM() != null) cbLoaiKM.setValue(km.getLoaiKM().getMaLoai());
+        if (cbLoaiKM != null && km.getLoaiKM() != null) cbLoaiKM.setValue(km.getLoaiKM().getTenLoai());
         if (tfGiaTri != null) tfGiaTri.setText(String.valueOf(km.getGiaTriKM()));
         if (dpTuNgay != null && km.getNgayBatDau() != null) dpTuNgay.setValue(km.getNgayBatDau().toLocalDate());
         if (dpDenNgay != null && km.getNgayKetThuc() != null) dpDenNgay.setValue(km.getNgayKetThuc().toLocalDate());
@@ -372,7 +374,7 @@ public class SuaKhuyenMai_Ctrl {
             java.sql.Date denNgay = java.sql.Date.valueOf(dpDenNgay.getValue());
             String moTa = tfMoTa.getText();
 
-            KhuyenMai km = new KhuyenMai(maKM, new LoaiKhuyenMai_Dao().selectById(maLoai), tenKM, giaTri, tuNgay, denNgay, moTa);
+            KhuyenMai km = new KhuyenMai(maKM, new LoaiKhuyenMai_Dao().selectByTen(maLoai), tenKM, giaTri, tuNgay, denNgay, moTa);
 
             KhuyenMai_Dao kmDao = new KhuyenMai_Dao();
             ChiTietKhuyenMai_Dao ctDao = new ChiTietKhuyenMai_Dao();

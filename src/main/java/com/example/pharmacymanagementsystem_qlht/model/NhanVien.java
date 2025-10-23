@@ -15,11 +15,12 @@ public class NhanVien {
     private boolean trangThai;
     private String taiKhoan;
     private String matKhau;
+    private String vaiTro;
 
     public NhanVien() {
     }
 
-    public NhanVien(String maNV, String tenNV, String sdt, String email, Date ngaySinh, boolean gioiTinh, String diaChi, boolean trangThai, String taiKhoan, String matKhau) {
+    public NhanVien(String maNV, String tenNV, String sdt, String email, Date ngaySinh, boolean gioiTinh, String diaChi, boolean trangThai, String taiKhoan, String matKhau, String vaiTro) {
         this.maNV = maNV;
         this.tenNV = tenNV;
         this.sdt = sdt;
@@ -110,6 +111,13 @@ public class NhanVien {
 
     public void setMatKhau(String matKhau) {
         this.matKhau = matKhau;
+    }
+
+    public String getVaiTro() {
+        return vaiTro;
+    }
+    public void setVaiTro(String vaiTro) {
+        this.vaiTro = vaiTro;
     }
 
     @Override

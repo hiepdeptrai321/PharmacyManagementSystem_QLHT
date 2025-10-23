@@ -23,3 +23,9 @@
     -fx-font-weight: bold;
     -fx-cursor: hand;
 }
+#btnHuy{
+-fx-background-color: gray;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}

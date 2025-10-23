@@ -97,7 +97,7 @@ public class DanhMucThuoc_Ctrl extends Application {
     }
 
 //  Thêm thuốc
-    public void btnThemThuocClick() {
+    public void themthuoc(ActionEvent actionEvent) {
         try {
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/ThemThuoc_GUI.fxml"));
@@ -131,11 +131,6 @@ public class DanhMucThuoc_Ctrl extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-
-    public void themthuoc(ActionEvent actionEvent) {
-
     }
 
     public void refestTable(){

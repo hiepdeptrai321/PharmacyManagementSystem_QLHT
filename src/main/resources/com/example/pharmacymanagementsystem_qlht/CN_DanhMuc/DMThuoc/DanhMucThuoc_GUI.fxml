@@ -17,7 +17,7 @@
             <Label id="lbtitle" layoutX="12.0" layoutY="2.0" prefHeight="36.0" prefWidth="269.0" text="Danh mục thuốc" />
          </children>
       </Pane>
-      <Button id="btnthemthuoc" fx:id="btnThemThuoc" layoutX="1397.0" layoutY="46.0" mnemonicParsing="false" onAction="#themthuoc" onMouseClicked="#btnThemThuocClick" prefHeight="30.0" prefWidth="144.0" text="✚Thêm thuốc" AnchorPane.topAnchor="46.0" />
+      <Button id="btnthemthuoc" fx:id="btnThemThuoc" layoutX="1397.0" layoutY="46.0" mnemonicParsing="false" onAction="#themthuoc" prefHeight="30.0" prefWidth="144.0" text="✚Thêm thuốc" AnchorPane.topAnchor="46.0" />
        <TableView fx:id="tbl_Thuoc" layoutX="12.0" layoutY="95.0" prefHeight="786.0" prefWidth="1618.0">
            <columns>
             <TableColumn fx:id="colSTT" prefWidth="54.28570747375488" text="STT" />

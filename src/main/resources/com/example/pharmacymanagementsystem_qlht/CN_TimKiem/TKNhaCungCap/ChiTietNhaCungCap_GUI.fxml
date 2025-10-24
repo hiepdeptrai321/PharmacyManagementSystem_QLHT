@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="326.0" prefWidth="601.0" stylesheets="@../../css/ChiTietNhaCungCap.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKNhaCungCap.ChiTietNhaCungCap_Ctrl">
+<Pane prefHeight="326.0" prefWidth="601.0" style="-fx-font-size: 13 px;" stylesheets="@../../css/ChiTietNhaCungCap.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKNhaCungCap.ChiTietNhaCungCap_Ctrl">
    <children>
       <Pane id="paneGachChan" prefHeight="38.0" prefWidth="601.0">
          <children>
@@ -18,9 +18,9 @@
             </Label>
          </children>
       </Pane>
-      <Label layoutX="14.0" layoutY="46.0" text="Mã nhà cung cấp:" />
+      <Label layoutX="14.0" layoutY="46.0" text="Mã NCC:" />
       <TextField fx:id="maNCC" editable="false" layoutX="14.0" layoutY="63.0" prefHeight="25.0" prefWidth="117.0" />
-      <Label layoutX="136.0" layoutY="46.0" text="Tên nhà cung cấp:" />
+      <Label layoutX="136.0" layoutY="46.0" text="Tên NCC:" />
       <TextField fx:id="tenNCC" editable="false" layoutX="136.0" layoutY="63.0" prefHeight="25.0" prefWidth="342.0" />
       <Label layoutX="484.0" layoutY="45.0" text="Số điện thoại" />
       <TextField fx:id="SDT" editable="false" layoutX="484.0" layoutY="63.0" prefHeight="25.0" prefWidth="105.0" />

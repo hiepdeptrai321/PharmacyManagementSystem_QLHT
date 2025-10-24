@@ -104,6 +104,7 @@ public class DangNhap_Ctrl extends Application {
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
+                this.btnDangNhap.getScene().getWindow().hide();
             } catch (Exception e) {
                 e.printStackTrace();
             }

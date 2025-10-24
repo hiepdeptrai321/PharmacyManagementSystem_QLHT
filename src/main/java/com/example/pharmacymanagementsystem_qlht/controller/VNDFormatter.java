@@ -11,7 +11,7 @@ public class VNDFormatter {
     public static String format(double amount) {
         return String.format("%,.0f VND", amount);
     }
-    public static void applyNumberFormatter(TextField textField) {
+    public void applyNumberFormatter(TextField textField) {
         NumberFormat numberFormat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
 
         UnaryOperator<TextFormatter.Change> filter = change -> {
@@ -42,7 +42,7 @@ public class VNDFormatter {
         textField.setTextFormatter(new TextFormatter<>(filter));
     }
 
-    public static double parseFormattedNumber(String text) {
+    public double parseFormattedNumber(String text) {
         if (text == null || text.trim().isEmpty()) {
             return 0.0;
         }

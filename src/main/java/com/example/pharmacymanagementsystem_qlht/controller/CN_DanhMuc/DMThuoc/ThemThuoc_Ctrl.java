@@ -11,14 +11,12 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.converter.FloatStringConverter;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -54,6 +52,8 @@ public class ThemThuoc_Ctrl {
     private ObservableList<HoatChat> allHoatChat;
     private List<ChiTietHoatChat> listChiTietHoatChat = new ArrayList<>();
     private DanhMucThuoc_Ctrl parentController;
+    private Thuoc_SanPham thuocThem = new Thuoc_SanPham();
+    private boolean isThayDoi = false;
 
     public void initialize() {
 
@@ -181,19 +181,18 @@ public class ThemThuoc_Ctrl {
 //  Action button ThemThuoc
     public void btnThemThuoc(ActionEvent actionEvent) {
         if(kiemTraHopLe()) {
-            Thuoc_SanPham thuoc = new Thuoc_SanPham();
-            thuoc.setMaThuoc(txtMaThuoc.getText());
-            thuoc.setTenThuoc(txtTenThuoc.getText());
-            thuoc.setHamLuong(Float.parseFloat(txtHamLuong.getText()));
-            thuoc.setDonViHamLuong(txtDonViHamLuong.getText());
-            thuoc.setHangSX(txtHangSanXuat.getText());
-            thuoc.setNhomDuocLy(new NhomDuocLy_Dao().selectByTenNhomDuocLy(cbxNhomDuocLy.getSelectionModel().getSelectedItem().toString()));
-            thuoc.setNuocSX(txtNuocSanXuat.getText());
-            thuoc.setQuyCachDongGoi(txtQuyCachDongGoi.getText());
-            thuoc.setSDK_GPNK(txtSDK_GPNK.getText());
-            thuoc.setDuongDung(txtDuongDung.getText());
-            thuoc.setLoaiHang(new LoaiHang_Dao().selectByTenLoaiHang(cbxLoaiHang.getSelectionModel().getSelectedItem().toString()));
-            thuoc.setVitri(new KeHang_Dao().selectByTenKe(cbxViTri.getSelectionModel().getSelectedItem().toString()));
+            thuocThem.setMaThuoc(txtMaThuoc.getText());
+            thuocThem.setTenThuoc(txtTenThuoc.getText());
+            thuocThem.setHamLuong(Float.parseFloat(txtHamLuong.getText()));
+            thuocThem.setDonViHamLuong(txtDonViHamLuong.getText());
+            thuocThem.setHangSX(txtHangSanXuat.getText());
+            thuocThem.setNhomDuocLy(new NhomDuocLy_Dao().selectByTenNhomDuocLy(cbxNhomDuocLy.getSelectionModel().getSelectedItem().toString()));
+            thuocThem.setNuocSX(txtNuocSanXuat.getText());
+            thuocThem.setQuyCachDongGoi(txtQuyCachDongGoi.getText());
+            thuocThem.setSDK_GPNK(txtSDK_GPNK.getText());
+            thuocThem.setDuongDung(txtDuongDung.getText());
+            thuocThem.setLoaiHang(new LoaiHang_Dao().selectByTenLoaiHang(cbxLoaiHang.getSelectionModel().getSelectedItem().toString()));
+            thuocThem.setVitri(new KeHang_Dao().selectByTenKe(cbxViTri.getSelectionModel().getSelectedItem().toString()));
 
 //          Get image
             Image image = imgThuoc_SanPham.getImage();
@@ -211,7 +210,7 @@ public class ThemThuoc_Ctrl {
                     baos.close();
 
 //                  Gán vào đối tượng
-                    thuoc.setHinhAnh(imageBytes);
+                    thuocThem.setHinhAnh(imageBytes);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -241,17 +240,20 @@ public class ThemThuoc_Ctrl {
             new Thread(() -> {
                 Thuoc_SanPham_Dao thuoc_dao = new Thuoc_SanPham_Dao();
 //              Thêm thuốc
-                if (thuoc_dao.insert(thuoc)) {
+                if (thuoc_dao.insert(thuocThem)) {
 //              Thêm chi tiết hoạt chất
                     for (ChiTietHoatChat chtc : listChiTietHoatChat) {
-                        chtc.setThuoc(thuoc);
+                        chtc.setThuoc(thuocThem);
                         new ChiTietHoatChat_Dao().insert(chtc);
                     }
                 }
-                parentController.refestTable();
+                if(parentController != null) {
+                    Platform.runLater(() -> parentController.refestTable());
+                }
                 // Quay lại luồng giao diện để loại bỏ overlay
                 Platform.runLater(() -> {
                     root.getChildren().remove(overlay);
+                    isThayDoi = true;
                     stage.close();
                 });
             }).start();
@@ -326,13 +328,6 @@ public class ThemThuoc_Ctrl {
             alert.setContentText("Vui lòng chọn vị trí!");
             alert.showAndWait();
             return false;
-        }else if(cbxNhomDuocLy.getSelectionModel().getSelectedIndex() == 0){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi");
-            alert.setHeaderText(null);
-            alert.setContentText("Vui lòng chọn nhóm dược lý!");
-            alert.showAndWait();
-            return false;
         }else if(txtHamLuong.getText().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Lỗi");
@@ -374,5 +369,9 @@ public class ThemThuoc_Ctrl {
 
     public void setParent(DanhMucThuoc_Ctrl parent) {
         parentController = parent;
+    }
+
+    public Thuoc_SanPham getThuocThem() {
+        return thuocThem;
     }
 }

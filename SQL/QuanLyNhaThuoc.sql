@@ -6,7 +6,7 @@ USE QuanLyNhaThuoc;
 GO
 
 --Link thư mục hình ảnh thuốc 
-DECLARE @path NVARCHAR(255) = N'C:\Users\hiepdeptrai\Desktop\hk1_2025-2026\QLHT\SQL\imgThuoc\';
+DECLARE @path NVARCHAR(255) = N'G:\hk5\PTUD_Java\Project\PharmacyManagementSystem_QLHT\SQL\imgThuoc\';
 
 -- =========================
 -- Bảng KhachHang
@@ -111,7 +111,7 @@ CREATE TABLE Thuoc_SanPham (
     NuocSX     NVARCHAR(20),
     HinhAnh    VARBINARY(MAX) NULL,
 	MaLoaiHang VARCHAR(10) FOREIGN KEY REFERENCES LoaiHang(MaLoaiHang),
-    MaNDL      VARCHAR(10) FOREIGN KEY REFERENCES NhomDuocLy(MaNDL),
+    MaNDL      VARCHAR(10) FOREIGN KEY REFERENCES NhomDuocLy(MaNDL) NULL,
 	ViTri	   VARCHAR(10) FOREIGN KEY REFERENCES KeHang(MaKe)
 );
 
@@ -1431,5 +1431,83 @@ BEGIN
     -- Xuất mã nhân viên mới
     SELECT @NewMaNV AS MaNhanVienMoi;
 END;
+GO
 
 
+CREATE PROCEDURE sp_InsertPhieuNhapVaCapNhatGiaNhap
+    @MaPN VARCHAR(10),
+    @NgayNhap DATE,
+    @TrangThai BIT,
+    @GhiChu NVARCHAR(255),
+    @MaNCC VARCHAR(10),
+    @MaNV VARCHAR(10),
+
+    -- Chi tiết phiếu nhập
+    @MaThuoc VARCHAR(10),
+    @MaLH VARCHAR(10),
+    @SoLuong INT,
+    @GiaNhap FLOAT,
+    @ChietKhau FLOAT,
+    @Thue FLOAT,
+
+    -- Thông tin lô
+    @SoLuongTon INT = NULL,
+    @NSX DATE = NULL,
+    @HSD DATE = NULL,
+
+    -- Đơn vị tính cần cập nhật giá
+    @MaDVT VARCHAR(10) = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        -- 1️⃣ Thêm phiếu nhập nếu chưa có
+        IF NOT EXISTS (SELECT 1 FROM PhieuNhap WHERE MaPN = @MaPN)
+        BEGIN
+            INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
+            VALUES (@MaPN, @NgayNhap, @TrangThai, @GhiChu, @MaNCC, @MaNV);
+        END
+
+        -- 2️⃣ Thêm chi tiết phiếu nhập
+        INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
+        VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuong, @GiaNhap, @ChietKhau, @Thue);
+
+        -- 3️⃣ Nếu phiếu nhập đã duyệt thì cập nhật các bảng liên quan
+        IF @TrangThai = 1
+        BEGIN
+            -- ⚙️ Kiểm tra lô thuốc đã tồn tại chưa
+            IF EXISTS (SELECT 1 FROM Thuoc_SP_TheoLo WHERE MaLH = @MaLH)
+            BEGIN
+                -- ➕ Nếu có rồi thì cộng thêm số lượng
+                UPDATE Thuoc_SP_TheoLo
+                SET SoLuongTon = SoLuongTon + @SoLuongTon
+                WHERE MaLH = @MaLH;
+            END
+            ELSE
+            BEGIN
+                -- ➕ Nếu chưa có thì thêm mới
+                INSERT INTO Thuoc_SP_TheoLo (MaPN, MaThuoc, MaLH, SoLuongTon, NSX, HSD)
+                VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuongTon, @NSX, @HSD);
+            END
+
+            -- 🔁 Cập nhật giá nhập trong ChiTietDonViTinh
+            UPDATE ChiTietDonViTinh
+            SET GiaNhap = @GiaNhap,
+                GiaBan = CASE 
+                            WHEN @GiaNhap > GiaBan THEN @GiaNhap  -- nếu giá nhập cao hơn thì cập nhật giá bán theo
+                            ELSE GiaBan
+                         END
+            WHERE MaThuoc = @MaThuoc AND MaDVT = @MaDVT;
+        END
+
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        THROW;
+    END CATCH
+END
+GO

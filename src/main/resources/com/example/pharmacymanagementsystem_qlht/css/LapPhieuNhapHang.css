@@ -74,3 +74,21 @@
 #lblTrang{
     -fx-text-fill: white;
 }
+
+.combo-box .list-cell:odd {
+    -fx-background-color: #f9f9f9; /* xám nhạt */
+}
+
+/* Dòng lẻ */
+.combo-box .list-cell:even {
+    -fx-background-color: #ffffff; /* trắng */
+}
+.combo-box .list-cell {
+    -fx-padding: 6 10 6 10;
+    -fx-font-size: 12px;          /* 👈 Cỡ chữ trong danh sách */
+    -fx-text-fill: #222;          /* Màu chữ */
+}
+#tblSoLo{
+    -fx-border-color: transparent;
+    -fx-table-cell-border-color: transparent;
+}

@@ -1454,3 +1454,234 @@ BEGIN
 END;
 
 
+-----------Proc thống kê
+
+USE QuanLyNhaThuoc;
+GO
+
+PRINT N'=== Bắt đầu tạo 10 Stored Procedure Thống kê ===';
+GO
+
+-- ==========================================================
+-- Phần 1: THỐNG KÊ DOANH THU (5 SPs)
+-- ==========================================================
+
+-- 1. DOANH THU: Hôm nay (Theo giờ)
+CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_HomNay
+AS
+BEGIN
+    SET NOCOUNT ON;
+    WITH DoanhSoTheoGio AS (
+        SELECT FORMAT(HD.NgayLap, 'HH:00') AS ThoiGian, COUNT(DISTINCT HD.MaHD) AS SoLuongHoaDon, ISNULL(SUM(CTHD.SoLuong * CTHD.DonGia), 0) AS TongGiaTri, ISNULL(SUM(CTHD.SoLuong * CTHD.GiamGia), 0) AS GiamGia
+        FROM HoaDon HD JOIN ChiTietHoaDon CTHD ON HD.MaHD = CTHD.MaHD
+        WHERE CONVERT(date, HD.NgayLap) = CONVERT(date, GETDATE())
+        GROUP BY FORMAT(HD.NgayLap, 'HH:00')
+    ),
+    TraHangTheoGio AS (
+        SELECT FORMAT(PT.NgayLap, 'HH:00') AS ThoiGian, COUNT(DISTINCT PT.MaPT) AS SoLuongDonTra, ISNULL(SUM(CTPT.SoLuong * (CTPT.DonGia - CTPT.GiamGia)), 0) AS GiaTriDonTra
+        FROM PhieuTraHang PT JOIN ChiTietPhieuTraHang CTPT ON PT.MaPT = CTPT.MaPT
+        WHERE CONVERT(date, PT.NgayLap) = CONVERT(date, GETDATE())
+        GROUP BY FORMAT(PT.NgayLap, 'HH:00')
+    )
+    SELECT
+        ISNULL(DS.ThoiGian, TH.ThoiGian) AS ThoiGian,
+        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon, ISNULL(DS.TongGiaTri, 0) AS TongGiaTri, ISNULL(DS.GiamGia, 0) AS GiamGia,
+        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra, ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
+        (ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0) - ISNULL(TH.GiaTriDonTra, 0)) AS DoanhThu
+    FROM DoanhSoTheoGio DS FULL OUTER JOIN TraHangTheoGio TH ON DS.ThoiGian = TH.ThoiGian
+    ORDER BY ThoiGian;
+END;
+GO
+
+-- 2. DOANH THU: Tuần này (Theo ngày, nhãn 'dd')
+CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_TuanNay
+AS
+BEGIN
+    SET NOCOUNT ON;
+    WITH DoanhSoTheoNgay AS (
+        SELECT CONVERT(date, HD.NgayLap) AS Ngay, COUNT(DISTINCT HD.MaHD) AS SoLuongHoaDon, ISNULL(SUM(CTHD.SoLuong * CTHD.DonGia), 0) AS TongGiaTri, ISNULL(SUM(CTHD.SoLuong * CTHD.GiamGia), 0) AS GiamGia
+        FROM HoaDon HD JOIN ChiTietHoaDon CTHD ON HD.MaHD = CTHD.MaHD
+        WHERE DATEPART(week, HD.NgayLap) = DATEPART(week, GETDATE()) AND DATEPART(year, HD.NgayLap) = DATEPART(year, GETDATE())
+        GROUP BY CONVERT(date, HD.NgayLap)
+    ),
+    TraHangTheoNgay AS (
+        SELECT CONVERT(date, PT.NgayLap) AS Ngay, COUNT(DISTINCT PT.MaPT) AS SoLuongDonTra, ISNULL(SUM(CTPT.SoLuong * (CTPT.DonGia - CTPT.GiamGia)), 0) AS GiaTriDonTra
+        FROM PhieuTraHang PT JOIN ChiTietPhieuTraHang CTPT ON PT.MaPT = CTPT.MaPT
+        WHERE DATEPART(week, PT.NgayLap) = DATEPART(week, GETDATE()) AND DATEPART(year, PT.NgayLap) = DATEPART(year, GETDATE())
+        GROUP BY CONVERT(date, PT.NgayLap)
+    )
+    SELECT
+        FORMAT(ISNULL(DS.Ngay, TH.Ngay), 'dd') AS ThoiGian, -- Nhãn 'dd' cho ngắn
+        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon, ISNULL(DS.TongGiaTri, 0) AS TongGiaTri, ISNULL(DS.GiamGia, 0) AS GiamGia,
+        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra, ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
+        (ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0) - ISNULL(TH.GiaTriDonTra, 0)) AS DoanhThu
+    FROM DoanhSoTheoNgay DS FULL OUTER JOIN TraHangTheoNgay TH ON DS.Ngay = TH.Ngay
+    ORDER BY ISNULL(DS.Ngay, TH.Ngay);
+END;
+GO
+
+-- 3. DOANH THU: Tháng này (Theo ngày, nhãn 'dd')
+CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_ThangNay
+AS
+BEGIN
+    SET NOCOUNT ON;
+    WITH DoanhSoTheoNgay AS (
+        SELECT CONVERT(date, HD.NgayLap) AS Ngay, COUNT(DISTINCT HD.MaHD) AS SoLuongHoaDon, ISNULL(SUM(CTHD.SoLuong * CTHD.DonGia), 0) AS TongGiaTri, ISNULL(SUM(CTHD.SoLuong * CTHD.GiamGia), 0) AS GiamGia
+        FROM HoaDon HD JOIN ChiTietHoaDon CTHD ON HD.MaHD = CTHD.MaHD
+        WHERE DATEPART(month, HD.NgayLap) = DATEPART(month, GETDATE()) AND DATEPART(year, HD.NgayLap) = DATEPART(year, GETDATE())
+        GROUP BY CONVERT(date, HD.NgayLap)
+    ),
+    TraHangTheoNgay AS (
+        SELECT CONVERT(date, PT.NgayLap) AS Ngay, COUNT(DISTINCT PT.MaPT) AS SoLuongDonTra, ISNULL(SUM(CTPT.SoLuong * (CTPT.DonGia - CTPT.GiamGia)), 0) AS GiaTriDonTra
+        FROM PhieuTraHang PT JOIN ChiTietPhieuTraHang CTPT ON PT.MaPT = CTPT.MaPT
+        WHERE DATEPART(month, PT.NgayLap) = DATEPART(month, GETDATE()) AND DATEPART(year, PT.NgayLap) = DATEPART(year, GETDATE())
+        GROUP BY CONVERT(date, PT.NgayLap)
+    )
+    SELECT
+        FORMAT(ISNULL(DS.Ngay, TH.Ngay), 'dd') AS ThoiGian, -- Nhãn 'dd' cho ngắn
+        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon, ISNULL(DS.TongGiaTri, 0) AS TongGiaTri, ISNULL(DS.GiamGia, 0) AS GiamGia,
+        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra, ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
+        (ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0) - ISNULL(TH.GiaTriDonTra, 0)) AS DoanhThu
+    FROM DoanhSoTheoNgay DS FULL OUTER JOIN TraHangTheoNgay TH ON DS.Ngay = TH.Ngay
+    ORDER BY ISNULL(DS.Ngay, TH.Ngay);
+END;
+GO
+
+-- 4. DOANH THU: Quý này (Lấy tất cả các quý trong năm)
+CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_QuyNay
+AS
+BEGIN
+    SET NOCOUNT ON;
+    WITH DoanhSoTheoQuy AS (
+        SELECT DATEPART(quarter, HD.NgayLap) AS Quy, COUNT(DISTINCT HD.MaHD) AS SoLuongHoaDon, ISNULL(SUM(CTHD.SoLuong * CTHD.DonGia), 0) AS TongGiaTri, ISNULL(SUM(CTHD.SoLuong * CTHD.GiamGia), 0) AS GiamGia
+        FROM HoaDon HD JOIN ChiTietHoaDon CTHD ON HD.MaHD = CTHD.MaHD
+        WHERE DATEPART(year, HD.NgayLap) = DATEPART(year, GETDATE())
+        GROUP BY DATEPART(quarter, HD.NgayLap)
+    ),
+    TraHangTheoQuy AS (
+        SELECT DATEPART(quarter, PT.NgayLap) AS Quy, COUNT(DISTINCT PT.MaPT) AS SoLuongDonTra, ISNULL(SUM(CTPT.SoLuong * (CTPT.DonGia - CTPT.GiamGia)), 0) AS GiaTriDonTra
+        FROM PhieuTraHang PT JOIN ChiTietPhieuTraHang CTPT ON PT.MaPT = CTPT.MaPT
+        WHERE DATEPART(year, PT.NgayLap) = DATEPART(year, GETDATE())
+        GROUP BY DATEPART(quarter, PT.NgayLap)
+    )
+    SELECT
+        CONCAT(N'Quý ', ISNULL(DS.Quy, TH.Quy)) AS ThoiGian, -- Nhãn 'Quý 1', 'Quý 2'...
+        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon, ISNULL(DS.TongGiaTri, 0) AS TongGiaTri, ISNULL(DS.GiamGia, 0) AS GiamGia,
+        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra, ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
+        (ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0) - ISNULL(TH.GiaTriDonTra, 0)) AS DoanhThu
+    FROM DoanhSoTheoQuy DS FULL OUTER JOIN TraHangTheoQuy TH ON DS.Quy = TH.Quy
+    ORDER BY ISNULL(DS.Quy, TH.Quy);
+END;
+GO
+
+-- 5. DOANH THU: Tùy chọn (Theo khoảng ngày)
+CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_TuyChon
+    @NgayBatDau DATE,
+    @NgayKetThuc DATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    WITH DoanhSoTheoNgay AS (
+        SELECT CONVERT(date, HD.NgayLap) AS Ngay, COUNT(DISTINCT HD.MaHD) AS SoLuongHoaDon, ISNULL(SUM(CTHD.SoLuong * CTHD.DonGia), 0) AS TongGiaTri, ISNULL(SUM(CTHD.SoLuong * CTHD.GiamGia), 0) AS GiamGia
+        FROM HoaDon HD JOIN ChiTietHoaDon CTHD ON HD.MaHD = CTHD.MaHD
+        WHERE CONVERT(date, HD.NgayLap) BETWEEN @NgayBatDau AND @NgayKetThuc
+        GROUP BY CONVERT(date, HD.NgayLap)
+    ),
+    TraHangTheoNgay AS (
+        SELECT CONVERT(date, PT.NgayLap) AS Ngay, COUNT(DISTINCT PT.MaPT) AS SoLuongDonTra, ISNULL(SUM(CTPT.SoLuong * (CTPT.DonGia - CTPT.GiamGia)), 0) AS GiaTriDonTra
+        FROM PhieuTraHang PT JOIN ChiTietPhieuTraHang CTPT ON PT.MaPT = CTPT.MaPT
+        WHERE CONVERT(date, PT.NgayLap) BETWEEN @NgayBatDau AND @NgayKetThuc
+        GROUP BY CONVERT(date, PT.NgayLap)
+    )
+    SELECT
+        FORMAT(ISNULL(DS.Ngay, TH.Ngay), 'dd/MM') AS ThoiGian,
+        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon, ISNULL(DS.TongGiaTri, 0) AS TongGiaTri, ISNULL(DS.GiamGia, 0) AS GiamGia,
+        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra, ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
+        (ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0) - ISNULL(TH.GiaTriDonTra, 0)) AS DoanhThu
+    FROM DoanhSoTheoNgay DS FULL OUTER JOIN TraHangTheoNgay TH ON DS.Ngay = TH.Ngay
+    ORDER BY ISNULL(DS.Ngay, TH.Ngay);
+END;
+GO
+
+-- ==========================================================
+-- Phần 2: TOP 5 SẢN PHẨM (5 SPs)
+-- ==========================================================
+
+-- 6. TOP 5: Hôm nay
+CREATE OR ALTER PROCEDURE sp_Top5SanPham_HomNay
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT TOP 5 T.MaThuoc, T.TenThuoc, SUM(CTHD.SoLuong) AS SoLuong, SUM(CTHD.SoLuong * (CTHD.DonGia - CTHD.GiamGia)) AS ThanhTien
+    FROM ChiTietHoaDon CTHD
+    JOIN HoaDon HD ON CTHD.MaHD = HD.MaHD
+    JOIN Thuoc_SP_TheoLo L ON CTHD.MaLH = L.MaLH
+    JOIN Thuoc_SanPham T ON L.MaThuoc = T.MaThuoc
+    WHERE CONVERT(date, HD.NgayLap) = CONVERT(date, GETDATE())
+    GROUP BY T.MaThuoc, T.TenThuoc ORDER BY SoLuong DESC;
+END;
+GO
+
+-- 7. TOP 5: Tuần này
+CREATE OR ALTER PROCEDURE sp_Top5SanPham_TuanNay
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT TOP 5 T.MaThuoc, T.TenThuoc, SUM(CTHD.SoLuong) AS SoLuong, SUM(CTHD.SoLuong * (CTHD.DonGia - CTHD.GiamGia)) AS ThanhTien
+    FROM ChiTietHoaDon CTHD
+    JOIN HoaDon HD ON CTHD.MaHD = HD.MaHD
+    JOIN Thuoc_SP_TheoLo L ON CTHD.MaLH = L.MaLH
+    JOIN Thuoc_SanPham T ON L.MaThuoc = T.MaThuoc
+    WHERE DATEPART(week, HD.NgayLap) = DATEPART(week, GETDATE()) AND DATEPART(year, HD.NgayLap) = DATEPART(year, GETDATE())
+    GROUP BY T.MaThuoc, T.TenThuoc ORDER BY SoLuong DESC;
+END;
+GO
+
+-- 8. TOP 5: Tháng này
+CREATE OR ALTER PROCEDURE sp_Top5SanPham_ThangNay
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT TOP 5 T.MaThuoc, T.TenThuoc, SUM(CTHD.SoLuong) AS SoLuong, SUM(CTHD.SoLuong * (CTHD.DonGia - CTHD.GiamGia)) AS ThanhTien
+    FROM ChiTietHoaDon CTHD
+    JOIN HoaDon HD ON CTHD.MaHD = HD.MaHD
+    JOIN Thuoc_SP_TheoLo L ON CTHD.MaLH = L.MaLH
+    JOIN Thuoc_SanPham T ON L.MaThuoc = T.MaThuoc
+    WHERE DATEPART(month, HD.NgayLap) = DATEPART(month, GETDATE()) AND DATEPART(year, HD.NgayLap) = DATEPART(year, GETDATE())
+    GROUP BY T.MaThuoc, T.TenThuoc ORDER BY SoLuong DESC;
+END;
+GO
+
+-- 9. TOP 5: Quý này
+CREATE OR ALTER PROCEDURE sp_Top5SanPham_QuyNay
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT TOP 5 T.MaThuoc, T.TenThuoc, SUM(CTHD.SoLuong) AS SoLuong, SUM(CTHD.SoLuong * (CTHD.DonGia - CTHD.GiamGia)) AS ThanhTien
+    FROM ChiTietHoaDon CTHD
+    JOIN HoaDon HD ON CTHD.MaHD = HD.MaHD
+    JOIN Thuoc_SP_TheoLo L ON CTHD.MaLH = L.MaLH
+    JOIN Thuoc_SanPham T ON L.MaThuoc = T.MaThuoc
+    WHERE DATEPART(quarter, HD.NgayLap) = DATEPART(quarter, GETDATE()) AND DATEPART(year, HD.NgayLap) = DATEPART(year, GETDATE())
+    GROUP BY T.MaThuoc, T.TenThuoc ORDER BY SoLuong DESC;
+END;
+GO
+
+-- 10. TOP 5: Tùy chọn (Theo khoảng ngày)
+CREATE OR ALTER PROCEDURE sp_Top5SanPham_TuyChon
+    @NgayBatDau DATE,
+    @NgayKetThuc DATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT TOP 5 T.MaThuoc, T.TenThuoc, SUM(CTHD.SoLuong) AS SoLuong, SUM(CTHD.SoLuong * (CTHD.DonGia - CTHD.GiamGia)) AS ThanhTien
+    FROM ChiTietHoaDon CTHD
+    JOIN HoaDon HD ON CTHD.MaHD = HD.MaHD
+    JOIN Thuoc_SP_TheoLo L ON CTHD.MaLH = L.MaLH
+    JOIN Thuoc_SanPham T ON L.MaThuoc = T.MaThuoc
+    WHERE CONVERT(date, HD.NgayLap) BETWEEN @NgayBatDau AND @NgayKetThuc
+    GROUP BY T.MaThuoc, T.TenThuoc ORDER BY SoLuong DESC;
+END;
+GO
+
+PRINT N'=== HOÀN TẤT! Đã tạo hoặc cập nhật 10 SP thành công. ===';

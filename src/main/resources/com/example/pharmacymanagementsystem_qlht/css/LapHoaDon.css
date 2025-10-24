@@ -72,9 +72,10 @@
     -fx-font-weight: bold;
 }
 
-.table-view .table-row-cell:filled:selected, .table-view .table-row-cell:focused:selected {
-    -fx-background-color: #bbdefb;
-}
+/*.table-view .table-row-cell:filled:selected, .table-view .table-row-cell:focused:selected {*/
+/*    -fx-background-color: #ffffff;*/
+/*    -fx-text-fill: #000000;*/
+/*}*/
 
 .text-field, .text-area {
     -fx-background-color: #fff;

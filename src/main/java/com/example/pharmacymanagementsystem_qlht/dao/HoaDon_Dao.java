@@ -121,16 +121,32 @@ public class HoaDon_Dao implements DaoInterface<HoaDon>{
         return this.selectBySql(SELECT_ALL_SQL);
     }
 
+//    public String generateNewMaHD() {
+//        String newMaHD = "HD001"; // Default value if no records exist
+//        String SELECT_TOP1_SQL = "SELECT TOP 1 MaHD FROM HoaDon ORDER BY MaHD DESC";
+//        try {
+//            ResultSet rs = ConnectDB.query(SELECT_TOP1_SQL);
+//            if (rs.next()) {
+//                String lastMaHD = rs.getString("MaHD");
+//                int stt = Integer.parseInt(lastMaHD.substring(2)); // Extract numeric part
+//                stt++; // Increment the numeric part
+//                newMaHD = String.format("HD%03d", stt); // Format with leading zeros
+//            }
+//            rs.getStatement().close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return newMaHD;
+//    }
     public String generateNewMaHD() {
-        String newMaHD = "HD001"; // Default value if no records exist
-        String SELECT_TOP1_SQL = "SELECT TOP 1 MaHD FROM HoaDon ORDER BY MaHD DESC";
+        String newMaHD = "HD001";
+        String sql = "SELECT TOP 1 MaHD FROM HoaDon ORDER BY MaHD DESC";
         try {
-            ResultSet rs = ConnectDB.query(SELECT_TOP1_SQL);
+            ResultSet rs = ConnectDB.query(sql);
             if (rs.next()) {
                 String lastMaHD = rs.getString("MaHD");
-                int stt = Integer.parseInt(lastMaHD.substring(2)); // Extract numeric part
-                stt++; // Increment the numeric part
-                newMaHD = String.format("HD%03d", stt); // Format with leading zeros
+                int stt = Integer.parseInt(lastMaHD.substring(2)) + 1;
+                newMaHD = String.format("HD%03d", stt);
             }
             rs.getStatement().close();
         } catch (Exception e) {

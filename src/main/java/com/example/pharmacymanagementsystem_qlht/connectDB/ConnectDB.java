@@ -3,16 +3,13 @@ package com.example.pharmacymanagementsystem_qlht.connectDB;
 import com.example.pharmacymanagementsystem_qlht.controller.DangNhap_Ctrl;
 
 import java.nio.charset.StandardCharsets;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 
 public class ConnectDB {
 
-    static String url = "jdbc:sqlserver://localhost:1433;databaseName=QuanLyNhaThuoc;encrypt=true;trustServerCertificate=true;useUnicode=true;characterEncoding=UTF-8";
-    static String user = "sa";
-    static String password = "sapassword";
+    public static String url = "jdbc:sqlserver://localhost:1433;databaseName=QuanLyNhaThuoc;encrypt=true;trustServerCertificate=true;useUnicode=true;characterEncoding=UTF-8";
+    public static String user = "sa";
+    public static String password = "sapassword";
 
     public static PreparedStatement getStmt(String sql, Object... args) throws Exception {
         Connection con = DriverManager.getConnection(url, user, password);
@@ -72,6 +69,7 @@ public class ConnectDB {
         }
         return maGenerate;
     }
+
 
 
 }

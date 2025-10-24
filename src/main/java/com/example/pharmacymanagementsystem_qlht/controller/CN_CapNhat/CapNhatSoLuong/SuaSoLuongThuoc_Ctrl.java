@@ -6,6 +6,7 @@ import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SP_TheoLo_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SP_TheoLo;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,7 +16,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class SuaSoLuongThuoc_Ctrl extends Application {
+public class SuaSoLuongThuoc_Ctrl {
 
 
     public Button btnLuu;
@@ -40,12 +41,15 @@ public class SuaSoLuongThuoc_Ctrl extends Application {
         tfMaThuoc.setText(thuoc.getMaThuoc());
         tfTenThuoc.setText(thuoc.getTenThuoc());
         tfSoLuongTon.setText(String.valueOf(thuocLo.getSoLuongTon()));
-        cbViTri.setValue(thuoc.getVitri().getMaKe());
+        cbViTri.setValue(thuoc.getVitri().getTenKe());
         cbLoaiHang.setValue(thuoc.getLoaiHang().getTenLoaiHang());
     }
 
     @FXML
     private void initialize() {
+        Platform.runLater(() -> {
+            tfSoLuongTon.requestFocus();
+        });
     }
 
     @FXML
@@ -74,11 +78,4 @@ public class SuaSoLuongThuoc_Ctrl extends Application {
         stage.close();
     }
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatSoLuong/SuaSoLuongThuoc_GUI.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
 }

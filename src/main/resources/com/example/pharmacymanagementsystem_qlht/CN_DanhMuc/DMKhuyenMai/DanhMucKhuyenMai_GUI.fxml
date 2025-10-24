@@ -22,7 +22,7 @@
                 <TableColumn fx:id="colLoaiKM" minWidth="0.0" prefWidth="253.0" styleClass="a-center" text="Loại khuyến mãi" />
                 <TableColumn fx:id="colNBD" minWidth="0.0" prefWidth="285.0" styleClass="a-center" text="Ngày bắt đầu" />
                 <TableColumn fx:id="colNKT" minWidth="0.0" prefWidth="236.0" styleClass="a-center" text="Ngày kết thúc" />
-                <TableColumn fx:id="colNgayTao" minWidth="0.0" prefWidth="253.0" text="Ngày tạo khuyến mãi" />
+                <TableColumn fx:id="colNgayTao" minWidth="0.0" prefWidth="253.0" style="-fx-alignment: CENTER;" text="Ngày tạo khuyến mãi" />
             <TableColumn fx:id="colChiTiet" prefWidth="82.0" styleClass="a-center" />
             </columns>
         </TableView>

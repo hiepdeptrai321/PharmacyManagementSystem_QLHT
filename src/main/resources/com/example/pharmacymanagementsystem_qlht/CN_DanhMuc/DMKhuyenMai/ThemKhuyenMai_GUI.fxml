@@ -23,7 +23,7 @@
     <children>
         <Label layoutX="14.0" layoutY="8.0" prefHeight="25.0" prefWidth="925.0" styleClass="lbtitle" text="Thêm khuyến mãi">
             <font>
-                <Font size="18.0" />
+                <Font name="System Bold" size="18.0" />
             </font>
         </Label>
 

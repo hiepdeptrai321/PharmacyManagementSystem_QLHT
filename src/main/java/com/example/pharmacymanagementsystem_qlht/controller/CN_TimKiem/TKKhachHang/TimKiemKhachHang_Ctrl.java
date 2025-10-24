@@ -116,7 +116,11 @@ public class TimKiemKhachHang_Ctrl extends Application {
         );
         cotMaKH.setCellValueFactory(new PropertyValueFactory<>("maKH"));
         cotTenKH.setCellValueFactory(new PropertyValueFactory<>("tenKH"));
-        cotGT.setCellValueFactory(new PropertyValueFactory<>("gioiTinh"));
+        cotGT.setCellValueFactory(cellData -> {
+            Boolean gt = cellData.getValue().getGioiTinh(); // handles primitive or boxed boolean
+            String text = Boolean.TRUE.equals(gt) ? "Nam" : "Nữ";
+            return new SimpleStringProperty(text);
+        });
         // format date as dd-MM-yyyy
         cotNgaySinh.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.dinhDangNgay(cellData.getValue().getNgaySinh())));
         cotSDT.setCellValueFactory(new PropertyValueFactory<>("sdt"));

@@ -19,13 +19,13 @@
         </Pane>
         <TableView id="tablethuoc" fx:id="tbThuoc" layoutX="12.0" layoutY="96.0" prefHeight="791.0" prefWidth="1623.0">
             <columns>
-                <TableColumn fx:id="colSTT" prefWidth="60.0" text="STT" />
-                <TableColumn fx:id="colMaThuoc" prefWidth="173.0" text="Mã thuốc" />
+                <TableColumn fx:id="colSTT" prefWidth="44.0" style="-fx-alignment: CENTER;" text="STT" />
+                <TableColumn fx:id="colMaThuoc" prefWidth="189.0" style="-fx-alignment: CENTER;" text="Mã thuốc" />
                 <TableColumn fx:id="colTenThuoc" prefWidth="515.0" text="Tên thuốc" />
-                <TableColumn fx:id="colDVT" minWidth="0.0" prefWidth="217.0" text="Đơn vị tính" />
-                <TableColumn fx:id="colGiaNhap" minWidth="0.0" prefWidth="304.0" text="Giá nhập" />
-                <TableColumn fx:id="colGiaBan" minWidth="0.0" prefWidth="285.0" text="Giá bán" />
-                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="67.0" />
+                <TableColumn fx:id="colDVT" minWidth="0.0" prefWidth="217.0" style="-fx-alignment: CENTER;" text="Đơn vị tính (cơ bản)" />
+                <TableColumn fx:id="colGiaNhap" minWidth="0.0" prefWidth="304.0" style="-fx-alignment: CENTER;" text="Giá nhập (VNĐ)" />
+                <TableColumn fx:id="colGiaBan" minWidth="0.0" prefWidth="285.0" style="-fx-alignment: CENTER;" text="Giá bán (VNĐ)" />
+                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="67.0" style="-fx-alignment: CENTER;" />
             </columns>
         </TableView>
     </children>

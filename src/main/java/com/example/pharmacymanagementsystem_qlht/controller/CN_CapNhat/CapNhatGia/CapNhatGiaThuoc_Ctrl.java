@@ -14,7 +14,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class CapNhatGiaThuoc_Ctrl extends Application {
 
@@ -39,10 +41,12 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+
     }
 
     public void initialize() {
         loadTable();
+        tfTimThuoc.setOnAction(e-> timThuoc());
     }
 
     // 3. XỬ LÝ SỰ KIỆN GIAO DIỆN
@@ -57,19 +61,43 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
         );
         colMaThuoc.setCellValueFactory(new PropertyValueFactory<>("maThuoc"));
         colTenThuoc.setCellValueFactory(new PropertyValueFactory<>("tenThuoc"));
-        colGiaNhap.setCellValueFactory(new PropertyValueFactory<>("giaNhapCoBan"));
-        colGiaBan.setCellValueFactory(new PropertyValueFactory<>("giaBanCoBan"));
+        NumberFormat vnFormat = NumberFormat.getInstance(new Locale("vi", "VN"));
+        vnFormat.setGroupingUsed(true);
+        vnFormat.setMaximumFractionDigits(0);
+
+        colGiaNhap.setCellValueFactory(cd -> {
+            Object val = cd.getValue().getGiaNhapCoBan();
+            if (val == null) return new SimpleStringProperty("");
+            Number num;
+            if (val instanceof Number) num = (Number) val;
+            else {
+                try { num = Double.parseDouble(val.toString()); }
+                catch (Exception e) { return new SimpleStringProperty(""); }
+            }
+            return new SimpleStringProperty(vnFormat.format(num));
+        });
+
+        colGiaBan.setCellValueFactory(cd -> {
+            Object val = cd.getValue().getGiaBanCoBan();
+            if (val == null) return new SimpleStringProperty("");
+            Number num;
+            if (val instanceof Number) num = (Number) val;
+            else {
+                try { num = Double.parseDouble(val.toString()); }
+                catch (Exception e) { return new SimpleStringProperty(""); }
+            }
+            return new SimpleStringProperty(vnFormat.format(num));
+        });
         colDVT.setCellValueFactory(new PropertyValueFactory<>("tenDVTCoBan"));
         colChiTiet.setCellFactory(col -> new TableCell<Thuoc_SanPham, String>() {
             private final Button btn = new Button("Chi tiết");
             {
-                // SỰ KIỆN KHI NHẤN NÚT "CHI TIẾT"
+                btn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white;");
+                btn.getStyleClass().add("btn");
                 btn.setOnAction(event -> {
                     Thuoc_SanPham thuoc = getTableView().getItems().get(getIndex());
                     showSuaGiaThuoc(thuoc);
                 });
-                btn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white;");
-                btn.getStyleClass().add("btn");
             }
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -107,7 +135,7 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
             stage.setTitle("Sửa giá thuốc");
             stage.setScene(new Scene(root));
             stage.showAndWait();
-            loadTable();
+            stage.setOnHidden(e-> loadTable());
         } catch (Exception e) {
             e.printStackTrace();
         }

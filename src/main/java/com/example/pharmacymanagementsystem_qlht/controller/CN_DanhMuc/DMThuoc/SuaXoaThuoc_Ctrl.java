@@ -138,6 +138,7 @@ public class SuaXoaThuoc_Ctrl {
         cbxLoaiHang.getItems().addAll(new LoaiHang_Dao().getAllTenLH());
         cbxViTri.getItems().addAll(new KeHang_Dao().getAllTenKe());
         cbxNhomDuocLy.getItems().addAll(new NhomDuocLy_Dao().getAllTenNhomDuocLy());
+        cbxNhomDuocLy.getItems().addFirst("Chọn nhóm dược lý");
         loadDuLieuThuoc(thuoc);
     }
 
@@ -150,12 +151,27 @@ public class SuaXoaThuoc_Ctrl {
         txtHangSanXuat.setText(thuoc.getHangSX());
         txtDonViHamLuong.setText(thuoc.getDonViHamLuong());
         txtDuongDung.setText(thuoc.getDuongDung());
-        cbxNhomDuocLy.setValue(thuoc.getNhomDuocLy().getTenNDL());
+        if(thuoc.getNhomDuocLy() != null) {
+            cbxNhomDuocLy.setValue(thuoc.getNhomDuocLy().getTenNDL());
+        }else{
+            cbxNhomDuocLy.getSelectionModel().selectFirst();
+        }
         txtNuocSanXuat.setText(thuoc.getNuocSX());
         txtQuyCachDongGoi.setText(thuoc.getQuyCachDongGoi());
         txtSDK_GPNK.setText(thuoc.getSDK_GPNK());
-        imgThuoc_SanPham.setImage(new Image(new ByteArrayInputStream(thuoc.getHinhAnh())));
-
+        try {
+            if (thuoc.getHinhAnh() == null) {
+                imgThuoc_SanPham.setImage(
+                        new Image(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/img/noimage.jpg").toExternalForm())
+                );
+            } else {
+                imgThuoc_SanPham.setImage(new Image(new ByteArrayInputStream(thuoc.getHinhAnh())));
+            }
+        } catch (Exception e) {
+            imgThuoc_SanPham.setImage(
+                    new Image(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/img/noimage.jpg").toExternalForm())
+            );
+        }
         List<ChiTietHoatChat> listHoatChat = new ChiTietHoatChat_Dao().selectByMaThuoc(thuoc.getMaThuoc());
         ObservableList<ChiTietHoatChat> data = FXCollections.observableArrayList(listHoatChat);
 
@@ -259,7 +275,11 @@ public class SuaXoaThuoc_Ctrl {
                 thuoc.setHangSX(txtHangSanXuat.getText().trim());
                 thuoc.setDonViHamLuong(txtDonViHamLuong.getText().trim());
                 thuoc.setDuongDung(txtDuongDung.getText().trim());
-                thuoc.setNhomDuocLy(new NhomDuocLy_Dao().selectByTenNhomDuocLy(cbxNhomDuocLy.getSelectionModel().getSelectedItem().toString()));
+                if(cbxNhomDuocLy.getSelectionModel().getSelectedIndex() == 0){
+                    thuoc.setNhomDuocLy(null);
+                }else{
+                    thuoc.setNhomDuocLy(new NhomDuocLy_Dao().selectByTenNhomDuocLy(cbxNhomDuocLy.getSelectionModel().getSelectedItem().toString()));
+                }
                 thuoc.setNuocSX(txtNuocSanXuat.getText().trim());
                 thuoc.setQuyCachDongGoi(txtQuyCachDongGoi.getText().trim());
                 thuoc.setSDK_GPNK(txtSDK_GPNK.getText().trim());

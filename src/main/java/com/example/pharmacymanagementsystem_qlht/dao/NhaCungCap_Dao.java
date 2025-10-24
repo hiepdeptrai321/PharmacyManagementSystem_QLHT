@@ -80,5 +80,4 @@ public class NhaCungCap_Dao implements DaoInterface<NhaCungCap>{
         }
         return key;
     }
-
 }

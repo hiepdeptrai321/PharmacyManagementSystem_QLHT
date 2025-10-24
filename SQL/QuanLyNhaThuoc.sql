@@ -1702,7 +1702,8 @@ BEGIN
 END;
 
 
-GO
+-----------Proc thống kê
+
 
 PRINT N'=== Bắt đầu tạo 10 Stored Procedure Thống kê ===';
 GO

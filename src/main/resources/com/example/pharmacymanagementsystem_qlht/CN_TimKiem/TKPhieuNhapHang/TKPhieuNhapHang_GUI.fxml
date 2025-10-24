@@ -61,7 +61,7 @@
             <StackPane prefWidth="1613.0" VBox.vgrow="NEVER">
                 <TitledPane fx:id="tpBoLoc" animated="false" expanded="false" prefWidth="1613.0" text="Bộ lọc bổ sung">
                     <content>
-                        <AnchorPane prefHeight="50" minHeight="50" prefWidth="1611.0">
+                        <AnchorPane minHeight="50" prefHeight="50" prefWidth="1611.0">
                             <children>
                                 <ComboBox fx:id="cbxChonNhaCC" layoutY="7.0" prefHeight="44.0" prefWidth="302.0" promptText="Chọn nhà cung cấp" />
                                 <ComboBox fx:id="chonNhanVien" layoutX="318.0" layoutY="7.0" prefHeight="44.0" prefWidth="347.0" promptText="Chọn nhân viên" />
@@ -80,12 +80,12 @@
             <!-- Bảng dữ liệu -->
             <TableView fx:id="tblPhieuNhap" prefHeight="707.0" prefWidth="1613.0" VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn fx:id="colMaPN" prefWidth="176.0" text="Mã phiếu nhập" />
-                    <TableColumn fx:id="colNgayNhap" prefWidth="217.0" text="Ngày nhập" />
+                    <TableColumn fx:id="colMaPN" prefWidth="176.0" style="-fx-alignment: CENTER;" text="Mã phiếu nhập" />
+                    <TableColumn fx:id="colNgayNhap" prefWidth="217.0" style="-fx-alignment: CENTER;" text="Ngày nhập" />
                     <TableColumn fx:id="colNhaCungCap" prefWidth="259.0" text="Nhà cung cấp" />
                     <TableColumn fx:id="colNhanVien" prefWidth="236.0" text="Nhân viên" />
                     <TableColumn fx:id="colGhiChu" prefWidth="355.0" text="Ghi chú" />
-                    <TableColumn fx:id="colTrangThai" prefWidth="269.0" text="Trạng thái" />
+                    <TableColumn fx:id="colTrangThai" prefWidth="269.0" style="-fx-alignment: CENTER;" text="Trạng thái" />
                     <TableColumn fx:id="colChiTiet" prefWidth="97.0" />
                 </columns>
             </TableView>

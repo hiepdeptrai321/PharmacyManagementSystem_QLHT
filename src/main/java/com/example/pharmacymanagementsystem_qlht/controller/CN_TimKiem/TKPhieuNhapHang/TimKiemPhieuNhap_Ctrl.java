@@ -1,5 +1,6 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuNhapHang;
 
+import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
 import com.example.pharmacymanagementsystem_qlht.dao.PhieuNhap_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuNhap;
 import javafx.application.Platform;
@@ -39,7 +40,7 @@ public class TimKiemPhieuNhap_Ctrl extends Application {
     @FXML
     private TableColumn<PhieuNhap, String> colNhaCungCap;
     @FXML
-    private TableColumn<PhieuNhap, Timestamp> colNgayNhap;
+    private TableColumn<PhieuNhap, String> colNgayNhap;
     @FXML
     private TableColumn<PhieuNhap, String> colTrangThai;
     @FXML
@@ -102,7 +103,7 @@ public class TimKiemPhieuNhap_Ctrl extends Application {
         colNhaCungCap.setCellValueFactory(cd ->
                 new SimpleStringProperty(cd.getValue().getNhaCungCap().getTenNCC())
         );
-        colNgayNhap.setCellValueFactory(new PropertyValueFactory<>("ngayNhap"));
+        colNgayNhap.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.dinhDangGio(cellData.getValue().getNgayNhap().toLocalDateTime())));
         colTrangThai.setCellValueFactory(cd ->
                 new SimpleStringProperty(cd.getValue().getTrangThai() ? "Hoàn tất" : "Chưa hoàn tất")
         );

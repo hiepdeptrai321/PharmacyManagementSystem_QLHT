@@ -3,7 +3,8 @@ package com.example.pharmacymanagementsystem_qlht.dao;
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.ThongKeBanHang;
 import com.example.pharmacymanagementsystem_qlht.model.ThongKeSanPham;
-
+import java.sql.Date;
+import java.time.LocalDate;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +86,53 @@ public class ThongKe_Dao {
                         rs.getString("TenThuoc"),
                         rs.getInt("SoLuong"),
                         rs.getDouble("ThanhTien")
+                );
+                list.add(sp);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<ThongKeBanHang> getThongKeBanHang_TuyChon(LocalDate tuNgay, LocalDate denNgay) {
+        List<ThongKeBanHang> list = new ArrayList<>();
+        String sql = "{call sp_ThongKeBanHang_TuyChon(?, ?)}";
+
+        Date sqlTuNgay = Date.valueOf(tuNgay);
+        Date sqlDenNgay = Date.valueOf(denNgay);
+
+        try (ResultSet rs = ConnectDB.query(sql, sqlTuNgay, sqlDenNgay)) {
+            while (rs.next()) {
+                ThongKeBanHang tk = new ThongKeBanHang(
+                        rs.getString("ThoiGian"), rs.getInt("SoLuongHoaDon"),
+                        rs.getDouble("TongGiaTri"), rs.getDouble("GiamGia"),
+                        rs.getInt("SoLuongDonTra"), rs.getDouble("GiaTriDonTra"),
+                        rs.getDouble("DoanhThu")
+                );
+                list.add(tk);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    /**
+     * Lấy Top 5 SP theo khoảng ngày TÙY CHỌN
+     */
+    public List<ThongKeSanPham> getTop5SanPham_TuyChon(LocalDate tuNgay, LocalDate denNgay) {
+        List<ThongKeSanPham> list = new ArrayList<>();
+        String sql = "{call sp_Top5SanPham_TuyChon(?, ?)}";
+
+        Date sqlTuNgay = Date.valueOf(tuNgay);
+        Date sqlDenNgay = Date.valueOf(denNgay);
+
+        try (ResultSet rs = ConnectDB.query(sql, sqlTuNgay, sqlDenNgay)) {
+            while (rs.next()) {
+                ThongKeSanPham sp = new ThongKeSanPham(
+                        rs.getString("MaThuoc"), rs.getString("TenThuoc"),
+                        rs.getInt("SoLuong"), rs.getDouble("ThanhTien")
                 );
                 list.add(sp);
             }

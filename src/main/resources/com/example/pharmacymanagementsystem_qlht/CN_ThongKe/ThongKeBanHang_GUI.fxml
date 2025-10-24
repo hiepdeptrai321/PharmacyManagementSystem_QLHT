@@ -66,19 +66,6 @@
                         <Insets top="5.0" />
                      </VBox.margin>
                   </HBox>
-                  <Label layoutX="10.0" layoutY="53.0" prefHeight="27.0" prefWidth="243.0" text="Mối quan tâm">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin>
-                  </Label>
-                  <ComboBox fx:id="cboMQT" prefHeight="49.0" prefWidth="445.0" promptText="Lợi nhuận">
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin>
-                  </ComboBox>
                   <Label layoutX="10.0" layoutY="53.0" prefHeight="27.0" prefWidth="221.0" text="Thời gian">
                      <font>
                         <Font size="18.0" />
@@ -88,13 +75,13 @@
                      </VBox.margin>
                   </Label>
                   <ComboBox fx:id="cboThoiGian" prefHeight="49.0" prefWidth="446.0" promptText="Hôm Nay" />
-                  <Label layoutX="10.0" layoutY="298.0" text="Từ:">
+                  <Label fx:id="lblTu" layoutX="10.0" layoutY="298.0" text="Từ:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
                   <DatePicker fx:id="dateTu" prefHeight="39.0" prefWidth="442.0" />
-                  <Label layoutX="10.0" layoutY="298.0" text="Đến:">
+                  <Label fx:id="lblDen" layoutX="10.0" layoutY="298.0" text="Đến:">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -108,7 +95,7 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <ComboBox fx:id="cboXuatfile" prefHeight="49.0" prefWidth="441.0" promptText="Excel" />
+                  <ComboBox fx:id="cboXuatfile" prefHeight="49.0" prefWidth="441.0" promptText="Chọn định dạng file" />
                   <Button fx:id="btnXuat" mnemonicParsing="false" prefHeight="53.0" prefWidth="438.0" text="Xuất File 💾">
                      <VBox.margin>
                         <Insets top="10.0" />

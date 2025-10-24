@@ -2,6 +2,8 @@ package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuN
 
 import com.example.pharmacymanagementsystem_qlht.dao.PhieuNhap_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuNhap;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,6 +16,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 import java.sql.Timestamp;
@@ -42,6 +46,8 @@ public class TimKiemPhieuNhap_Ctrl extends Application {
     private TableColumn<PhieuNhap, String> colGhiChu;
     @FXML
     private TableColumn<PhieuNhap, String> colNhanVien;
+    @FXML
+    private TitledPane tpBoLoc;
     @FXML
     private ObservableList<PhieuNhap> duLieuChinh = FXCollections.observableArrayList();
     @FXML
@@ -74,9 +80,21 @@ public class TimKiemPhieuNhap_Ctrl extends Application {
         chonNhanVien.getItems().addFirst("Chọn nhân viên");
         cbxChonNhaCC.setOnAction(event -> Loc());
         chonNhanVien.setOnAction(event -> Loc());
+        tpBoLoc.setExpanded(false);
         cboxTrangThai.setOnAction(event -> Loc());
         txtNgayNhapMin.setOnAction(event -> Loc());
         txtNgayNhapMax.setOnAction(event -> Loc());
+        tpBoLoc.expandedProperty().addListener((obs, wasExpanded, isNowExpanded) -> {
+            if (isNowExpanded) {
+                tpBoLoc.setMinHeight(Region.USE_COMPUTED_SIZE);
+                tpBoLoc.setPrefHeight(Region.USE_COMPUTED_SIZE);
+            } else {
+                tpBoLoc.setMinHeight(40); // chỉ giữ phần tiêu đề
+                tpBoLoc.setPrefHeight(40);
+            }
+            tpBoLoc.requestLayout(); // ép VBox tính lại layout
+        });
+
     }
 
     public void ThemPhieuNhapVaoCot() {

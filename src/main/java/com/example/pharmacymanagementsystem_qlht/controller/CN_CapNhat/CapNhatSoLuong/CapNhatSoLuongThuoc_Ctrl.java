@@ -41,6 +41,7 @@ public class CapNhatSoLuongThuoc_Ctrl extends Application {
 
     public void initialize() {
         loadTable();
+        tfTimThuoc.setOnAction(e-> timThuoc());
     }
     // 3. XỬ LÝ SỰ KIỆN GIAO DIỆN
     public void loadTable() {

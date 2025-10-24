@@ -1,9 +1,8 @@
-package com.example.pharmacymanagementsystem_qlht.controller;
+package com.example.pharmacymanagementsystem_qlht.TienIch;
 
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.Locale;
 import java.util.function.UnaryOperator;
 

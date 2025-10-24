@@ -46,6 +46,7 @@ public class TKHoatDong_Ctrl extends javafx.application.Application {
         configureFilters();
         loadTable();
         if (btnTim != null) btnTim.setOnAction(e -> applySearch());
+        tfTim.setOnAction(e-> applySearch());
     }
 
     private void configureFilters() {
@@ -128,6 +129,7 @@ public class TKHoatDong_Ctrl extends javafx.application.Application {
                     HoatDong hd = getTableView().getItems().get(getIndex());
                     showDetails(hd);
                 });
+                btn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white;");
                 btn.getStyleClass().add("btn");
             }
             @Override
@@ -202,9 +204,6 @@ public class TKHoatDong_Ctrl extends javafx.application.Application {
         }
     }
 
-    private String nullSafe(String s) {
-        return s == null ? "" : s;
-    }
 
     @Override
     public void start(Stage stage) throws Exception {

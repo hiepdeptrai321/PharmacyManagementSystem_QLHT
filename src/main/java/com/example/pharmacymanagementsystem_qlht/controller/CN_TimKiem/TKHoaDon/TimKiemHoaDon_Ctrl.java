@@ -12,6 +12,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -124,15 +126,52 @@ public class TimKiemHoaDon_Ctrl extends Application {
         colNgayLap.setCellValueFactory(cellData ->
                 new SimpleStringProperty(DoiNgay.dinhDangThoiGian(cellData.getValue().getNgayLap()))
         );
-        colTenKH.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getMaKH().getTenKH())
-        );
+        colTenKH.setCellValueFactory(cellData -> {
+            var kh = cellData.getValue().getMaKH();
+            String ten = (kh == null || kh.getTenKH() == null || kh.getTenKH().isBlank())
+                    ? "Khách vãng lai"
+                    : kh.getTenKH();
+            return new SimpleStringProperty(ten);
+        });
         colSdtKH.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getMaKH().getSdt())
         );
-        colTenNV.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getMaNV().getTenNV())
-        );
+        colTenNV.setCellValueFactory(cellData -> {
+            var nv = cellData.getValue().getMaNV();
+            String ten = (nv == null || nv.getTenNV() == null || nv.getMaNV().isBlank())
+                    ? "Admin"
+                    : nv.getTenNV();
+            return new SimpleStringProperty(ten);
+        });
+        colTenKH.setCellFactory(col -> new TableCell<HoaDon, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                    setPadding(new Insets(0, 0, 0, 45));
+                }
+            }
+        });
+
+        colTenNV.setCellFactory(col -> new TableCell<HoaDon, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                    setPadding(new Insets(0, 0, 0, 45));
+                }
+            }
+        });
         colSLP.setCellValueFactory(cellData -> {
             int soLuong = phieuDoiHangDao.countByHoaDon(cellData.getValue().getMaHD()) +
                     phieuTraHangDao.countByHoaDon(cellData.getValue().getMaHD());

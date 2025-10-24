@@ -1,5 +1,6 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDatHang;
 
+import com.example.pharmacymanagementsystem_qlht.TienIch.VNDFormatter;
 import com.example.pharmacymanagementsystem_qlht.dao.PhieuDatHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuDatHang;
 import javafx.application.Application;
@@ -103,7 +104,9 @@ public class TKPhieuDatHang_Ctrl extends Application {
         colNgayLap.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.dinhDangThoiGian(cellData.getValue().getNgayLap())));
         colTenKH.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKhachHang().getTenKH()));
         colSdtKH.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKhachHang().getSdt()));
-        colSoTienCoc.setCellValueFactory(new PropertyValueFactory<>("soTienCoc"));
+        colSoTienCoc.setCellValueFactory(cellData ->
+                new SimpleStringProperty(VNDFormatter.format(cellData.getValue().getSoTienCoc()))
+        );
         colTenNV.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNhanVien().getTenNV()));
         colChiTiet.setCellFactory(col -> new TableCell<PhieuDatHang, String>() {
             private final Button btn = new Button("Chi tiết");

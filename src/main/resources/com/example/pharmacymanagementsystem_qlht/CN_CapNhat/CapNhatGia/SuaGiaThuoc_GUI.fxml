@@ -64,13 +64,13 @@
                     <children>
                         <TableView fx:id="tbDVT" prefHeight="200.0" prefWidth="924.0">
                             <columns>
-                                <TableColumn fx:id="colDVT" prefWidth="128.0" text="Đơn vị tính" />
-                                <TableColumn fx:id="colKH" prefWidth="103.0" text="Kí hiệu" />
-                                <TableColumn fx:id="colHeSo" minWidth="0.0" prefWidth="141.0" text="Hệ số quy đổi" />
-                                <TableColumn fx:id="colGiaNhap" prefWidth="186.0" text="Giá nhập" />
-                                <TableColumn fx:id="colGiaBan" minWidth="0.0" prefWidth="189.0" text="Giá bán" />
-                        <TableColumn fx:id="colDVCB" minWidth="0.0" prefWidth="106.0" text="Đơn vị cơ bản" />
-                        <TableColumn fx:id="colXoa" minWidth="0.0" prefWidth="78.0" />
+                                <TableColumn fx:id="colDVT" prefWidth="128.0" style="-fx-alignment: CENTER;" text="Đơn vị tính" />
+                                <TableColumn fx:id="colKH" prefWidth="103.0" style="-fx-alignment: CENTER;" text="Kí hiệu" />
+                                <TableColumn fx:id="colHeSo" minWidth="0.0" prefWidth="141.0" style="-fx-alignment: CENTER;" text="Hệ số quy đổi" />
+                                <TableColumn fx:id="colGiaNhap" prefWidth="186.0" style="-fx-alignment: CENTER;" text="Giá nhập (VNĐ)" />
+                                <TableColumn fx:id="colGiaBan" minWidth="0.0" prefWidth="189.0" style="-fx-alignment: CENTER;" text="Giá bán (VNĐ)" />
+                        <TableColumn fx:id="colDVCB" minWidth="0.0" prefWidth="106.0" style="-fx-alignment: CENTER;" text="Đơn vị cơ bản" />
+                        <TableColumn fx:id="colXoa" minWidth="0.0" prefWidth="78.0" style="-fx-alignment: CENTER;" />
                             </columns>
                         </TableView>
                     </children>

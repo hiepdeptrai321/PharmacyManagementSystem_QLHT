@@ -1055,11 +1055,259 @@ VALUES
 ('LH00014', 'PT003', 'TS451', 1, 1800, 0);   -- Trả Găng tay y tế
 
 
+-- Bật XACT_ABORT để đảm bảo giao dịch được Rollback nếu có lỗi
+SET XACT_ABORT ON;
+BEGIN TRAN;
+
+PRINT N'=== BẮT ĐẦU THÊM DỮ LIỆU TEST V1 (FIXED) ===';
+
+-- ==========================================================
+-- BƯỚC 1: TẠO LÔ HÀNG MỚI ĐỂ TEST (NHẬP VÀO 01/10/2025)
+-- ==========================================================
+PRINT N'--- 1. Tạo Phiếu Nhập PN_T_100 (Ngày 01/10/2025)';
+-- SỬA: 'PN_TEST_100' (11) -> 'PN_T_100' (7)
+INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
+VALUES
+('PN_T_100', '2025-10-01', 1, N'Hàng test tháng 10', 'NCC001', 'NV001');
+
+INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
+VALUES
+('PN_T_100', 'TS001', 'LH_T100', 100, 800, 0, 0.08),
+('PN_T_100', 'TS005', 'LH_T101', 100, 900, 0, 0.08),
+('PN_T_100', 'TS008', 'LH_T102', 100, 1800, 0, 0.08),
+('PN_T_100', 'TS226', 'LH_T103', 100, 900, 0, 0.05),
+('PN_T_100', 'TS337', 'LH_T104', 100, 2500, 0, 0.05);
+
+INSERT INTO Thuoc_SP_TheoLo (MaLH, MaPN, MaThuoc, SoLuongTon, NSX, HSD)
+VALUES
+('LH_T100', 'PN_T_100', 'TS001', 100, '2024-01-01', '2027-01-01'),
+('LH_T101', 'PN_T_100', 'TS005', 100, '2024-01-01', '2027-01-01'),
+('LH_T102', 'PN_T_100', 'TS008', 100, '2024-01-01', '2027-01-01'),
+('LH_T103', 'PN_T_100', 'TS226', 100, '2024-01-01', '2027-01-01'),
+('LH_T104', 'PN_T_100', 'TS337', 100, '2024-01-01', '2027-01-01');
+
+-- ==========================================================
+-- BƯỚC 2: TẠO DỮ LIỆU CHO "HÔM NAY" (25/10/2025)
+-- ==========================================================
+PRINT N'--- 2. Tạo dữ liệu HÔM NAY (25/10/2025)';
+
+-- 2.1. Hóa đơn (Doanh thu & Xuất XNT)
+INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
+VALUES
+('HD_T001', GETDATE(), N'Hoàn tất', 'KH001', 'NV001'),
+('HD_T002', GETDATE(), N'Hoàn tất', 'KH002', 'NV002');
+
+INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
+VALUES
+('HD_T001', 'LH_T100', 10, 1000, 0),
+('HD_T001', 'LH_T101', 5, 1200, 0),
+('HD_T002', 'LH_T103', 20, 1100, 0);
+
+UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 10 WHERE MaLH = 'LH_T100';
+UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 5  WHERE MaLH = 'LH_T101';
+UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 20 WHERE MaLH = 'LH_T103';
+
+-- 2.2. Trả Hàng (Doanh thu âm & Nhập XNT)
+INSERT INTO PhieuTraHang (MaPT, NgayLap, LyDoTra, GhiChu, MaNV, MaHD, MaKH)
+VALUES
+('PT_T001', GETDATE(), N'Khách mua nhầm', N'Trả hàng test', 'NV001', 'HD_T001', 'KH001');
+
+INSERT INTO ChiTietPhieuTraHang (MaLH, MaPT, MaThuoc, SoLuong, DonGia, GiamGia)
+VALUES
+('LH_T100', 'PT_T001', 'TS001', 2, 1000, 0);
+
+UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon + 2 WHERE MaLH = 'LH_T100';
+
+-- 2.3. Nhập Hàng Mới (Nhập XNT)
+-- SỬA: 'PN_TEST_101' (11) -> 'PN_T_101' (7)
+INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
+VALUES
+('PN_T_101', GETDATE(), 1, N'Hàng test hôm nay', 'NCC002', 'NV001');
+
+INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
+VALUES
+('PN_T_101', 'TS011', 'LH_T105', 50, 1000, 0, 0.08);
+
+INSERT INTO Thuoc_SP_TheoLo (MaLH, MaPN, MaThuoc, SoLuongTon, NSX, HSD)
+VALUES
+('LH_T105', 'PN_T_101', 'TS011', 50, '2024-05-01', '2027-05-01');
+
+-- ==========================================================
+-- BƯỚC 3: TẠO DỮ LIỆU CHO "TUẦN NÀY" (20/10 - 24/10)
+-- ==========================================================
+PRINT N'--- 3. Tạo dữ liệu TUẦN NÀY (22-23/10/2025)';
+
+INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
+VALUES
+('HD_T003', '2025-10-22 10:30:00', N'Hoàn tất', 'KH003', 'NV001');
+
+INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
+VALUES
+('HD_T003', 'LH_T102', 15, 2300, 0);
+
+UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 15 WHERE MaLH = 'LH_T102';
+
+INSERT INTO PhieuDoiHang (MaPD, NgayLap, LyDoDoi, GhiChu, MaNV, MaKH, MaHD)
+VALUES
+('PD_T001', '2025-10-23', N'Đổi loại khác', N'Test đổi hàng', 'NV001', 'KH002', 'HD_T002');
+
+INSERT INTO ChiTietPhieuDoiHang (MaLH, MaPD, MaThuoc, SoLuong, DonGia, GiamGia)
+VALUES
+('LH_T103', 'PD_T001', 'TS226', -5, 1100, 0),
+('LH_T104', 'PD_T001', 'TS337', 3, 3200, 0);
+
+UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon + 5 WHERE MaLH = 'LH_T103';
+UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 3 WHERE MaLH = 'LH_T104';
+
+-- ==========================================================
+-- BƯỚC 4: TẠO DỮ LIỆU CHO "THÁNG NÀY" (01/10 - 19/10)
+-- ==========================================================
+PRINT N'--- 4. Tạo dữ liệu THÁNG NÀY (10/10/2025)';
+
+INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
+VALUES
+('HD_T004', '2025-10-10 14:00:00', N'Hoàn tất', 'KH004', 'NV001');
+
+INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
+VALUES
+('HD_T004', 'LH_T104', 10, 3200, 0);
+
+UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 10 WHERE MaLH = 'LH_T104';
+
+-- ==========================================================
+-- BƯỚC 5: TẠO DỮ LIỆU HẾT HẠN MỚI
+-- ==========================================================
+PRINT N'--- 5. Tạo dữ liệu THUỐC HẾT HẠN MỚI';
+
+INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
+VALUES
+('PN_T_102', '2023-10-24', 1, N'Hàng test hết hạn', 'NCC003', 'NV001');
+
+INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
+VALUES
+('PN_T_102', 'TS012', 'LH_T900', 10, 1000, 0, 0.08);
+
+INSERT INTO Thuoc_SP_TheoLo (MaLH, MaPN, MaThuoc, SoLuongTon, NSX, HSD)
+VALUES
+('LH_T900', 'PN_T_102', 'TS012', 10, '2023-10-24', '2025-10-24');
+
+COMMIT TRAN;
+PRINT N'=== HOÀN TẤT V1 (FIXED)! Đã thêm thành công. ===';
+GO
 
 
+USE QuanLyNhaThuoc;
+GO
 
+SET XACT_ABORT ON;
+BEGIN TRAN;
 
+PRINT N'=== BẮT ĐẦU THÊM DỮ LIỆU BỔ SUNG V2 (FIXED) ===';
 
+-- ==========================================================
+-- BƯỚC 1: THÊM DỮ LIỆU CHO NĂM 2024 (TEST "TÙY CHỌN")
+-- ==========================================================
+PRINT N'--- 1. Tạo dữ liệu Năm 2024';
+
+INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
+VALUES
+('PN_T_2024', '2024-01-15', 1, N'Hàng test 2024', 'NCC001', 'NV001');
+
+INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
+VALUES
+('PN_T_2024', 'TS001', 'LH_T_2024', 200, 750, 0, 0.08);
+
+INSERT INTO Thuoc_SP_TheoLo (MaLH, MaPN, MaThuoc, SoLuongTon, NSX, HSD)
+VALUES
+('LH_T_2024', 'PN_T_2024', 'TS001', 200, '2024-01-01', '2026-01-01');
+
+INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
+VALUES
+('HD_T_2024', '2024-03-20 09:00:00', N'Hoàn tất', 'KH001', 'NV001');
+
+INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
+VALUES
+('HD_T_2024', 'LH_T_2024', 50, 1000, 0);
+
+UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 50 WHERE MaLH = 'LH_T_2024';
+
+-- ==========================================================
+-- BƯỚC 2: THÊM DỮ LIỆU THÁNG 9/2025 (TEST "QUÝ NÀY" & "TÙY CHỌN")
+-- ==========================================================
+PRINT N'--- 2. Thêm dữ liệu Tháng 9/2025 (Quý 4)';
+
+INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
+VALUES
+('PN_T_SEP25', '2025-09-05', 1, N'Hàng test T9/2025', 'NCC002', 'NV002');
+
+INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
+VALUES
+('PN_T_SEP25', 'TS002', 'LH_T_SEP25', 150, 1200, 0, 0.08);
+
+INSERT INTO Thuoc_SP_TheoLo (MaLH, MaPN, MaThuoc, SoLuongTon, NSX, HSD)
+VALUES
+('LH_T_SEP25', 'PN_T_SEP25', 'TS002', 150, '2025-09-01', '2027-09-01');
+
+INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
+VALUES
+('HD_T_SEP25', '2025-09-18 11:00:00', N'Hoàn tất', 'KH003', 'NV001');
+
+INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
+VALUES
+('HD_T_SEP25', 'LH_T_SEP25', 30, 1500, 0);
+
+UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 30 WHERE MaLH = 'LH_T_SEP25';
+
+-- ==========================================================
+-- BƯỚC 3: THÊM DỮ LIỆU ĐẦU THÁNG 10 (TEST "THÁNG NÀY")
+-- ==========================================================
+PRINT N'--- 3. Thêm dữ liệu đầu Tháng 10/2025';
+-- Lỗi Foreign Key ở đây đã được sửa vì 'LH_T101' đã được tạo ở Script V1 (Fixed)
+INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
+VALUES
+('HD_T_OCT15', '2025-10-15 16:00:00', N'Hoàn tất', 'KH005', 'NV003');
+
+INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
+VALUES
+('HD_T_OCT15', 'LH_T101', 20, 1200, 0);
+
+UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 20 WHERE MaLH = 'LH_T101';
+
+-- ==========================================================
+-- BƯỚC 4: THÊM DỮ LIỆU CHO "TUẦN NÀY" (20/10 - 24/10)
+-- ==========================================================
+PRINT N'--- 4. Thêm dữ liệu cho TUẦN NÀY (21/10)';
+-- Lỗi Foreign Key ở đây đã được sửa vì 'LH_T102' đã được tạo ở Script V1 (Fixed)
+INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
+VALUES
+('HD_T_OCT21', '2025-10-21 08:15:00', N'Hoàn tất', NULL, 'NV003');
+
+INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
+VALUES
+('HD_T_OCT21', 'LH_T102', 10, 2300, 0);
+
+UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 10 WHERE MaLH = 'LH_T102';
+
+-- ==========================================================
+-- BƯỚC 5: THÊM DỮ LIỆU CHO "HÔM NAY" (25/10/2025)
+-- ==========================================================
+PRINT N'--- 5. Thêm dữ liệu cho HÔM NAY (25/10)';
+
+-- SỬA: 'HD_T_TODAY3' (11) -> 'HD_T_TD3' (7)
+INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
+VALUES
+('HD_T_TD3', GETDATE(), N'Hoàn tất', 'KH001', 'NV002');
+
+INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
+VALUES
+('HD_T_TD3', 'LH_T104', 8, 3200, 0);
+
+UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 8 WHERE MaLH = 'LH_T104';
+
+COMMIT TRAN;
+PRINT N'=== HOÀN TẤT V2 (FIXED)! Đã thêm dữ liệu bổ sung. ===';
+
+GO
 
 
 
@@ -1511,7 +1759,8 @@ BEGIN
         GROUP BY CONVERT(date, PT.NgayLap)
     )
     SELECT
-        FORMAT(ISNULL(DS.Ngay, TH.Ngay), 'dd') AS ThoiGian, -- Nhãn 'dd' cho ngắn
+        -- SỬA Ở ĐÂY: từ 'dd' thành 'dd/MM'
+        FORMAT(ISNULL(DS.Ngay, TH.Ngay), 'dd/MM') AS ThoiGian,
         ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon, ISNULL(DS.TongGiaTri, 0) AS TongGiaTri, ISNULL(DS.GiamGia, 0) AS GiamGia,
         ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra, ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
         (ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0) - ISNULL(TH.GiaTriDonTra, 0)) AS DoanhThu
@@ -1520,7 +1769,7 @@ BEGIN
 END;
 GO
 
--- 3. DOANH THU: Tháng này (Theo ngày, nhãn 'dd')
+-- 3. CẬP NHẬT SP "THÁNG NÀY"
 CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_ThangNay
 AS
 BEGIN
@@ -1538,7 +1787,8 @@ BEGIN
         GROUP BY CONVERT(date, PT.NgayLap)
     )
     SELECT
-        FORMAT(ISNULL(DS.Ngay, TH.Ngay), 'dd') AS ThoiGian, -- Nhãn 'dd' cho ngắn
+        -- SỬA Ở ĐÂY: từ 'dd' thành 'dd/MM'
+        FORMAT(ISNULL(DS.Ngay, TH.Ngay), 'dd/MM') AS ThoiGian,
         ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon, ISNULL(DS.TongGiaTri, 0) AS TongGiaTri, ISNULL(DS.GiamGia, 0) AS GiamGia,
         ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra, ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
         (ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0) - ISNULL(TH.GiaTriDonTra, 0)) AS DoanhThu
@@ -1685,3 +1935,212 @@ END;
 GO
 
 PRINT N'=== HOÀN TẤT! Đã tạo hoặc cập nhật 10 SP thành công. ===';
+
+--------- THỐNG KÊ XUẤT NHẬP TỒN
+USE QuanLyNhaThuoc;
+GO
+
+PRINT N'=== Bắt đầu tạo SP cho Thống kê XNT (Phiên bản sửa lỗi) ===';
+GO
+
+-- ==========================================================
+-- 1. SP THỐNG KÊ THUỐC HẾT HẠN
+-- ==========================================================
+IF OBJECT_ID('sp_ThongKeThuocHetHan', 'P') IS NOT NULL
+    DROP PROCEDURE sp_ThongKeThuocHetHan;
+GO
+
+CREATE PROCEDURE sp_ThongKeThuocHetHan
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        T.MaThuoc       AS maThuocHH,
+        T.TenThuoc      AS tenThuocHH,
+        SUM(L.SoLuongTon) AS soLuong,
+        L.HSD           AS ngayHetHan
+    FROM
+        Thuoc_SP_TheoLo AS L
+    JOIN
+        Thuoc_SanPham AS T ON L.MaThuoc = T.MaThuoc
+    WHERE
+        L.HSD <= GETDATE()  -- Lấy các lô có HSD nhỏ hơn hoặc bằng ngày hiện tại
+        AND L.SoLuongTon > 0 -- Chỉ lấy các lô còn tồn kho
+    GROUP BY
+        T.MaThuoc, T.TenThuoc, L.HSD
+    ORDER BY
+        L.HSD; -- Sắp xếp theo ngày hết hạn
+END;
+GO
+
+PRINT N'Tạo thành công sp_ThongKeThuocHetHan.';
+GO
+
+-- ==========================================================
+-- 2. SP THỐNG KÊ XUẤT - NHẬP - TỒN
+-- ==========================================================
+IF OBJECT_ID('sp_ThongKeXNT', 'P') IS NOT NULL
+    DROP PROCEDURE sp_ThongKeXNT;
+GO
+
+CREATE PROCEDURE sp_ThongKeXNT
+    @TuNgay DATE,
+    @DenNgay DATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- CTE 1: Lấy đơn vị tính cơ bản (base unit) cho mỗi sản phẩm
+    WITH BaseUnits AS (
+        SELECT
+            CT.MaThuoc,
+            DVT.KiHieu AS DVT
+        FROM
+            ChiTietDonViTinh AS CT
+        JOIN
+            DonViTinh AS DVT ON CT.MaDVT = DVT.MaDVT
+        WHERE
+            CT.DonViCoBan = 1
+    ),
+
+    -- CTE 2: Lấy danh sách tất cả sản phẩm và DVT cơ bản
+    AllProducts AS (
+        SELECT
+            T.MaThuoc,
+            T.TenThuoc,
+            ISNULL(BU.DVT, N'N/A') AS DVT
+        FROM
+            Thuoc_SanPham AS T
+        LEFT JOIN
+            BaseUnits AS BU ON T.MaThuoc = BU.MaThuoc
+    ),
+
+    -- CTE 3: Tổng hợp tất cả các giao dịch (Nhập và Xuất)
+    Transactions AS (
+        -- 1. Nhập hàng từ Nhà cung cấp
+        SELECT
+            CTPN.MaThuoc,
+            PN.NgayNhap AS NgayGiaoDich,
+            CTPN.SoLuong AS SoLuongNhap,
+            0 AS SoLuongXuat
+        FROM
+            ChiTietPhieuNhap AS CTPN
+        JOIN
+            PhieuNhap AS PN ON CTPN.MaPN = PN.MaPN
+
+        UNION ALL
+
+        -- 2. Nhập hàng từ Khách trả hàng
+        SELECT
+            L.MaThuoc,
+            PT.NgayLap AS NgayGiaoDich,
+            CTPT.SoLuong AS SoLuongNhap,
+            0 AS SoLuongXuat
+        FROM
+            ChiTietPhieuTraHang AS CTPT
+        JOIN
+            PhieuTraHang AS PT ON CTPT.MaPT = PT.MaPT
+        JOIN
+            Thuoc_SP_TheoLo AS L ON CTPT.MaLH = L.MaLH
+
+        UNION ALL
+
+        -- 3. Nhập hàng từ Đổi hàng (Khách trả lại, SoLuong < 0)
+        SELECT
+            L.MaThuoc,
+            PD.NgayLap AS NgayGiaoDich,
+            ABS(CTPD.SoLuong) AS SoLuongNhap, -- Lấy giá trị tuyệt đối
+            0 AS SoLuongXuat
+        FROM
+            ChiTietPhieuDoiHang AS CTPD
+        JOIN
+            PhieuDoiHang AS PD ON CTPD.MaPD = PD.MaPD
+        JOIN
+            Thuoc_SP_TheoLo AS L ON CTPD.MaLH = L.MaLH
+        WHERE
+            CTPD.SoLuong < 0
+
+        UNION ALL
+
+        -- 4. Xuất hàng do Bán hàng (Hóa đơn)
+        SELECT
+            L.MaThuoc,
+            HD.NgayLap AS NgayGiaoDich,
+            0 AS SoLuongNhap,
+            CTHD.SoLuong AS SoLuongXuat
+        FROM
+            ChiTietHoaDon AS CTHD
+        JOIN
+            HoaDon AS HD ON CTHD.MaHD = HD.MaHD
+        JOIN
+            Thuoc_SP_TheoLo AS L ON CTHD.MaLH = L.MaLH
+
+        UNION ALL
+
+        -- 5. Xuất hàng do Đổi hàng (Khách lấy hàng mới, SoLuong > 0)
+        SELECT
+            L.MaThuoc,
+            PD.NgayLap AS NgayGiaoDich,
+            0 AS SoLuongNhap,
+            CTPD.SoLuong AS SoLuongXuat
+        FROM
+            ChiTietPhieuDoiHang AS CTPD
+        JOIN
+            PhieuDoiHang AS PD ON CTPD.MaPD = PD.MaPD
+        JOIN
+            Thuoc_SP_TheoLo AS L ON CTPD.MaLH = L.MaLH
+        WHERE
+            CTPD.SoLuong > 0
+    ),
+
+    -- CTE 4: Tổng hợp các giao dịch theo ngày
+    DailySummary AS (
+        SELECT
+            MaThuoc,
+            CONVERT(date, NgayGiaoDich) AS Ngay,
+            SUM(SoLuongNhap) AS TongNhap,
+            SUM(SoLuongXuat) AS TongXuat
+        FROM
+            Transactions
+        GROUP BY
+            MaThuoc, CONVERT(date, NgayGiaoDich)
+    )
+
+    -- Tính toán cuối cùng
+    SELECT
+        P.MaThuoc,
+        P.TenThuoc,
+        P.DVT,
+
+        -- Tồn Đầu Kỳ: Tổng (Nhập - Xuất) TRƯỚC @TuNgay
+        ISNULL(SUM(CASE WHEN DS.Ngay < @TuNgay THEN DS.TongNhap - DS.TongXuat ELSE 0 END), 0) AS TonDauKy,
+
+        -- Nhập Trong Kỳ: Tổng Nhập TRONG KHOẢNG @TuNgay VÀ @DenNgay
+        ISNULL(SUM(CASE WHEN DS.Ngay BETWEEN @TuNgay AND @DenNgay THEN DS.TongNhap ELSE 0 END), 0) AS NhapTrongKy,
+
+        -- Xuất Trong Kỳ: Tổng Xuất TRONG KHOẢNG @TuNgay VÀ @DenNgay
+        ISNULL(SUM(CASE WHEN DS.Ngay BETWEEN @TuNgay AND @DenNgay THEN DS.TongXuat ELSE 0 END), 0) AS XuatTrongKy,
+
+        -- Tồn Cuối Kỳ: Tổng (Nhập - Xuất) TÍNH ĐẾN HẾT @DenNgay
+        ISNULL(SUM(CASE WHEN DS.Ngay <= @DenNgay THEN DS.TongNhap - DS.TongXuat ELSE 0 END), 0) AS TonCuoiKy
+    FROM
+        AllProducts AS P
+    LEFT JOIN
+        DailySummary AS DS ON P.MaThuoc = DS.MaThuoc
+    GROUP BY
+        P.MaThuoc, P.TenThuoc, P.DVT
+    -- Chỉ hiển thị những thuốc có tồn kho hoặc có giao dịch trong kỳ
+    HAVING
+        (ISNULL(SUM(CASE WHEN DS.Ngay <= @DenNgay THEN DS.TongNhap - DS.TongXuat ELSE 0 END), 0) <> 0) -- Có tồn cuối kỳ
+        OR (ISNULL(SUM(CASE WHEN DS.Ngay BETWEEN @TuNgay AND @DenNgay THEN DS.TongNhap ELSE 0 END), 0) <> 0) -- Có nhập trong kỳ
+        OR (ISNULL(SUM(CASE WHEN DS.Ngay BETWEEN @TuNgay AND @DenNgay THEN DS.TongXuat ELSE 0 END), 0) <> 0) -- Có xuất trong kỳ
+    ORDER BY
+        P.TenThuoc;
+END;
+GO
+
+PRINT N'Tạo thành công sp_ThongKeXNT.';
+GO
+
+PRINT N'=== HOÀN TẤT! Đã tạo 2 SP cho Thống kê XNT. ===';

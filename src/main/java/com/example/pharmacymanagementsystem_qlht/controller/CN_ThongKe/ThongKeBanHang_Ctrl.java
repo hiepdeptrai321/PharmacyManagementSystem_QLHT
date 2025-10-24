@@ -218,8 +218,8 @@ public class ThongKeBanHang_Ctrl extends Application implements Initializable {
         chartDoanhThu.setVisible(false);
         tableDoanhThu.setVisible(true);
 
-        // Xoay nhãn cho dễ đọc
-        xAxis.setTickLabelRotation(-30);
+        // Xoay nhãn
+        xAxis.setTickLabelRotation(-20);
     }
 
 

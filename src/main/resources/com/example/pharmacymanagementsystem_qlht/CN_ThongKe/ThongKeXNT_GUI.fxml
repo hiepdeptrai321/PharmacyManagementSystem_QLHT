@@ -21,11 +21,11 @@
     <children>
         <HBox layoutX="14.0" layoutY="14.0">
             <children>
-                <VBox prefHeight="863.0" prefWidth="454.0">
+                <VBox prefHeight="863.0" prefWidth="394.0">
                     <children>
                   <HBox prefHeight="41.0" prefWidth="281.0">
                      <children>
-                              <Label prefHeight="34.0" prefWidth="219.0" text="Xuất-Nhập-Tồn">
+                              <Label prefHeight="34.0" prefWidth="316.0" text="Báo cáo Xuất-Nhập-Tồn">
                                   <font>
                                       <Font size="28.0" />
                                   </font>
@@ -50,7 +50,7 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="txtTimNhanh" prefHeight="40.0" prefWidth="445.0" promptText="Nhập mã, tên" />
+                  <TextField fx:id="txtTimNhanh" prefHeight="40.0" prefWidth="369.0" promptText="Nhập mã, tên" />
                         <HBox alignment="CENTER">
                             <VBox.margin>
                                 <Insets top="5.0" />
@@ -64,19 +64,19 @@
                                 <Insets top="10.0" />
                             </VBox.margin>
                         </Label>
-                  <ComboBox fx:id="cboThoiGian" prefHeight="49.0" prefWidth="440.0" />
+                  <ComboBox fx:id="cboThoiGian" prefHeight="49.0" prefWidth="378.0" />
                   <Label fx:id="lblTu" prefHeight="27.0" prefWidth="221.0" text="Từ:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <DatePicker fx:id="dateTu" prefHeight="52.0" prefWidth="436.0" />
+                  <DatePicker fx:id="dateTu" prefHeight="52.0" prefWidth="377.0" />
                   <Label fx:id="lblDen" prefHeight="27.0" prefWidth="221.0" text="Đến:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <DatePicker fx:id="dateDen" prefHeight="52.0" prefWidth="437.0" />
+                  <DatePicker fx:id="dateDen" prefHeight="52.0" prefWidth="376.0" />
                         <Label text="Xuất file">
                             <font>
                                 <Font size="18.0" />
@@ -85,7 +85,7 @@
                                 <Insets top="10.0" />
                             </VBox.margin>
                         </Label>
-                        <ComboBox fx:id="cboXuat" prefHeight="49.0" prefWidth="437.0" promptText="Chọn đinh dạng " />
+                        <ComboBox fx:id="cboXuat" prefHeight="49.0" prefWidth="375.0" promptText="Chọn đinh dạng " />
                         <Button fx:id="btnXuat" mnemonicParsing="false" prefHeight="62.0" prefWidth="438.0" text="Xuất File 💾">
                             <VBox.margin>
                                 <Insets top="10.0" />
@@ -95,12 +95,7 @@
                 </VBox>
                 <VBox>
                     <children>
-                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="934.0" text="Báo cáo xuất-nhập-tồn">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Label>
-                  <TableView fx:id="tbTon" prefHeight="538.0" prefWidth="1161.0">
+                  <TableView fx:id="tbTon" prefHeight="538.0" prefWidth="1223.0">
                     <columns>
                       <TableColumn fx:id="colMaThuoc" prefWidth="92.33331298828125" text="Mã thuốc" />
                       <TableColumn fx:id="colTenThuoc" prefWidth="186.0" text="Tên thuốc" />

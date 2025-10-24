@@ -158,6 +158,52 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
         }
         return tenDVT;
     }
+    public List<String> timTheoTenChiTietAll(String keyword, int limit) {
+        if (keyword == null) keyword = "";
+        keyword = keyword.trim();
+        if (keyword.isEmpty()) return new ArrayList<>();
+
+        if (limit <= 0) limit = 10;
+        if (limit > 50) limit = 50;
+
+        // chèn trực tiếp limit vào SQL — vì limit đã được kiểm soát ở trên
+        String sql = "SELECT TOP " + limit + " " +
+                "ts.MaThuoc, ts.TenThuoc, COALESCE(SUM(tspl.SoLuongTon), 0) AS TongSoLuongTon " +
+                "FROM Thuoc_SanPham ts " +
+                "LEFT JOIN Thuoc_SP_TheoLo tspl ON ts.MaThuoc = tspl.MaThuoc " +
+                "WHERE ts.TenThuoc COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? " +
+                "   OR ts.MaThuoc COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? " +
+                "GROUP BY ts.MaThuoc, ts.TenThuoc " +
+                "ORDER BY ts.TenThuoc";
+
+        List<String> suggestions = new ArrayList<>();
+        try (ResultSet rs = ConnectDB.query(sql, "%" + keyword + "%", "%" + keyword + "%")) {
+            ChiTietDonViTinh_Dao ctdvtDao = new ChiTietDonViTinh_Dao();
+
+            while (rs.next()) {
+                String maThuoc = rs.getString("MaThuoc");
+                String tenThuoc = rs.getString("TenThuoc");
+                int tongTonCoBan = rs.getInt("TongSoLuongTon");
+
+                for (ChiTietDonViTinh ctdvt : ctdvtDao.selectByMaThuoc(maThuoc)) {
+                    double heSo = ctdvt.getHeSoQuyDoi();
+                    if (heSo <= 0) continue;
+                    int soLuongTheoDVT = (int) Math.floor(tongTonCoBan / heSo);
+                    String tenDVT = (ctdvt.getDvt() != null && ctdvt.getDvt().getTenDonViTinh() != null)
+                            ? ctdvt.getDvt().getTenDonViTinh()
+                            : "ĐVT";
+                    suggestions.add(tenThuoc + " | Số lượng tồn: " + soLuongTheoDVT + " " + tenDVT);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Lỗi khi tìm kiếm chi tiết thuốc: " + e.getMessage(), e);
+        }
+        return suggestions;
+    }
+
+
+
     public List<String> timTheoTenChiTiet(String keyword, int limit) {
         if (keyword == null) keyword = "";
         keyword = keyword.trim();

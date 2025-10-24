@@ -75,7 +75,7 @@
                 <!-- TabPane chỉ chứa phần sản phẩm / danh sách thuốc -->
                 <TabPane fx:id="tabPaneProducts" prefHeight="216.0" prefWidth="969.0">
                     <tabs>
-                        <Tab closable="false" text="Danh sách thuốc">
+                        <Tab fx:id="tabThuoc" closable="false" text="Danh sách thuốc">
                             <content>
                                 <AnchorPane fx:id="paneThuocArea" prefHeight="194.0" prefWidth="923.0">
                                     <children>
@@ -121,6 +121,30 @@
                                 </AnchorPane>
                             </content>
                         </Tab>
+                        <!-- New Tab for invoice-based promotions LKM004 / LKM005 -->
+                        <Tab fx:id="tabHoaDon" closable="false" text="Giảm theo giá trị hóa đơn">
+                            <content>
+                                <AnchorPane>
+                                    <children>
+                                        <GridPane hgap="10.0" layoutX="7.0" layoutY="60.0" prefHeight="28.0" prefWidth="922.0" vgap="8.0">
+                                            <columnConstraints>
+                                                <ColumnConstraints percentWidth="20.0" />
+                                                <ColumnConstraints percentWidth="80.0" />
+                                                <ColumnConstraints percentWidth="0.0" />
+                                            </columnConstraints>
+
+                                            <Label text="Giá trị hóa đơn áp dụng (VNĐ):" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                            <TextField fx:id="tfGiaTriHoaDon" prefHeight="42.0" prefWidth="722.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                 <rowConstraints>
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                 </rowConstraints>
+                                        </GridPane>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+
                     </tabs>
                 </TabPane>
             </children>

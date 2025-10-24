@@ -6,7 +6,7 @@ USE QuanLyNhaThuoc;
 GO
 
 --Link thư mục hình ảnh thuốc 
-DECLARE @path NVARCHAR(255) = N'C:\Users\hiepdeptrai\Desktop\hk1_2025-2026\QLHT\SQL\imgThuoc\';
+DECLARE @path NVARCHAR(255) = N'G:\hk5\PTUD_Java\Project\PharmacyManagementSystem_QLHT\SQL\imgThuoc\';
 
 -- =========================
 -- Bảng KhachHang
@@ -111,7 +111,7 @@ CREATE TABLE Thuoc_SanPham (
     NuocSX     NVARCHAR(20),
     HinhAnh    VARBINARY(MAX) NULL,
 	MaLoaiHang VARCHAR(10) FOREIGN KEY REFERENCES LoaiHang(MaLoaiHang),
-    MaNDL      VARCHAR(10) FOREIGN KEY REFERENCES NhomDuocLy(MaNDL) NULL,
+    MaNDL      VARCHAR(10) FOREIGN KEY REFERENCES NhomDuocLy(MaNDL),
 	ViTri	   VARCHAR(10) FOREIGN KEY REFERENCES KeHang(MaKe)
 );
 
@@ -885,7 +885,7 @@ VALUES
 ('LKM005', N'Giảm phần trăm theo tổng hóa đơn', N'Khách hàng được giảm theo tỷ lệ phần trăm trên tổng hóa đơn');
 
 
-INSERT INTO KhuyenMai
+INSERT INTO KhuyenMai 
 (MaKM, TenKM, GiaTriKM, GiaTriApDung, LoaiGiaTri, NgayBatDau, NgayKetThuc, MoTa, MaLoai)
 VALUES
 -- Giảm theo sản phẩm
@@ -901,19 +901,19 @@ VALUES
 ('KM020', N'Máy đo HA giảm 100k', 100000, 0, 'VND', '2025-10-01', '2025-12-31', N'Giảm 100.000đ cho Máy đo huyết áp bắp tay', 'LKM002'),
 
 -- Giảm trực tiếp theo tổng hóa đơn (LKM004)
-('KM021', N'Hóa đơn trên 300k giảm 30k', 30000, 300000, 'VND', '2025-10-01', '2025-10-31',
+('KM021', N'Hóa đơn trên 300k giảm 30k', 30000, 300000, 'VND', '2025-10-01', '2025-10-31', 
  N'Khách hàng có hóa đơn từ 300.000đ trở lên sẽ được giảm trực tiếp 30.000đ', 'LKM004'),
-('KM022', N'Hóa đơn trên 500k giảm 70k', 70000, 500000, 'VND', '2025-10-10', '2025-11-10',
+('KM022', N'Hóa đơn trên 500k giảm 70k', 70000, 500000, 'VND', '2025-10-10', '2025-11-10', 
  N'Khách hàng có hóa đơn từ 500.000đ trở lên sẽ được giảm trực tiếp 70.000đ', 'LKM004'),
-('KM023', N'Hóa đơn trên 1 triệu giảm 150k', 150000, 1000000, 'VND', '2025-10-15', '2025-12-15',
+('KM023', N'Hóa đơn trên 1 triệu giảm 150k', 150000, 1000000, 'VND', '2025-10-15', '2025-12-15', 
  N'Giảm ngay 150.000đ khi tổng hóa đơn đạt từ 1.000.000đ', 'LKM004'),
 
 -- Giảm phần trăm theo tổng hóa đơn (LKM005)
-('KM024', N'Hóa đơn trên 200k giảm 5%', 5, 200000, '%', '2025-10-01', '2025-11-01',
+('KM024', N'Hóa đơn trên 200k giảm 5%', 5, 200000, '%', '2025-10-01', '2025-11-01', 
  N'Khách hàng có hóa đơn từ 200.000đ trở lên được giảm 5% tổng giá trị hóa đơn', 'LKM005'),
-('KM025', N'Hóa đơn trên 800k giảm 8%', 8, 800000, '%', '2025-10-05', '2025-11-30',
+('KM025', N'Hóa đơn trên 800k giảm 8%', 8, 800000, '%', '2025-10-05', '2025-11-30', 
  N'Khách hàng có hóa đơn từ 800.000đ trở lên được giảm 8% tổng giá trị hóa đơn', 'LKM005'),
-('KM026', N'Hóa đơn trên 1.5 triệu giảm 10%', 10, 1500000, '%', '2025-10-20', '2025-12-31',
+('KM026', N'Hóa đơn trên 1.5 triệu giảm 10%', 10, 1500000, '%', '2025-10-20', '2025-12-31', 
  N'Khách hàng có hóa đơn từ 1.500.000đ trở lên được giảm 10% tổng giá trị hóa đơn', 'LKM005');
 
 
@@ -1700,14 +1700,10 @@ BEGIN
     -- Xuất mã nhân viên mới
     SELECT @NewMaNV AS MaNhanVienMoi;
 END;
-GO
-
 
 
 -----------Proc thống kê
 
-USE QuanLyNhaThuoc;
-GO
 
 PRINT N'=== Bắt đầu tạo 10 Stored Procedure Thống kê ===';
 GO
@@ -2146,25 +2142,9 @@ PRINT N'Tạo thành công sp_ThongKeXNT.';
 GO
 
 PRINT N'=== HOÀN TẤT! Đã tạo 2 SP cho Thống kê XNT. ===';
-        -- 3️⃣ Nếu phiếu nhập đã duyệt thì cập nhật các bảng liên quan
-        IF @TrangThai = 1
-        BEGIN
-            -- ⚙️ Kiểm tra lô thuốc đã tồn tại chưa
-            IF EXISTS (SELECT 1 FROM Thuoc_SP_TheoLo WHERE MaLH = @MaLH)
-            BEGIN
-                -- ➕ Nếu có rồi thì cộng thêm số lượng
-                UPDATE Thuoc_SP_TheoLo
-                SET SoLuongTon = SoLuongTon + @SoLuongTon
-                WHERE MaLH = @MaLH;
-            END
-            ELSE
-            BEGIN
-                -- ➕ Nếu chưa có thì thêm mới
-                INSERT INTO Thuoc_SP_TheoLo (MaPN, MaThuoc, MaLH, SoLuongTon, NSX, HSD)
-                VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuongTon, @NSX, @HSD);
-            END
-            Go
-CREATE PROCEDURE sp_InsertPhieuNhapVaCapNhatGiaNhap
+go
+
+CREATE PROCEDURE sp_LuuPhieuNhap
     @MaPN VARCHAR(10),
     @NgayNhap DATE,
     @TrangThai BIT,
@@ -2180,38 +2160,74 @@ CREATE PROCEDURE sp_InsertPhieuNhapVaCapNhatGiaNhap
     @ChietKhau FLOAT,
     @Thue FLOAT,
 
-    -- Thông tin lô
+    -- Lô thuốc
     @SoLuongTon INT = NULL,
     @NSX DATE = NULL,
     @HSD DATE = NULL,
 
-    -- Đơn vị tính cần cập nhật giá
+    -- Đơn vị tính cần cập nhật
     @MaDVT VARCHAR(10) = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
 
-BEGIN TRY
-BEGIN TRANSACTION;
+    BEGIN TRY
+        BEGIN TRANSACTION;
 
         -- 1️⃣ Thêm phiếu nhập nếu chưa có
         IF NOT EXISTS (SELECT 1 FROM PhieuNhap WHERE MaPN = @MaPN)
-BEGIN
-INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
-VALUES (@MaPN, @NgayNhap, @TrangThai, @GhiChu, @MaNCC, @MaNV);
-END
+        BEGIN
+            INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
+            VALUES (@MaPN, @NgayNhap, @TrangThai, @GhiChu, @MaNCC, @MaNV);
+        END
+        ELSE
+        BEGIN
+            -- Nếu đã có thì cập nhật lại thông tin chung (nếu cần)
+            UPDATE PhieuNhap
+            SET NgayNhap = @NgayNhap,
+                TrangThai = @TrangThai,
+                GhiChu = @GhiChu,
+                MaNCC = @MaNCC,
+                MaNV = @MaNV
+            WHERE MaPN = @MaPN;
+        END
 
-        -- 2️⃣ Thêm chi tiết phiếu nhập
-INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
-VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuong, @GiaNhap, @ChietKhau, @Thue);
+        -- 2️⃣ Thêm hoặc cập nhật chi tiết phiếu nhập
+        IF EXISTS (SELECT 1 FROM ChiTietPhieuNhap WHERE MaPN = @MaPN AND MaThuoc = @MaThuoc AND MaLH = @MaLH)
+        BEGIN
+            UPDATE ChiTietPhieuNhap
+            SET SoLuong = @SoLuong,
+                GiaNhap = @GiaNhap,
+                ChietKhau = @ChietKhau,
+                Thue = @Thue
+            WHERE MaPN = @MaPN AND MaThuoc = @MaThuoc AND MaLH = @MaLH;
+        END
+        ELSE
+        BEGIN
+            INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
+            VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuong, @GiaNhap, @ChietKhau, @Thue);
+        END
 
-            -- 🔁 Cập nhật giá nhập trong ChiTietDonViTinh
+        -- 3️⃣ Nếu TrangThai = 1 thì mới cập nhật kho và giá nhập
+        IF @TrangThai = 1
+        BEGIN
+            -- ⚙️ Cập nhật hoặc thêm mới lô thuốc
+            IF EXISTS (SELECT 1 FROM Thuoc_SP_TheoLo WHERE MaLH = @MaLH)
+            BEGIN
+                UPDATE Thuoc_SP_TheoLo
+                SET SoLuongTon = SoLuongTon + @SoLuongTon
+                WHERE MaLH = @MaLH;
+            END
+            ELSE
+            BEGIN
+                INSERT INTO Thuoc_SP_TheoLo (MaPN, MaThuoc, MaLH, SoLuongTon, NSX, HSD)
+                VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuongTon, @NSX, @HSD);
+            END
+
+            -- 🔁 Cập nhật giá nhập và giá bán trong ChiTietDonViTinh
             UPDATE ChiTietDonViTinh
             SET GiaNhap = @GiaNhap,
-                GiaBan = CASE
-                            WHEN @GiaNhap > GiaBan THEN @GiaNhap  -- nếu giá nhập cao hơn thì cập nhật giá bán theo
-                            ELSE GiaBan
-                         END
+                GiaBan = CASE WHEN @GiaNhap > GiaBan THEN @GiaNhap ELSE GiaBan END
             WHERE MaThuoc = @MaThuoc AND MaDVT = @MaDVT;
         END
 

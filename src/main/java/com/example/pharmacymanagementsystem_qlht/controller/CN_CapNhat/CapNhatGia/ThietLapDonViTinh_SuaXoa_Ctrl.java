@@ -237,7 +237,27 @@ public class ThietLapDonViTinh_SuaXoa_Ctrl extends Application {
         String s = raw.trim();
         if (s.isEmpty()) return null;
 
+        // remove internal spaces
         s = s.replaceAll("\\s+", "");
+
+        // handle fraction forms "num/den" or "num:den"
+        if (s.contains("/") || s.contains(":")) {
+            String delim = s.contains("/") ? "/" : ":";
+            String[] parts = s.split(java.util.regex.Pattern.quote(delim), 2);
+            if (parts.length != 2) return null;
+            String a = parts[0].replace(",", ".").trim();
+            String b = parts[1].replace(",", ".").trim();
+            try {
+                double num = Double.parseDouble(a);
+                double den = Double.parseDouble(b);
+                if (den == 0.0) return null;
+                return (float) (num / den);
+            } catch (NumberFormatException ex) {
+                return null;
+            }
+        }
+
+        // fallback: handle thousand separators and decimal comma
         if (s.contains(",") && s.contains(".")) {
             s = s.replace(".", "").replace(",", ".");
         } else {

@@ -41,6 +41,7 @@ public class DanhMucKhuyenMai_Ctrl extends Application {
 
     public void initialize() {
         loadTable();
+        tfTimKM.setOnAction(e -> timKhuyenMai());
     }
 
     @Override

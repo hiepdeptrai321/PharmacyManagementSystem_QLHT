@@ -75,6 +75,13 @@ public class ThemKhuyenMai_Ctrl {
     private boolean giaTriFormattingEnabled = false;
     private final Locale VN_LOCALE = new Locale("vi", "VN");
     private final NumberFormat CURRENCY_FMT = NumberFormat.getCurrencyInstance(VN_LOCALE);
+    // --- add near the other @FXML fields ---
+    @FXML private TableColumn<ChiTietKhuyenMai, String> colDonVi;
+    @FXML private TableColumn<Thuoc_SP_TangKem, String> colDonViQua;
+
+    // --- add as class fields ---
+    private final Thuoc_SanPham_Dao thuocDao = new Thuoc_SanPham_Dao();
+    private final java.util.Map<String, String> dvtCache = new java.util.HashMap<>();
 
     @FXML
     public void initialize() {
@@ -119,6 +126,8 @@ public class ThemKhuyenMai_Ctrl {
 
         if (tfGiaTriHoaDon != null) setupCurrencyField(tfGiaTriHoaDon);
         setupEnterKeyHandlers();
+
+
 
     }
 
@@ -175,14 +184,39 @@ public class ThemKhuyenMai_Ctrl {
         if (colXoaCT != null) {
             colXoaCT.setCellFactory(col -> new TableCell<>() {
                 private final Button btn = new Button("Xóa");
-                { btn.setOnAction(ev -> {
-                    ChiTietKhuyenMai item = getTableView().getItems().get(getIndex());
-                    getTableView().getItems().remove(item);
-                });
+                {
+                    // base style: red background, white text, rounded corners
+                    btn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 4px;");
+                    // hover effect: slightly darker red
+                    btn.setOnMouseEntered(e -> btn.setStyle("-fx-background-color: #c0392b; -fx-text-fill: white; -fx-background-radius: 4px;"));
+                    btn.setOnMouseExited(e -> btn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 4px;"));
+                    btn.setOnAction(ev -> {
+                        ChiTietKhuyenMai item = getTableView().getItems().get(getIndex());
+                        getTableView().getItems().remove(item);
+                    });
                 }
                 @Override protected void updateItem(Void v, boolean empty) {
                     super.updateItem(v, empty);
                     setGraphic(empty ? null : btn);
+                }
+            });
+        }
+        if (colDonVi != null) {
+            colDonVi.setCellValueFactory(cd -> {
+                try {
+                    ChiTietKhuyenMai item = cd.getValue();
+                    if (item == null || item.getThuoc() == null) return new SimpleStringProperty("");
+                    String maThuoc = item.getThuoc().getMaThuoc();
+                    if (maThuoc == null || maThuoc.isBlank()) return new SimpleStringProperty("");
+                    String dvt = dvtCache.get(maThuoc);
+                    if (dvt == null) {
+                        try { dvt = thuocDao.getTenDVTByMaThuoc(maThuoc); } catch (Exception ex) { dvt = ""; }
+                        dvt = dvt == null ? "" : dvt;
+                        dvtCache.put(maThuoc, dvt);
+                    }
+                    return new SimpleStringProperty(dvt);
+                } catch (Exception ex) {
+                    return new SimpleStringProperty("");
                 }
             });
         }
@@ -220,14 +254,37 @@ public class ThemKhuyenMai_Ctrl {
         if (colXoaQua != null) {
             colXoaQua.setCellFactory(col -> new TableCell<>() {
                 private final Button btn = new Button("Xóa");
-                { btn.setOnAction(ev -> {
-                    Thuoc_SP_TangKem item = getTableView().getItems().get(getIndex());
-                    getTableView().getItems().remove(item);
-                });
+                {
+                    btn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 4px;");
+                    btn.setOnMouseEntered(e -> btn.setStyle("-fx-background-color: #c0392b; -fx-text-fill: white; -fx-background-radius: 4px;"));
+                    btn.setOnMouseExited(e -> btn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 4px;"));
+                    btn.setOnAction(ev -> {
+                        Thuoc_SP_TangKem item = getTableView().getItems().get(getIndex());
+                        getTableView().getItems().remove(item);
+                    });
                 }
                 @Override protected void updateItem(Void v, boolean empty) {
                     super.updateItem(v, empty);
                     setGraphic(empty ? null : btn);
+                }
+            });
+        }
+        if (colDonViQua != null) {
+            colDonViQua.setCellValueFactory(cd -> {
+                try {
+                    Thuoc_SP_TangKem item = cd.getValue();
+                    if (item == null || item.getThuocTangKem() == null) return new SimpleStringProperty("");
+                    String maThuoc = item.getThuocTangKem().getMaThuoc();
+                    if (maThuoc == null || maThuoc.isBlank()) return new SimpleStringProperty("");
+                    String dvt = dvtCache.get(maThuoc);
+                    if (dvt == null) {
+                        try { dvt = thuocDao.getTenDVTByMaThuoc(maThuoc); } catch (Exception ex) { dvt = ""; }
+                        dvt = dvt == null ? "" : dvt;
+                        dvtCache.put(maThuoc, dvt);
+                    }
+                    return new SimpleStringProperty(dvt);
+                } catch (Exception ex) {
+                    return new SimpleStringProperty("");
                 }
             });
         }

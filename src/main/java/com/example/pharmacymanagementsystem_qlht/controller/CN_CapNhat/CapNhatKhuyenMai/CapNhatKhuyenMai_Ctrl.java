@@ -48,6 +48,7 @@ public class CapNhatKhuyenMai_Ctrl extends Application {
     // 2. KHỞI TẠO (INITIALIZE)
     public void initialize() {
         loadTable();
+        tfTimKM.setOnAction(e -> timKhuyenMai());
     }
 
     @Override
@@ -110,7 +111,8 @@ public class CapNhatKhuyenMai_Ctrl extends Application {
 
             stage.show();
 
-            // run later to ensure all CSS/layout completed
+            stage.setOnHidden(e -> loadTable());
+
             Platform.runLater(stage::sizeToScene);
         } catch (Exception e) {
             e.printStackTrace();

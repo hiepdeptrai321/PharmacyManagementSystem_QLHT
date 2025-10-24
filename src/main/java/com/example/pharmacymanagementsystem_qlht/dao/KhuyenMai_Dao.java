@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KhuyenMai_Dao implements DaoInterface<KhuyenMai> {
-    private final String INSERT_SQL = "INSERT INTO KhuyenMai (MaKM, MaLoai, TenKM, GiaTriKM, NgayBatDau, NgayKetThuc, MoTa) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE KhuyenMai SET MaLoai=?, TenKM=?, GiaTriKM=?, NgayBatDau=?, NgayKetThuc=?, MoTa=? WHERE MaKM=?";
+    private final String INSERT_SQL = "INSERT INTO KhuyenMai (MaKM, MaLoai, TenKM, GiaTriKM, NgayBatDau, NgayKetThuc, MoTa, GiaTriApDung) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE KhuyenMai SET MaLoai=?, TenKM=?, GiaTriKM=?, NgayBatDau=?, NgayKetThuc=?, MoTa=?, GiaTriApDung=? WHERE MaKM=?";
     private final String DELETE_BY_ID_SQL = "DELETE FROM KhuyenMai WHERE MaKM=?";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM KhuyenMai WHERE MaKM = ?";
     private final String SELECT_ALL_SQL = "SELECT * FROM KhuyenMai";
@@ -18,12 +18,12 @@ public class KhuyenMai_Dao implements DaoInterface<KhuyenMai> {
 
     @Override
     public boolean insert(KhuyenMai e) {
-        return ConnectDB.update(INSERT_SQL, e.getMaKM(), e.getLoaiKM().getMaLoai(), e.getTenKM(), e.getGiaTriKM(), e.getNgayBatDau(), e.getNgayKetThuc(), e.getMoTa())>0;
+        return ConnectDB.update(INSERT_SQL, e.getMaKM(), e.getLoaiKM().getMaLoai(), e.getTenKM(), e.getGiaTriKM(), e.getNgayBatDau(), e.getNgayKetThuc(), e.getMoTa(), e.getGiaTriApDung())>0;
     }
 
     @Override
     public boolean update(KhuyenMai e) {
-        return ConnectDB.update(UPDATE_SQL, e.getLoaiKM().getMaLoai(), e.getTenKM(), e.getGiaTriKM(), e.getNgayBatDau(), e.getNgayKetThuc(), e.getMoTa(), e.getMaKM())>0;
+        return ConnectDB.update(UPDATE_SQL, e.getLoaiKM().getMaLoai(), e.getTenKM(), e.getGiaTriKM(), e.getNgayBatDau(), e.getNgayKetThuc(), e.getMoTa(), e.getGiaTriApDung(), e.getMaKM())>0;
     }
 
     @Override
@@ -51,6 +51,7 @@ public class KhuyenMai_Dao implements DaoInterface<KhuyenMai> {
                 khuyenMai.setNgayKetThuc(rs.getDate("NgayKetThuc"));
                 khuyenMai.setMoTa(rs.getString("MoTa"));
                 khuyenMai.setNgayTao(rs.getTimestamp("NgayTao"));
+                khuyenMai.setGiaTriApDung(rs.getFloat("GiaTriApDung"));
                 khuyenMaiList.add(khuyenMai);
             }
             rs.getStatement().close();

@@ -47,14 +47,14 @@
                     </rowConstraints>
 
                     <!-- Tên KM -->
-                    <Label text="Tên KM" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label text="Tên KM:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                     <TextField fx:id="tfTenKM" prefHeight="25.0" prefWidth="396.0" promptText="Nhập tên khuyến mãi" GridPane.columnIndex="1" GridPane.columnSpan="3" />
 
-                    <Label text="Loại KM" GridPane.rowIndex="1" />
+                    <Label text="Loại KM:" GridPane.rowIndex="1" />
                     <ComboBox fx:id="cbLoaiKM" prefHeight="25.0" prefWidth="380.0" promptText="Chọn loại khuyến mãi" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                     <!-- Giá trị và ngày -->
-                    <Label text="Giá trị KM" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                    <Label text="Giá trị KM:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                     <TextField fx:id="tfGiaTri" promptText="Nhập giá trị khuyến mãi" GridPane.columnIndex="3" GridPane.rowIndex="1" />
 
                     <Label text="Từ:" GridPane.rowIndex="2" />
@@ -63,7 +63,7 @@
                     <Label text="Đến:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                     <DatePicker fx:id="dpDenNgay" prefHeight="25.0" prefWidth="406.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
 
-                    <Label text="Mô tả" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <Label text="Mô tả:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
                     <TextField fx:id="tfMoTa" prefHeight="25.0" prefWidth="1020.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="3" />
                <VBox.margin>
                   <Insets top="8.0" />
@@ -78,19 +78,20 @@
                                 <AnchorPane fx:id="paneThuocArea" prefHeight="194.0" prefWidth="923.0">
                                     <children>
                                           <HBox alignment="CENTER_RIGHT" layoutX="8.0" layoutY="8.0" spacing="8.0">
-                                              <Label text="Tìm thuốc" />
+                                              <Label text="Tìm thuốc:" />
                                               <TextField fx:id="tfTimThuoc" prefWidth="854.0" promptText="Nhập mã, tên thuốc" HBox.hgrow="ALWAYS" />
                                           </HBox>
                                           <TableView fx:id="tbDSThuoc" layoutX="8.0" layoutY="43.0" prefHeight="133.0" prefWidth="915.0">
                                               <columns>
-                                                  <TableColumn fx:id="colMaThuoc" prefWidth="120.0" text="Mã thuốc" />
-                                                  <TableColumn fx:id="colTenThuoc" prefWidth="313.0" text="Tên thuốc" />
-                                                  <TableColumn fx:id="colSLAP" prefWidth="207.0" text="Số lượng áp dụng" />
-                                                  <TableColumn fx:id="colSLTD" prefWidth="175.0" text="Số lượng tối đa" />
-                                                  <TableColumn fx:id="colXoaCT" prefWidth="92.0" text="" />
+                                                  <TableColumn fx:id="colMaThuoc" prefWidth="115.0" style="-fx-alignment: CENTER;" text="Mã thuốc" />
+                                                  <TableColumn fx:id="colTenThuoc" prefWidth="290.0" text="Tên thuốc" />
+                                                  <TableColumn fx:id="colSLAP" prefWidth="161.0" style="-fx-alignment: CENTER;" text="Số lượng áp dụng" />
+                                                  <TableColumn fx:id="colSLTD" prefWidth="162.0" style="-fx-alignment: CENTER;" text="Số lượng tối đa" />
+                                    <TableColumn fx:id="colDonVi" prefWidth="115.0" style="-fx-alignment: CENTER;" text="Đơn vị (cơ bản)" />
+                                                  <TableColumn fx:id="colXoaCT" prefWidth="71.0" style="-fx-alignment: CENTER;" text="" />
                                               </columns>
                                           </TableView>
-                              <ListView fx:id="listViewThuoc" layoutX="69.0" layoutY="33.0" prefHeight="121.0" prefWidth="854.0" />
+                              <ListView fx:id="listViewThuoc" layoutX="72.0" layoutY="32.0" prefHeight="135.0" prefWidth="853.0" />
                                     </children>
                                 </AnchorPane>
                             </content>
@@ -102,20 +103,44 @@
                                 <AnchorPane>
                                    <children>
                                                 <HBox layoutX="8.0" layoutY="8.0" prefHeight="25.0" prefWidth="925.0" spacing="8.0">
-                                                    <Label prefHeight="23.0" prefWidth="73.0" text="Tìm quà tặng" />
+                                                    <Label prefHeight="23.0" prefWidth="73.0" text="Tìm quà tặng:" />
                                                     <TextField fx:id="tfTimQua" prefHeight="25.0" prefWidth="844.0" promptText="Nhập mã, tên thuốc" HBox.hgrow="ALWAYS" />
                                                 </HBox>
 
                                                       <TableView fx:id="tbTangKem" layoutX="8.0" layoutY="42.0" prefHeight="133.0" prefWidth="922.0">
                                                     <columns>
-                                                        <TableColumn fx:id="colMaQua" prefWidth="120.0" text="Mã thuốc" />
+                                                        <TableColumn fx:id="colMaQua" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Mã thuốc" />
                                                         <TableColumn fx:id="colTenQua" prefWidth="400.0" text="Tên thuốc" />
-                                                        <TableColumn fx:id="colSLTang" prefWidth="300.5714111328125" text="Số lượng tặng" />
-                                                        <TableColumn fx:id="colXoaQua" prefWidth="100.57135881696433" text="Xóa" />
+                                                        <TableColumn fx:id="colSLTang" prefWidth="150.0" style="-fx-alignment: CENTER;" text="Số lượng tặng" />
+                                    <TableColumn fx:id="colDonViQua" prefWidth="183.0" style="-fx-alignment: CENTER;" text="Đơn vị (cơ bản)" />
+                                                        <TableColumn fx:id="colXoaQua" prefWidth="68.0" style="-fx-alignment: CENTER;" />
                                                     </columns>
                                                 </TableView>
-                                      <ListView fx:id="listViewQua" layoutX="90.0" layoutY="33.0" prefHeight="133.0" prefWidth="845.0" />
+                                      <ListView fx:id="listViewQua" layoutX="90.0" layoutY="33.0" prefHeight="135.0" prefWidth="838.0" />
                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                        <!-- New Tab for invoice-based promotions LKM004 / LKM005 -->
+                        <Tab fx:id="tabHoaDon" closable="false" text="Giảm theo giá trị hóa đơn">
+                            <content>
+                                <AnchorPane>
+                                    <children>
+                                        <GridPane hgap="10.0" layoutX="7.0" layoutY="60.0" prefHeight="28.0" prefWidth="922.0" vgap="8.0">
+                                            <columnConstraints>
+                                                <ColumnConstraints percentWidth="20.0" />
+                                                <ColumnConstraints percentWidth="80.0" />
+                                                <ColumnConstraints percentWidth="0.0" />
+                                            </columnConstraints>
+
+                                            <Label text="Giá trị hóa đơn áp dụng (VNĐ):" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                            <TextField fx:id="tfGiaTriHoaDon" prefHeight="42.0" prefWidth="722.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                            <rowConstraints>
+                                                <RowConstraints />
+                                                <RowConstraints />
+                                            </rowConstraints>
+                                        </GridPane>
+                                    </children>
                                 </AnchorPane>
                             </content>
                         </Tab>

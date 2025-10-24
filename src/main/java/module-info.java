@@ -33,6 +33,11 @@ module com.example.pharmacymanagementsystem_qlht {
     requires javafx.base;
     requires java.sql;
     requires java.prefs;
+    requires kernel;
+    requires org.apache.poi.poi;
+    requires org.apache.poi.ooxml;
+    requires layout;
+    requires io;
 
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoatDong to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKeHang to javafx.fxml;

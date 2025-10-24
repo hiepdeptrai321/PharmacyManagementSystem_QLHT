@@ -48,6 +48,7 @@ public class CapNhatKhuyenMai_Ctrl extends Application {
     // 2. KHỞI TẠO (INITIALIZE)
     public void initialize() {
         loadTable();
+        tfTimKM.setOnAction(e -> timKhuyenMai());
     }
 
     @Override

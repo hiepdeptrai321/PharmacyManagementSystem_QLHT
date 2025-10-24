@@ -1,18 +1,21 @@
 package com.example.pharmacymanagementsystem_qlht.service;
 
 import com.example.pharmacymanagementsystem_qlht.dao.ChiTietKhuyenMai_Dao;
+import com.example.pharmacymanagementsystem_qlht.dao.KhuyenMai_Dao;
 import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SP_TangKem_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.ChiTietKhuyenMai;
 import com.example.pharmacymanagementsystem_qlht.model.KhuyenMai;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SP_TangKem;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
 public class DichVuKhuyenMai {
     private final ChiTietKhuyenMai_Dao ctDao = new ChiTietKhuyenMai_Dao();
     private final Thuoc_SP_TangKem_Dao tangKemDao = new Thuoc_SP_TangKem_Dao();
+    private final KhuyenMai_Dao kmDao = new KhuyenMai_Dao();
 
     public ApDungKhuyenMai apDungChoSP(String maThuoc, int soLuong, BigDecimal donGia, LocalDate ngay) {
         ApDungKhuyenMai kq = new ApDungKhuyenMai();
@@ -52,6 +55,38 @@ public class DichVuKhuyenMai {
                     kq.addFreeItem(tk.getThuocTangKem().getMaThuoc(), slTang);
                 }
                 kq.addApplied(km.getMaKM());
+            }
+        }
+        return kq;
+    }
+    public ApDungKhuyenMai apDungChoHoaDon(BigDecimal tongTruocKM, LocalDate ngay) {
+        ApDungKhuyenMai kq = new ApDungKhuyenMai();
+        if (tongTruocKM == null || tongTruocKM.signum() <= 0) return kq;
+
+        List<KhuyenMai> ds = kmDao.selectActiveInvoiceOn(Date.valueOf(ngay));
+        for (KhuyenMai km : ds) {
+            if (km == null || km.getLoaiKM() == null) continue;
+
+            String loai = km.getLoaiKM().getMaLoai();
+            double nguong = km.getGiaTriApDung(); // threshold for invoice total
+            if (tongTruocKM.doubleValue() < nguong) continue;
+
+            if ("LKM004".equalsIgnoreCase(loai)) {
+                BigDecimal giam = BigDecimal.valueOf(km.getGiaTriKM());
+                if (giam.signum() > 0) {
+                    // discount cannot exceed current base
+                    giam = giam.min(tongTruocKM.subtract(kq.getDiscount()).max(BigDecimal.ZERO));
+                    kq.addDiscount(giam);
+                    kq.addApplied(km.getMaKM());
+                }
+            } else if ("LKM005".equalsIgnoreCase(loai)) {
+                BigDecimal base = tongTruocKM.subtract(kq.getDiscount()).max(BigDecimal.ZERO);
+                BigDecimal percent = BigDecimal.valueOf(km.getGiaTriKM() / 100.0);
+                BigDecimal giam = base.multiply(percent);
+                if (giam.signum() > 0) {
+                    kq.addDiscount(giam);
+                    kq.addApplied(km.getMaKM());
+                }
             }
         }
         return kq;

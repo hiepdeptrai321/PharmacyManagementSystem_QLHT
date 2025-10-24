@@ -814,36 +814,78 @@ public class LapHoaDon_Ctrl extends Application {
     }
     //---------Xu Ly Khuyen Mai ---------
     private final DichVuKhuyenMai kmService = new DichVuKhuyenMai();
+    private ApDungKhuyenMai tinhKMHoaDon(BigDecimal tongTruocKM) {
+        return kmService.apDungChoHoaDon(tongTruocKM, LocalDate.now());
+    }
 
     private ApDungKhuyenMai tinhKMChoDong(String maThuoc, int soLuong, BigDecimal donGia) {
         return kmService.apDungChoSP(maThuoc, soLuong, donGia, LocalDate.now());
     }
 
-    private void capNhatSauKM(String maThuoc, int soLuong, BigDecimal donGia) {
-        ApDungKhuyenMai kq = tinhKMChoDong(maThuoc, soLuong, donGia);
-        // kq.getDiscount() -> trừ vào tổng
-        // kq.getFreeItems() -> thêm dòng quà tặng
-        // kq.getAppliedMaKM() -> hiển thị KM áp dụng
+    private void capNhatTongTien() {
+        // Sum line totals first
+        BigDecimal tongHang = BigDecimal.ZERO;
+        BigDecimal giamDong = BigDecimal.ZERO;
+
+        for (ChiTietHoaDon row : dsChiTietHD) {
+            BigDecimal line = BigDecimal.valueOf(row.getDonGia()).multiply(BigDecimal.valueOf(row.getSoLuong()));
+            tongHang = tongHang.add(line);
+            // row.getGiamGia() is already set by apDungKMChoRow(...)
+            giamDong = giamDong.add(BigDecimal.valueOf(row.getGiamGia()));
+        }
+
+        // Base for invoice-level KM = subtotal after per-row KM
+        BigDecimal baseForInvoiceKM = tongHang.subtract(giamDong).max(BigDecimal.ZERO);
+
+        // 3) Apply invoice-level KM (LKM004/LKM005)
+        ApDungKhuyenMai kmHD = tinhKMHoaDon(baseForInvoiceKM);
+        BigDecimal giamHoaDon = kmHD.getDiscount() == null ? BigDecimal.ZERO : kmHD.getDiscount();
+
+        BigDecimal thanhToan = baseForInvoiceKM.subtract(giamHoaDon).max(BigDecimal.ZERO);
+
+        // 4) Update UI/model as needed
+        // lblGiamGiaHD.setText(formatVND(giamHoaDon));
+        // lblThanhTien.setText(formatVND(thanhToan));
+        // lblMaKMHD.setText(String.join(", ", kmHD.getAppliedMaKM()));
+        // hoaDon.setGiamGiaHoaDon(giamHoaDon.doubleValue());
+        // hoaDon.setTongThanhToan(thanhToan.doubleValue());
     }
+
+    // 5) After updating per-row KM, re-run totals (keeps invoice KM in sync)
     private void apDungKMChoRow(ChiTietHoaDon row) {
         if (row == null || row.getLoHang() == null || row.getLoHang().getThuoc() == null) return;
-
-        Thuoc_SanPham sp = row.getLoHang().getThuoc();
-        String maThuoc = sp.getMaThuoc();
+        String maThuoc = row.getLoHang().getThuoc().getMaThuoc();
         int soLuong = row.getSoLuong();
         BigDecimal donGia = BigDecimal.valueOf(row.getDonGia());
-
         try {
-            ApDungKhuyenMai kq = kmService.apDungChoSP(maThuoc, soLuong, donGia, LocalDate.now());
-            if (kq != null && kq.getDiscount() != null) {
-                row.setGiamGia(kq.getDiscount().doubleValue());
-            } else {
-                row.setGiamGia(0.0);
-            }
-        } catch (Exception ex) {
-            row.setGiamGia(0.0);
+            var kq = kmService.apDungChoSP(maThuoc, soLuong, donGia, LocalDate.now());
+            row.setGiamGia(kq != null && kq.getDiscount() != null ? kq.getDiscount().doubleValue() : 0.0);
+        } finally {
+            capNhatTongTien(); // re-apply invoice KM after line KM changes
         }
     }
+
+    // 6) Hook recomputation on list changes (add/remove rows)
+    private void initListeners() {
+        // If dsChiTietHD is ObservableList:
+        // dsChiTietHD.addListener((ListChangeListener<ChiTietHoaDon>) c -> capNhatTongTien());
+        // Also call capNhatTongTien() after quantity/price edits.
+    }
+
+//    private void apDungKMChoRow(ChiTietHoaDon row) {
+//        if (row == null || row.getLoHang() == null || row.getLoHang().getThuoc() == null) return;
+//        String maThuoc = row.getLoHang().getThuoc().getMaThuoc();
+//        int soLuong = row.getSoLuong();
+//        BigDecimal donGia = BigDecimal.valueOf(row.getDonGia());
+//        try {
+//            ApDungKhuyenMai kq = kmService.apDungChoSP(maThuoc, soLuong, donGia, LocalDate.now());
+//            row.setGiamGia(kq != null && kq.getDiscount() != null ? kq.getDiscount().doubleValue() : 0.0);
+//            // handle kq.getFreeItems() if you want to add gift lines
+//        } catch (Exception ex) {
+//            row.setGiamGia(0.0);
+//        }
+//    }
+
     //-----Xu Ly giao dich
     private String toTangKemText(Map<String, Integer> freeMap) {
         if (freeMap == null || freeMap.isEmpty()) return "";
@@ -947,96 +989,9 @@ public class LapHoaDon_Ctrl extends Application {
             return Optional.of(nhanVienDangNhap.getMaNV());
         return Optional.empty();
     }
-    public void xuLyThanhToan(ActionEvent actionEvent) {
-        try {
-            if (tblChiTietHD == null || tblChiTietHD.getItems().isEmpty()) {
-                return;
-            }
+    @FXML
+    private void xuLyThanhToan(ActionEvent actionEvent) {
 
-            String phuongThuc = (cbPhuongThucTT != null && cbPhuongThucTT.getValue() != null)
-                    ? cbPhuongThucTT.getValue().trim() : "";
-            if (phuongThuc.isBlank() || "Phương thức thanh toán".equals(phuongThuc)) {
-                throw new IllegalStateException("Please choose a payment method.");
-            }
-
-            tinhTongTien();
-
-            if ("Tiền mặt".equals(phuongThuc)) {
-                long mustPay = ceilToThousand(parseVND(lblThanhTien != null ? lblThanhTien.getText() : "0"));
-                long given = parseVND(txtSoTienKhachDua != null ? txtSoTienKhachDua.getText() : "0");
-                if (given < mustPay) {
-                    throw new IllegalStateException("Customer cash is not enough.");
-                }
-            }
-
-            HoaDon_Dao hoaDonDao = new HoaDon_Dao();
-            ChiTietHoaDon_Dao chiTietHD_Dao = new ChiTietHoaDon_Dao();
-
-            String newMaHD = hoaDonDao.generateNewMaHD();
-
-            HoaDon hoaDon = new HoaDon();
-            hoaDon.setMaHD(newMaHD);
-            Timestamp ts = (dpNgayKeDon != null && dpNgayKeDon.getValue() != null)
-                    ? Timestamp.valueOf(dpNgayKeDon.getValue().atStartOfDay())
-                    : new Timestamp(System.currentTimeMillis());
-            hoaDon.setNgayLap(ts);
-            hoaDon.setTrangThai("Đã thanh toán");
-
-            if ((txtSDT != null && txtSDT.getText() != null && !txtSDT.getText().isBlank())
-                    || (txtTenKH != null && txtTenKH.getText() != null && !txtTenKH.getText().isBlank())) {
-                KhachHang kh = new KhachHang();
-                if (txtSDT != null) kh.setSdt(txtSDT.getText().trim());
-                if (txtTenKH != null) kh.setTenKH(txtTenKH.getText().trim());
-                hoaDon.setKhachHang(kh);
-            }
-
-            getMaNVDangNhap().ifPresent(ma -> {
-                NhanVien nv = new NhanVien();
-                nv.setMaNV(ma);
-                hoaDon.setNhanVien(nv);
-            });
-
-            hoaDon.setPhuongThucTT(phuongThuc);
-
-            BigDecimal tong = BigDecimal.valueOf(parseVND(lblTongTien != null ? lblTongTien.getText() : "0"));
-            BigDecimal giam = BigDecimal.valueOf(parseVND(lblGiamGia != null ? lblGiamGia.getText() : "0"));
-            BigDecimal vat = BigDecimal.valueOf(parseVND(lblVAT != null ? lblVAT.getText() : "0"));
-            BigDecimal thanhTien = BigDecimal.valueOf(ceilToThousand(parseVND(lblThanhTien != null ? lblThanhTien.getText() : "0")));
-            hoaDon.setTongTien(tong);
-            hoaDon.setGiamGia(giam);
-            hoaDon.setVat(vat);
-            hoaDon.setThanhTien(thanhTien);
-
-            boolean hdInserted = hoaDonDao.insert(hoaDon);
-            if (!hdInserted) throw new Exception("Failed to insert invoice");
-
-            ObservableList<ChiTietHoaDon> chiTietList = tblChiTietHD.getItems();
-            int skipped = 0;
-            for (ChiTietHoaDon cthd : chiTietList) {
-                if (cthd.getLoHang() == null || cthd.getLoHang().getMaLH() == null || cthd.getLoHang().getMaLH().isBlank()) {
-                    skipped++;
-                    continue; // Skip invalid rows
-                }
-                apDungKMChoRow(cthd);
-                cthd.setHoaDon(hoaDon);
-                boolean ctInserted = chiTietHD_Dao.insert(cthd);
-                if (!ctInserted) throw new Exception("Failed to insert invoice detail");
-            }
-
-            String msg = "Payment successful! Invoice code: " + newMaHD;
-            if (skipped > 0) msg += "\n" + skipped + " row(s) were skipped due to missing lot info.";
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, msg);
-            alert.showAndWait();
-
-            dsChiTietHD.clear();
-            if (txtSoTienKhachDua != null) txtSoTienKhachDua.clear();
-            if (lblTienThua != null) lblTienThua.setText("");
-            tinhTongTien();
-        } catch (Exception ex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Payment failed: " + ex.getMessage());
-            alert.showAndWait();
-        }
     }
-
 
 }

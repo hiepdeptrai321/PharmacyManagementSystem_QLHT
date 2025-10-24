@@ -43,6 +43,8 @@ public class SuaKhuyenMai_Ctrl {
     @FXML private TableColumn<Thuoc_SP_TangKem, String>  colTenQua;
     @FXML private TableColumn<Thuoc_SP_TangKem, Integer> colSLTang;
     @FXML private TableColumn<Thuoc_SP_TangKem, Void>    colXoaQua;
+    @FXML private TableColumn<Thuoc_SP_TangKem, String>    colDonVi;
+    @FXML private TableColumn<Thuoc_SP_TangKem, String>    colDonViQua;
 
     @FXML private TextField tfTimThuoc;
     @FXML private ListView<Thuoc_SanPham> listViewThuoc;
@@ -71,6 +73,8 @@ public class SuaKhuyenMai_Ctrl {
     // Focus listener management for tfGiaTri (attach only for LKM002 or LKM004)
     private ChangeListener<Boolean> giaTriFocusListener;
     private boolean giaTriFormattingEnabled = false;
+    private final Thuoc_SanPham_Dao thuocDao = new Thuoc_SanPham_Dao();
+    private final java.util.Map<String, String> dvtCache = new java.util.HashMap<>();
 
     @FXML
     public void initialize() {
@@ -162,6 +166,11 @@ public class SuaKhuyenMai_Ctrl {
             colXoaCT.setCellFactory(col -> new TableCell<>() {
                 private final Button btn = new Button("Xóa");
                 {
+                    // base style: red background, white text, rounded corners
+                    btn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 4px;");
+                    // hover effect: slightly darker red
+                    btn.setOnMouseEntered(e -> btn.setStyle("-fx-background-color: #c0392b; -fx-text-fill: white; -fx-background-radius: 4px;"));
+                    btn.setOnMouseExited(e -> btn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 4px;"));
                     btn.setOnAction(ev -> {
                         ChiTietKhuyenMai item = getTableView().getItems().get(getIndex());
                         getTableView().getItems().remove(item);
@@ -173,6 +182,43 @@ public class SuaKhuyenMai_Ctrl {
                 }
             });
         }
+
+        if (colDonVi != null) {
+            colDonVi.setCellValueFactory(cd -> {
+                try {
+                    Object item = cd.getValue();
+                    if (item == null) return new SimpleStringProperty("");
+
+                    String maThuoc = null;
+                    if (item instanceof ChiTietKhuyenMai) {
+                        Thuoc_SanPham t = ((ChiTietKhuyenMai) item).getThuoc();
+                        maThuoc = t == null ? null : t.getMaThuoc();
+                    } else if (item instanceof Thuoc_SP_TangKem) {
+                        Thuoc_SanPham t = ((Thuoc_SP_TangKem) item).getThuocTangKem();
+                        maThuoc = t == null ? null : t.getMaThuoc();
+                    } else {
+                        return new SimpleStringProperty("");
+                    }
+
+                    if (maThuoc == null || maThuoc.isBlank()) return new SimpleStringProperty("");
+
+                    String dvt = dvtCache.get(maThuoc);
+                    if (dvt == null) {
+                        try {
+                            dvt = thuocDao.getTenDVTByMaThuoc(maThuoc);
+                        } catch (Exception ex) {
+                            dvt = "";
+                        }
+                        dvt = dvt == null ? "" : dvt;
+                        dvtCache.put(maThuoc, dvt);
+                    }
+                    return new SimpleStringProperty(dvt);
+                } catch (Exception ex) {
+                    return new SimpleStringProperty("");
+                }
+            });
+        }
+
     }
 
     private void setupGiftTable() {
@@ -204,10 +250,15 @@ public class SuaKhuyenMai_Ctrl {
                 tbTangKem.refresh();
             });
         }
+
+        // styled delete button like colXoaCT
         if (colXoaQua != null) {
             colXoaQua.setCellFactory(col -> new TableCell<>() {
                 private final Button btn = new Button("Xóa");
                 {
+                    btn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 4px;");
+                    btn.setOnMouseEntered(e -> btn.setStyle("-fx-background-color: #c0392b; -fx-text-fill: white; -fx-background-radius: 4px;"));
+                    btn.setOnMouseExited(e -> btn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 4px;"));
                     btn.setOnAction(ev -> {
                         Thuoc_SP_TangKem item = getTableView().getItems().get(getIndex());
                         getTableView().getItems().remove(item);
@@ -216,6 +267,31 @@ public class SuaKhuyenMai_Ctrl {
                 @Override protected void updateItem(Void v, boolean empty) {
                     super.updateItem(v, empty);
                     setGraphic(empty ? null : btn);
+                }
+            });
+        }
+
+        // show unit name for gift items using shared DAO + cache (thuocDao, dvtCache)
+        if (colDonViQua != null) {
+            colDonViQua.setCellValueFactory(cd -> {
+                try {
+                    Thuoc_SP_TangKem item = cd.getValue();
+                    if (item == null || item.getThuocTangKem() == null) return new SimpleStringProperty("");
+                    String maThuoc = item.getThuocTangKem().getMaThuoc();
+                    if (maThuoc == null || maThuoc.isBlank()) return new SimpleStringProperty("");
+                    String dvt = dvtCache.get(maThuoc);
+                    if (dvt == null) {
+                        try {
+                            dvt = thuocDao.getTenDVTByMaThuoc(maThuoc);
+                        } catch (Exception ex) {
+                            dvt = "";
+                        }
+                        dvt = dvt == null ? "" : dvt;
+                        dvtCache.put(maThuoc, dvt);
+                    }
+                    return new SimpleStringProperty(dvt);
+                } catch (Exception ex) {
+                    return new SimpleStringProperty("");
                 }
             });
         }

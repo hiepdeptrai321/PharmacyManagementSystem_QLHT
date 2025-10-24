@@ -13,6 +13,7 @@ public class KhuyenMai {
     private Date ngayKetThuc;
     private String moTa;
     private Timestamp ngayTao;
+    private double giaTriApDung;
 
     public KhuyenMai() {
     }
@@ -25,6 +26,18 @@ public class KhuyenMai {
         this.ngayBatDau = ngayBatDau;
         this.ngayKetThuc = ngayKetThuc;
         this.moTa = moTa;
+    }
+
+    public KhuyenMai(String maKM, LoaiKhuyenMai loaiKM, String tenKM, float giaTriKM, Date ngayBatDau, Date ngayKetThuc, String moTa, Timestamp ngayTao, double giaTriApDung) {
+        this.maKM = maKM;
+        this.loaiKM = loaiKM;
+        this.tenKM = tenKM;
+        this.giaTriKM = giaTriKM;
+        this.ngayBatDau = ngayBatDau;
+        this.ngayKetThuc = ngayKetThuc;
+        this.moTa = moTa;
+        this.ngayTao = ngayTao;
+        this.giaTriApDung = giaTriApDung;
     }
 
     public String getMaKM() {
@@ -86,6 +99,14 @@ public class KhuyenMai {
     }
     public void setNgayTao(Timestamp ngayTao) {
         this.ngayTao = ngayTao;
+    }
+
+    public double getGiaTriApDung() {
+        return giaTriApDung;
+    }
+
+    public void setGiaTriApDung(double giaTriApDung) {
+        this.giaTriApDung = giaTriApDung;
     }
 
     @Override

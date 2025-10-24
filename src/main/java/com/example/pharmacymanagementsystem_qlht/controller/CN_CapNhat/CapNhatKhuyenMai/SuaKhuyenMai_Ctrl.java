@@ -1,4 +1,4 @@
-// java
+
 package com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatKhuyenMai;
 
 import com.example.pharmacymanagementsystem_qlht.dao.*;
@@ -9,6 +9,7 @@ import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,7 +18,9 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class SuaKhuyenMai_Ctrl {
 
@@ -33,6 +36,8 @@ public class SuaKhuyenMai_Ctrl {
 
     @FXML private TabPane tabPaneProducts;
     @FXML private Tab tabTangKem;
+    @FXML private Tab tabHoaDon;
+
     @FXML private TableView<Thuoc_SP_TangKem> tbTangKem;
     @FXML private TableColumn<Thuoc_SP_TangKem, String>  colMaQua;
     @FXML private TableColumn<Thuoc_SP_TangKem, String>  colTenQua;
@@ -53,10 +58,19 @@ public class SuaKhuyenMai_Ctrl {
     @FXML private DatePicker dpDenNgay;
     @FXML private TextField tfMoTa;
 
+    // New invoice-related fields
+    @FXML private TextField tfGiaTriHoaDon;
+
     // Data sources
     private final ObservableList<ChiTietKhuyenMai>  ctItems   = FXCollections.observableArrayList();
     private final ObservableList<Thuoc_SP_TangKem>  giftItems = FXCollections.observableArrayList();
     private final ObservableList<Thuoc_SanPham>     allThuoc  = FXCollections.observableArrayList();
+    private final Locale VN_LOCALE = new Locale("vi", "VN");
+    private final NumberFormat CURRENCY_FMT = NumberFormat.getCurrencyInstance(VN_LOCALE);
+
+    // Focus listener management for tfGiaTri (attach only for LKM002 or LKM004)
+    private ChangeListener<Boolean> giaTriFocusListener;
+    private boolean giaTriFormattingEnabled = false;
 
     @FXML
     public void initialize() {
@@ -69,18 +83,29 @@ public class SuaKhuyenMai_Ctrl {
         // Bind quà tặng table
         setupGiftTable();
 
-       if("Tặng kèm sản phẩm".equalsIgnoreCase(cbLoaiKM.getValue())) {setupGiftTable();}
-
         // ListView behaviors like SuaXoaThuoc_Ctrl
         initThuocListView();
         initQuaListView();
 
-        // Gift tab visibility follows Loại KM (LKM001)
+        // Gift tab visibility + invoice/product toggle follows Loại KM
         if (cbLoaiKM != null) {
-            cbLoaiKM.valueProperty().addListener((obs, o, n) -> updateGiftTabVisibility());
+            cbLoaiKM.valueProperty().addListener((obs, o, n) -> {
+                // Update gift tab (existing behavior)
+                updateGiftTabVisibility();
+                // Update tabs + formatting based on selected tenLoai (resolve to maLoai)
+                updateTabsBasedOnLoaiTen(n);
+            });
+            // ensure initial state
             updateGiftTabVisibility();
+            updateTabsBasedOnLoaiTen(cbLoaiKM == null ? null : cbLoaiKM.getValue());
         }
         cbLoaiKM.setEditable(false);
+
+
+        setupCurrencyField(tfGiaTriHoaDon);
+
+
+
     }
 
     private void loadAllThuoc() {
@@ -350,10 +375,121 @@ public class SuaKhuyenMai_Ctrl {
         if (tfMaKM  != null) tfMaKM.setText(km.getMaKM());
         if (tfTenKM != null) tfTenKM.setText(km.getTenKM());
         if (cbLoaiKM != null && km.getLoaiKM() != null) cbLoaiKM.setValue(km.getLoaiKM().getTenLoai());
-        if (tfGiaTri != null) tfGiaTri.setText(String.valueOf(km.getGiaTriKM()));
         if (dpTuNgay != null && km.getNgayBatDau() != null) dpTuNgay.setValue(km.getNgayBatDau().toLocalDate());
         if (dpDenNgay != null && km.getNgayKetThuc() != null) dpDenNgay.setValue(km.getNgayKetThuc().toLocalDate());
         if (tfMoTa != null) tfMoTa.setText(km.getMoTa());
+        String loaiKM = cbLoaiKM.getValue();
+        if ("Tặng kèm sản phẩm".equalsIgnoreCase(loaiKM)) {
+            tfGiaTri.setEditable(false);
+        } else {
+            tfGiaTri.setEditable(true);
+        } if(cbLoaiKM.getValue().equalsIgnoreCase("LKM001")){
+            tfGiaTri.setEditable(false);
+        }
+
+        // Always format invoice-applied field
+        if (tfGiaTriHoaDon != null) tfGiaTriHoaDon.setText(formatVND(km.getGiaTriApDung()));
+
+        // Decide tfGiaTri formatting by maLoai
+        if (km.getLoaiKM() != null && km.getLoaiKM().getMaLoai() != null) {
+            String maLoai = km.getLoaiKM().getMaLoai();
+            updateTabsBasedOnMaLoai(maLoai);
+            boolean shouldFormatGiaTri = "LKM002".equalsIgnoreCase(maLoai) || "LKM004".equalsIgnoreCase(maLoai);
+            if (tfGiaTri != null) {
+                if (shouldFormatGiaTri) tfGiaTri.setText(formatVND(km.getGiaTriKM()));
+                else tfGiaTri.setText(String.valueOf(km.getGiaTriKM()));
+            }
+        } else {
+            // fallback: update tabs based on current cbLoaiKM value (resolve name -> code)
+            updateTabsBasedOnLoaiTen(cbLoaiKM == null ? null : cbLoaiKM.getValue());
+            // If we cannot resolve maLoai, leave tfGiaTri as plain number
+            if (tfGiaTri != null) tfGiaTri.setText(String.valueOf(km.getGiaTriKM()));
+        }
+    }
+
+    // Update tab enable/disable using MaLoai directly (used when clicking Chi tiết)
+    private void updateTabsBasedOnMaLoai(String maLoai) {
+        if (tabPaneProducts == null) return;
+        Tab tabThuoc = tabPaneProducts.getTabs().size() > 0 ? tabPaneProducts.getTabs().get(0) : null;
+        boolean isInvoice = "LKM004".equalsIgnoreCase(maLoai) || "LKM005".equalsIgnoreCase(maLoai);
+        if (tabThuoc != null) tabThuoc.setDisable(isInvoice);
+        if (tabHoaDon != null) tabHoaDon.setDisable(!isInvoice);
+
+        // Enable tfGiaTri formatting only for LKM002 or LKM004
+        boolean enableGiaTriFmt = "LKM002".equalsIgnoreCase(maLoai) || "LKM004".equalsIgnoreCase(maLoai);
+        enableGiaTriFormatting(enableGiaTriFmt);
+    }
+
+    // Resolve tenLoai -> maLoai and then call updateTabsBasedOnMaLoai
+    private void updateTabsBasedOnLoaiTen(String tenLoai) {
+        if (tenLoai == null) {
+            updateTabsBasedOnMaLoai(null);
+            return;
+        }
+        try {
+            var loai = new LoaiKhuyenMai_Dao().selectByTen(tenLoai);
+            if (loai != null && loai.getMaLoai() != null) {
+                updateTabsBasedOnMaLoai(loai.getMaLoai());
+                return;
+            }
+        } catch (Exception ex) {
+            // ignore and fallback to name-based heuristic
+        }
+        // Fallback heuristic: if tenLoai contains 'hóa đơn' enable invoice tab
+        boolean isInvoiceByName = tenLoai.toLowerCase().contains("hóa đơn") || tenLoai.toLowerCase().contains("hoa don") || tenLoai.toLowerCase().contains("giảm theo tổng hóa đơn");
+        Tab tabThuoc = tabPaneProducts == null ? null : (tabPaneProducts.getTabs().size() > 0 ? tabPaneProducts.getTabs().get(0) : null);
+        if (tabThuoc != null) tabThuoc.setDisable(isInvoiceByName);
+        if (tabTangKem != null) tabTangKem.setDisable(isInvoiceByName);
+        if (tabHoaDon != null) tabHoaDon.setDisable(!isInvoiceByName);
+
+        // Cannot determine maLoai here -> disable giaTri formatting to be safe
+        enableGiaTriFormatting(false);
+    }
+
+    // Attach or detach focus listener to tfGiaTri to enable/disable VND formatting
+    private void enableGiaTriFormatting(boolean enable) {
+        if (tfGiaTri == null) return;
+        if (enable && !giaTriFormattingEnabled) {
+            giaTriFocusListener = (obs, oldF, newF) -> {
+                if (newF) {
+                    // gained focus -> show plain number for editing
+                    String raw = tfGiaTri.getText();
+                    if (raw != null) {
+                        String cleaned = raw.replaceAll("[^\\d,.-]", "");
+                        cleaned = cleaned.replaceAll("\\.", "");
+                        cleaned = cleaned.replace(',', '.');
+                        tfGiaTri.setText(cleaned);
+                        Platform.runLater(() -> tfGiaTri.positionCaret(tfGiaTri.getText().length()));
+                    }
+                } else {
+                    // lost focus -> format to VND
+                    double v = parseCurrencyToDouble(tfGiaTri.getText());
+                    tfGiaTri.setText(formatVND(v));
+                }
+            };
+            tfGiaTri.focusedProperty().addListener(giaTriFocusListener);
+            // format current text
+            double v = parseCurrencyToDouble(tfGiaTri.getText());
+            tfGiaTri.setText(formatVND(v));
+            giaTriFormattingEnabled = true;
+        } else if (!enable && giaTriFormattingEnabled) {
+            // remove listener and set plain numeric text
+            tfGiaTri.focusedProperty().removeListener(giaTriFocusListener);
+            giaTriFocusListener = null;
+            giaTriFormattingEnabled = false;
+            String cleaned = tfGiaTri.getText() == null ? "" : tfGiaTri.getText().replaceAll("[^\\d,.-]", "");
+            cleaned = cleaned.replaceAll("\\.", "");
+            cleaned = cleaned.replace(',', '.');
+            if (cleaned.isEmpty()) cleaned = "0";
+            tfGiaTri.setText(cleaned);
+        } else if (!enable) {
+            // ensure not formatted when already disabled
+            String cleaned = tfGiaTri.getText() == null ? "" : tfGiaTri.getText().replaceAll("[^\\d,.-]", "");
+            cleaned = cleaned.replaceAll("\\.", "");
+            cleaned = cleaned.replace(',', '.');
+            if (cleaned.isEmpty()) cleaned = "0";
+            tfGiaTri.setText(cleaned);
+        }
     }
 
     // UI events
@@ -365,29 +501,51 @@ public class SuaKhuyenMai_Ctrl {
 
     public void btnLuuClick() {
         try {
-            // 1. Lấy dữ liệu từ form
+            // 1. Lấy dữ liệu chung từ form
             String maKM = tfMaKM.getText();
             String tenKM = tfTenKM.getText();
-            String maLoai = cbLoaiKM.getValue();
-            float giaTri = Float.parseFloat(tfGiaTri.getText());
-            java.sql.Date tuNgay = java.sql.Date.valueOf(dpTuNgay.getValue());
-            java.sql.Date denNgay = java.sql.Date.valueOf(dpDenNgay.getValue());
-            String moTa = tfMoTa.getText();
+            String loaiTen = cbLoaiKM == null ? null : cbLoaiKM.getValue();
+            String moTa = tfMoTa == null ? "" : tfMoTa.getText();
+            java.sql.Date tuNgay = dpTuNgay == null || dpTuNgay.getValue() == null ? null : java.sql.Date.valueOf(dpTuNgay.getValue());
+            java.sql.Date denNgay = dpDenNgay == null || dpDenNgay.getValue() == null ? null : java.sql.Date.valueOf(dpDenNgay.getValue());
 
-            KhuyenMai km = new KhuyenMai(maKM, new LoaiKhuyenMai_Dao().selectByTen(maLoai), tenKM, giaTri, tuNgay, denNgay, moTa);
+            // Resolve LoaiKhuyenMai by name
+            var loai = loaiTen == null ? null : new LoaiKhuyenMai_Dao().selectByTen(loaiTen);
 
+            // 2. Determine values depending on MaLoai
+            float giaTriKMVal = 0f;
+            double giaTriApDungVal = 0d;
+
+            if (loai != null && loai.getMaLoai() != null &&
+                    ("LKM004".equalsIgnoreCase(loai.getMaLoai()) || "LKM005".equalsIgnoreCase(loai.getMaLoai()))) {
+                giaTriKMVal = (float) parseCurrencyToDouble(tfGiaTri == null ? "0" : tfGiaTri.getText());
+                giaTriApDungVal = parseCurrencyToDouble(tfGiaTriHoaDon == null ? "0" : tfGiaTriHoaDon.getText());
+            } else {
+                giaTriKMVal = (float) parseCurrencyToDouble(tfGiaTri == null ? "0" : tfGiaTri.getText());
+            }
+
+            // 3. Build KhuyenMai and set invoice-applied value
+            KhuyenMai km = new KhuyenMai(maKM, loai, tenKM, giaTriKMVal, tuNgay, denNgay, moTa);
+            km.setGiaTriApDung(giaTriApDungVal);
+
+            // DAOs
             KhuyenMai_Dao kmDao = new KhuyenMai_Dao();
             ChiTietKhuyenMai_Dao ctDao = new ChiTietKhuyenMai_Dao();
             Thuoc_SP_TangKem_Dao giftDao = new Thuoc_SP_TangKem_Dao();
 
-            // 2. Lưu hoặc cập nhật Khuyến mãi
-            if (kmDao.selectById(maKM) != null) {
-                kmDao.update(km);
-            } else {
+            // 4. Insert or update KhuyenMai
+            try {
+                if (kmDao.selectById(maKM) != null) {
+                    kmDao.update(km);
+                } else {
+                    kmDao.insert(km);
+                }
+            } catch (Exception ex) {
+                // if selectById throws because not found, fallback to insert
                 kmDao.insert(km);
             }
 
-            // 3. Xóa chi tiết cũ và thêm mới
+            // 5. Update chi tiết (clear old + insert current)
             List<ChiTietKhuyenMai> oldCT = ctDao.selectByMaKM(maKM);
             for (ChiTietKhuyenMai ct : oldCT) {
                 ctDao.deleteById(ct.getThuoc().getMaThuoc(), maKM);
@@ -397,7 +555,7 @@ public class SuaKhuyenMai_Ctrl {
                 ctDao.insert(ct);
             }
 
-            // 4. Xử lý quà tặng (nếu có tab quà tặng)
+            // 6. Update quà tặng (clear old + insert current)
             List<Thuoc_SP_TangKem> oldGifts = giftDao.selectByMaKM(maKM);
             for (Thuoc_SP_TangKem g : oldGifts) {
                 giftDao.deleteById(g.getThuocTangKem().getMaThuoc(), maKM);
@@ -407,11 +565,56 @@ public class SuaKhuyenMai_Ctrl {
                 giftDao.insert(g);
             }
 
-            // 5. Đóng form hoặc thông báo thành công
+            // 7. Close form
             btnHuyClick();
         } catch (Exception ex) {
             ex.printStackTrace();
-            // Có thể show alert ở đây nếu muốn
+            // optional: show Alert to user
+        }
+    }
+    private String formatVND(double value) {
+        return CURRENCY_FMT.format(value);
+    }
+
+    private double parseCurrencyToDouble(String text) {
+        if (text == null) return 0d;
+        String cleaned = text.replaceAll("[^\\d,.-]", ""); // keep digits, comma, dot, minus
+        if (cleaned.isEmpty()) return 0d;
+        // remove thousand separators (dots), convert comma to dot for decimals
+        cleaned = cleaned.replaceAll("\\.", "");
+        cleaned = cleaned.replace(',', '.');
+        try {
+            return Double.parseDouble(cleaned);
+        } catch (Exception ex) {
+            return 0d;
+        }
+    }
+
+    // Setup behavior for a TextField: unformat on focus gain, format on focus lost
+    private void setupCurrencyField(TextField tf) {
+        if (tf == null) return;
+        tf.focusedProperty().addListener((obs, oldF, newF) -> {
+            if (newF) {
+                // gained focus -> show plain number for editing
+                String raw = tf.getText();
+                if (raw != null) {
+                    String cleaned = raw.replaceAll("[^\\d,.-]", "");
+                    // remove thousand dots left in cleaned so user sees digits
+                    cleaned = cleaned.replaceAll("\\.", "");
+                    cleaned = cleaned.replace(',', '.');
+                    tf.setText(cleaned);
+                    Platform.runLater(() -> tf.positionCaret(tf.getText().length()));
+                }
+            } else {
+                // lost focus -> format to VND
+                double v = parseCurrencyToDouble(tf.getText());
+                tf.setText(formatVND(v));
+            }
+        });
+        // initial formatting if value present
+        if (tf.getText() != null && !tf.getText().isBlank()) {
+            double v = parseCurrencyToDouble(tf.getText());
+            tf.setText(formatVND(v));
         }
     }
 }

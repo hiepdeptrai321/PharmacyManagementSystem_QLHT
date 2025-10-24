@@ -119,3 +119,12 @@
     -fx-background-radius: 6;
     -fx-effect: dropshadow(gaussian, #bdbdbd, 2, 0.1, 0, 1);
 }
+
+.btnThem{
+    -fx-background-color: #007a05;
+    -fx-text-fill: white;
+}
+.btnTim{
+    -fx-background-color: #1976D2;
+    -fx-text-fill: white;
+}

@@ -72,7 +72,7 @@ public class LapHoaDon_Ctrl extends Application {
 
     // popup suggestions
     private final ContextMenu goiYMenu = new ContextMenu();
-    private final PauseTransition pause = new PauseTransition(Duration.millis(100));
+    private final PauseTransition pause = new PauseTransition(Duration.millis(0));
     private final Thuoc_SanPham_Dao thuocDao = new Thuoc_SanPham_Dao();
     private static final String GoiY_css = "/com/example/pharmacymanagementsystem_qlht/css/GoiYThuoc.css";
     private boolean GoiY_cssat = false;

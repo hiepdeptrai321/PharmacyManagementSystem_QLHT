@@ -325,6 +325,7 @@ CREATE TABLE KhuyenMai (
     MaKM       VARCHAR(10) PRIMARY KEY,
     TenKM      NVARCHAR(50) NOT NULL,
     GiaTriKM   FLOAT,
+	GiaTriApDung FLOAT DEFAULT 0,
     LoaiGiaTri  VARCHAR(10),
     NgayBatDau DATE NOT NULL,
     NgayKetThuc DATE NOT NULL,
@@ -878,23 +879,43 @@ VALUES
 INSERT INTO LoaiKhuyenMai (MaLoai, TenLoai, MoTa)
 VALUES
 ('LKM001', N'Tặng kèm sản phẩm', N'Khi khách hàng mua sản phẩm nhất định sẽ được tặng kèm thêm sản phẩm khác'),
-('LKM002', N'Giảm giá trực tiếp', N'Giảm trực tiếp một số tiền nhất định trên tổng hóa đơn hoặc sản phẩm'),
-('LKM003', N'Giảm giá phần trăm', N'Khách hàng được giảm theo tỷ lệ phần trăm trên giá trị sản phẩm hoặc hóa đơn');
+('LKM002', N'Giảm giá trực tiếp theo sản phẩm', N'Giảm trực tiếp một số tiền nhất định trên giá trị sản phẩm'),
+('LKM003', N'Giảm giá phần trăm theo sản phẩm', N'Khách hàng được giảm theo tỷ lệ phần trăm trên giá trị sản phẩm'),
+('LKM004', N'Giảm trực tiếp theo tổng hóa đơn', N'Khách hàng được giảm trực tiếp trên hóa đơn'),
+('LKM005', N'Giảm phần trăm theo tổng hóa đơn', N'Khách hàng được giảm theo tỷ lệ phần trăm trên tổng hóa đơn');
 
 
--- Khuyến mãi cho 10 sản phẩm
-INSERT INTO KhuyenMai (MaKM, TenKM, GiaTriKM, LoaiGiaTri, NgayBatDau, NgayKetThuc, MoTa, MaLoai)
+INSERT INTO KhuyenMai 
+(MaKM, TenKM, GiaTriKM, GiaTriApDung, LoaiGiaTri, NgayBatDau, NgayKetThuc, MoTa, MaLoai)
 VALUES
-('KM011', N'Paracetamol giảm 10%', 10, '%', '2025-10-01', '2025-10-31', N'Giảm 10% cho Paracetamol 500mg', 'LKM003'),
-('KM012', N'Amoxicillin giảm 20k', 20000, 'VND', '2025-10-05', '2025-10-25', N'Giảm 20.000đ khi mua Amoxicillin 500mg', 'LKM002'),
-('KM013', N'Cefuroxime giảm 15%', 15, '%', '2025-10-01', '2025-10-20', N'Giảm 15% cho Cefuroxime 250mg', 'LKM003'),
-('KM014', N'Vitamin C tặng Ibu + Para', NULL, NULL, '2025-10-01', '2025-10-31', N'Mua Vitamin C 1000mg tặng Ibuprofen 400mg và Paracetamol 500mg', 'LKM001'),
-('KM015', N'Ibuprofen giảm 10k', 10000, 'VND', '2025-10-10', '2025-11-10', N'Giảm 10.000đ cho Ibuprofen 400mg', 'LKM002'),
-('KM016', N'Ginkgo giảm 12%', 12, '%', '2025-10-01', '2025-10-31', N'Giảm 12% cho Ginkgo Biloba 120mg', 'LKM003'),
-('KM017', N'C + Zinc tặng Ginkgo + Gluco', NULL, NULL, '2025-10-05', '2025-11-05', N'Mua Vitamin C + Zinc tặng Ginkgo Biloba 120mg và Glucosamine 1500mg', 'LKM001'),
-('KM018', N'Glucosamine giảm 50k', 50000, 'VND', '2025-10-01', '2025-11-15', N'Giảm 50.000đ cho Glucosamine 1500mg', 'LKM002'),
-('KM019', N'Nhiệt kế giảm 5%', 5, '%', '2025-10-01', '2025-12-01', N'Giảm 5% cho Nhiệt kế điện tử', 'LKM003'),
-('KM020', N'Máy đo HA giảm 100k', 100000, 'VND', '2025-10-01', '2025-12-31', N'Giảm 100.000đ cho Máy đo huyết áp bắp tay', 'LKM002');
+-- Giảm theo sản phẩm
+('KM011', N'Paracetamol giảm 10%', 10, 0, '%', '2025-10-01', '2025-10-31', N'Giảm 10% cho Paracetamol 500mg', 'LKM003'),
+('KM012', N'Amoxicillin giảm 20k', 20000, 0, 'VND', '2025-10-05', '2025-10-25', N'Giảm 20.000đ khi mua Amoxicillin 500mg', 'LKM002'),
+('KM013', N'Cefuroxime giảm 15%', 15, 0, '%', '2025-10-01', '2025-10-20', N'Giảm 15% cho Cefuroxime 250mg', 'LKM003'),
+('KM014', N'Vitamin C tặng Ibu + Para', NULL, 0, NULL, '2025-10-01', '2025-10-31', N'Mua Vitamin C 1000mg tặng Ibuprofen 400mg và Paracetamol 500mg', 'LKM001'),
+('KM015', N'Ibuprofen giảm 10k', 10000, 0, 'VND', '2025-10-10', '2025-11-10', N'Giảm 10.000đ cho Ibuprofen 400mg', 'LKM002'),
+('KM016', N'Ginkgo giảm 12%', 12, 0, '%', '2025-10-01', '2025-10-31', N'Giảm 12% cho Ginkgo Biloba 120mg', 'LKM003'),
+('KM017', N'C + Zinc tặng Ginkgo + Gluco', NULL, 0, NULL, '2025-10-05', '2025-11-05', N'Mua Vitamin C + Zinc tặng Ginkgo Biloba 120mg và Glucosamine 1500mg', 'LKM001'),
+('KM018', N'Glucosamine giảm 50k', 50000, 0, 'VND', '2025-10-01', '2025-11-15', N'Giảm 50.000đ cho Glucosamine 1500mg', 'LKM002'),
+('KM019', N'Nhiệt kế giảm 5%', 5, 0, '%', '2025-10-01', '2025-12-01', N'Giảm 5% cho Nhiệt kế điện tử', 'LKM003'),
+('KM020', N'Máy đo HA giảm 100k', 100000, 0, 'VND', '2025-10-01', '2025-12-31', N'Giảm 100.000đ cho Máy đo huyết áp bắp tay', 'LKM002'),
+
+-- Giảm trực tiếp theo tổng hóa đơn (LKM004)
+('KM021', N'Hóa đơn trên 300k giảm 30k', 30000, 300000, 'VND', '2025-10-01', '2025-10-31', 
+ N'Khách hàng có hóa đơn từ 300.000đ trở lên sẽ được giảm trực tiếp 30.000đ', 'LKM004'),
+('KM022', N'Hóa đơn trên 500k giảm 70k', 70000, 500000, 'VND', '2025-10-10', '2025-11-10', 
+ N'Khách hàng có hóa đơn từ 500.000đ trở lên sẽ được giảm trực tiếp 70.000đ', 'LKM004'),
+('KM023', N'Hóa đơn trên 1 triệu giảm 150k', 150000, 1000000, 'VND', '2025-10-15', '2025-12-15', 
+ N'Giảm ngay 150.000đ khi tổng hóa đơn đạt từ 1.000.000đ', 'LKM004'),
+
+-- Giảm phần trăm theo tổng hóa đơn (LKM005)
+('KM024', N'Hóa đơn trên 200k giảm 5%', 5, 200000, '%', '2025-10-01', '2025-11-01', 
+ N'Khách hàng có hóa đơn từ 200.000đ trở lên được giảm 5% tổng giá trị hóa đơn', 'LKM005'),
+('KM025', N'Hóa đơn trên 800k giảm 8%', 8, 800000, '%', '2025-10-05', '2025-11-30', 
+ N'Khách hàng có hóa đơn từ 800.000đ trở lên được giảm 8% tổng giá trị hóa đơn', 'LKM005'),
+('KM026', N'Hóa đơn trên 1.5 triệu giảm 10%', 10, 1500000, '%', '2025-10-20', '2025-12-31', 
+ N'Khách hàng có hóa đơn từ 1.500.000đ trở lên được giảm 10% tổng giá trị hóa đơn', 'LKM005');
+
 
 
 INSERT INTO ChiTietKhuyenMai (MaThuoc, MaKM, SLApDung, SLToiDa)

@@ -1934,13 +1934,10 @@ BEGIN
 END;
 GO
 
-PRINT N'=== HOÀN TẤT! Đã tạo hoặc cập nhật 10 SP thành công. ===';
-
 --------- THỐNG KÊ XUẤT NHẬP TỒN
 USE QuanLyNhaThuoc;
 GO
 
-PRINT N'=== Bắt đầu tạo SP cho Thống kê XNT (Phiên bản sửa lỗi) ===';
 GO
 
 -- ==========================================================
@@ -1974,7 +1971,6 @@ BEGIN
 END;
 GO
 
-PRINT N'Tạo thành công sp_ThongKeThuocHetHan.';
 GO
 
 -- ==========================================================
@@ -2140,7 +2136,6 @@ BEGIN
 END;
 GO
 
-PRINT N'Tạo thành công sp_ThongKeXNT.';
 GO
 
-PRINT N'=== HOÀN TẤT! Đã tạo 2 SP cho Thống kê XNT. ===';
+

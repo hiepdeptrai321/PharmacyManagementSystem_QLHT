@@ -1,5 +1,9 @@
-package com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatGia;
+package com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuNhapHang;
 
+import com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatGia.ThietLapDonViTinh_SuaXoa_Ctrl;
+import com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatGia.ThietLapDonViTinh_Them_Ctrl;
+import com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMThuoc.ThemThuoc_Ctrl;
+import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKNhaCungCap.ChiTietNhaCungCap_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.dao.ChiTietDonViTinh_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.ChiTietDonViTinh;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
@@ -7,6 +11,7 @@ import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,14 +21,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import javafx.util.Callback;
-
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class SuaGiaThuoc_Ctrl {
+public class ThemThuoc_LapPhieuNhapHang_Ctrl{
 
     // 1. KHAI BÁO THÀNH PHẦN GIAO DIỆN (FXML)
 
@@ -43,11 +45,11 @@ public class SuaGiaThuoc_Ctrl {
     @FXML
     private TableColumn<ChiTietDonViTinh, Object> colHeSo;
     @FXML
-    private TableColumn<ChiTietDonViTinh, String> colGiaNhap;
+    private TableColumn<ChiTietDonViTinh, Object> colGiaNhap;
     @FXML
-    private TableColumn<ChiTietDonViTinh, String> colGiaBan;
+    private TableColumn<ChiTietDonViTinh, Object> colGiaBan;
     @FXML
-    private TableColumn<ChiTietDonViTinh, String> colDVCB;
+    private TableColumn<ChiTietDonViTinh, Object> colDVCB;
     @FXML
     private TableColumn<ChiTietDonViTinh, Void> colXoa;
     public Button btnLuu;
@@ -64,52 +66,20 @@ public class SuaGiaThuoc_Ctrl {
         colDVT.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDvt().getTenDonViTinh()));
         colKH.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDvt().getKiHieu()));
         colHeSo.setCellValueFactory(new PropertyValueFactory<>("heSoQuyDoi"));
-
-        NumberFormat vnFormat = NumberFormat.getInstance(new Locale("vi", "VN"));
-        vnFormat.setGroupingUsed(true);
-        vnFormat.setMaximumFractionDigits(0);
-        colGiaNhap.setCellValueFactory(cd -> {
-            Object val = cd.getValue().getGiaNhap();
-            if (val == null) return new SimpleStringProperty("");
-            Number num;
-            if (val instanceof Number) num = (Number) val;
-            else {
-                try { num = Double.parseDouble(val.toString()); }
-                catch (Exception e) { return new SimpleStringProperty(""); }
-            }
-            return new SimpleStringProperty(vnFormat.format(num));
-        });
-
-        colGiaBan.setCellValueFactory(cd -> {
-            Object val = cd.getValue().getGiaBan();
-            if (val == null) return new SimpleStringProperty("");
-            Number num;
-            if (val instanceof Number) num = (Number) val;
-            else {
-                try { num = Double.parseDouble(val.toString()); }
-                catch (Exception e) { return new SimpleStringProperty(""); }
-            }
-            return new SimpleStringProperty(vnFormat.format(num));
-        });
-        colDVCB.setCellValueFactory(cd -> {
-            ChiTietDonViTinh item = cd.getValue();
-            if (item == null) return new SimpleStringProperty("");
-            return new SimpleStringProperty(item.isDonViCoBan() ? "X" : "");
-        });
+        colGiaNhap.setCellValueFactory(new PropertyValueFactory<>("giaNhap"));
+        colGiaBan.setCellValueFactory(new PropertyValueFactory<>("giaBan"));
+        colDVCB.setCellValueFactory(new PropertyValueFactory<>("donViCoBan"));
 
         addDetailButtonToTable();
 
         tbDVT.setItems(listGia);
     }
 
-    // 3. XỬ LÝ SỰ KIỆN GIAO DIỆN
-
     // Set thuốc lên tf và load bảng giá
     public void setThuoc(Thuoc_SanPham thuoc) {
         this.thuoc = thuoc;
         tfMaThuoc.setText(thuoc.getMaThuoc());
         tfTenThuoc.setText(thuoc.getTenThuoc());
-        tfLoaiHang.setText(thuoc.getLoaiHang().getTenLoaiHang());
         loadListGia(this.thuoc.getMaThuoc());
     }
 
@@ -273,4 +243,22 @@ public class SuaGiaThuoc_Ctrl {
         stage.close();
     }
 
+
+    public void btnThemThuocClick(ActionEvent actionEvent) {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/ThemThuoc_GUI.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.showAndWait();
+            ThemThuoc_Ctrl ctrl = loader.getController();
+            if (ctrl.getThuocThem() != null) {
+                setThuoc(ctrl.getThuocThem());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

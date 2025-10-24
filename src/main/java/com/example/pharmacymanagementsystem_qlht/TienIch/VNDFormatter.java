@@ -1,9 +1,8 @@
-package com.example.pharmacymanagementsystem_qlht.controller;
+package com.example.pharmacymanagementsystem_qlht.TienIch;
 
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.Locale;
 import java.util.function.UnaryOperator;
 
@@ -11,7 +10,7 @@ public class VNDFormatter {
     public static String format(double amount) {
         return String.format("%,.0f VND", amount);
     }
-    public static void applyNumberFormatter(TextField textField) {
+    public void applyNumberFormatter(TextField textField) {
         NumberFormat numberFormat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
 
         UnaryOperator<TextFormatter.Change> filter = change -> {
@@ -42,7 +41,7 @@ public class VNDFormatter {
         textField.setTextFormatter(new TextFormatter<>(filter));
     }
 
-    public static double parseFormattedNumber(String text) {
+    public double parseFormattedNumber(String text) {
         if (text == null || text.trim().isEmpty()) {
             return 0.0;
         }

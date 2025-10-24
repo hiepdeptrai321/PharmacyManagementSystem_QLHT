@@ -14,6 +14,7 @@ public class ChiTietPhieuNhap_Dao implements DaoInterface<ChiTietPhieuNhap> {
     private final String SELECT_ALL_SQL = "SELECT * FROM ChiTietPhieuNhap";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM ChiTietPhieuNhap WHERE MaPN = ? AND MaThuoc = ? AND MaLH = ?";
     private final String SELECT_BY_MAPN_SQL = "SELECT * FROM ChiTietPhieuNhap WHERE MaPN = ?";
+    private final String SELECT_TOP1_MALOHANG = "SELECT TOP 1 MaLH FROM ChiTietPhieuNhap ORDER BY MaLH DESC";
 
     @Override
     public boolean insert(ChiTietPhieuNhap e) {
@@ -65,5 +66,20 @@ public class ChiTietPhieuNhap_Dao implements DaoInterface<ChiTietPhieuNhap> {
 
     public List<ChiTietPhieuNhap> getChiTietPhieuNhapByMaPN(String maPN) {
         return this.selectBySql(SELECT_BY_MAPN_SQL, maPN);
+    }
+
+    public String generateMaLH(){
+        String key = "LH00001";
+        try {
+            String lastKey = ConnectDB.queryTaoMa(SELECT_TOP1_MALOHANG);
+            if (lastKey != null && lastKey.startsWith("LH")) {
+                int stt = Integer.parseInt(lastKey.substring(2));
+                stt++;
+                key = String.format("LH%05d", stt);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return key;
     }
 }

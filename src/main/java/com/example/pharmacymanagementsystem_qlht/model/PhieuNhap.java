@@ -3,13 +3,14 @@ package com.example.pharmacymanagementsystem_qlht.model;
 import com.example.pharmacymanagementsystem_qlht.dao.ChiTietPhieuNhap_Dao;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 public class PhieuNhap {
     private String maPN;
     private NhaCungCap nhaCungCap;
-    private Timestamp ngayNhap;
+    private Date ngayNhap;
     private Boolean trangThai;
     private String ghiChu;
     private NhanVien nhanVien;
@@ -19,7 +20,7 @@ public class PhieuNhap {
 
     }
 
-    public PhieuNhap(String maPN, NhaCungCap nhaCungCap, Timestamp ngayNhap, Boolean trangThai, String ghiChu, NhanVien nhanVien) {
+    public PhieuNhap(String maPN, NhaCungCap nhaCungCap, Date ngayNhap, Boolean trangThai, String ghiChu, NhanVien nhanVien) {
         this.maPN = maPN;
         this.nhaCungCap = nhaCungCap;
         this.ngayNhap = ngayNhap;
@@ -44,11 +45,11 @@ public class PhieuNhap {
         this.nhaCungCap = nhaCungCap;
     }
 
-    public Timestamp getNgayNhap() {
+    public Date getNgayNhap() {
         return ngayNhap;
     }
 
-    public void setNgayNhap(Timestamp ngayNhap) {
+    public void setNgayNhap(Date ngayNhap) {
         this.ngayNhap = ngayNhap;
     }
 

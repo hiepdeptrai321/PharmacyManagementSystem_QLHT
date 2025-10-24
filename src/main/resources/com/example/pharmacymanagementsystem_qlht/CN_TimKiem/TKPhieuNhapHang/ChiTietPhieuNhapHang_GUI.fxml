@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="388.0" prefWidth="777.0" stylesheets="@../../css/ChiTietPhieuNhap.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuNhapHang.ChiTietPhieuNhap_Ctrl">
+<Pane prefHeight="388.0" prefWidth="777.0" style="-fx-font-size: 14 px;" stylesheets="@../../css/ChiTietPhieuNhap.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuNhapHang.ChiTietPhieuNhap_Ctrl">
     <children>
         <Pane id="paneTitle" prefHeight="40.0" prefWidth="714.0">
             <children>
@@ -29,16 +29,16 @@
         <TextField fx:id="txtTrangThai" layoutX="168.0" layoutY="111.0" prefHeight="25.0" prefWidth="80.0" />
         <Label layoutX="253.0" layoutY="94.0" text="Nhân viên:" />
         <TextField fx:id="txtNhanVien" layoutX="253.0" layoutY="111.0" prefHeight="25.0" prefWidth="179.0" />
-        <TextArea fx:id="txtGhiChu" layoutX="437.0" layoutY="64.0" prefHeight="71.0" prefWidth="323.0" />
+        <TextArea fx:id="txtGhiChu" layoutX="437.0" layoutY="64.0" prefHeight="77.0" prefWidth="323.0" />
         <Label layoutX="437.0" layoutY="47.0" text="Ghi chú:" />
         <TableView fx:id="tblChiTietPhieuNhap" layoutX="16.0" layoutY="148.0" prefHeight="200.0" prefWidth="745.0">
             <columns>
                 <TableColumn fx:id="colMaThuoc" prefWidth="96.0" text="Mã thuốc" />
                 <TableColumn fx:id="colTenThuoc" prefWidth="196.33334350585938" text="Tên thuốc" />
                 <TableColumn fx:id="colMaLoHang" prefWidth="132.0" text="Lô hàng" />
-                <TableColumn fx:id="colSoLuong" prefWidth="66.0" text="Số lượng" />
-                <TableColumn fx:id="colGiaNhap" prefWidth="136.0" text="Giá nhập" />
-                <TableColumn fx:id="colChietKhau" prefWidth="67.0" text="Chiết khấu" />
+                <TableColumn fx:id="colSoLuong" prefWidth="75.0" text="Số lượng" />
+                <TableColumn fx:id="colGiaNhap" prefWidth="116.0" text="Giá nhập" />
+                <TableColumn fx:id="colChietKhau" prefWidth="78.0" text="CK" />
                 <TableColumn fx:id="colThue" prefWidth="50.0" text="Thuế" />
             </columns>
         </TableView>
@@ -49,7 +49,7 @@
         </Label>
         <Pane id="buttonThoat" layoutX="687.0" layoutY="355.0" prefHeight="26.0" prefWidth="74.0">
             <children>
-                <Label id="labelTrang" layoutX="22.0" layoutY="4.0" text="Thoát" />
+                <Label id="labelTrang" layoutX="18.0" layoutY="3.0" text="Thoát" />
             </children>
         </Pane>
     </children>

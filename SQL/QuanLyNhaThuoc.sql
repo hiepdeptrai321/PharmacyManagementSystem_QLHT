@@ -1697,8 +1697,6 @@ END;
 
 -----------Proc thống kê
 
-USE QuanLyNhaThuoc;
-GO
 
 PRINT N'=== Bắt đầu tạo 10 Stored Procedure Thống kê ===';
 GO

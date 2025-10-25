@@ -120,4 +120,12 @@ public class Thuoc_SP_TheoLo_Dao implements DaoInterface<Thuoc_SP_TheoLo> {
 
         }
     }
+
+    public List<Thuoc_SP_TheoLo> selectHangSapHetHan() {
+        return this.selectBySql("{call sp_HangSapHetHan}");
+    }
+
+    public List<Thuoc_SP_TheoLo> selectHangDaHetHan() {
+        return this.selectBySql("{call sp_HangHetHan}");
+    }
 }

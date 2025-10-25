@@ -6,7 +6,7 @@ USE QuanLyNhaThuoc;
 GO
 
 --Link thư mục hình ảnh thuốc 
-DECLARE @path NVARCHAR(255) = N'C:\Users\Nhut Hao\Desktop\New folder (2)\PharmacyManagementSystem_QLHT\SQL\imgThuoc\';
+DECLARE @path NVARCHAR(255) = N'D:\IUH\hk5\PTUD_Java\Project\PharmacyManagementSystem_QLHT\SQL\imgThuoc\';
 
 -- =========================
 -- Bảng KhachHang
@@ -2104,4 +2104,34 @@ BEGIN
         THROW;
     END CATCH
 END
+GO
+
+CREATE PROCEDURE sp_HangHetHan
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        MaThuoc,
+        MaLH,
+        HSD
+    FROM Thuoc_SP_TheoLo
+    WHERE HSD < CAST(GETDATE() AS DATE)
+    ORDER BY HSD ASC;
+END;
+GO
+
+CREATE PROCEDURE sp_HangSapHetHan
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        MaThuoc,
+        MaLH,
+        HSD
+    FROM Thuoc_SP_TheoLo
+    WHERE HSD BETWEEN CAST(GETDATE() AS DATE) AND DATEADD(MONTH, 2, CAST(GETDATE() AS DATE))
+    ORDER BY HSD ASC;
+END;
 GO

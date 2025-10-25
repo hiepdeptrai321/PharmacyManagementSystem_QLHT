@@ -66,6 +66,7 @@ public class DanhMucNhomDuocLy_Ctrl extends Application {
         btnTim.setOnAction(e -> TimKiem());
         btnLamMoi.setOnAction(e -> LamMoi());
         btnThem.setOnAction(e -> btnThemClick(new NhomDuocLy()));
+        txtTimKiem.setOnAction(e-> TimKiem());
     }
     // 3. XỬ LÝ SỰ KIỆN GIAO DIỆN
     public void loadTable() {

@@ -21,6 +21,11 @@
                <font>
                   <Font size="48.0" />
                </font></Label>
+            <ImageView fitHeight="37.0" fitWidth="46.0" layoutX="273.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/three_16725211.png" />
+               </image>
+            </ImageView>
             </children>
         </Pane>
         <Button id="btnthemthuoc" fx:id="btnthemKH" layoutX="1477.0" layoutY="47.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="158.0" text="✚Thêm khách hàng" AnchorPane.topAnchor="47.0" />

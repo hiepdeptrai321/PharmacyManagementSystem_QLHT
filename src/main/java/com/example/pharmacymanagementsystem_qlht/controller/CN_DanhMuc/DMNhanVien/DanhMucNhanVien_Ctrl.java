@@ -9,14 +9,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -37,6 +35,14 @@ public class DanhMucNhanVien_Ctrl extends Application {
     public TableColumn<NhanVien, String> colDiaChi;
     public TableColumn<NhanVien, String> colTrangThai;
     public TableColumn<NhanVien, String> colCapNhat;
+    @FXML
+    private Button btnLamMoi;
+    @FXML
+    private Button btnTim;
+    @FXML
+    private TextField txtTim;
+    private NhanVien_Dao nhanVienDao = new NhanVien_Dao();
+
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -48,6 +54,9 @@ public class DanhMucNhanVien_Ctrl extends Application {
 
     public void initialize() {
         loadData();
+        txtTim.setOnAction(e->TimKiem());
+        btnTim.setOnAction(e->TimKiem());
+        btnLamMoi.setOnAction(e-> LamMoi());
     }
 
     public void loadData() {
@@ -201,5 +210,29 @@ public class DanhMucNhanVien_Ctrl extends Application {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+    private void TimKiem() {
+        String keyword = txtTim.getText().trim().toLowerCase();
+        List<NhanVien> list = nhanVienDao.selectAll();
+        if (keyword.isEmpty()) {
+            tblNhanVien.setItems(FXCollections.observableArrayList(list));
+            return;
+        }
+
+
+        List<NhanVien> filtered = list.stream()
+                .filter(nhanVien ->
+                        (nhanVien.getMaNV() != null && nhanVien.getMaNV().toLowerCase().contains(keyword)) ||
+                                (nhanVien.getTenNV() != null && nhanVien.getTenNV().toLowerCase().contains(keyword))
+
+                )
+                .toList();
+
+        tblNhanVien.setItems(FXCollections.observableArrayList(filtered));
+    }
+    @FXML
+    private void LamMoi() {
+        txtTim.clear();
+        loadData();
     }
 }

@@ -38,6 +38,8 @@ public class DanhMucThuoc_Ctrl extends Application {
     public TextField tfTimThuoc;
     public Button btnTimThuoc;
     public Button btnThemThuoc;
+    @FXML
+    private Button btnLamMoi;
     Thuoc_SanPham_Dao thuocDao = new Thuoc_SanPham_Dao();
     List<Thuoc_SanPham> list;
 
@@ -52,6 +54,9 @@ public class DanhMucThuoc_Ctrl extends Application {
 
     public void initialize() {
         loadTable();
+        btnLamMoi.setOnAction(e-> LamMoi());
+        tfTimThuoc.setOnAction(e-> timThuoc());
+        btnTimThuoc.setOnAction(e-> timThuoc());
     }
 
 //  3. Tải bảng
@@ -189,6 +194,10 @@ public class DanhMucThuoc_Ctrl extends Application {
     public void refestTable(){
         loadTable();
     }
-
+    @FXML
+    private void LamMoi() {
+        tfTimThuoc.clear();
+        loadTable();
+    }
 
 }

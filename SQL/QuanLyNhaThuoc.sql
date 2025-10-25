@@ -1055,252 +1055,129 @@ VALUES
 ('LH00014', 'PT003', 'TS451', 1, 1800, 0);   -- Trả Găng tay y tế
 
 
--- Bật XACT_ABORT để đảm bảo giao dịch được Rollback nếu có lỗi
-SET XACT_ABORT ON;
-BEGIN TRAN;
+-- ====================================================
+-- 1️⃣ BỔ SUNG CƠ SỞ DỮ LIỆU (NẾU CHƯA CÓ)
+-- ====================================================
+IF NOT EXISTS (SELECT * FROM LoaiHang WHERE MaLoaiHang = 'LH001')
+    INSERT INTO LoaiHang VALUES ('LH001', N'Thuốc thông dụng', N'Dùng cho thuốc OTC');
+IF NOT EXISTS (SELECT * FROM NhomDuocLy WHERE MaNDL = 'ND001')
+    INSERT INTO NhomDuocLy VALUES ('ND001', N'Nhóm kháng sinh', N'Kháng khuẩn phổ biến');
+IF NOT EXISTS (SELECT * FROM KeHang WHERE MaKe = 'KE001')
+    INSERT INTO KeHang VALUES ('KE001', N'Kệ A1', N'Kệ trưng bày thuốc');
+IF NOT EXISTS (SELECT * FROM KeHang WHERE MaKe = 'KE002')
+    INSERT INTO KeHang VALUES ('KE002', N'Kệ A2', N'Kệ vitamin');
+IF NOT EXISTS (SELECT * FROM KeHang WHERE MaKe = 'KE003')
+    INSERT INTO KeHang VALUES ('KE003', N'Kệ A3', N'Kệ thuốc dị ứng');
 
-PRINT N'=== BẮT ĐẦU THÊM DỮ LIỆU TEST V1 (FIXED) ===';
+IF NOT EXISTS (SELECT * FROM NhaCungCap WHERE MaNCC = 'NCC001')
+    INSERT INTO NhaCungCap (MaNCC, TenNCC, DiaChi, SDT, Email)
+    VALUES ('NCC001', N'Công ty Dược TW1', N'Hà Nội', '0248888888', 'ncc001@gmail.com');
+IF NOT EXISTS (SELECT * FROM NhaCungCap WHERE MaNCC = 'NCC002')
+    INSERT INTO NhaCungCap (MaNCC, TenNCC, DiaChi, SDT, Email)
+    VALUES ('NCC002', N'DHG Pharma', N'Cần Thơ', '0292388888', 'ncc002@gmail.com');
 
--- ==========================================================
--- BƯỚC 1: TẠO LÔ HÀNG MỚI ĐỂ TEST (NHẬP VÀO 01/10/2025)
--- ==========================================================
-PRINT N'--- 1. Tạo Phiếu Nhập PN_T_100 (Ngày 01/10/2025)';
--- SỬA: 'PN_TEST_100' (11) -> 'PN_T_100' (7)
-INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
+-- ====================================================
+-- 2️⃣ DỮ LIỆU MẪU TEST THỐNG KÊ (MÃ BẮT ĐẦU TỪ 041)
+-- ====================================================
+
+-- KHÁCH HÀNG
+INSERT INTO KhachHang VALUES
+('KH041', N'Phan Thị Hạnh', '0914000001', 'hanh41@gmail.com', '1995-01-10', 0, N'Hà Nội', 1),
+('KH042', N'Lê Văn Khải', '0914000002', 'khai42@gmail.com', '1990-05-15', 1, N'HCM', 1),
+('KH043', N'Đỗ Minh Đức', '0914000003', 'duc43@gmail.com', '1988-03-05', 1, N'Đà Nẵng', 1);
+
+-- NHÂN VIÊN
+INSERT INTO NhanVien VALUES
+('NV041', N'Trần Ngọc Huyền', '0904000001', 'huyen41@qlnt.vn', '1994-02-14', 0, N'Hà Nội', N'Bán hàng', 1, 'huyen41', '123', '2024-01-01', NULL, 0),
+('NV042', N'Phạm Quang Minh', '0904000002', 'minh42@qlnt.vn', '1993-08-12', 1, N'HCM', N'Bán hàng', 1, 'minh42', '123', '2024-02-01', NULL, 0),
+('NV043', N'Nguyễn Tấn Lộc', '0904000003', 'loc43@qlnt.vn', '1997-10-02', 1, N'Đà Nẵng', N'Bán hàng', 1, 'loc43', '123', '2024-03-01', NULL, 0);
+
+-- SẢN PHẨM
+INSERT INTO Thuoc_SanPham (MaThuoc, TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaLoaiHang, MaNDL, ViTri)
 VALUES
-('PN_T_100', '2025-10-01', 1, N'Hàng test tháng 10', 'NCC001', 'NV001');
+('SP041', N'Paracetamol 500mg', 500, 'mg', N'Uống', N'Hộp 10 vỉ x 10 viên', 'SDK041', N'DHG Pharma', N'VN', 'LH001', 'ND001', 'KE001'),
+('SP042', N'Amoxicillin 500mg', 500, 'mg', N'Uống', N'Hộp 10 vỉ x 10 viên', 'SDK042', N'Mekophar', N'VN', 'LH001', 'ND001', 'KE001'),
+('SP043', N'Loratadin 10mg', 10, 'mg', N'Uống', N'Hộp 5 vỉ x 10 viên', 'SDK043', N'OPV', N'VN', 'LH001', 'ND001', 'KE003'),
+('SP044', N'Cefalexin 250mg', 250, 'mg', N'Uống', N'Hộp 10 vỉ x 10 viên', 'SDK044', N'Imexpharm', N'VN', 'LH001', 'ND001', 'KE002'),
+('SP045', N'Vitamin C 500mg', 500, 'mg', N'Uống', N'Hộp 10 vỉ x 10 viên', 'SDK045', N'Truong Tho', N'VN', 'LH001', 'ND001', 'KE002');
 
-INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
-VALUES
-('PN_T_100', 'TS001', 'LH_T100', 100, 800, 0, 0.08),
-('PN_T_100', 'TS005', 'LH_T101', 100, 900, 0, 0.08),
-('PN_T_100', 'TS008', 'LH_T102', 100, 1800, 0, 0.08),
-('PN_T_100', 'TS226', 'LH_T103', 100, 900, 0, 0.05),
-('PN_T_100', 'TS337', 'LH_T104', 100, 2500, 0, 0.05);
+-- PHIẾU NHẬP
+INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV) VALUES
+('PN041', '2025-01-10', 1, N'Nhập hàng đầu năm', 'NCC001', 'NV041'),
+('PN042', '2025-03-15', 1, N'Nhập tháng 3', 'NCC002', 'NV042'),
+('PN043', '2025-05-12', 1, N'Nhập tháng 5', 'NCC001', 'NV043'),
+('PN044', '2025-07-05', 1, N'Nhập tháng 7', 'NCC001', 'NV041'),
+('PN045', '2025-09-18', 1, N'Nhập tháng 9', 'NCC002', 'NV043'),
+('PN046', '2025-10-01', 1, N'Nhập đầu tháng 10', 'NCC001', 'NV042'),
+('PN047', '2025-10-10', 1, N'Nhập giữa tháng 10', 'NCC002', 'NV043'),
+('PN048', '2025-10-20', 1, N'Nhập tuần này', 'NCC001', 'NV041'),
+('PN049', '2025-10-23', 1, N'Nhập hôm qua', 'NCC002', 'NV042'),
+('PN050', '2025-10-25', 1, N'Nhập hôm nay', 'NCC001', 'NV043'),
+('PN051', '2025-11-05', 1, N'Nhập tháng 11', 'NCC001', 'NV041'),
+('PN052', '2025-12-10', 1, N'Nhập tháng 12', 'NCC002', 'NV042'),
+('PN053', '2025-12-31', 1, N'Nhập cuối năm', 'NCC001', 'NV043');
 
-INSERT INTO Thuoc_SP_TheoLo (MaLH, MaPN, MaThuoc, SoLuongTon, NSX, HSD)
-VALUES
-('LH_T100', 'PN_T_100', 'TS001', 100, '2024-01-01', '2027-01-01'),
-('LH_T101', 'PN_T_100', 'TS005', 100, '2024-01-01', '2027-01-01'),
-('LH_T102', 'PN_T_100', 'TS008', 100, '2024-01-01', '2027-01-01'),
-('LH_T103', 'PN_T_100', 'TS226', 100, '2024-01-01', '2027-01-01'),
-('LH_T104', 'PN_T_100', 'TS337', 100, '2024-01-01', '2027-01-01');
+-- CHI TIẾT PHIẾU NHẬP + LÔ HÀNG
+INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue) VALUES
+('PN041','SP041','LH00041',500,1200,0,5),
+('PN042','SP042','LH00042',600,1300,0,5),
+('PN043','SP043','LH00043',400,1100,0,5),
+('PN044','SP044','LH00044',700,1400,0,5),
+('PN045','SP045','LH00045',800,1000,0,5),
+('PN046','SP041','LH00046',500,1200,0,5),
+('PN047','SP042','LH00047',600,1300,0,5),
+('PN048','SP043','LH00048',400,1100,0,5),
+('PN049','SP044','LH00049',700,1400,0,5),
+('PN050','SP045','LH00050',800,1000,0,5),
+('PN051','SP041','LH00051',500,1200,0,5),
+('PN052','SP042','LH00052',600,1300,0,5),
+('PN053','SP043','LH00053',400,1100,0,5);
 
--- ==========================================================
--- BƯỚC 2: TẠO DỮ LIỆU CHO "HÔM NAY" (25/10/2025)
--- ==========================================================
-PRINT N'--- 2. Tạo dữ liệu HÔM NAY (25/10/2025)';
+INSERT INTO Thuoc_SP_TheoLo (MaPN, MaThuoc, MaLH, SoLuongTon, NSX, HSD) VALUES
+('PN041','SP041','LH00041',500,'2025-01-01','2027-01-01'),
+('PN042','SP042','LH00042',600,'2025-03-01','2027-03-01'),
+('PN043','SP043','LH00043',400,'2025-05-01','2027-05-01'),
+('PN044','SP044','LH00044',700,'2025-07-01','2027-07-01'),
+('PN045','SP045','LH00045',800,'2025-09-01','2027-09-01'),
+('PN046','SP041','LH00046',500,'2025-10-01','2027-10-01'),
+('PN047','SP042','LH00047',600,'2025-10-10','2027-10-10'),
+('PN048','SP043','LH00048',400,'2025-10-20','2027-10-20'),
+('PN049','SP044','LH00049',700,'2025-10-23','2027-10-23'),
+('PN050','SP045','LH00050',800,'2025-10-25','2027-10-25'),
+('PN051','SP041','LH00051',500,'2025-11-05','2027-11-05'),
+('PN052','SP042','LH00052',600,'2025-12-10','2027-12-10'),
+('PN053','SP043','LH00053',400,'2025-12-31','2027-12-31');
 
--- 2.1. Hóa đơn (Doanh thu & Xuất XNT)
-INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
-VALUES
-('HD_T001', GETDATE(), N'Hoàn tất', 'KH001', 'NV001'),
-('HD_T002', GETDATE(), N'Hoàn tất', 'KH002', 'NV002');
+-- HÓA ĐƠN
+INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV) VALUES
+('HD041','2025-10-01 09:00',N'Hoàn tất','KH041','NV041'),
+('HD042','2025-10-10 10:00',N'Hoàn tất','KH042','NV042'),
+('HD043','2025-10-20 11:00',N'Hoàn tất','KH043','NV043'),
+('HD044','2025-10-23 15:00',N'Hoàn tất','KH041','NV041'),
+('HD045','2025-10-24 16:00',N'Hoàn tất','KH042','NV042'),
+('HD046','2025-10-25 09:00',N'Hoàn tất','KH043','NV043'),
+('HD047','2025-09-15 14:00',N'Hoàn tất','KH041','NV041'),
+('HD048','2025-08-05 08:00',N'Hoàn tất','KH042','NV042'),
+('HD049','2025-06-11 09:30',N'Hoàn tất','KH043','NV043'),
+('HD050','2025-11-05 13:00',N'Hoàn tất','KH041','NV041'),
+('HD051','2025-12-12 09:00',N'Hoàn tất','KH042','NV042'),
+('HD052','2025-12-30 10:30',N'Hoàn tất','KH043','NV043');
 
-INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
-VALUES
-('HD_T001', 'LH_T100', 10, 1000, 0),
-('HD_T001', 'LH_T101', 5, 1200, 0),
-('HD_T002', 'LH_T103', 20, 1100, 0);
+-- CHI TIẾT HÓA ĐƠN
+INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia) VALUES
+('HD041','LH00046',30,1600,0),
+('HD042','LH00047',20,1800,0),
+('HD043','LH00048',25,1900,0),
+('HD044','LH00049',40,2100,0),
+('HD045','LH00050',50,2200,0),
+('HD046','LH00050',45,2300,0),
+('HD047','LH00045',35,2000,0),
+('HD048','LH00044',40,2100,0),
+('HD049','LH00043',30,1900,0),
+('HD050','LH00051',20,2000,0),
+('HD051','LH00052',25,2100,0),
+('HD052','LH00053',30,2200,0);
 
-UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 10 WHERE MaLH = 'LH_T100';
-UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 5  WHERE MaLH = 'LH_T101';
-UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 20 WHERE MaLH = 'LH_T103';
-
--- 2.2. Trả Hàng (Doanh thu âm & Nhập XNT)
-INSERT INTO PhieuTraHang (MaPT, NgayLap, LyDoTra, GhiChu, MaNV, MaHD, MaKH)
-VALUES
-('PT_T001', GETDATE(), N'Khách mua nhầm', N'Trả hàng test', 'NV001', 'HD_T001', 'KH001');
-
-INSERT INTO ChiTietPhieuTraHang (MaLH, MaPT, MaThuoc, SoLuong, DonGia, GiamGia)
-VALUES
-('LH_T100', 'PT_T001', 'TS001', 2, 1000, 0);
-
-UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon + 2 WHERE MaLH = 'LH_T100';
-
--- 2.3. Nhập Hàng Mới (Nhập XNT)
--- SỬA: 'PN_TEST_101' (11) -> 'PN_T_101' (7)
-INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
-VALUES
-('PN_T_101', GETDATE(), 1, N'Hàng test hôm nay', 'NCC002', 'NV001');
-
-INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
-VALUES
-('PN_T_101', 'TS011', 'LH_T105', 50, 1000, 0, 0.08);
-
-INSERT INTO Thuoc_SP_TheoLo (MaLH, MaPN, MaThuoc, SoLuongTon, NSX, HSD)
-VALUES
-('LH_T105', 'PN_T_101', 'TS011', 50, '2024-05-01', '2027-05-01');
-
--- ==========================================================
--- BƯỚC 3: TẠO DỮ LIỆU CHO "TUẦN NÀY" (20/10 - 24/10)
--- ==========================================================
-PRINT N'--- 3. Tạo dữ liệu TUẦN NÀY (22-23/10/2025)';
-
-INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
-VALUES
-('HD_T003', '2025-10-22 10:30:00', N'Hoàn tất', 'KH003', 'NV001');
-
-INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
-VALUES
-('HD_T003', 'LH_T102', 15, 2300, 0);
-
-UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 15 WHERE MaLH = 'LH_T102';
-
-INSERT INTO PhieuDoiHang (MaPD, NgayLap, LyDoDoi, GhiChu, MaNV, MaKH, MaHD)
-VALUES
-('PD_T001', '2025-10-23', N'Đổi loại khác', N'Test đổi hàng', 'NV001', 'KH002', 'HD_T002');
-
-INSERT INTO ChiTietPhieuDoiHang (MaLH, MaPD, MaThuoc, SoLuong, DonGia, GiamGia)
-VALUES
-('LH_T103', 'PD_T001', 'TS226', -5, 1100, 0),
-('LH_T104', 'PD_T001', 'TS337', 3, 3200, 0);
-
-UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon + 5 WHERE MaLH = 'LH_T103';
-UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 3 WHERE MaLH = 'LH_T104';
-
--- ==========================================================
--- BƯỚC 4: TẠO DỮ LIỆU CHO "THÁNG NÀY" (01/10 - 19/10)
--- ==========================================================
-PRINT N'--- 4. Tạo dữ liệu THÁNG NÀY (10/10/2025)';
-
-INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
-VALUES
-('HD_T004', '2025-10-10 14:00:00', N'Hoàn tất', 'KH004', 'NV001');
-
-INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
-VALUES
-('HD_T004', 'LH_T104', 10, 3200, 0);
-
-UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 10 WHERE MaLH = 'LH_T104';
-
--- ==========================================================
--- BƯỚC 5: TẠO DỮ LIỆU HẾT HẠN MỚI
--- ==========================================================
-PRINT N'--- 5. Tạo dữ liệu THUỐC HẾT HẠN MỚI';
-
-INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
-VALUES
-('PN_T_102', '2023-10-24', 1, N'Hàng test hết hạn', 'NCC003', 'NV001');
-
-INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
-VALUES
-('PN_T_102', 'TS012', 'LH_T900', 10, 1000, 0, 0.08);
-
-INSERT INTO Thuoc_SP_TheoLo (MaLH, MaPN, MaThuoc, SoLuongTon, NSX, HSD)
-VALUES
-('LH_T900', 'PN_T_102', 'TS012', 10, '2023-10-24', '2025-10-24');
-
-COMMIT TRAN;
-PRINT N'=== HOÀN TẤT V1 (FIXED)! Đã thêm thành công. ===';
-GO
-
-
-SET XACT_ABORT ON;
-BEGIN TRAN;
-
-
--- ==========================================================
--- BƯỚC 1: THÊM DỮ LIỆU CHO NĂM 2024 (TEST "TÙY CHỌN")
--- ==========================================================
-
-
-INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
-VALUES
-('PN_T_2024', '2024-01-15', 1, N'Hàng test 2024', 'NCC001', 'NV001');
-
-INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
-VALUES
-('PN_T_2024', 'TS001', 'LH_T_2024', 200, 750, 0, 0.08);
-
-INSERT INTO Thuoc_SP_TheoLo (MaLH, MaPN, MaThuoc, SoLuongTon, NSX, HSD)
-VALUES
-('LH_T_2024', 'PN_T_2024', 'TS001', 200, '2024-01-01', '2026-01-01');
-
-INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
-VALUES
-('HD_T_2024', '2024-03-20 09:00:00', N'Hoàn tất', 'KH001', 'NV001');
-
-INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
-VALUES
-('HD_T_2024', 'LH_T_2024', 50, 1000, 0);
-
-UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 50 WHERE MaLH = 'LH_T_2024';
-
--- ==========================================================
--- BƯỚC 2: THÊM DỮ LIỆU THÁNG 9/2025 (TEST "QUÝ NÀY" & "TÙY CHỌN")
--- ==========================================================
-
-
-INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
-VALUES
-('PN_T_SEP25', '2025-09-05', 1, N'Hàng test T9/2025', 'NCC002', 'NV002');
-
-INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
-VALUES
-('PN_T_SEP25', 'TS002', 'LH_T_SEP25', 150, 1200, 0, 0.08);
-
-INSERT INTO Thuoc_SP_TheoLo (MaLH, MaPN, MaThuoc, SoLuongTon, NSX, HSD)
-VALUES
-('LH_T_SEP25', 'PN_T_SEP25', 'TS002', 150, '2025-09-01', '2027-09-01');
-
-INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
-VALUES
-('HD_T_SEP25', '2025-09-18 11:00:00', N'Hoàn tất', 'KH003', 'NV001');
-
-INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
-VALUES
-('HD_T_SEP25', 'LH_T_SEP25', 30, 1500, 0);
-
-UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 30 WHERE MaLH = 'LH_T_SEP25';
-
--- ==========================================================
--- BƯỚC 3: THÊM DỮ LIỆU ĐẦU THÁNG 10 (TEST "THÁNG NÀY")
--- ==========================================================
-
--- Lỗi Foreign Key ở đây đã được sửa vì 'LH_T101' đã được tạo ở Script V1 (Fixed)
-INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
-VALUES
-('HD_T_OCT15', '2025-10-15 16:00:00', N'Hoàn tất', 'KH005', 'NV003');
-
-INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
-VALUES
-('HD_T_OCT15', 'LH_T101', 20, 1200, 0);
-
-UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 20 WHERE MaLH = 'LH_T101';
-
--- ==========================================================
--- BƯỚC 4: THÊM DỮ LIỆU CHO "TUẦN NÀY" (20/10 - 24/10)
--- ==========================================================
-
--- Lỗi Foreign Key ở đây đã được sửa vì 'LH_T102' đã được tạo ở Script V1 (Fixed)
-INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
-VALUES
-('HD_T_OCT21', '2025-10-21 08:15:00', N'Hoàn tất', NULL, 'NV003');
-
-INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
-VALUES
-('HD_T_OCT21', 'LH_T102', 10, 2300, 0);
-
-UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 10 WHERE MaLH = 'LH_T102';
-
--- ==========================================================
--- BƯỚC 5: THÊM DỮ LIỆU CHO "HÔM NAY" (25/10/2025)
--- ==========================================================
-PRINT N'--- 5. Thêm dữ liệu cho HÔM NAY (25/10)';
-
-INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
-VALUES
-('HD_T_TD3', GETDATE(), N'Hoàn tất', 'KH001', 'NV002');
-
-INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
-VALUES
-('HD_T_TD3', 'LH_T104', 8, 3200, 0);
-
-UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 8 WHERE MaLH = 'LH_T104';
-
-COMMIT TRAN;
-GO
 
 
 

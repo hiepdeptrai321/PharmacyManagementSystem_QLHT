@@ -36,7 +36,7 @@
     </rowConstraints>
 
     <!-- Title spanning all columns -->
-    <Label styleClass="lbtitle" text="Thêm khách hàng" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="0">
+    <Label prefHeight="26.0" prefWidth="659.0" styleClass="lbtitle" text="Thêm khách hàng" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="0">
         <font>
             <Font name="System Bold" size="16.0" />
         </font>

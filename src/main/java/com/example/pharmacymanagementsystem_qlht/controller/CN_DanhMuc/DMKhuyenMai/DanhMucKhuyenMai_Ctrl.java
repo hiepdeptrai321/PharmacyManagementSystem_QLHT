@@ -37,12 +37,14 @@ public class DanhMucKhuyenMai_Ctrl extends Application {
     @FXML private TableColumn<KhuyenMai, java.sql.Date> colNBD;
     @FXML private TableColumn<KhuyenMai, java.sql.Date> colNKT;
     @FXML private TableColumn<KhuyenMai, java.sql.Date> colNgayTao;
+    @FXML private Button btnLamMoi;
 
     private KhuyenMai_Dao khuyenMaiDao = new KhuyenMai_Dao();
 
     public void initialize() {
         loadTable();
         tfTimKM.setOnAction(e -> timKhuyenMai());
+        btnLamMoi.setOnAction(e-> LamMoi());
     }
 
     @Override
@@ -133,6 +135,12 @@ public class DanhMucKhuyenMai_Ctrl extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void LamMoi() {
+        tfTimKM.clear();
+        loadTable();
     }
 
     public void timKhuyenMai() {

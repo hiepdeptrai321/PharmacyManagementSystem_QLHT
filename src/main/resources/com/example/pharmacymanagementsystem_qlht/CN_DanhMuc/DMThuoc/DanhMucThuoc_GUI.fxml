@@ -5,6 +5,8 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
@@ -15,6 +17,11 @@
       <Pane id="lblpaneTitle" prefHeight="40.0" prefWidth="1646.0">
          <children>
             <Label id="lbtitle" layoutX="12.0" layoutY="2.0" prefHeight="36.0" prefWidth="269.0" text="Danh mục thuốc" />
+            <ImageView fitHeight="38.0" fitWidth="36.0" layoutX="211.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/pills-3941.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
       <Button id="btnthemthuoc" fx:id="btnThemThuoc" layoutX="1397.0" layoutY="46.0" mnemonicParsing="false" onAction="#themthuoc" prefHeight="30.0" prefWidth="144.0" text="✚Thêm thuốc" AnchorPane.topAnchor="46.0" />
@@ -33,5 +40,14 @@
        </TableView>
       <Button id="btnnhapxuat" fx:id="btnImport" layoutX="1550.0" layoutY="46.0" minWidth="46.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="45.0" text="📥" AnchorPane.topAnchor="46.0" />
       <Button id="btnnhapxuat" fx:id="btnExport" layoutX="1594.0" layoutY="46.0" minWidth="27.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" text="📤" AnchorPane.topAnchor="46.0" />
+      <Button id="btnReset" fx:id="btnLamMoi" layoutX="466.0" layoutY="46.0" minHeight="16.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timThuoc" prefHeight="40.0" prefWidth="59.0" stylesheets="@../../css/QuanLyThuoc.css">
+         <graphic>
+            <ImageView fitHeight="38.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/refresh-3104.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>

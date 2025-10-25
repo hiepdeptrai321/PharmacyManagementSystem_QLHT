@@ -2,9 +2,8 @@ package com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapHoaDon;
 
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang.TimKiemKhachHang_Ctrl;
-import com.example.pharmacymanagementsystem_qlht.dao.ChiTietHoaDon_Dao;
-import com.example.pharmacymanagementsystem_qlht.dao.HoaDon_Dao;
-import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SanPham_Dao;
+import com.example.pharmacymanagementsystem_qlht.controller.DangNhap_Ctrl;
+import com.example.pharmacymanagementsystem_qlht.dao.*;
 import com.example.pharmacymanagementsystem_qlht.model.*;
 import com.example.pharmacymanagementsystem_qlht.service.ApDungKhuyenMai;
 import com.example.pharmacymanagementsystem_qlht.service.DichVuKhuyenMai;
@@ -53,6 +52,7 @@ public class LapHoaDon_Ctrl extends Application {
     private volatile Task<List<String>> goiYHienTai;
     private final DichVuKhuyenMai dichVuKM = new DichVuKhuyenMai();
     private final NumberFormat VND = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+    private final Thuoc_SP_TheoLo_Dao loDao = new Thuoc_SP_TheoLo_Dao();
 
     @FXML private Button btnThemKH;
     @FXML private DatePicker dpNgayKeDon;
@@ -76,6 +76,7 @@ public class LapHoaDon_Ctrl extends Application {
     @FXML private TextField txtSoTienKhachDua;
     @FXML private Label lblTienThua;
     @FXML private Button btnThanhToan;
+    @FXML private Label lblGiamTheoHD;
 
     // popup suggestions
     private final ContextMenu goiYMenu = new ContextMenu();
@@ -104,7 +105,6 @@ public class LapHoaDon_Ctrl extends Application {
         tblChiTietHD.getItems().addListener((ListChangeListener<Object>) c -> tinhTongTien());
         tinhTongTien();
         initTienMatEvents();
-        xuLyThanhToan(new ActionEvent());
     }
 
 
@@ -814,54 +814,62 @@ public class LapHoaDon_Ctrl extends Application {
     }
     //---------Xu Ly Khuyen Mai ---------
     private final DichVuKhuyenMai kmService = new DichVuKhuyenMai();
-    private ApDungKhuyenMai tinhKMHoaDon(BigDecimal tongTruocKM) {
-        return kmService.apDungChoHoaDon(tongTruocKM, LocalDate.now());
+    private ApDungKhuyenMai tinhKMHoaDon(BigDecimal baseSauKMHang) {
+        return kmService.apDungChoHoaDon(baseSauKMHang, LocalDate.now());
     }
 
     private ApDungKhuyenMai tinhKMChoDong(String maThuoc, int soLuong, BigDecimal donGia) {
         return kmService.apDungChoSP(maThuoc, soLuong, donGia, LocalDate.now());
     }
 
+
     private void capNhatTongTien() {
-        // Sum line totals first
-        BigDecimal tongHang = BigDecimal.ZERO;
-        BigDecimal giamDong = BigDecimal.ZERO;
+        BigDecimal tongHang = BigDecimal.ZERO;   // sum of price*qty
+        BigDecimal giamDong = BigDecimal.ZERO;   // sum of per-row discounts
 
         for (ChiTietHoaDon row : dsChiTietHD) {
             BigDecimal line = BigDecimal.valueOf(row.getDonGia()).multiply(BigDecimal.valueOf(row.getSoLuong()));
             tongHang = tongHang.add(line);
-            // row.getGiamGia() is already set by apDungKMChoRow(...)
             giamDong = giamDong.add(BigDecimal.valueOf(row.getGiamGia()));
         }
 
         // Base for invoice-level KM = subtotal after per-row KM
         BigDecimal baseForInvoiceKM = tongHang.subtract(giamDong).max(BigDecimal.ZERO);
 
-        // 3) Apply invoice-level KM (LKM004/LKM005)
+        // Only 1 best invoice KM (as per new rule)
         ApDungKhuyenMai kmHD = tinhKMHoaDon(baseForInvoiceKM);
         BigDecimal giamHoaDon = kmHD.getDiscount() == null ? BigDecimal.ZERO : kmHD.getDiscount();
 
-        BigDecimal thanhToan = baseForInvoiceKM.subtract(giamHoaDon).max(BigDecimal.ZERO);
+        // Base after invoice KM
+        BigDecimal baseSauHD = baseForInvoiceKM.subtract(giamHoaDon).max(BigDecimal.ZERO);
 
-        // 4) Update UI/model as needed
-        // lblGiamGiaHD.setText(formatVND(giamHoaDon));
-        // lblThanhTien.setText(formatVND(thanhToan));
-        // lblMaKMHD.setText(String.join(", ", kmHD.getAppliedMaKM()));
-        // hoaDon.setGiamGiaHoaDon(giamHoaDon.doubleValue());
-        // hoaDon.setTongThanhToan(thanhToan.doubleValue());
+        // VAT 5% on the amount after all discounts
+        BigDecimal vat = baseSauHD.multiply(new BigDecimal("0.05")).setScale(0, RoundingMode.HALF_UP);
+        BigDecimal thanhTien = baseSauHD.add(vat);
+
+        // Update UI
+        if (lblGiamGia != null)     lblGiamGia.setText(cur(giamDong));
+        if (lblTongTien != null)    lblTongTien.setText(cur(baseForInvoiceKM));
+        if (lblGiamTheoHD != null)  lblGiamTheoHD.setText(cur(giamHoaDon));
+        if (lblVAT != null)         lblVAT.setText(cur(vat));
+        if (lblThanhTien != null)   lblThanhTien.setText(cur(thanhTien));
+
+        updateTienThua();
     }
-
     // 5) After updating per-row KM, re-run totals (keeps invoice KM in sync)
     private void apDungKMChoRow(ChiTietHoaDon row) {
         if (row == null || row.getLoHang() == null || row.getLoHang().getThuoc() == null) return;
+
         String maThuoc = row.getLoHang().getThuoc().getMaThuoc();
         int soLuong = row.getSoLuong();
         BigDecimal donGia = BigDecimal.valueOf(row.getDonGia());
+
         try {
-            var kq = kmService.apDungChoSP(maThuoc, soLuong, donGia, LocalDate.now());
+            ApDungKhuyenMai kq = tinhKMChoDong(maThuoc, soLuong, donGia);
             row.setGiamGia(kq != null && kq.getDiscount() != null ? kq.getDiscount().doubleValue() : 0.0);
         } finally {
-            capNhatTongTien(); // re-apply invoice KM after line KM changes
+            // Recompute totals so invoice KM (best of LKM004/LKM005) stays in sync
+            capNhatTongTien();
         }
     }
 
@@ -872,19 +880,6 @@ public class LapHoaDon_Ctrl extends Application {
         // Also call capNhatTongTien() after quantity/price edits.
     }
 
-//    private void apDungKMChoRow(ChiTietHoaDon row) {
-//        if (row == null || row.getLoHang() == null || row.getLoHang().getThuoc() == null) return;
-//        String maThuoc = row.getLoHang().getThuoc().getMaThuoc();
-//        int soLuong = row.getSoLuong();
-//        BigDecimal donGia = BigDecimal.valueOf(row.getDonGia());
-//        try {
-//            ApDungKhuyenMai kq = kmService.apDungChoSP(maThuoc, soLuong, donGia, LocalDate.now());
-//            row.setGiamGia(kq != null && kq.getDiscount() != null ? kq.getDiscount().doubleValue() : 0.0);
-//            // handle kq.getFreeItems() if you want to add gift lines
-//        } catch (Exception ex) {
-//            row.setGiamGia(0.0);
-//        }
-//    }
 
     //-----Xu Ly giao dich
     private String toTangKemText(Map<String, Integer> freeMap) {
@@ -982,16 +977,233 @@ public class LapHoaDon_Ctrl extends Application {
     public void xoaRong(ActionEvent actionEvent) {
         txtTimThuoc.setText("");
     }
-    private NhanVien nhanVienDangNhap;
-    public void setNhanVienDangNhap(NhanVien nv) { this.nhanVienDangNhap = nv; }
-    private Optional<String> getMaNVDangNhap() {
-        if (nhanVienDangNhap != null && nhanVienDangNhap.getMaNV() != null && !nhanVienDangNhap.getMaNV().isBlank())
-            return Optional.of(nhanVienDangNhap.getMaNV());
-        return Optional.empty();
-    }
     @FXML
     private void xuLyThanhToan(ActionEvent actionEvent) {
+        if (tblChiTietHD.getItems() == null || tblChiTietHD.getItems().isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Không có sản phẩm nào để thanh toán.").showAndWait();
+            return;
+        }
+        NhanVien nv = DangNhap_Ctrl.user;
+        if (nv == null) {
+            new Alert(Alert.AlertType.ERROR, "Chưa có nhân viên nào đăng nhập.").showAndWait();
+            return;
+        }
+        final String SQL_NEXT_MAHD     = "SELECT TOP 1 MaHD FROM HoaDon ORDER BY MaHD DESC";
+        final String SQL_INSERT_HOADON = "INSERT INTO HoaDon (MaHD, MaNV, MaKH, NgayLap, TrangThai) VALUES (?, ?, ?, ?, ?)";
+        final String SQL_INSERT_CTHD   = "INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia) VALUES (?, ?, ?, ?, ?)";
+        final String SQL_NEXT_MAKH     = "SELECT TOP 1 MaKH FROM KhachHang ORDER BY MaKH DESC";
+        final String SQL_INSERT_KH     = "INSERT INTO KhachHang (MaKH, TenKH, SDT) VALUES (?, ?, ?)";
 
+        Connection con = null;
+        try {
+            con = ConnectDB.getInstance();
+            con.setAutoCommit(false);
+            KhachHang kh = null;
+            if (txtTenKH != null && txtSDT != null) {
+                String ten = txtTenKH.getText();
+                String sdt = txtSDT.getText();
+
+                if ((ten != null && !ten.isBlank()) || (sdt != null && !sdt.isBlank())) {
+                    kh = new KhachHang();
+                    kh.setTenKH(ten);
+                    kh.setSdt(sdt);
+
+                    KhachHang_Dao khDao = new KhachHang_Dao();
+                    kh = khDao.findOrCreateByPhone(sdt, ten);
+                }
+            }
+
+            if (kh != null && (kh.getMaKH() == null || kh.getMaKH().isBlank())) {
+                String maKH = "KH001";
+                try (PreparedStatement ps = con.prepareStatement(SQL_NEXT_MAKH);
+                     ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        String last = rs.getString(1);
+                        try {
+                            int num = Integer.parseInt(last.substring(2)) + 1;
+                            maKH = String.format("KH%03d", num);
+                        } catch (Exception ignored) { }
+                    }
+                }
+                try (PreparedStatement ps = con.prepareStatement(SQL_INSERT_KH)) {
+                    ps.setString(1, maKH);
+                    ps.setString(2, kh.getTenKH());
+                    ps.setString(3, kh.getSdt());
+                    ps.executeUpdate();
+                }
+                kh.setMaKH(maKH);
+            }
+
+            allocateLotsAutomatically(con, tblChiTietHD.getItems());
+
+            // 1 Ktra tồn kho
+            for (ChiTietHoaDon line : tblChiTietHD.getItems()) {
+                Thuoc_SP_TheoLo lo = line.getLoHang();
+                if (lo == null || lo.getMaLH() == null || lo.getMaLH().isBlank()) {
+                    throw new IllegalStateException("Vui lòng chọn lô (MaLH) cho từng sản phẩm trước khi thanh toán.");
+                }
+                Thuoc_SP_TheoLo lotNow = new Thuoc_SP_TheoLo_Dao().selectById(lo.getMaLH());
+                if (lotNow == null) {
+                    throw new IllegalStateException("Không tìm thấy thông tin lô hàng " + lo.getMaLH());
+                }
+                int needBase = toBaseUnits(line);
+                if (needBase <= 0) {
+                    throw new IllegalStateException("Số lượng không hợp lệ cho lô hàng " + lo.getMaLH());
+                }
+                if (lotNow.getSoLuongTon() < needBase) {
+                    throw new IllegalStateException("Không đủ số lượng tồn " + lo.getMaLH() + ". Cần " + needBase + ", chỉ còn " + lotNow.getSoLuongTon());
+                }
+            }
+
+            // 2) Tạo MaHD
+            String maHD = "HD001";
+            try (PreparedStatement ps = con.prepareStatement(SQL_NEXT_MAHD);
+                 ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    String lastMa = rs.getString(1);
+                    try {
+                        int num = Integer.parseInt(lastMa.substring(2)) + 1;
+                        maHD = String.format("HD%03d", num);
+                    } catch (Exception ignore) { }
+                }
+            }
+
+
+            // 3 Thêm HoaDon
+            try (PreparedStatement ps = con.prepareStatement(SQL_INSERT_HOADON)) {
+                ps.setString(1, maHD);
+                ps.setString(2, nv.getMaNV());
+                ps.setString(3, kh != null ? kh.getMaKH() : null);
+                ps.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
+                ps.setBoolean(5, true);
+                ps.executeUpdate();
+            }
+
+            // 4 Thêm ChiTietHoaDon
+            Thuoc_SP_TheoLo_Dao loDao = new Thuoc_SP_TheoLo_Dao();
+            for (ChiTietHoaDon line : tblChiTietHD.getItems()) {
+                Thuoc_SP_TheoLo lo = line.getLoHang();
+                String maLH = lo.getMaLH();
+
+                int soLuongBase = toBaseUnits(line);
+                double donGia = line.getDonGia();
+                double giamGia = line.getGiamGia();
+
+                try (PreparedStatement psCT = con.prepareStatement(SQL_INSERT_CTHD)) {
+                    psCT.setString(1, maHD);
+                    psCT.setString(2, maLH);
+                    psCT.setInt(3, soLuongBase);
+                    psCT.setDouble(4, donGia);
+                    psCT.setDouble(5, giamGia);
+                    psCT.executeUpdate();
+                }
+
+                boolean ok = loDao.giamTonKhoByMaLo(con, maLH, soLuongBase);
+                if (!ok) {
+                    throw new IllegalStateException("Không thể cập nhật tồn kho cho lô " + maLH + ". Dữ liệu có thể đã thay đổi.");
+                }
+            }
+
+            con.commit();
+
+            new Alert(Alert.AlertType.INFORMATION, "Lập hóa đơn thành công.").showAndWait();
+
+            tblChiTietHD.getItems().clear();
+            lblTongTien.setText("0 VNĐ");
+            lblVAT.setText("0 VNĐ");
+            lblThanhTien.setText("0 VNĐ");
+            lblGiamGia.setText("0 VNĐ");
+            lblGiamTheoHD.setText("0 VNĐ");
+            txtSoTienKhachDua.clear();
+            lblTienThua.setText("0 VNĐ");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            if (con != null) {
+                try {
+                    if (!con.getAutoCommit()) con.rollback();
+                } catch (Exception ignore) { }
+            }
+            new Alert(Alert.AlertType.ERROR, "Lập hóa đơn thất bại: " + ex.getMessage()).showAndWait();
+        } finally {
+            if (con != null) {
+                try {
+                    con.setAutoCommit(true);
+                    con.close();
+                } catch (Exception ignore) { }
+            }
+        }
+    }
+    private void allocateLotsAutomatically(Connection con, List<ChiTietHoaDon> chiTietList) throws SQLException {
+        Thuoc_SP_TheoLo_Dao loDao = new Thuoc_SP_TheoLo_Dao();
+        List<ChiTietHoaDon> perLotLines = new ArrayList<>();
+
+        for (ChiTietHoaDon original : chiTietList) {
+            if (original == null || original.getLoHang() == null || original.getLoHang().getThuoc() == null) {
+                throw new IllegalStateException("Thông tin sản phẩm không hợp lệ.");
+            }
+            Thuoc_SanPham sp = original.getLoHang().getThuoc();
+            int requestedDisplayQty = Math.max(0, original.getSoLuong());
+            if (requestedDisplayQty <= 0) continue;
+
+            ChiTietDonViTinh selDvt = dvtOf(original);
+            if (selDvt == null) selDvt = layDVTCoBan(sp);
+            double factor = heSo(selDvt);
+
+            int remainingBase = (int) Math.round(requestedDisplayQty * factor);
+
+            while (remainingBase > 0) {
+                Thuoc_SP_TheoLo lo = loDao.selectOldestAvailableLot(con, sp.getMaThuoc());
+                if (lo == null) {
+                    throw new IllegalStateException("Không đủ hàng cho sản phẩm: " + sp.getTenThuoc());
+                }
+
+                int availableBase = lo.getSoLuongTon();
+                int takeBase = Math.min(remainingBase, availableBase);
+                int takeDisplay = (int) Math.round(takeBase / factor);
+                if (takeDisplay <= 0) takeDisplay = 1; // ensure at least one display unit
+
+                ChiTietHoaDon cthdTheoLo = new ChiTietHoaDon();
+                cthdTheoLo.setLoHang(lo);
+                cthdTheoLo.setSoLuong(takeDisplay);
+                cthdTheoLo.setDonGia(original.getDonGia());
+                cthdTheoLo.setGiamGia(original.getGiamGia());
+
+                perLotLines.add(cthdTheoLo);
+                dvtTheoDong.put(cthdTheoLo, selDvt);
+
+                remainingBase -= takeBase;
+            }
+        }
+
+        chiTietList.clear();
+        chiTietList.addAll(perLotLines);
+    }
+
+    private String getMaThuocFromRow(ChiTietHoaDon line) {
+        if (line == null || line.getLoHang() == null) return null;
+        try {
+            // common model: lot holds Thuoc object
+            var lo = line.getLoHang();
+            try {
+                if (lo.getThuoc() != null && lo.getThuoc().getMaThuoc() != null) {
+                    return lo.getThuoc().getMaThuoc();
+                }
+            } catch (Exception ignore) { }
+            try {
+                java.lang.reflect.Method m = lo.getClass().getMethod("getMaThuoc");
+                Object v = m.invoke(lo);
+                if (v != null) return String.valueOf(v);
+            } catch (NoSuchMethodException ignore) { }
+        } catch (Exception ignored) { }
+        return null;
+    }
+
+
+    private int toBaseUnits(ChiTietHoaDon line) {
+        if (line == null) return 0;
+        ChiTietDonViTinh dvt = dvtOf(line);
+        double factor = heSo(dvt);
+        return (int) Math.round(line.getSoLuong() * factor);
     }
 
 }

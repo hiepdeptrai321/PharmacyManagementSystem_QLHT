@@ -34,6 +34,20 @@ public class ConnectDB {
         }
         return stmt;
     }
+//    public Connection getConnection() throws SQLException {
+//        Connection con = DriverManager.getConnection(url, user, password);
+//        // set CONTEXT_INFO to propagate current user (same logic as in getStmt)
+//        if (DangNhap_Ctrl.user != null) {
+//            try (PreparedStatement ps = con.prepareStatement("SET CONTEXT_INFO ?")) {
+//                byte[] maNvBytes = new byte[128];
+//                byte[] actualBytes = DangNhap_Ctrl.user.getMaNV().getBytes(StandardCharsets.UTF_8);
+//                System.arraycopy(actualBytes, 0, maNvBytes, 0, Math.min(actualBytes.length, maNvBytes.length));
+//                ps.setBytes(1, maNvBytes);
+//                ps.execute();
+//            } catch (SQLException ignored) { /* ignore context-info failures */ }
+//        }
+//        return con;
+//    }
 
     public static int update(String sql, Object... args) {
         try {
@@ -71,5 +85,18 @@ public class ConnectDB {
     }
 
 
+    public static Connection getInstance() throws SQLException {
+        Connection con = DriverManager.getConnection(url, user, password);
+        if (DangNhap_Ctrl.user != null) {
+            try (PreparedStatement ps = con.prepareStatement("SET CONTEXT_INFO ?")) {
+                byte[] maNvBytes = new byte[128];
+                byte[] actualBytes = DangNhap_Ctrl.user.getMaNV().getBytes(StandardCharsets.UTF_8);
+                System.arraycopy(actualBytes, 0, maNvBytes, 0, Math.min(actualBytes.length, maNvBytes.length));
+                ps.setBytes(1, maNvBytes);
+                ps.execute();
+            } catch (SQLException ignored) { }
+        }
+        return con;
+    }
 
 }

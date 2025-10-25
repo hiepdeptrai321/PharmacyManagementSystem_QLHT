@@ -77,6 +77,11 @@
 /*    -fx-text-fill: #000000;*/
 /*}*/
 
+#btnThanhTien {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
 .text-field, .text-area {
     -fx-background-color: #fff;
     -fx-border-color: #90caf9;

@@ -8,8 +8,10 @@ import com.example.pharmacymanagementsystem_qlht.model.KhuyenMai;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SP_TangKem;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 public class DichVuKhuyenMai {
@@ -59,36 +61,55 @@ public class DichVuKhuyenMai {
         }
         return kq;
     }
-    public ApDungKhuyenMai apDungChoHoaDon(BigDecimal tongTruocKM, LocalDate ngay) {
+
+    public ApDungKhuyenMai apDungChoHoaDon(BigDecimal baseSauKMHang, LocalDate ngay) {
         ApDungKhuyenMai kq = new ApDungKhuyenMai();
-        if (tongTruocKM == null || tongTruocKM.signum() <= 0) return kq;
+        if (baseSauKMHang == null || baseSauKMHang.signum() <= 0) return kq;
+
+        BigDecimal base = baseSauKMHang;
 
         List<KhuyenMai> ds = kmDao.selectActiveInvoiceOn(Date.valueOf(ngay));
-        for (KhuyenMai km : ds) {
-            if (km == null || km.getLoaiKM() == null) continue;
+        // Best LKM004 by highest threshold <= base
+        KhuyenMai best004 = ds.stream()
+                .filter(km -> km.getLoaiKM() != null && "LKM004".equalsIgnoreCase(km.getLoaiKM().getMaLoai()))
+                .filter(km -> km.getGiaTriApDung() <= base.doubleValue())
+                .max(Comparator.comparingDouble(KhuyenMai::getGiaTriApDung))
+                .orElse(null);
 
-            String loai = km.getLoaiKM().getMaLoai();
-            double nguong = km.getGiaTriApDung(); // threshold for invoice total
-            if (tongTruocKM.doubleValue() < nguong) continue;
+        // Best LKM005 by highest threshold <= base
+        KhuyenMai best005 = ds.stream()
+                .filter(km -> km.getLoaiKM() != null && "LKM005".equalsIgnoreCase(km.getLoaiKM().getMaLoai()))
+                .filter(km -> km.getGiaTriApDung() <= base.doubleValue())
+                .max(Comparator.comparingDouble(KhuyenMai::getGiaTriApDung))
+                .orElse(null);
 
-            if ("LKM004".equalsIgnoreCase(loai)) {
-                BigDecimal giam = BigDecimal.valueOf(km.getGiaTriKM());
-                if (giam.signum() > 0) {
-                    // discount cannot exceed current base
-                    giam = giam.min(tongTruocKM.subtract(kq.getDiscount()).max(BigDecimal.ZERO));
-                    kq.addDiscount(giam);
-                    kq.addApplied(km.getMaKM());
-                }
-            } else if ("LKM005".equalsIgnoreCase(loai)) {
-                BigDecimal base = tongTruocKM.subtract(kq.getDiscount()).max(BigDecimal.ZERO);
-                BigDecimal percent = BigDecimal.valueOf(km.getGiaTriKM() / 100.0);
-                BigDecimal giam = base.multiply(percent);
-                if (giam.signum() > 0) {
-                    kq.addDiscount(giam);
-                    kq.addApplied(km.getMaKM());
-                }
+        BigDecimal g004 = BigDecimal.ZERO;
+        BigDecimal g005 = BigDecimal.ZERO;
+
+        if (best004 != null) {
+            g004 = BigDecimal.valueOf(best004.getGiaTriKM());
+            // cap discount not to exceed base
+            if (g004.compareTo(base) > 0) g004 = base;
+            g004 = g004.setScale(0, RoundingMode.HALF_UP);
+        }
+        if (best005 != null) {
+            BigDecimal percent = BigDecimal.valueOf(best005.getGiaTriKM() / 100.0);
+            g005 = base.multiply(percent).setScale(0, RoundingMode.HALF_UP);
+        }
+
+        // Pick the larger discount
+        if (g004.compareTo(g005) >= 0) {
+            if (best004 != null && g004.signum() > 0) {
+                kq.addDiscount(g004);
+                kq.addApplied(best004.getMaKM());
+            }
+        } else {
+            if (best005 != null && g005.signum() > 0) {
+                kq.addDiscount(g005);
+                kq.addApplied(best005.getMaKM());
             }
         }
         return kq;
     }
 }
+

@@ -103,7 +103,7 @@ public class TimKiemPhieuNhap_Ctrl extends Application {
         colNhaCungCap.setCellValueFactory(cd ->
                 new SimpleStringProperty(cd.getValue().getNhaCungCap().getTenNCC())
         );
-        colNgayNhap.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.dinhDangGio(cellData.getValue().getNgayNhap().toLocalDateTime())));
+        //colNgayNhap.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.dinhDangGio(cellData.getValue().getNgayNhap().toLocalDateTime())));
         colTrangThai.setCellValueFactory(cd ->
                 new SimpleStringProperty(cd.getValue().getTrangThai() ? "Hoàn tất" : "Chưa hoàn tất")
         );

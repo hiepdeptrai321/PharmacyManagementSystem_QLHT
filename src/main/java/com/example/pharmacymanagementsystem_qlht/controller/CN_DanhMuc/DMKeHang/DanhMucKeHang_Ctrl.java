@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -77,6 +78,19 @@ public class DanhMucKeHang_Ctrl extends Application {
         );
         cotMaKe.setCellValueFactory(new PropertyValueFactory<>("maKe"));
         cotTenKe.setCellValueFactory(new PropertyValueFactory<>("tenKe"));
+        cotTenKe.setCellFactory(col -> new TableCell<KeHang, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colChiTiet.setCellFactory(col -> new TableCell<KeHang, String>() {
             private final Button btn = new Button("Chi tiết");
             {

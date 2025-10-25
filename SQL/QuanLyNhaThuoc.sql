@@ -1196,18 +1196,14 @@ PRINT N'=== HOÀN TẤT V1 (FIXED)! Đã thêm thành công. ===';
 GO
 
 
-USE QuanLyNhaThuoc;
-GO
-
 SET XACT_ABORT ON;
 BEGIN TRAN;
 
-PRINT N'=== BẮT ĐẦU THÊM DỮ LIỆU BỔ SUNG V2 (FIXED) ===';
 
 -- ==========================================================
 -- BƯỚC 1: THÊM DỮ LIỆU CHO NĂM 2024 (TEST "TÙY CHỌN")
 -- ==========================================================
-PRINT N'--- 1. Tạo dữ liệu Năm 2024';
+
 
 INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
 VALUES
@@ -1234,7 +1230,7 @@ UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 50 WHERE MaLH = 'LH_T_2024'
 -- ==========================================================
 -- BƯỚC 2: THÊM DỮ LIỆU THÁNG 9/2025 (TEST "QUÝ NÀY" & "TÙY CHỌN")
 -- ==========================================================
-PRINT N'--- 2. Thêm dữ liệu Tháng 9/2025 (Quý 4)';
+
 
 INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
 VALUES
@@ -1261,7 +1257,7 @@ UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 30 WHERE MaLH = 'LH_T_SEP25
 -- ==========================================================
 -- BƯỚC 3: THÊM DỮ LIỆU ĐẦU THÁNG 10 (TEST "THÁNG NÀY")
 -- ==========================================================
-PRINT N'--- 3. Thêm dữ liệu đầu Tháng 10/2025';
+
 -- Lỗi Foreign Key ở đây đã được sửa vì 'LH_T101' đã được tạo ở Script V1 (Fixed)
 INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
 VALUES
@@ -1276,7 +1272,7 @@ UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 20 WHERE MaLH = 'LH_T101';
 -- ==========================================================
 -- BƯỚC 4: THÊM DỮ LIỆU CHO "TUẦN NÀY" (20/10 - 24/10)
 -- ==========================================================
-PRINT N'--- 4. Thêm dữ liệu cho TUẦN NÀY (21/10)';
+
 -- Lỗi Foreign Key ở đây đã được sửa vì 'LH_T102' đã được tạo ở Script V1 (Fixed)
 INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
 VALUES
@@ -1293,7 +1289,6 @@ UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 10 WHERE MaLH = 'LH_T102';
 -- ==========================================================
 PRINT N'--- 5. Thêm dữ liệu cho HÔM NAY (25/10)';
 
--- SỬA: 'HD_T_TODAY3' (11) -> 'HD_T_TD3' (7)
 INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
 VALUES
 ('HD_T_TD3', GETDATE(), N'Hoàn tất', 'KH001', 'NV002');
@@ -1305,8 +1300,6 @@ VALUES
 UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 8 WHERE MaLH = 'LH_T104';
 
 COMMIT TRAN;
-PRINT N'=== HOÀN TẤT V2 (FIXED)! Đã thêm dữ liệu bổ sung. ===';
-
 GO
 
 
@@ -1932,13 +1925,10 @@ BEGIN
 END;
 GO
 
-PRINT N'=== HOÀN TẤT! Đã tạo hoặc cập nhật 10 SP thành công. ===';
-
 --------- THỐNG KÊ XUẤT NHẬP TỒN
 USE QuanLyNhaThuoc;
 GO
 
-PRINT N'=== Bắt đầu tạo SP cho Thống kê XNT (Phiên bản sửa lỗi) ===';
 GO
 
 -- ==========================================================
@@ -1972,7 +1962,6 @@ BEGIN
 END;
 GO
 
-PRINT N'Tạo thành công sp_ThongKeThuocHetHan.';
 GO
 
 -- ==========================================================
@@ -2138,7 +2127,6 @@ BEGIN
 END;
 GO
 
-PRINT N'Tạo thành công sp_ThongKeXNT.';
 GO
 
-PRINT N'=== HOÀN TẤT! Đã tạo 2 SP cho Thống kê XNT. ===';
+

@@ -1,5 +1,6 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhaCungCap;
 
+import com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuNhapHang.LapPhieuNhapHang_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.dao.NhaCungCap_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.NhaCungCap;
 import javafx.scene.control.*;
@@ -9,6 +10,7 @@ import javafx.stage.Stage;
 public class ThemNhaCungCap_Ctrl {
 
     private  DanhMucNhaCungCap_Ctrl danhMucNhaCungCap_Ctrl;
+    private LapPhieuNhapHang_Ctrl lapPhieuNhapHang_Ctrl;
     public TextField txtTenNCC;
     public TextField txtDiaChi;
     public TextField txtSDT;
@@ -22,6 +24,9 @@ public class ThemNhaCungCap_Ctrl {
 //  Thiết lập Ctrl cha
     public void setParentCtrl(DanhMucNhaCungCap_Ctrl parent) {
         this.danhMucNhaCungCap_Ctrl = parent;
+    }
+    public void setLapPhieuNhapHang_Ctrl(LapPhieuNhapHang_Ctrl lapPhieuNhapHang_Ctrl){
+        this.lapPhieuNhapHang_Ctrl = lapPhieuNhapHang_Ctrl;
     }
 
 //  Button hủy (đóng cửa sổ)
@@ -49,7 +54,12 @@ public class ThemNhaCungCap_Ctrl {
                 dialogPane.getButtonTypes().addAll(javafx.scene.control.ButtonType.OK);
                 dialog.setDialogPane(dialogPane);
                 dialog.showAndWait();
-                danhMucNhaCungCap_Ctrl.refreshTable();
+                if(danhMucNhaCungCap_Ctrl != null){
+                    danhMucNhaCungCap_Ctrl.refreshTable();
+                }else if(lapPhieuNhapHang_Ctrl != null){
+                    lapPhieuNhapHang_Ctrl.taiDanhSachNCC();
+                }
+
             }else{
                 Dialog<String> dialog = new Dialog<>();
                 dialog.setTitle("Lỗi");

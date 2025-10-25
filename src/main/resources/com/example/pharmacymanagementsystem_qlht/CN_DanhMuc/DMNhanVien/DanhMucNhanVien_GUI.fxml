@@ -39,7 +39,7 @@
             <TableColumn fx:id="colCapNhat" prefWidth="94.666748046875" style="-fx-alignment: CENTER;" text="Cập nhật" />
             </columns>
         </TableView>
-      <Button id="btnReset" fx:id="btnLamMoi" layoutX="874.0" layoutY="47.0" minWidth="35.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="69.0" stylesheets="@../../css/QuanLyThuoc.css">
+      <Button id="btnReset" fx:id="btnLamMoi" layoutX="874.0" layoutY="47.0" minWidth="35.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="47.0" stylesheets="@../../css/QuanLyThuoc.css">
          <graphic>
             <ImageView fitHeight="35.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
                <image>

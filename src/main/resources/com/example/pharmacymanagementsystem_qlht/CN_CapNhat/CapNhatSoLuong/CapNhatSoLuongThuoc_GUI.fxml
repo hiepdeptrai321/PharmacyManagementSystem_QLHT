@@ -5,10 +5,12 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane prefHeight="895.0" prefWidth="1646.0" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatSoLuong.CapNhatSoLuongThuoc_Ctrl">
+<AnchorPane prefHeight="895.0" prefWidth="1646.0" style="-fx-font-size: 14;" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatSoLuong.CapNhatSoLuongThuoc_Ctrl">
    <children>
       <TextField fx:id="tfTimThuoc" layoutX="12.0" layoutY="47.0" prefHeight="40.0" prefWidth="767.0" promptText="Tìm theo mã, tên thuốc" />
       <Button id="btntim" fx:id="btnTimThuoc" layoutX="789.0" layoutY="47.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timThuoc" prefHeight="40.0" prefWidth="81.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" />
@@ -28,5 +30,14 @@
             <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="73.0" style="-fx-alignment: CENTER;" />
         </columns>
       </TableView>
+      <Button id="btnReset" fx:id="btnLamMoi" layoutX="882.0" layoutY="47.0" minWidth="47.0" mnemonicParsing="false" onMouseClicked="#timThuoc" prefHeight="40.0" prefWidth="47.0" stylesheets="@../../css/QuanLyThuoc.css">
+         <graphic>
+            <ImageView fitHeight="37.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/refresh-3104.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>

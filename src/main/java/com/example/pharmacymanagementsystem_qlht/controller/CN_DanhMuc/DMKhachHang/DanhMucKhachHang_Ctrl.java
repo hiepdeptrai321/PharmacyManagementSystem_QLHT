@@ -69,6 +69,7 @@ public class DanhMucKhachHang_Ctrl extends Application {
         btnLamMoi.setOnAction(e -> LamMoi());
         btnTim.setOnAction(e -> TimKiem());
         btnthemKH.setOnAction(e -> btnThemClick(new KhachHang()));
+        txtTim.setOnAction(e -> TimKiem());
 
 
     }

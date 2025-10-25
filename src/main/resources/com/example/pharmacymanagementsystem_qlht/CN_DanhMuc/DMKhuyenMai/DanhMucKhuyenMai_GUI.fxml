@@ -5,6 +5,8 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
@@ -28,12 +30,26 @@
         </TableView>
       <Pane id="lblpaneTitle" layoutX="13.0" layoutY="4.0" prefHeight="40.0" prefWidth="1632.0">
          <children>
-            <Label id="lbtitle" layoutY="2.0" prefHeight="26.0" prefWidth="405.0" text="Danh mục khuyến mãi">
+            <Label id="lbtitle" layoutY="2.0" prefHeight="36.0" prefWidth="279.0" text="Danh mục khuyến mãi">
                <font>
                   <Font size="48.0" />
                </font>
             </Label>
+            <ImageView fitHeight="35.0" fitWidth="38.0" layoutX="272.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/discounts.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
+      <Button id="btnReset" fx:id="btnLamMoi" layoutX="882.0" layoutY="49.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="53.0">
+         <graphic>
+            <ImageView id="btnReset" fitHeight="31.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/refresh-3104.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
     </children>
 </AnchorPane>

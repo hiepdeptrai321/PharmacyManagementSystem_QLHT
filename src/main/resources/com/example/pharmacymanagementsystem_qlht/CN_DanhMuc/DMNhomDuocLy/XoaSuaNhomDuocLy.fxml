@@ -2,6 +2,7 @@
 
 <?import java.net.URL?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
@@ -14,6 +15,7 @@
                 <Font name="System Bold" size="18.0" />
             </font>
         </Label>
+      <Separator layoutX="-8.0" layoutY="38.0" prefHeight="0.0" prefWidth="589.0" />
         <TextField fx:id="txtTenNDL" layoutX="14.0" layoutY="66.0" prefHeight="25.0" prefWidth="555.0" />
         <Label layoutX="13.5" layoutY="49.0" text="Tên nhóm dược lý" />
         <Label layoutX="294.0" layoutY="49.0" />

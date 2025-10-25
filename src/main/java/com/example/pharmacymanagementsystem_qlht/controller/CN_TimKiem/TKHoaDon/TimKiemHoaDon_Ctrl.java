@@ -153,7 +153,6 @@ public class TimKiemHoaDon_Ctrl extends Application {
                 } else {
                     setText(item);
                     setAlignment(Pos.CENTER_LEFT);
-                    setPadding(new Insets(0, 0, 0, 45));
                 }
             }
         });
@@ -168,7 +167,6 @@ public class TimKiemHoaDon_Ctrl extends Application {
                 } else {
                     setText(item);
                     setAlignment(Pos.CENTER_LEFT);
-                    setPadding(new Insets(0, 0, 0, 45));
                 }
             }
         });

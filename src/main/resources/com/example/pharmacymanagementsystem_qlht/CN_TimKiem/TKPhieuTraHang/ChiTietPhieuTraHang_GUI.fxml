@@ -13,22 +13,15 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="895" prefWidth="1646" stylesheets="@../../css/ChiTietPhieuTra.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuTraHang.ChiTietPhieuTraHang_Ctrl">
+<AnchorPane prefHeight="895" prefWidth="1646" style="-fx-font-size: 14 px;" stylesheets="@../../css/ChiTietPhieuTra.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuTraHang.ChiTietPhieuTraHang_Ctrl">
 <SplitPane dividerPositions="0.65" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
     <AnchorPane minHeight="0.0" minWidth="0.0">
          <Pane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-               <Pane layoutX="6.0" layoutY="43.0">
-                  <children>
-                      <Label styleClass="bold-label" text="Mã phiếu trả: " />
-                      <Label fx:id="lblMaPhieuTraValue" layoutX="110.0" layoutY="0.8" styleClass="value-label" text="PT012345" />
-                      <Label fx:id="lblNgayLapValue" layoutX="346.0" layoutY="1.0" prefHeight="20.0" prefWidth="315.0" styleClass="value-label" text="01/10/2025" />
-                      <Label layoutX="282.0" layoutY="2.0" styleClass="bold-label label-padding" text="Ngày lập: " />
-                  </children>
-               </Pane>
-                  <Label layoutX="5.0" layoutY="69.0" styleClass="section-label" text="DANH SÁCH SẢN PHẨM TRẢ" />
-               <TableView fx:id="tblChiTietPhieuTra" layoutX="15.0" layoutY="96.0" prefHeight="776.0" prefWidth="1038.0" styleClass="main-table">
+               <Pane layoutX="6.0" layoutY="43.0" />
+                  <Label layoutX="14.0" layoutY="52.0" styleClass="section-label" text="DANH SÁCH SẢN PHẨM TRẢ" />
+               <TableView fx:id="tblChiTietPhieuTra" layoutX="15.0" layoutY="80.0" prefHeight="792.0" prefWidth="1038.0" styleClass="main-table">
                    <columns>
                        <TableColumn fx:id="colSTT" prefWidth="50.0" text="STT" />
                        <TableColumn fx:id="colTenSP" prefWidth="250.0" text="Tên sản phẩm/Hoạt chất" />
@@ -41,6 +34,14 @@
                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                    </columnResizePolicy>
                </TableView>
+                <Label layoutX="10.0" layoutY="13.0" styleClass="bold-label" text="Mã phiếu trả: " />
+                <Label fx:id="lblMaPhieuTraValue" layoutX="117.0" layoutY="14.0" styleClass="value-label" text="PT012345" />
+                <Label layoutX="203.0" layoutY="13.0" styleClass="bold-label" text="Ngày lập: ">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+               </Label>
+                <Label fx:id="lblNgayLapValue" layoutX="282.0" layoutY="14.0" prefHeight="20.0" prefWidth="315.0" styleClass="value-label" text="01/10/2025" />
             </children>
          </Pane>
     </AnchorPane>
@@ -89,7 +90,7 @@
                   <VBox alignment="BOTTOM_CENTER" layoutY="570.4">
                   <Pane prefHeight="110.0" prefWidth="545.0">
                      <children>
-                          <Button fx:id="btnInPhieuTra" layoutX="93.0" layoutY="8.0" prefHeight="70.0" prefWidth="132.0" styleClass="print-btn" text="In Phiếu Trả">
+                          <Button fx:id="btnInPhieuTra" layoutX="-2.0" prefHeight="58.0" prefWidth="547.0" styleClass="print-btn" text="In Phiếu Trả">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -100,7 +101,7 @@
                                  </color>
                               </DropShadow>
                            </effect></Button>
-                          <Button fx:id="btnDong" layoutX="340.0" layoutY="5.0" prefHeight="70.0" prefWidth="132.0" styleClass="danger-btn" text="Đóng">
+                          <Button fx:id="btnDong" layoutX="-2.0" layoutY="68.0" prefHeight="58.0" prefWidth="547.0" styleClass="danger-btn" text="Đóng">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
@@ -110,7 +111,8 @@
                                     <Color red="0.6526315808296204" green="0.6453801393508911" blue="0.6453801393508911" />
                                  </color>
                               </DropShadow>
-                           </effect></Button>
+                           </effect>
+                        </Button>
                      </children>
                   </Pane>
                </VBox>

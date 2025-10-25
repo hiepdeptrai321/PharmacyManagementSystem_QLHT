@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -75,6 +76,19 @@ public class DanhMucNhomDuocLy_Ctrl extends Application {
         );
         cotMaNDL.setCellValueFactory(new PropertyValueFactory<>("maNDL"));
         cotTenNDL.setCellValueFactory(new PropertyValueFactory<>("tenNDL"));
+        cotTenNDL.setCellFactory(col -> new TableCell<NhomDuocLy, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colChiTiet.setCellFactory(col -> new TableCell<NhomDuocLy, String>() {
             private final Button btn = new Button("Chi tiết");
             {

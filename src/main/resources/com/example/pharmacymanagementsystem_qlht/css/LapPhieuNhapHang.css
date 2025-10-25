@@ -54,7 +54,7 @@
     -fx-effect: null;
 }
 #paneTienHang{
-    -fx-background-color: #e0e0e0;
+    -fx-background-color: #eeeeee;
     -fx-background-radius: 5px;
 }
 #btnXacNhan{

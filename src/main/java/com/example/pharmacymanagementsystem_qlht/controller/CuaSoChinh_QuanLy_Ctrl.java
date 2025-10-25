@@ -207,6 +207,19 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
         }
     }
 
+    //  Danh mục hoạt động
+    public void timKiemHoatDong(ActionEvent actionEvent) {
+        viTri=2;
+        selectMenu(viTri);
+        pnlChung.getChildren().clear();
+        try {
+            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKHoatDong/TKHoatDong_GUI.fxml")));
+            pnlChung.getChildren().add(pane);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 //  2.Chức năng danh mục
 //  Danh mục thuốc
     public void danhMucThuoc(ActionEvent actionEvent) {
@@ -267,19 +280,6 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNCC/DanhMucNhaCungCap_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-//  Danh mục hoạt động
-    public void danhMucHoatDong(ActionEvent actionEvent) {
-        viTri=2;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMHoatDong/DanhMucHoatDong_GUI.fxml")));
             pnlChung.getChildren().add(pane);
         } catch (Exception e) {
             e.printStackTrace();

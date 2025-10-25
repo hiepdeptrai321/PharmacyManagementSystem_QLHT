@@ -6,7 +6,7 @@ USE QuanLyNhaThuoc;
 GO
 
 --Link thư mục hình ảnh thuốc 
-DECLARE @path NVARCHAR(255) = N'C:\Users\hiepdeptrai\Desktop\hk1_2025-2026\QLHT\SQL\imgThuoc\';
+DECLARE @path NVARCHAR(255) = N'D:\IUH\hk5\PTUD_Java\Project\PharmacyManagementSystem_QLHT\SQL\imgThuoc\';
 
 -- =========================
 -- Bảng KhachHang
@@ -2129,4 +2129,102 @@ GO
 
 GO
 
+PRINT N'=== HOÀN TẤT! Đã tạo 2 SP cho Thống kê XNT. ===';
 
+go
+
+CREATE PROCEDURE sp_LuuPhieuNhap
+    @MaPN VARCHAR(10),
+    @NgayNhap DATE,
+    @TrangThai BIT,
+    @GhiChu NVARCHAR(255),
+    @MaNCC VARCHAR(10),
+    @MaNV VARCHAR(10),
+
+    -- Chi tiết phiếu nhập
+    @MaThuoc VARCHAR(10),
+    @MaLH VARCHAR(10),
+    @SoLuong INT,
+    @GiaNhap FLOAT,
+    @ChietKhau FLOAT,
+    @Thue FLOAT,
+
+    -- Lô thuốc
+    @SoLuongTon INT = NULL,
+    @NSX DATE = NULL,
+    @HSD DATE = NULL,
+
+    -- Đơn vị tính cần cập nhật
+    @MaDVT VARCHAR(10) = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        -- 1️⃣ Thêm phiếu nhập nếu chưa có
+        IF NOT EXISTS (SELECT 1 FROM PhieuNhap WHERE MaPN = @MaPN)
+        BEGIN
+            INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
+            VALUES (@MaPN, @NgayNhap, @TrangThai, @GhiChu, @MaNCC, @MaNV);
+        END
+        ELSE
+        BEGIN
+            -- Nếu đã có thì cập nhật lại thông tin chung (nếu cần)
+            UPDATE PhieuNhap
+            SET NgayNhap = @NgayNhap,
+                TrangThai = @TrangThai,
+                GhiChu = @GhiChu,
+                MaNCC = @MaNCC,
+                MaNV = @MaNV
+            WHERE MaPN = @MaPN;
+        END
+
+        -- 2️⃣ Thêm hoặc cập nhật chi tiết phiếu nhập
+        IF EXISTS (SELECT 1 FROM ChiTietPhieuNhap WHERE MaPN = @MaPN AND MaThuoc = @MaThuoc AND MaLH = @MaLH)
+        BEGIN
+            UPDATE ChiTietPhieuNhap
+            SET SoLuong = @SoLuong,
+                GiaNhap = @GiaNhap,
+                ChietKhau = @ChietKhau,
+                Thue = @Thue
+            WHERE MaPN = @MaPN AND MaThuoc = @MaThuoc AND MaLH = @MaLH;
+        END
+        ELSE
+        BEGIN
+            INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
+            VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuong, @GiaNhap, @ChietKhau, @Thue);
+        END
+
+        -- 3️⃣ Nếu TrangThai = 1 thì mới cập nhật kho và giá nhập
+        IF @TrangThai = 1
+        BEGIN
+            -- ⚙️ Cập nhật hoặc thêm mới lô thuốc
+            IF EXISTS (SELECT 1 FROM Thuoc_SP_TheoLo WHERE MaLH = @MaLH)
+            BEGIN
+                UPDATE Thuoc_SP_TheoLo
+                SET SoLuongTon = SoLuongTon + @SoLuongTon
+                WHERE MaLH = @MaLH;
+            END
+            ELSE
+            BEGIN
+                INSERT INTO Thuoc_SP_TheoLo (MaPN, MaThuoc, MaLH, SoLuongTon, NSX, HSD)
+                VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuongTon, @NSX, @HSD);
+            END
+
+            -- 🔁 Cập nhật giá nhập và giá bán trong ChiTietDonViTinh
+            UPDATE ChiTietDonViTinh
+            SET GiaNhap = @GiaNhap,
+                GiaBan = CASE WHEN @GiaNhap > GiaBan THEN @GiaNhap ELSE GiaBan END
+            WHERE MaThuoc = @MaThuoc AND MaDVT = @MaDVT;
+        END
+
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        THROW;
+    END CATCH
+END
+GO

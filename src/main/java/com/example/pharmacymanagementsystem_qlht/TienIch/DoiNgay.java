@@ -1,6 +1,7 @@
 package com.example.pharmacymanagementsystem_qlht.TienIch;
 
-import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -28,6 +29,12 @@ public final class DoiNgay {
     public static String dinhDangNgay(LocalDate ld) {
         if (ld == null) return "";
         return ld.format(DATE_FORMATTER); // Dùng luôn formatter bạn đã khai báo
+    }
+
+    public static String dinhDangNgay(Date d) {
+        if (d == null) return "";
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(d);
     }
 
     public static String dinhDangGio(LocalDateTime dateTime) {

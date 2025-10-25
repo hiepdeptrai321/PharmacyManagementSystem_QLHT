@@ -50,7 +50,7 @@ public class PhieuNhap_Dao implements DaoInterface<PhieuNhap>{
             while (rs.next()) {
                 PhieuNhap pn = new PhieuNhap();
                 pn.setMaPN(rs.getString("MaPN"));
-                pn.setNgayNhap(rs.getTimestamp("NgayNhap"));
+                pn.setNgayNhap(rs.getTimestamp("NgayNhap").toLocalDateTime().toLocalDate());
                 pn.setTrangThai(rs.getBoolean("TrangThai"));
                 pn.setGhiChu(rs.getString("GhiChu"));
                 pn.setNhaCungCap(new NhaCungCap_Dao().selectById(rs.getString("MaNCC")));

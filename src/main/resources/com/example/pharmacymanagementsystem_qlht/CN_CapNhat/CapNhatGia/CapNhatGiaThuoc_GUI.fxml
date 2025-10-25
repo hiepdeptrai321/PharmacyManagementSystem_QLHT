@@ -5,10 +5,12 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane prefHeight="895.0" prefWidth="1646.0" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatGia.CapNhatGiaThuoc_Ctrl">
+<AnchorPane prefHeight="895.0" prefWidth="1646.0" style="-fx-font-size: 14;" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatGia.CapNhatGiaThuoc_Ctrl">
     <children>
         <TextField fx:id="tfTimThuoc" layoutX="12.0" layoutY="47.0" prefHeight="40.0" prefWidth="793.0" promptText="Tìm theo mã, tên thuốc" />
         <Button id="btntim" fx:id="btnTimThuoc" layoutX="817.0" layoutY="47.0" maxHeight="40.0" minHeight="40.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timThuoc" prefHeight="40.0" prefWidth="78.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" />
@@ -17,16 +19,25 @@
                 <Label id="lbtitle" layoutX="15.0" layoutY="2.0" prefHeight="36.0" prefWidth="307.0" text="Cập nhật giá thuốc" />
             </children>
         </Pane>
-        <TableView id="tablethuoc" fx:id="tbThuoc" layoutX="12.0" layoutY="96.0" prefHeight="791.0" prefWidth="1623.0">
+        <TableView id="tablethuoc" fx:id="tbThuoc" layoutX="12.0" layoutY="96.0" prefHeight="791.0" prefWidth="1623.0" style="-fx-font-size: 14;">
             <columns>
-                <TableColumn fx:id="colSTT" prefWidth="44.0" style="-fx-alignment: CENTER;" text="STT" />
-                <TableColumn fx:id="colMaThuoc" prefWidth="189.0" style="-fx-alignment: CENTER;" text="Mã thuốc" />
-                <TableColumn fx:id="colTenThuoc" prefWidth="515.0" text="Tên thuốc" />
+                <TableColumn fx:id="colSTT" prefWidth="60.0" style="-fx-alignment: CENTER;" text="STT" />
+                <TableColumn fx:id="colMaThuoc" prefWidth="190.0" style="-fx-alignment: CENTER;" text="Mã thuốc" />
+                <TableColumn fx:id="colTenThuoc" prefWidth="498.0" style="-fx-alignment: LEFT-CENTER;" text="Tên thuốc" />
                 <TableColumn fx:id="colDVT" minWidth="0.0" prefWidth="217.0" style="-fx-alignment: CENTER;" text="Đơn vị tính (cơ bản)" />
                 <TableColumn fx:id="colGiaNhap" minWidth="0.0" prefWidth="304.0" style="-fx-alignment: CENTER;" text="Giá nhập (VNĐ)" />
                 <TableColumn fx:id="colGiaBan" minWidth="0.0" prefWidth="285.0" style="-fx-alignment: CENTER;" text="Giá bán (VNĐ)" />
                 <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="67.0" style="-fx-alignment: CENTER;" />
             </columns>
         </TableView>
+      <Button id="btnReset" fx:id="btnReset" layoutX="906.0" layoutY="47.0" mnemonicParsing="false" stylesheets="@../../css/QuanLyThuoc.css">
+         <graphic>
+            <ImageView fitHeight="27.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/refresh-3104.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
     </children>
 </AnchorPane>

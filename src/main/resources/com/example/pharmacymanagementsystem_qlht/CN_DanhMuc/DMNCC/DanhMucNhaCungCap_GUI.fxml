@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane prefHeight="895.0" prefWidth="1646.0" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhaCungCap.DanhMucNhaCungCap_Ctrl">
+<AnchorPane prefHeight="895.0" prefWidth="1646.0" style="-fx-font-size: 14;" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhaCungCap.DanhMucNhaCungCap_Ctrl">
     <children>
         <Pane id="lblpaneTitle" prefHeight="40.0" prefWidth="1200.0">
             <children>
@@ -20,14 +20,14 @@
         <Button id="btnthemthuoc" layoutX="1371.0" layoutY="47.0" mnemonicParsing="false" onAction="#btnThemNCC" prefHeight="40.0" prefWidth="174.0" text="✚Thêm nhà cung cấp" AnchorPane.topAnchor="47.0" />
         <TableView id="tablethuoc" fx:id="tblNhaCungCap" layoutX="12.0" layoutY="98.0" prefHeight="789.0" prefWidth="1625.0">
             <columns>
-                <TableColumn prefWidth="48.83333206176758" text="STT" />
-                <TableColumn fx:id="colMaNCC" prefWidth="154.0" text="Mã NCC" />
+                <TableColumn fx:id="colSTT" prefWidth="48.83333206176758" style="-fx-alignment: CENTER;" text="STT" />
+                <TableColumn fx:id="colMaNCC" prefWidth="154.0" style="-fx-alignment: CENTER;" text="Mã NCC" />
                 <TableColumn fx:id="colTenNCC" prefWidth="320.0" text="Tên NCC" />
                 <TableColumn fx:id="colDiaChi" minWidth="0.0" prefWidth="179.0" text="Địa chỉ" />
-                <TableColumn fx:id="colSDT" minWidth="0.0" prefWidth="265.0" text="Số điện thoại" />
+                <TableColumn fx:id="colSDT" minWidth="0.0" prefWidth="265.0" style="-fx-alignment: CENTER;" text="Số điện thoại" />
                 <TableColumn fx:id="colEmail" minWidth="0.0" prefWidth="213.0" text="Email" />
                 <TableColumn fx:id="colGhiChu" minWidth="0.0" prefWidth="339.0" text="Ghi chú" />
-                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="104.0" text="Chi tiết" />
+                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="104.0" style="-fx-alignment: CENTER;" />
             </columns>
         </TableView>
         <Button id="btnnhapxuat" layoutX="1553.0" layoutY="47.0" minWidth="46.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="45.0" text="📥" AnchorPane.topAnchor="47.0" />

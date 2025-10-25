@@ -6,7 +6,8 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
-<Pane prefHeight="251.0" prefWidth="582.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKeHang.XoaSuaKeHang_Ctrl">
+
+<Pane prefHeight="251.0" prefWidth="582.0" style="-fx-font-size: 13;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKeHang.XoaSuaKeHang_Ctrl">
     <children>
         <Label layoutX="13.5" layoutY="8.0" prefHeight="31.0" prefWidth="555.0" styleClass="lbtitle" text="Chi tiết kệ hàng">
             <font>

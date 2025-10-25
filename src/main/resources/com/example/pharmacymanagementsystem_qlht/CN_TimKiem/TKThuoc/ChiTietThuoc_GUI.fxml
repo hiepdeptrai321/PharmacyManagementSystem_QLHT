@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="506.0" prefWidth="996.0" stylesheets="@../../css/TimKiemThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKThuoc.ChiTietThuoc_Ctrl">
+<Pane prefHeight="506.0" prefWidth="996.0" style="-fx-font-size: 13 px;" stylesheets="@../../css/TimKiemThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKThuoc.ChiTietThuoc_Ctrl">
    <children>
       <Pane id="paneTitle" prefHeight="51.0" prefWidth="1004.0">
          <children>
@@ -27,42 +27,42 @@
                     <Image url="@../../img/noimage.jpg" />
                 </image>
             </ImageView>
-            <Label layoutX="16.0" layoutY="107.0" prefHeight="16.0" prefWidth="58.0" text="Hàm lượng:">
+            <Label layoutX="16.0" layoutY="107.0" prefHeight="16.0" prefWidth="58.0" style="-fx-font-size: 13 px;" text="Hàm lượng:">
                 <font>
                     <Font size="11.0" />
                 </font>
             </Label>
             <TextField fx:id="txtHamLuong" layoutX="16.0" layoutY="123.0" prefHeight="25.0" prefWidth="136.0" style="-fx-max-height: 30;" />
             <TextField fx:id="txtHangSanXuat" layoutX="16.0" layoutY="179.0" maxHeight="31.0" prefHeight="31.0" prefWidth="196.0" style="-fx-max-height: 30;" />
-            <Label layoutX="156.0" layoutY="107.0" prefHeight="16.0" prefWidth="66.0" text="Đường dùng:">
+            <Label layoutX="156.0" layoutY="107.0" prefHeight="19.0" prefWidth="93.0" style="-fx-font-size: 13 px;" text="Đường dùng:">
                 <font>
                     <Font size="11.0" />
                 </font>
             </Label>
-            <Label layoutX="216.0" layoutY="217.0" prefHeight="16.0" prefWidth="78.0" text="Nhóm dược lý:">
+            <Label layoutX="216.0" layoutY="217.0" prefHeight="19.0" prefWidth="114.0" style="-fx-font-size: 13 px;" text="Nhóm dược lý:">
                 <font>
                     <Font size="11.0" />
                 </font>
             </Label>
             <TextField fx:id="txtNuocSanXuat" layoutX="216.0" layoutY="179.0" maxHeight="31.0" prefHeight="31.0" prefWidth="215.0" style="-fx-max-height: 30;" />
-            <Label layoutX="16.0" layoutY="161.0" prefHeight="16.0" prefWidth="77.0" text="Hãng sản xuất:">
+            <Label layoutX="16.0" layoutY="161.0" prefHeight="19.0" prefWidth="172.0" style="-fx-font-size: 13 px;" text="Hãng sản xuất:">
                 <font>
                     <Font size="11.0" />
                 </font>
             </Label>
-            <Label layoutX="216.0" layoutY="161.0" prefHeight="16.0" prefWidth="77.0" text="Nước sản xuất:">
+            <Label layoutX="216.0" layoutY="161.0" prefHeight="19.0" prefWidth="102.0" text="Nước sản xuất:">
                 <font>
-                    <Font size="11.0" />
+                    <Font size="13.0" />
                 </font>
             </Label>
             <TextField fx:id="txtQCDongGoi" layoutX="435.0" layoutY="179.0" maxHeight="31.0" prefHeight="31.0" prefWidth="248.0" style="-fx-max-height: 30;" />
-            <Label layoutX="435.0" layoutY="161.0" prefHeight="16.0" prefWidth="152.0" text="Quy cách đóng gói">
+            <Label layoutX="435.0" layoutY="161.0" prefHeight="16.0" prefWidth="152.0" style="-fx-font-size: 13 px;" text="Quy cách đóng gói">
                 <font>
                     <Font size="11.0" />
                 </font>
             </Label>
             <TextField fx:id="txtSDK_GPNK" layoutX="16.0" layoutY="234.0" maxHeight="31.0" prefHeight="31.0" prefWidth="196.0" style="-fx-max-height: 30;" />
-            <Label layoutX="16.0" layoutY="217.0" prefHeight="16.0" prefWidth="83.0" text="SDK_GPNK:">
+            <Label layoutX="16.0" layoutY="217.0" prefHeight="16.0" prefWidth="83.0" style="-fx-font-size: 13 px;" text="SDK_GPNK:">
                 <font>
                     <Font size="11.0" />
                 </font>
@@ -71,33 +71,33 @@
                 <columns>
                     <TableColumn fx:id="colMaHoatChat" prefWidth="195.42859268188477" text="Mã hoạt chất" />
                     <TableColumn fx:id="colTenHoatChat" prefWidth="249.71429443359375" text="Tên hoạt chất" />
-                    <TableColumn fx:id="colHamLuong" minWidth="0.0" prefWidth="216.42855834960938" text="hàm lượng" />
+                    <TableColumn fx:id="colHamLuong" minWidth="0.0" prefWidth="216.42855834960938" text="Hàm lượng" />
                 </columns>
             </TableView>
-      <Label layoutX="16.0" layoutY="55.0" prefHeight="16.0" prefWidth="52.0" text="Mã thuốc:">
+      <Label layoutX="16.0" layoutY="55.0" prefHeight="19.0" prefWidth="83.0" style="-fx-font-size: 13 px;" text="Mã thuốc:">
          <font>
             <Font size="11.0" />
          </font>
       </Label>
-      <Label layoutX="276.0" layoutY="55.0" prefHeight="16.0" prefWidth="52.0" text="Tên thuốc:">
+      <Label layoutX="276.0" layoutY="55.0" prefHeight="19.0" prefWidth="77.0" style="-fx-font-size: 13 px;" text="Tên thuốc:">
          <font>
             <Font size="11.0" />
          </font>
       </Label>
       <TextField fx:id="txtDuongDung" layoutX="156.0" layoutY="123.0" prefHeight="25.0" prefWidth="198.0" style="-fx-max-height: 30;" />
-      <Label layoutX="359.0" layoutY="107.0" prefHeight="16.0" prefWidth="30.0" text="Vị trí:">
+      <Label layoutX="359.0" layoutY="107.0" prefHeight="19.0" prefWidth="52.0" style="-fx-font-size: 13 px;" text="Vị trí:">
          <font>
             <Font size="11.0" />
          </font>
       </Label>
       <TextField fx:id="txtViTri" layoutX="359.0" layoutY="123.0" maxHeight="31.0" prefHeight="31.0" prefWidth="159.0" style="-fx-max-height: 30;" />
       <TextField fx:id="txtLoaiHang" layoutX="522.0" layoutY="123.0" maxHeight="31.0" prefHeight="31.0" prefWidth="163.0" style="-fx-max-height: 30;" />
-      <Label layoutX="522.0" layoutY="107.0" prefHeight="16.0" prefWidth="54.0" text="Loại hàng:">
+      <Label layoutX="522.0" layoutY="107.0" prefHeight="19.0" prefWidth="77.0" style="-fx-font-size: 13 px;" text="Loại hàng:">
          <font>
             <Font size="11.0" />
          </font>
       </Label>
-      <TextField fx:id="txtNhomDuocLy" layoutX="216.0" layoutY="233.0" maxHeight="31.0" prefHeight="31.0" prefWidth="248.0" style="-fx-max-height: 30;" />
+      <TextField fx:id="txtNhomDuocLy" layoutX="216.0" layoutY="233.0" maxHeight="33.0" prefHeight="33.0" prefWidth="464.0" style="-fx-max-height: 30;" />
       <Label layoutX="814.0" layoutY="332.0" prefHeight="21.0" prefWidth="66.0" text="Hình ảnh">
          <font>
             <Font size="15.0" />
@@ -112,7 +112,7 @@
             </Label>
          </children>
       </Pane>
-      <Label layoutX="16.0" layoutY="271.0" prefHeight="16.0" prefWidth="52.0" text="Hoạt chất:">
+      <Label layoutX="16.0" layoutY="271.0" prefHeight="19.0" prefWidth="93.0" style="-fx-font-size: 13 px;" text="Bảng hoạt chất:">
          <font>
             <Font size="11.0" />
          </font>

@@ -16,9 +16,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -295,6 +297,20 @@ public class LapPhieuNhapHang_Ctrl extends Application {
             {
                 datePicker.setEditable(false);
                 setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                datePicker.setConverter(new StringConverter<LocalDate>() {
+                    @Override
+                    public String toString(LocalDate date) {
+                        return date != null ? date.format(formatter) : "";
+                    }
+
+                    @Override
+                    public LocalDate fromString(String string) {
+                        return (string != null && !string.isEmpty())
+                                ? LocalDate.parse(string, formatter)
+                                : null;
+                    }
+                });
             }
 
             @Override
@@ -354,6 +370,21 @@ public class LapPhieuNhapHang_Ctrl extends Application {
             {
                 datePicker.setEditable(false);
                 setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                datePicker.setConverter(new StringConverter<LocalDate>() {
+                    @Override
+                    public String toString(LocalDate date) {
+                        return date != null ? date.format(formatter) : "";
+                    }
+
+                    @Override
+                    public LocalDate fromString(String string) {
+                        return (string != null && !string.isEmpty())
+                                ? LocalDate.parse(string, formatter)
+                                : null;
+                    }
+                });
             }
 
             @Override
@@ -812,8 +843,8 @@ public class LapPhieuNhapHang_Ctrl extends Application {
             phieuNhap.setNhaCungCap(ncc);
             phieuNhap.setNgayNhap(
                     txtNgayNhap.getEditor().getText().isEmpty()
-                            ? Date.valueOf(LocalDate.now())
-                            : Date.valueOf(txtNgayNhap.getValue())
+                            ? LocalDate.now()
+                            : txtNgayNhap.getValue()
             );
 
             String maPN = txtMaPhieuNhap.getText().trim();

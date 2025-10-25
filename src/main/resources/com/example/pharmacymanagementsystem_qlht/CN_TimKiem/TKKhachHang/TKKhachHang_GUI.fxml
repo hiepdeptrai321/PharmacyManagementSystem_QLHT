@@ -93,7 +93,7 @@
                             <columns>
                         <TableColumn fx:id="cotSTT" prefWidth="61.0" style="-fx-alignment: CENTER;" text="STT" />
                                 <TableColumn fx:id="cotMaKH" prefWidth="142.0" style="-fx-alignment: CENTER;" text="Mã KH" />
-                                <TableColumn fx:id="cotTenKH" prefWidth="273.0" text="Tên Khách Hàng" />
+                                <TableColumn fx:id="cotTenKH" prefWidth="273.0" text="Tên khách hàng" />
                         <TableColumn fx:id="cotNgaySinh" prefWidth="172.0" style="-fx-alignment: CENTER;" text="Ngày sinh" />
                                 <TableColumn fx:id="cotEmail" minWidth="0.0" prefWidth="251.0" text="Email" />
                                 <TableColumn fx:id="cotSDT" minWidth="6.0" prefWidth="240.0" style="-fx-alignment: CENTER;" text="SDT" />

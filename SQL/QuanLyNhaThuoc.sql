@@ -588,33 +588,35 @@ DECLARE @sql NVARCHAR(MAX);
 -- Thêm từng sản phẩm
 SET @sql = N'
 INSERT INTO Thuoc_SanPham
-(MaThuoc, TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, HinhAnh, MaLoaiHang, MaNDL, ViTri)
+(MaThuoc, TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi,
+ SDK_GPNK, HangSX, NuocSX, HinhAnh, MaLoaiHang, MaNDL, ViTri)
 VALUES
 (''TS001'', N''Paracetamol 500mg'', 500, ''mg'', N''Uống'', N''Hộp 10 vỉ x 10 viên'',
- ''VN-2345-19'', ''DHG Pharma'', N''Việt Nam'',
- (SELECT * FROM OPENROWSET(BULK N''' + @path + 'TS001.jpg'', SINGLE_BLOB) AS img),
+ ''VN-2345-19'', N''DHG Pharma'', N''Việt Nam'',
+ (SELECT * FROM OPENROWSET(BULK N''' + @path + N'TS001.jpg'', SINGLE_BLOB) AS img),
  ''LH01'', ''NDL016'', ''KE001''),
 
 (''TS002'', N''Amoxicillin 500mg'', 500, ''mg'', N''Uống'', N''Hộp 2 vỉ x 10 viên'',
- ''VN-2134-19'', ''Traphaco'', N''Việt Nam'',
- (SELECT * FROM OPENROWSET(BULK N''' + @path + 'TS002.jpg'', SINGLE_BLOB) AS img),
+ ''VN-2134-19'', N''Traphaco'', N''Việt Nam'',
+ (SELECT * FROM OPENROWSET(BULK N''' + @path + N'TS002.jpg'', SINGLE_BLOB) AS img),
  ''LH01'', ''NDL017'', ''KE001''),
 
 (''TS003'', N''Cefuroxime 250mg'', 250, ''mg'', N''Uống'', N''Hộp 2 vỉ x 10 viên'',
- ''VN-3241-19'', ''GSK'', N''Anh'',
- (SELECT * FROM OPENROWSET(BULK N''' + @path + 'TS003.jpg'', SINGLE_BLOB) AS img),
+ ''VN-3241-19'', N''GSK'', N''Anh'',
+ (SELECT * FROM OPENROWSET(BULK N''' + @path + N'TS003.jpg'', SINGLE_BLOB) AS img),
  ''LH01'', ''NDL017'', ''KE001''),
 
 (''TS004'', N''Vitamin C 1000mg'', 1000, ''mg'', N''Uống'', N''Hộp 10 ống'',
- ''VN-1232-19'', ''Bayer'', N''Đức'',
- (SELECT * FROM OPENROWSET(BULK N''' + @path + 'TS004.jpg'', SINGLE_BLOB) AS img),
+ ''VN-1232-19'', N''Bayer'', N''Đức'',
+ (SELECT * FROM OPENROWSET(BULK N''' + @path + N'TS004.jpg'', SINGLE_BLOB) AS img),
  ''LH01'', ''NDL030'', ''KE001''),
 
 (''TS005'', N''Ibuprofen 400mg'', 400, ''mg'', N''Uống'', N''Hộp 1 vỉ x 10 viên'',
- ''VN-5675-19'', ''Mekophar'', N''Việt Nam'',
- (SELECT * FROM OPENROWSET(BULK N''' + @path + 'TS005.jpg'', SINGLE_BLOB) AS img),
+ ''VN-5675-19'', N''Mekophar'', N''Việt Nam'',
+ (SELECT * FROM OPENROWSET(BULK N''' + @path + N'TS005.jpg'', SINGLE_BLOB) AS img),
  ''LH01'', ''NDL014'', ''KE001'');
 ';
+
 
 -- Thực thi câu lệnh động
 EXEC sp_executesql @sql;
@@ -1177,6 +1179,74 @@ INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia) VALUES
 ('HD050','LH00051',20,2000,0),
 ('HD051','LH00052',25,2100,0),
 ('HD052','LH00053',30,2200,0);
+
+INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
+VALUES
+('PN_T_SEP25', 'TS002', 'LH_T_SEP25', 150, 1200, 0, 0.08);
+
+INSERT INTO Thuoc_SP_TheoLo (MaLH, MaPN, MaThuoc, SoLuongTon, NSX, HSD)
+VALUES
+('LH_T_SEP25', 'PN_T_SEP25', 'TS002', 150, '2025-09-01', '2027-09-01');
+
+INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
+VALUES
+('HD_T_SEP25', '2025-09-18 11:00:00', N'Hoàn tất', 'KH003', 'NV001');
+
+INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
+VALUES
+('HD_T_SEP25', 'LH_T_SEP25', 30, 1500, 0);
+
+UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 30 WHERE MaLH = 'LH_T_SEP25';
+
+-- ==========================================================
+-- BƯỚC 3: THÊM DỮ LIỆU ĐẦU THÁNG 10 (TEST "THÁNG NÀY")
+-- ==========================================================
+
+-- Lỗi Foreign Key ở đây đã được sửa vì 'LH_T101' đã được tạo ở Script V1 (Fixed)
+INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
+VALUES
+('HD_T_OCT15', '2025-10-15 16:00:00', N'Hoàn tất', 'KH005', 'NV003');
+
+INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
+VALUES
+('HD_T_OCT15', 'LH_T101', 20, 1200, 0);
+
+UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 20 WHERE MaLH = 'LH_T101';
+
+-- ==========================================================
+-- BƯỚC 4: THÊM DỮ LIỆU CHO "TUẦN NÀY" (20/10 - 24/10)
+-- ==========================================================
+
+-- Lỗi Foreign Key ở đây đã được sửa vì 'LH_T102' đã được tạo ở Script V1 (Fixed)
+INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
+VALUES
+('HD_T_OCT21', '2025-10-21 08:15:00', N'Hoàn tất', NULL, 'NV003');
+
+INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
+VALUES
+('HD_T_OCT21', 'LH_T102', 10, 2300, 0);
+
+UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 10 WHERE MaLH = 'LH_T102';
+
+-- ==========================================================
+-- BƯỚC 5: THÊM DỮ LIỆU CHO "HÔM NAY" (25/10/2025)
+-- ==========================================================
+PRINT N'--- 5. Thêm dữ liệu cho HÔM NAY (25/10)';
+
+INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
+VALUES
+('HD_T_TD3', GETDATE(), N'Hoàn tất', 'KH001', 'NV002');
+
+INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
+VALUES
+('HD_T_TD3', 'LH_T104', 8, 3200, 0);
+
+UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 8 WHERE MaLH = 'LH_T104';
+
+COMMIT TRAN;
+GO
+
+
 
 
 
@@ -2006,4 +2076,102 @@ GO
 
 GO
 
+PRINT N'=== HOÀN TẤT! Đã tạo 2 SP cho Thống kê XNT. ===';
 
+go
+
+CREATE PROCEDURE sp_LuuPhieuNhap
+    @MaPN VARCHAR(10),
+    @NgayNhap DATE,
+    @TrangThai BIT,
+    @GhiChu NVARCHAR(255),
+    @MaNCC VARCHAR(10),
+    @MaNV VARCHAR(10),
+
+    -- Chi tiết phiếu nhập
+    @MaThuoc VARCHAR(10),
+    @MaLH VARCHAR(10),
+    @SoLuong INT,
+    @GiaNhap FLOAT,
+    @ChietKhau FLOAT,
+    @Thue FLOAT,
+
+    -- Lô thuốc
+    @SoLuongTon INT = NULL,
+    @NSX DATE = NULL,
+    @HSD DATE = NULL,
+
+    -- Đơn vị tính cần cập nhật
+    @MaDVT VARCHAR(10) = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        -- 1️⃣ Thêm phiếu nhập nếu chưa có
+        IF NOT EXISTS (SELECT 1 FROM PhieuNhap WHERE MaPN = @MaPN)
+        BEGIN
+            INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
+            VALUES (@MaPN, @NgayNhap, @TrangThai, @GhiChu, @MaNCC, @MaNV);
+        END
+        ELSE
+        BEGIN
+            -- Nếu đã có thì cập nhật lại thông tin chung (nếu cần)
+            UPDATE PhieuNhap
+            SET NgayNhap = @NgayNhap,
+                TrangThai = @TrangThai,
+                GhiChu = @GhiChu,
+                MaNCC = @MaNCC,
+                MaNV = @MaNV
+            WHERE MaPN = @MaPN;
+        END
+
+        -- 2️⃣ Thêm hoặc cập nhật chi tiết phiếu nhập
+        IF EXISTS (SELECT 1 FROM ChiTietPhieuNhap WHERE MaPN = @MaPN AND MaThuoc = @MaThuoc AND MaLH = @MaLH)
+        BEGIN
+            UPDATE ChiTietPhieuNhap
+            SET SoLuong = @SoLuong,
+                GiaNhap = @GiaNhap,
+                ChietKhau = @ChietKhau,
+                Thue = @Thue
+            WHERE MaPN = @MaPN AND MaThuoc = @MaThuoc AND MaLH = @MaLH;
+        END
+        ELSE
+        BEGIN
+            INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
+            VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuong, @GiaNhap, @ChietKhau, @Thue);
+        END
+
+        -- 3️⃣ Nếu TrangThai = 1 thì mới cập nhật kho và giá nhập
+        IF @TrangThai = 1
+        BEGIN
+            -- ⚙️ Cập nhật hoặc thêm mới lô thuốc
+            IF EXISTS (SELECT 1 FROM Thuoc_SP_TheoLo WHERE MaLH = @MaLH)
+            BEGIN
+                UPDATE Thuoc_SP_TheoLo
+                SET SoLuongTon = SoLuongTon + @SoLuongTon
+                WHERE MaLH = @MaLH;
+            END
+            ELSE
+            BEGIN
+                INSERT INTO Thuoc_SP_TheoLo (MaPN, MaThuoc, MaLH, SoLuongTon, NSX, HSD)
+                VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuongTon, @NSX, @HSD);
+            END
+
+            -- 🔁 Cập nhật giá nhập và giá bán trong ChiTietDonViTinh
+            UPDATE ChiTietDonViTinh
+            SET GiaNhap = @GiaNhap,
+                GiaBan = CASE WHEN @GiaNhap > GiaBan THEN @GiaNhap ELSE GiaBan END
+            WHERE MaThuoc = @MaThuoc AND MaDVT = @MaDVT;
+        END
+
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        THROW;
+    END CATCH
+END
+GO

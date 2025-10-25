@@ -3,6 +3,7 @@ package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuN
 import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
 import com.example.pharmacymanagementsystem_qlht.dao.PhieuNhap_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuNhap;
+import com.example.pharmacymanagementsystem_qlht.model.PhieuTraHang;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
@@ -11,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +24,9 @@ import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Objects;
+import  java.sql.Date;
 
 public class TimKiemPhieuNhap_Ctrl extends Application {
     public TableColumn<PhieuNhap, String> colChiTiet;
@@ -103,14 +107,53 @@ public class TimKiemPhieuNhap_Ctrl extends Application {
         colNhaCungCap.setCellValueFactory(cd ->
                 new SimpleStringProperty(cd.getValue().getNhaCungCap().getTenNCC())
         );
-        //colNgayNhap.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.dinhDangGio(cellData.getValue().getNgayNhap().toLocalDateTime())));
+        colNhaCungCap.setCellFactory(col -> new TableCell<PhieuNhap, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
+        colNgayNhap.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.dinhDangNgay(cellData.getValue().getNgayNhap())));
         colTrangThai.setCellValueFactory(cd ->
                 new SimpleStringProperty(cd.getValue().getTrangThai() ? "Hoàn tất" : "Chưa hoàn tất")
         );
         colGhiChu.setCellValueFactory(new PropertyValueFactory<>("ghiChu"));
+        colGhiChu.setCellFactory(col -> new TableCell<PhieuNhap, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colNhanVien.setCellValueFactory(cd ->
                 new SimpleStringProperty(cd.getValue().getNhanVien().getTenNV())
         );
+        colNhanVien.setCellFactory(col -> new TableCell<PhieuNhap, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colChiTiet.setCellFactory(cel -> new TableCell<PhieuNhap, String>() {
             private final Button btn = new Button("Chi tiết");
             {
@@ -176,8 +219,8 @@ public class TimKiemPhieuNhap_Ctrl extends Application {
             boolean matchesNCC = (ncc == null || ncc.equals("Chọn nhà cung cấp")) || sp.getNhaCungCap().getTenNCC().equals(ncc);
             boolean matchesNV = (nv == null || nv.equals("Chọn nhân viên")) || sp.getNhanVien().getTenNV().equals(nv);
             boolean matchesTrangThai = (trangThai == null) || sp.getTrangThai() == trangThai;
-            boolean matchesNgayMin = (ngayMin == null) || !sp.getNgayNhap().before(ngayMin);
-            boolean matchesNgayMax = (ngayMax == null) || !sp.getNgayNhap().after(ngayMax);
+            boolean matchesNgayMin = (ngayMin == null) || !Date.valueOf(sp.getNgayNhap()).before(ngayMin);
+            boolean matchesNgayMax = (ngayMax == null) || !Date.valueOf(sp.getNgayNhap()).after(ngayMax);
 
             return matchesNCC && matchesNV && matchesTrangThai && matchesNgayMin && matchesNgayMax;
         });

@@ -1,6 +1,7 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuNhapHang;
 
 import com.example.pharmacymanagementsystem_qlht.TienIch.VNDFormatter;
+import com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhaCungCap.ThemNhaCungCap_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.dao.*;
 import com.example.pharmacymanagementsystem_qlht.model.*;
 import javafx.application.Application;
@@ -113,7 +114,7 @@ public class LapPhieuNhapHang_Ctrl extends Application {
     }
 
     //  ============================================================================================Tải danh sách nhà cung cấp vào ComboBox
-    private void taiDanhSachNCC() {
+    public void taiDanhSachNCC() {
 
 //      lấy danh sách nhà cung cấp từ cơ sở dữ liệu
         listNCC = FXCollections.observableArrayList(new NhaCungCap_Dao().selectAll());
@@ -130,7 +131,7 @@ public class LapPhieuNhapHang_Ctrl extends Application {
     }
 
     //  ============================================================================================Tìm kiếm nhà cung cấp trong ComboBox
-    private void timKiemNhaCungCap() {
+    public void timKiemNhaCungCap() {
 
 //      Chỉnh style cho list view nhà cung cấp
         listViewNhaCungCap.setVisible(false);
@@ -211,7 +212,7 @@ public class LapPhieuNhapHang_Ctrl extends Application {
     }
 
     //  ============================================================================================Thiết lập chức năng tìm kiếm chi tiết đơn vị tính
-    private void timKiemDonViTinh() {
+    public void timKiemDonViTinh() {
 
 //      Lấy tất cả chi tiết đơn vị tính từ cơ sở dữ liệu và chỉnh style cho list view Chi Tiết Đơn Vị Tính
         allChiTietDonViTinh = FXCollections.observableArrayList(new ChiTietDonViTinh_Dao().selectAll());
@@ -268,6 +269,8 @@ public class LapPhieuNhapHang_Ctrl extends Application {
             Parent root = loader.load();
             Scene scene = new Scene(root);
             ThemThuoc_LapPhieuNhapHang_Ctrl ctrl = loader.getController();
+            ctrl.setParentCtrl(this);
+
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {
@@ -686,23 +689,16 @@ public class LapPhieuNhapHang_Ctrl extends Application {
     public void suKienThemChiTietDonViTinhVaoBang() {
         listViewChiTietDonViTinh.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
+
                 ChiTietDonViTinh chiTietDonViTinh = (ChiTietDonViTinh) newVal;
                 txtTimKiemChiTietDonViTinh.clear();
                 listViewChiTietDonViTinh.setVisible(false);
 
-                // Kiểm tra nếu DVT đã có trong bảng chưa
-                boolean daTonTai = listNhapThuoc.stream().anyMatch(item ->
-                        item.getChiTietDonViTinh().getDvt().getMaDVT()
-                                .equals(chiTietDonViTinh.getDvt().getMaDVT())
-                );
-
-                if (!daTonTai) {
                     // Tạo 3 đối tượng con
                     ChiTietDonViTinh ctdvt = new ChiTietDonViTinh();
                     ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
                     Thuoc_SP_TheoLo tsptl = new Thuoc_SP_TheoLo();
 
-                    // Sinh mã lô mới
                     maLoHienTai++;
                     String maLH = String.format("LH%05d", maLoHienTai);
 
@@ -726,15 +722,6 @@ public class LapPhieuNhapHang_Ctrl extends Application {
                     listNhapThuoc.add(newItem);
                     tblNhapThuoc.setItems(listNhapThuoc);
                     tblNhapThuoc.refresh();
-
-                } else {
-                    // Thông báo khi đã tồn tại
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Thông báo");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Chi tiết đơn vị tính đã tồn tại trong danh sách!");
-                    alert.showAndWait();
-                }
 
                 Platform.runLater(() -> {
                     listViewChiTietDonViTinh.getSelectionModel().clearSelection();
@@ -955,6 +942,22 @@ public class LapPhieuNhapHang_Ctrl extends Application {
             info.setHeaderText(null);
             info.setContentText("Phiếu nhập đã được hủy.");
             info.showAndWait();
+        }
+    }
+
+    public void btnThemNCCClick(MouseEvent mouseEvent) {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNCC/ThemNhaCungCap_GUI.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            ThemNhaCungCap_Ctrl ctrl = loader.getController();
+            ctrl.setLapPhieuNhapHang_Ctrl(this);
+
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

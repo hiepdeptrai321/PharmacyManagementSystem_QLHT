@@ -6,7 +6,7 @@ USE QuanLyNhaThuoc;
 GO
 
 --Link thư mục hình ảnh thuốc 
-DECLARE @path NVARCHAR(255) = N'C:\Users\hiepdeptrai\Desktop\hk1_2025-2026\QLHT\SQL\imgThuoc\';
+DECLARE @path NVARCHAR(255) = N'C:\Users\Nhut Hao\Desktop\New folder (2)\PharmacyManagementSystem_QLHT\SQL\imgThuoc\';
 
 -- =========================
 -- Bảng KhachHang
@@ -1179,76 +1179,6 @@ INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia) VALUES
 ('HD050','LH00051',20,2000,0),
 ('HD051','LH00052',25,2100,0),
 ('HD052','LH00053',30,2200,0);
-
-INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
-VALUES
-('PN_T_SEP25', 'TS002', 'LH_T_SEP25', 150, 1200, 0, 0.08);
-
-INSERT INTO Thuoc_SP_TheoLo (MaLH, MaPN, MaThuoc, SoLuongTon, NSX, HSD)
-VALUES
-('LH_T_SEP25', 'PN_T_SEP25', 'TS002', 150, '2025-09-01', '2027-09-01');
-
-INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
-VALUES
-('HD_T_SEP25', '2025-09-18 11:00:00', N'Hoàn tất', 'KH003', 'NV001');
-
-INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
-VALUES
-('HD_T_SEP25', 'LH_T_SEP25', 30, 1500, 0);
-
-UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 30 WHERE MaLH = 'LH_T_SEP25';
-
--- ==========================================================
--- BƯỚC 3: THÊM DỮ LIỆU ĐẦU THÁNG 10 (TEST "THÁNG NÀY")
--- ==========================================================
-
--- Lỗi Foreign Key ở đây đã được sửa vì 'LH_T101' đã được tạo ở Script V1 (Fixed)
-INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
-VALUES
-('HD_T_OCT15', '2025-10-15 16:00:00', N'Hoàn tất', 'KH005', 'NV003');
-
-INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
-VALUES
-('HD_T_OCT15', 'LH_T101', 20, 1200, 0);
-
-UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 20 WHERE MaLH = 'LH_T101';
-
--- ==========================================================
--- BƯỚC 4: THÊM DỮ LIỆU CHO "TUẦN NÀY" (20/10 - 24/10)
--- ==========================================================
-
--- Lỗi Foreign Key ở đây đã được sửa vì 'LH_T102' đã được tạo ở Script V1 (Fixed)
-INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
-VALUES
-('HD_T_OCT21', '2025-10-21 08:15:00', N'Hoàn tất', NULL, 'NV003');
-
-INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
-VALUES
-('HD_T_OCT21', 'LH_T102', 10, 2300, 0);
-
-UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 10 WHERE MaLH = 'LH_T102';
-
--- ==========================================================
--- BƯỚC 5: THÊM DỮ LIỆU CHO "HÔM NAY" (25/10/2025)
--- ==========================================================
-PRINT N'--- 5. Thêm dữ liệu cho HÔM NAY (25/10)';
-
-INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
-VALUES
-('HD_T_TD3', GETDATE(), N'Hoàn tất', 'KH001', 'NV002');
-
-INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia)
-VALUES
-('HD_T_TD3', 'LH_T104', 8, 3200, 0);
-
-UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 8 WHERE MaLH = 'LH_T104';
-
-COMMIT TRAN;
-GO
-
-
-
-
 
 
 --=======================================================================================================================

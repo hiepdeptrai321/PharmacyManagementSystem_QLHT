@@ -103,7 +103,7 @@
                         <TableColumn fx:id="ColTDK" prefWidth="184.6666259765625" text="Tồn đầu kỳ" />
                         <TableColumn fx:id="colNTK" prefWidth="173.66668701171875" text="Nhập trong kỳ" />
                         <TableColumn fx:id="colXTK" prefWidth="224.3333740234375" text="Xuất trong kỳ" />
-                        <TableColumn fx:id="colTCK" prefWidth="192.3333740234375" text="Tồn cuối kỳ" />
+                        <TableColumn fx:id="colTCK" prefWidth="246.0" text="Tồn cuối kỳ" />
                     </columns>
                   </TableView>
                   <Label text="Những sản phẩm đã hết hạn⚠" textFill="#c42323">
@@ -119,7 +119,7 @@
                       <TableColumn fx:id="colMaThuocHH" prefWidth="197.66668701171875" text="Mã Thuốc" />
                       <TableColumn fx:id="cotTenThuocHH" prefWidth="478.33331298828125" text="Tên Thuốc" />
                         <TableColumn fx:id="colSoLuong" prefWidth="164.6666259765625" text="Số Lượng" />
-                        <TableColumn fx:id="colNgayHH" prefWidth="319.33331298828125" text="Ngày hết hạn" />
+                        <TableColumn fx:id="colNgayHH" prefWidth="379.0" text="Ngày hết hạn" />
                     </columns>
                   </TableView>
                     </children>

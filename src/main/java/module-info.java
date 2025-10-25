@@ -39,6 +39,7 @@ module com.example.pharmacymanagementsystem_qlht {
     requires layout;
     requires io;
 
+
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoatDong to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKeHang to javafx.fxml;
     opens com.example.pharmacymanagementsystem_qlht to javafx.fxml;

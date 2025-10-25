@@ -24,7 +24,7 @@
                 <TableColumn fx:id="colLoai" prefWidth="315.0" style="-fx-alignment: CENTER;" text="Loại hoạt động" />
                 <TableColumn fx:id="colBang" minWidth="0.0" prefWidth="248.3333740234375" style="-fx-alignment: CENTER;" text="Bảng dữ liệu" />
                 <TableColumn fx:id="colThoiGian" minWidth="0.0" prefWidth="265.33331298828125" style="-fx-alignment: CENTER;" text="Thời gian" />
-                <TableColumn fx:id="colNguoi" minWidth="0.0" prefWidth="377.0" style="-fx-alignment: CENTER;" text="Người thực hiện" />
+                <TableColumn fx:id="colNguoi" minWidth="0.0" prefWidth="377.0" text="Người thực hiện" />
                 <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="79.0" style="-fx-alignment: CENTER;" />
             </columns>
         </TableView>

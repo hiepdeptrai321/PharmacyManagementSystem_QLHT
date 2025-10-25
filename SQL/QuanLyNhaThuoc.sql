@@ -6,7 +6,7 @@ USE QuanLyNhaThuoc;
 GO
 
 --Link thư mục hình ảnh thuốc 
-DECLARE @path NVARCHAR(255) = N'D:\IUH\hk5\PTUD_Java\Project\PharmacyManagementSystem_QLHT\SQL\imgThuoc\';
+DECLARE @path NVARCHAR(255) = N'C:\Users\hiepdeptrai\Desktop\hk1_2025-2026\QLHT\SQL\imgThuoc\';
 
 -- =========================
 -- Bảng KhachHang
@@ -588,33 +588,35 @@ DECLARE @sql NVARCHAR(MAX);
 -- Thêm từng sản phẩm
 SET @sql = N'
 INSERT INTO Thuoc_SanPham
-(MaThuoc, TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, HinhAnh, MaLoaiHang, MaNDL, ViTri)
+(MaThuoc, TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi,
+ SDK_GPNK, HangSX, NuocSX, HinhAnh, MaLoaiHang, MaNDL, ViTri)
 VALUES
 (''TS001'', N''Paracetamol 500mg'', 500, ''mg'', N''Uống'', N''Hộp 10 vỉ x 10 viên'',
- ''VN-2345-19'', ''DHG Pharma'', N''Việt Nam'',
- (SELECT * FROM OPENROWSET(BULK N''' + @path + 'TS001.jpg'', SINGLE_BLOB) AS img),
+ ''VN-2345-19'', N''DHG Pharma'', N''Việt Nam'',
+ (SELECT * FROM OPENROWSET(BULK N''' + @path + N'TS001.jpg'', SINGLE_BLOB) AS img),
  ''LH01'', ''NDL016'', ''KE001''),
 
 (''TS002'', N''Amoxicillin 500mg'', 500, ''mg'', N''Uống'', N''Hộp 2 vỉ x 10 viên'',
- ''VN-2134-19'', ''Traphaco'', N''Việt Nam'',
- (SELECT * FROM OPENROWSET(BULK N''' + @path + 'TS002.jpg'', SINGLE_BLOB) AS img),
+ ''VN-2134-19'', N''Traphaco'', N''Việt Nam'',
+ (SELECT * FROM OPENROWSET(BULK N''' + @path + N'TS002.jpg'', SINGLE_BLOB) AS img),
  ''LH01'', ''NDL017'', ''KE001''),
 
 (''TS003'', N''Cefuroxime 250mg'', 250, ''mg'', N''Uống'', N''Hộp 2 vỉ x 10 viên'',
- ''VN-3241-19'', ''GSK'', N''Anh'',
- (SELECT * FROM OPENROWSET(BULK N''' + @path + 'TS003.jpg'', SINGLE_BLOB) AS img),
+ ''VN-3241-19'', N''GSK'', N''Anh'',
+ (SELECT * FROM OPENROWSET(BULK N''' + @path + N'TS003.jpg'', SINGLE_BLOB) AS img),
  ''LH01'', ''NDL017'', ''KE001''),
 
 (''TS004'', N''Vitamin C 1000mg'', 1000, ''mg'', N''Uống'', N''Hộp 10 ống'',
- ''VN-1232-19'', ''Bayer'', N''Đức'',
- (SELECT * FROM OPENROWSET(BULK N''' + @path + 'TS004.jpg'', SINGLE_BLOB) AS img),
+ ''VN-1232-19'', N''Bayer'', N''Đức'',
+ (SELECT * FROM OPENROWSET(BULK N''' + @path + N'TS004.jpg'', SINGLE_BLOB) AS img),
  ''LH01'', ''NDL030'', ''KE001''),
 
 (''TS005'', N''Ibuprofen 400mg'', 400, ''mg'', N''Uống'', N''Hộp 1 vỉ x 10 viên'',
- ''VN-5675-19'', ''Mekophar'', N''Việt Nam'',
- (SELECT * FROM OPENROWSET(BULK N''' + @path + 'TS005.jpg'', SINGLE_BLOB) AS img),
+ ''VN-5675-19'', N''Mekophar'', N''Việt Nam'',
+ (SELECT * FROM OPENROWSET(BULK N''' + @path + N'TS005.jpg'', SINGLE_BLOB) AS img),
  ''LH01'', ''NDL014'', ''KE001'');
 ';
+
 
 -- Thực thi câu lệnh động
 EXEC sp_executesql @sql;
@@ -1068,6 +1070,33 @@ PRINT N'--- 1. Tạo Phiếu Nhập PN_T_100 (Ngày 01/10/2025)';
 -- SỬA: 'PN_TEST_100' (11) -> 'PN_T_100' (7)
 INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
 VALUES
+('PN1002', '2025-10-01', 1, N'Hàng test tháng 10', 'NCC001', 'NV001');
+
+INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
+VALUES
+('PN1002', 'TS001', 'LH1000', 100, 800, 0, 0.08),
+('PN1002', 'TS005', 'LH1002', 100, 900, 0, 0.08),
+('PN1002', 'TS008', 'LH1005', 100, 1800, 0, 0.08),
+('PN1002', 'TS226', 'LH1003', 100, 900, 0, 0.05),
+('PN1002', 'TS337', 'LH1004', 100, 2500, 0, 0.05);
+
+INSERT INTO Thuoc_SP_TheoLo (MaLH, MaPN, MaThuoc, SoLuongTon, NSX, HSD)
+VALUES
+('LH1000', 'PN1002', 'TS001', 100, '2024-01-01', '2027-01-01'),
+('LH1002', 'PN1002', 'TS005', 100, '2024-01-01', '2027-01-01'),
+('LH1005', 'PN1002', 'TS008', 100, '2024-01-01', '2027-01-01'),
+('LH1003', 'PN1002', 'TS226', 100, '2024-01-01', '2027-01-01'),
+('LH1004', 'PN1002', 'TS337', 100, '2024-01-01', '2027-01-01');
+
+
+
+-- ==========================================================
+-- BƯỚC 1: TẠO LÔ HÀNG MỚI ĐỂ TEST (NHẬP VÀO 01/10/2025)
+-- ==========================================================
+PRINT N'--- 1. Tạo Phiếu Nhập PN_T_100 (Ngày 01/10/2025)';
+-- SỬA: 'PN_TEST_100' (11) -> 'PN_T_100' (7)
+INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
+VALUES
 ('PN_T_100', '2025-10-01', 1, N'Hàng test tháng 10', 'NCC001', 'NV001');
 
 INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
@@ -1196,18 +1225,14 @@ PRINT N'=== HOÀN TẤT V1 (FIXED)! Đã thêm thành công. ===';
 GO
 
 
-USE QuanLyNhaThuoc;
-GO
-
 SET XACT_ABORT ON;
 BEGIN TRAN;
 
-PRINT N'=== BẮT ĐẦU THÊM DỮ LIỆU BỔ SUNG V2 (FIXED) ===';
 
 -- ==========================================================
 -- BƯỚC 1: THÊM DỮ LIỆU CHO NĂM 2024 (TEST "TÙY CHỌN")
 -- ==========================================================
-PRINT N'--- 1. Tạo dữ liệu Năm 2024';
+
 
 INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
 VALUES
@@ -1234,7 +1259,7 @@ UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 50 WHERE MaLH = 'LH_T_2024'
 -- ==========================================================
 -- BƯỚC 2: THÊM DỮ LIỆU THÁNG 9/2025 (TEST "QUÝ NÀY" & "TÙY CHỌN")
 -- ==========================================================
-PRINT N'--- 2. Thêm dữ liệu Tháng 9/2025 (Quý 4)';
+
 
 INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
 VALUES
@@ -1261,7 +1286,7 @@ UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 30 WHERE MaLH = 'LH_T_SEP25
 -- ==========================================================
 -- BƯỚC 3: THÊM DỮ LIỆU ĐẦU THÁNG 10 (TEST "THÁNG NÀY")
 -- ==========================================================
-PRINT N'--- 3. Thêm dữ liệu đầu Tháng 10/2025';
+
 -- Lỗi Foreign Key ở đây đã được sửa vì 'LH_T101' đã được tạo ở Script V1 (Fixed)
 INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
 VALUES
@@ -1276,7 +1301,7 @@ UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 20 WHERE MaLH = 'LH_T101';
 -- ==========================================================
 -- BƯỚC 4: THÊM DỮ LIỆU CHO "TUẦN NÀY" (20/10 - 24/10)
 -- ==========================================================
-PRINT N'--- 4. Thêm dữ liệu cho TUẦN NÀY (21/10)';
+
 -- Lỗi Foreign Key ở đây đã được sửa vì 'LH_T102' đã được tạo ở Script V1 (Fixed)
 INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
 VALUES
@@ -1293,7 +1318,6 @@ UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 10 WHERE MaLH = 'LH_T102';
 -- ==========================================================
 PRINT N'--- 5. Thêm dữ liệu cho HÔM NAY (25/10)';
 
--- SỬA: 'HD_T_TODAY3' (11) -> 'HD_T_TD3' (7)
 INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV)
 VALUES
 ('HD_T_TD3', GETDATE(), N'Hoàn tất', 'KH001', 'NV002');
@@ -1305,9 +1329,10 @@ VALUES
 UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - 8 WHERE MaLH = 'LH_T104';
 
 COMMIT TRAN;
-PRINT N'=== HOÀN TẤT V2 (FIXED)! Đã thêm dữ liệu bổ sung. ===';
-
 GO
+
+
+
 
 
 
@@ -1932,13 +1957,10 @@ BEGIN
 END;
 GO
 
-PRINT N'=== HOÀN TẤT! Đã tạo hoặc cập nhật 10 SP thành công. ===';
-
 --------- THỐNG KÊ XUẤT NHẬP TỒN
 USE QuanLyNhaThuoc;
 GO
 
-PRINT N'=== Bắt đầu tạo SP cho Thống kê XNT (Phiên bản sửa lỗi) ===';
 GO
 
 -- ==========================================================
@@ -1972,7 +1994,6 @@ BEGIN
 END;
 GO
 
-PRINT N'Tạo thành công sp_ThongKeThuocHetHan.';
 GO
 
 -- ==========================================================
@@ -2138,7 +2159,6 @@ BEGIN
 END;
 GO
 
-PRINT N'Tạo thành công sp_ThongKeXNT.';
 GO
 
 PRINT N'=== HOÀN TẤT! Đã tạo 2 SP cho Thống kê XNT. ===';

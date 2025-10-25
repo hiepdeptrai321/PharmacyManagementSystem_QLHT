@@ -112,13 +112,13 @@
                   </Label>
                   <TableView fx:id="tableDoanhThu" prefHeight="510.0" prefWidth="1161.0">
                     <columns>
-                      <TableColumn fx:id="cotTG" prefWidth="147.3333740234375" text="Thời gian" />
-                        <TableColumn fx:id="cotSLHoaDon" prefWidth="170.6666259765625" text="Số lượng HĐ" />
-                        <TableColumn fx:id="cotTongGT" prefWidth="129.6666259765625" text="Tổng giá trị" />
-                        <TableColumn fx:id="cotGG" prefWidth="142.99993896484375" text="Giảm giá" />
-                        <TableColumn fx:id="cotDT" prefWidth="150.6666259765625" text="Số lượng đơn trả" />
-                        <TableColumn fx:id="cotGTDonTra" prefWidth="193.3333740234375" text="Giá trị đơn trả" />
-                        <TableColumn fx:id="cotDoanhThu" prefWidth="229.6666259765625" text="Doanh thu" />
+                      <TableColumn fx:id="cotTG" prefWidth="147.3333740234375" style="-fx-alignment: CENTER;" text="Thời gian" />
+                        <TableColumn fx:id="cotSLHoaDon" prefWidth="170.6666259765625" style="-fx-alignment: CENTER;" text="Số lượng HĐ" />
+                        <TableColumn fx:id="cotTongGT" prefWidth="129.6666259765625" style="-fx-alignment: CENTER;" text="Tổng giá trị" />
+                        <TableColumn fx:id="cotGG" prefWidth="142.99993896484375" style="-fx-alignment: CENTER;" text="Giảm giá" />
+                        <TableColumn fx:id="cotDT" prefWidth="150.6666259765625" style="-fx-alignment: CENTER;" text="Số lượng đơn trả" />
+                        <TableColumn fx:id="cotGTDonTra" prefWidth="193.3333740234375" style="-fx-alignment: CENTER;" text="Giá trị đơn trả" />
+                        <TableColumn fx:id="cotDoanhThu" prefWidth="229.6666259765625" style="-fx-alignment: CENTER;" text="Doanh thu" />
                     </columns>
                   </TableView>
                    <BarChart fx:id="chartDoanhThu" prefHeight="510.0" prefWidth="1161.0" visible="false">
@@ -139,10 +139,10 @@
                   </Label>
                   <TableView fx:id="tableTopSanPham" prefHeight="273.0" prefWidth="1161.0">
                     <columns>
-                      <TableColumn fx:id="cotMaThuoc" prefWidth="153.0" text="Mã thuốc" />
+                      <TableColumn fx:id="cotMaThuoc" prefWidth="153.0" style="-fx-alignment: CENTER;" text="Mã thuốc" />
                       <TableColumn fx:id="cotTenThuoc" prefWidth="507.0" text="Tên thuốc" />
-                        <TableColumn fx:id="cotSL" minWidth="0.0" prefWidth="129.0" text="Số lượng" />
-                        <TableColumn fx:id="cotThanhTien" prefWidth="370.0" text="Thành tiền" />
+                        <TableColumn fx:id="cotSL" minWidth="0.0" prefWidth="129.0" style="-fx-alignment: CENTER;" text="Số lượng" />
+                        <TableColumn fx:id="cotThanhTien" prefWidth="370.0" style="-fx-alignment: CENTER;" text="Thành tiền" />
                     </columns>
                   </TableView>
                </children>

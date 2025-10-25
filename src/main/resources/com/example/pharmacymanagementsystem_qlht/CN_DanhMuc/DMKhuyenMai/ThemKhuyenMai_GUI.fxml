@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="453.0" prefWidth="948.0" stylesheets="@../../css/ThemThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhuyenMai.ThemKhuyenMai_Ctrl">
+<AnchorPane prefHeight="453.0" prefWidth="948.0" style="-fx-font-size: 13;" stylesheets="@../../css/ThemThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhuyenMai.ThemKhuyenMai_Ctrl">
     <children>
         <Label layoutX="14.0" layoutY="8.0" prefHeight="25.0" prefWidth="925.0" styleClass="lbtitle" text="Thêm khuyến mãi">
             <font>

@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -66,19 +67,84 @@ public class DanhMucNhanVien_Ctrl extends Application {
 
         colMaNV.setCellValueFactory(new PropertyValueFactory<>("maNV"));
         colTenNV.setCellValueFactory(new PropertyValueFactory<>("tenNV"));
+        colTenNV.setCellFactory(col -> new TableCell<NhanVien, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colGioiTinh.setCellValueFactory(cellData -> {
             boolean gioiTinh = cellData.getValue().isGioiTinh();
             String text = gioiTinh ? "Nữ" : "Nam";
             return new SimpleStringProperty(text);
         });
+        colGioiTinh.setCellFactory(col -> new TableCell<NhanVien, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colSDT.setCellValueFactory(new PropertyValueFactory<>("sdt"));
         colNgaySinh.setCellValueFactory(new PropertyValueFactory<>("ngaySinh"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        colEmail.setCellFactory(col -> new TableCell<NhanVien, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colDiaChi.setCellValueFactory(new PropertyValueFactory<>("diaChi"));
+        colDiaChi.setCellFactory(col -> new TableCell<NhanVien, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colTrangThai.setCellValueFactory(cellData -> {
             boolean trangThai = cellData.getValue().isTrangThai();
             String text = trangThai ? "Đang làm việc" : "Đã nghỉ việc";
             return new SimpleStringProperty(text);
+        });
+        colTrangThai.setCellFactory(col -> new TableCell<NhanVien, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
         });
         colCapNhat.setCellFactory(col -> new TableCell<NhanVien, String>() {
             private final Button btn = new Button("Cập nhật");

@@ -2,11 +2,13 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoatDong;
 
 import com.example.pharmacymanagementsystem_qlht.dao.HoatDong_Dao;
+import com.example.pharmacymanagementsystem_qlht.model.HoaDon;
 import com.example.pharmacymanagementsystem_qlht.model.HoatDong;
 import com.example.pharmacymanagementsystem_qlht.model.NhanVien;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -120,6 +122,19 @@ public class TKHoatDong_Ctrl extends javafx.application.Application {
             NhanVien nv = cd.getValue().getNhanVien();
             String s = nv == null ? "" : nv.getTenNV();
             return new javafx.beans.property.SimpleStringProperty(s);
+        });
+        colNguoi.setCellFactory(col -> new TableCell<HoatDong, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
         });
 
         colChiTiet.setCellFactory(col -> new TableCell<HoatDong, String>() {

@@ -24,7 +24,9 @@ import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Objects;
+import  java.sql.Date;
 
 public class TimKiemPhieuNhap_Ctrl extends Application {
     public TableColumn<PhieuNhap, String> colChiTiet;
@@ -118,7 +120,7 @@ public class TimKiemPhieuNhap_Ctrl extends Application {
                 }
             }
         });
-        colNgayNhap.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.dinhDangGio(cellData.getValue().getNgayNhap().toLocalDateTime())));
+        colNgayNhap.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.dinhDangNgay(cellData.getValue().getNgayNhap())));
         colTrangThai.setCellValueFactory(cd ->
                 new SimpleStringProperty(cd.getValue().getTrangThai() ? "Hoàn tất" : "Chưa hoàn tất")
         );
@@ -217,8 +219,8 @@ public class TimKiemPhieuNhap_Ctrl extends Application {
             boolean matchesNCC = (ncc == null || ncc.equals("Chọn nhà cung cấp")) || sp.getNhaCungCap().getTenNCC().equals(ncc);
             boolean matchesNV = (nv == null || nv.equals("Chọn nhân viên")) || sp.getNhanVien().getTenNV().equals(nv);
             boolean matchesTrangThai = (trangThai == null) || sp.getTrangThai() == trangThai;
-            boolean matchesNgayMin = (ngayMin == null) || !sp.getNgayNhap().before(ngayMin);
-            boolean matchesNgayMax = (ngayMax == null) || !sp.getNgayNhap().after(ngayMax);
+            boolean matchesNgayMin = (ngayMin == null) || !Date.valueOf(sp.getNgayNhap()).before(ngayMin);
+            boolean matchesNgayMax = (ngayMax == null) || !Date.valueOf(sp.getNgayNhap()).after(ngayMax);
 
             return matchesNCC && matchesNV && matchesTrangThai && matchesNgayMin && matchesNgayMax;
         });

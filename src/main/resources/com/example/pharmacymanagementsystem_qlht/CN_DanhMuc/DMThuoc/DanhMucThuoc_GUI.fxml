@@ -40,9 +40,9 @@
        </TableView>
       <Button id="btnnhapxuat" fx:id="btnImport" layoutX="1550.0" layoutY="46.0" minWidth="46.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="45.0" text="📥" AnchorPane.topAnchor="46.0" />
       <Button id="btnnhapxuat" fx:id="btnExport" layoutX="1594.0" layoutY="46.0" minWidth="27.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" text="📤" AnchorPane.topAnchor="46.0" />
-      <Button id="btnReset" fx:id="btnLamMoi" layoutX="466.0" layoutY="46.0" minHeight="16.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timThuoc" prefHeight="40.0" prefWidth="59.0" stylesheets="@../../css/QuanLyThuoc.css">
+      <Button id="btnReset" fx:id="btnLamMoi" layoutX="452.0" layoutY="46.0" minHeight="16.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timThuoc" prefHeight="40.0" prefWidth="45.0" stylesheets="@../../css/QuanLyThuoc.css">
          <graphic>
-            <ImageView fitHeight="38.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="32.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../img/refresh-3104.png" />
                </image>

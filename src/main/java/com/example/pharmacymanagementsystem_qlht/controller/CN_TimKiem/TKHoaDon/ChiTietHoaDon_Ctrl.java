@@ -50,7 +50,9 @@ public class ChiTietHoaDon_Ctrl {
     @FXML private Button btnDong;
     @FXML private Button btnInHoaDon;
     @FXML private Label lblLoaiHoaDon;
-    @FXML private Label lblMaHoaDon;
+    @FXML private Label lblMaDonThuocTitle;
+    @FXML private Label lblMaDonThuocValue;
+
 
     private HoaDon hoaDon;
     private final HoaDon_Dao hdDao = new HoaDon_Dao();
@@ -92,6 +94,32 @@ public class ChiTietHoaDon_Ctrl {
         } else {
             if (lblTenKhachHangValue != null) lblTenKhachHangValue.setText("Khách lẻ");
             if (lblSDTKhachHangValue != null) lblSDTKhachHangValue.setText("");
+        }
+        if (hoaDon.getLoaiHoaDon() != null) {
+            boolean isETC = hoaDon.getLoaiHoaDon().equalsIgnoreCase("ETC");
+
+            if (lblLoaiHoaDon != null) {
+                lblLoaiHoaDon.setText(isETC ? "Hóa đơn Kê đơn (ETC)" : "Hóa đơn Không kê đơn (OTC)");
+            }
+
+            // Ẩn/Hiện trường Mã Đơn Thuốc
+            if (lblMaDonThuocTitle != null) {
+                lblMaDonThuocTitle.setVisible(isETC);
+                lblMaDonThuocTitle.setManaged(isETC);
+            }
+            if (lblMaDonThuocValue != null) {
+                lblMaDonThuocValue.setVisible(isETC);
+                lblMaDonThuocValue.setManaged(isETC);
+                if (isETC) {
+                    lblMaDonThuocValue.setText(safeStr(hoaDon.getMaDonThuoc()));
+                }
+            }
+
+        } else {
+            // Dự phòng cho các hóa đơn cũ chưa có dữ liệu
+            if (lblLoaiHoaDon != null) lblLoaiHoaDon.setText("Không kê đơn (OTC)");
+            if (lblMaDonThuocTitle != null) lblMaDonThuocTitle.setVisible(false);
+            if (lblMaDonThuocValue != null) lblMaDonThuocValue.setVisible(false);
         }
         if (lblGhiChuValue != null) lblGhiChuValue.setText("");
 

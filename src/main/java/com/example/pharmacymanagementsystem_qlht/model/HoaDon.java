@@ -11,6 +11,8 @@ public class HoaDon {
     private List<ChiTietHoaDon> chiTietHD;
     private KhachHang khachHang;
     private Boolean trangThai;
+    private String loaiHoaDon; // MỚI
+    private String maDonThuoc;
 
     public HoaDon() {
     }
@@ -39,7 +41,21 @@ public class HoaDon {
     public void setChiTietHD(List<ChiTietHoaDon> chiTietHD) {
         this.chiTietHD = chiTietHD;
     }
+    public String getLoaiHoaDon() {
+        return loaiHoaDon;
+    }
 
+    public void setLoaiHoaDon(String loaiHoaDon) {
+        this.loaiHoaDon = loaiHoaDon;
+    }
+
+    public String getMaDonThuoc() {
+        return maDonThuoc;
+    }
+
+    public void setMaDonThuoc(String maDonThuoc) {
+        this.maDonThuoc = maDonThuoc;
+    }
     public String getMaHD() {
         return maHD;
     }

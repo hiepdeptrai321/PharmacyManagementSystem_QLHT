@@ -36,7 +36,7 @@
                         <font>
                            <Font size="13.0" />
                         </font></Label>
-                     <Label fx:id="lblMaDonThuoc" layoutX="690.0" prefHeight="20.0" prefWidth="99.0" styleClass="value-label" text="0">
+                     <Label fx:id="lblMaDonThuocValue" layoutX="690.0" prefHeight="20.0" prefWidth="99.0" styleClass="value-label" text="0">
                         <font>
                            <Font size="13.0" />
                         </font>

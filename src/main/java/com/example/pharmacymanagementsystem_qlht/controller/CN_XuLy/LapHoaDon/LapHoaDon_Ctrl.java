@@ -85,6 +85,7 @@ public class LapHoaDon_Ctrl extends Application {
     @FXML private Button btnThanhToan;
     @FXML private Label lblGiamTheoHD;
     @FXML private RadioButton rbOTC;
+    @FXML private TextField txtMaDonThuoc;
     private Stage qrStage;
     private static final String OTC_OFF = "Không kê đơn(OTC)";
     private static final String OTC_ON  = "Kê đơn(ETC)";
@@ -118,22 +119,29 @@ public class LapHoaDon_Ctrl extends Application {
         initTienMatEvents();
         chuyenHoaDon();
     }
+
     private void chuyenHoaDon() {
         if (rbOTC == null) return;
-
-        // If this RadioButton is inside a ToggleGroup and you want no default selection:
         ToggleGroup group = rbOTC.getToggleGroup();
         if (group != null) group.selectToggle(null);
-
-        // Default state: not selected
         rbOTC.setSelected(false);
 
-        // Text changes with selection
         rbOTC.textProperty().bind(
                 Bindings.when(rbOTC.selectedProperty())
                         .then(OTC_ON)
                         .otherwise(OTC_OFF)
         );
+        rbOTC.selectedProperty().addListener((obs, was, isSelected) -> applyLoaiHoaDonUI(isSelected));
+        // Apply initial state
+        applyLoaiHoaDonUI(rbOTC.isSelected());
+    }
+    private void applyLoaiHoaDonUI(boolean isETC) {
+        // ETC => allow entering prescription id and date
+        if (txtMaDonThuoc != null) {
+            txtMaDonThuoc.setDisable(!isETC);
+            txtMaDonThuoc.setEditable(isETC);
+            if (!isETC) txtMaDonThuoc.clear();
+        }
     }
 
 
@@ -1091,7 +1099,7 @@ public class LapHoaDon_Ctrl extends Application {
             return;
         }
         final String SQL_NEXT_MAHD     = "SELECT TOP 1 MaHD FROM HoaDon ORDER BY MaHD DESC";
-        final String SQL_INSERT_HOADON = "INSERT INTO HoaDon (MaHD, MaNV, MaKH, NgayLap, TrangThai) VALUES (?, ?, ?, ?, ?)";
+        final String SQL_INSERT_HOADON = "INSERT INTO HoaDon (MaHD, MaNV, MaKH, NgayLap, TrangThai, LoaiHoaDon, MaDonThuoc) VALUES (?, ?, ?, ?, ?, ?, ?)";
         final String SQL_INSERT_CTHD   = "INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia) VALUES (?, ?, ?, ?, ?)";
         final String SQL_NEXT_MAKH     = "SELECT TOP 1 MaKH FROM KhachHang ORDER BY MaKH DESC";
         final String SQL_INSERT_KH     = "INSERT INTO KhachHang (MaKH, TenKH, SDT) VALUES (?, ?, ?)";
@@ -1156,6 +1164,23 @@ public class LapHoaDon_Ctrl extends Application {
                     throw new IllegalStateException("Không đủ số lượng tồn " + lo.getMaLH() + ". Cần " + needBase + ", chỉ còn " + lotNow.getSoLuongTon());
                 }
             }
+            String loaiHoaDon = "OTC";
+            String maDonThuoc = null;
+
+            // Giả sử rbOTC và txtMaDonThuoc là @FXML
+            if (rbOTC.isSelected()) { // Người dùng chọn "Kê đơn (ETC)"
+                loaiHoaDon = "ETC";
+                maDonThuoc = txtMaDonThuoc.getText(); // Giả sử txtMaDonThuoc là tên @FXML
+
+                if (maDonThuoc == null || maDonThuoc.trim().isEmpty()) {
+                    // new Alert(Alert.AlertType.ERROR, "Hóa đơn ETC bắt buộc phải có Mã đơn thuốc.").showAndWait();
+                    // con.rollback(); // Hủy giao dịch
+                    // return; // Dừng lại
+
+                    // Ném lỗi để đi vào khối catch
+                    throw new IllegalStateException("Hóa đơn Kê đơn (ETC) bắt buộc phải có Mã đơn thuốc.");
+                }
+            }
 
             // 2) Tạo MaHD
             String maHD = "HD001";
@@ -1178,6 +1203,8 @@ public class LapHoaDon_Ctrl extends Application {
                 ps.setString(3, kh != null ? kh.getMaKH() : null);
                 ps.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
                 ps.setBoolean(5, true);
+                ps.setString(6, loaiHoaDon);
+                ps.setObject(7, maDonThuoc);
                 ps.executeUpdate();
             }
 

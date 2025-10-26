@@ -16,16 +16,16 @@ public class HoaDon_Dao implements DaoInterface<HoaDon>{
 
     private final KhachHang_Dao khDao = new KhachHang_Dao();
 
-    private final String INSERT_SQL = "INSERT INTO HoaDon (MaHD, MaNV, NgayLap, MaKH, TrangThai) VALUES (?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE HoaDon SET MaNV=?, NgayLap=?, MaKH=?, TrangThai=? WHERE MaHD=?";
+    private final String INSERT_SQL = "INSERT INTO HoaDon (MaHD, MaNV, NgayLap, MaKH, TrangThai, LoaiHoaDon, MaDonThuoc) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE HoaDon SET MaNV=?, NgayLap=?, MaKH=?, TrangThai=?, LoaiHoaDon=?, MaDonThuoc=? WHERE MaHD=?";
     private final String DELETE_BY_ID_SQL = "DELETE FROM HoaDon WHERE MaHD=?";
-    private final String SELECT_BY_ID_SQL = "SELECT MaHD, MaNV, NgayLap, MaKH, TrangThai FROM HoaDon WHERE MaHD=?";
+    private final String SELECT_BY_ID_SQL = "SELECT MaHD, MaNV, NgayLap, MaKH, TrangThai, LoaiHoaDon, MaDonThuoc FROM HoaDon WHERE MaHD=?";
     private final String SELECT_ALL_SQL =
-            "SELECT HD.MaHD, HD.NgayLap, HD.TrangThai, " +
+            "SELECT HD.MaHD, HD.NgayLap, HD.TrangThai, HD.LoaiHoaDon, HD.MaDonThuoc, " +
                     "       NV.MaNV, NV.TenNV, " +
                     "       KH.MaKH, KH.TenKH, KH.SDT " +
                     "FROM HoaDon HD " +
-                    "INNER JOIN NhanVien NV ON HD.MaNV = NV.MaNV " +
+                    "LEFT JOIN NhanVien NV ON HD.MaNV = NV.MaNV " +
                     "LEFT JOIN KhachHang KH ON HD.MaKH = KH.MaKH";
     private final String INSERT_HD_SQL = "INSERT INTO HoaDon (MaNV, MaKH, NgayLap, TrangThai) OUTPUT INSERTED.MaHD VALUES (?, ?, GETDATE(), ?)";
 
@@ -93,6 +93,8 @@ public class HoaDon_Dao implements DaoInterface<HoaDon>{
                 hd.setMaHD(rs.getString("MaHD"));
                 hd.setNgayLap(rs.getTimestamp("NgayLap"));
                 hd.setTrangThai(rs.getBoolean("TrangThai"));
+                hd.setLoaiHoaDon(rs.getString("LoaiHoaDon"));
+                hd.setMaDonThuoc(rs.getString("MaDonThuoc"));
 
                 // Khách Hàng
                 KhachHang kh = new KhachHang();

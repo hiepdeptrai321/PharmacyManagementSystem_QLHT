@@ -2233,3 +2233,9 @@ BEGIN
     SELECT @NewMaThuoc AS MaThuoc;
 END;
 GO
+ALTER TABLE HoaDon
+    ADD LoaiHoaDon VARCHAR(3) NOT NULL DEFAULT 'OTC';
+go
+ALTER TABLE HoaDon
+    ADD MaDonThuoc VARCHAR(20) NULL;
+go

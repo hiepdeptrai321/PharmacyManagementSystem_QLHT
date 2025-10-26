@@ -376,6 +376,12 @@ public class LapPhieuDatHang_Ctrl extends Application {
     private void ganThuocVaoCTHD(ChiTietPhieuDatHang cthd, Thuoc_SanPham sp) {
         // assign product directly (no LoHang)
         cthd.setThuoc(sp);
+        ChiTietDonViTinh defaultCt = chonDonViTheoTen(sp, null);
+        if (defaultCt != null && defaultCt.getDvt() != null) {
+            cthd.setDvt(defaultCt.getDvt().getMaDVT());
+        } else {
+            cthd.setDvt(null);
+        }
     }
 
     private String layTenSP(ChiTietPhieuDatHang row) {
@@ -918,6 +924,10 @@ public class LapPhieuDatHang_Ctrl extends Application {
                 ct.setSoLuong(row.getSoLuong());
                 ct.setDonGia(row.getDonGia());
                 ct.setGiamGia(row.getGiamGia());
+                ChiTietDonViTinh chosenDvt = dvtTheoDong.get(row);
+                if (chosenDvt != null && chosenDvt.getDvt() != null) {
+                    ct.setDvt(chosenDvt.getDvt().getMaDVT());
+                }
                 ctDao.insert(ct);
             }
 

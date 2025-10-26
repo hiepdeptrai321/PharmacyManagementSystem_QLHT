@@ -1,7 +1,9 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDatHang;
 
 import com.example.pharmacymanagementsystem_qlht.dao.ChiTietPhieuDatHang_Dao;
+import com.example.pharmacymanagementsystem_qlht.dao.DonViTinh_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuDatHang;
+import com.example.pharmacymanagementsystem_qlht.model.DonViTinh;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuDatHang;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
@@ -155,7 +157,7 @@ public class ChiTietPhieuDatHang_Ctrl  {
         colDonVi.setCellValueFactory(cel -> {
             String tenDVT = "";
             if (cel.getValue() != null && cel.getValue().getThuoc() != null) {
-                tenDVT = cel.getValue().getThuoc().getTenDVTCoBan();
+                tenDVT =  new DonViTinh_Dao().selectById(cel.getValue().getDvt()).getTenDonViTinh();
                 if (tenDVT == null) tenDVT = "";
             }
             return new SimpleStringProperty(tenDVT);

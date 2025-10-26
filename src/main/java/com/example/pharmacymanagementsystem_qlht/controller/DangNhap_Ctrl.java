@@ -31,8 +31,7 @@ public class DangNhap_Ctrl extends Application {
         scene.getStylesheets().add(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/css/DangNhap.css").toExternalForm());
         stage.setScene(scene);
         stage.setResizable(false);
-        stage.show();
-
+        stage.show( );
     }
 
     public void initialize() {
@@ -107,7 +106,6 @@ public class DangNhap_Ctrl extends Application {
                 newStage.show();
                 Stage currentStage = (Stage) btnDangNhap.getScene().getWindow();
                 currentStage.close();
-
             } catch (Exception e) {
                 e.printStackTrace();
             }

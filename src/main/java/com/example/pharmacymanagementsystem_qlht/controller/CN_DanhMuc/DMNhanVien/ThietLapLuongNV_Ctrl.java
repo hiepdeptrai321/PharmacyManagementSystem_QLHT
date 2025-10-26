@@ -1,13 +1,9 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhanVien;
 
-import com.example.pharmacymanagementsystem_qlht.controller.VNDFormatter;
+import com.example.pharmacymanagementsystem_qlht.TienIch.VNDFormatter;
 import com.example.pharmacymanagementsystem_qlht.model.LuongNhanVien;
 import com.example.pharmacymanagementsystem_qlht.model.NhanVien;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;

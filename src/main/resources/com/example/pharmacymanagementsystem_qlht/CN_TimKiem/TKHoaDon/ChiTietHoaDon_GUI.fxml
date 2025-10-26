@@ -9,10 +9,11 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="895" prefWidth="1646.0" stylesheets="@../../css/ChiTietHoaDon.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoaDon.ChiTietHoaDon_Ctrl">
+<AnchorPane prefHeight="895" prefWidth="1646.0" style="-fx-font-size: 14 px;" stylesheets="@../../css/ChiTietHoaDon.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoaDon.ChiTietHoaDon_Ctrl">
 <SplitPane dividerPositions="0.6964720194647201" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
     <AnchorPane minHeight="0.0" minWidth="0.0">
@@ -82,7 +83,7 @@
                    <Label layoutX="5.0" layoutY="65.0" styleClass="bold-label" text="SĐT Khách hàng:" />
                    <Label fx:id="lblSDTKhachHangValue" layoutX="140.0" layoutY="65.0" styleClass="value-label" />
                    <Label layoutX="5.0" layoutY="95.0" styleClass="bold-label" text="Ghi chú:" />
-                   <Label fx:id="lblGhiChuValue" layoutX="140.0" layoutY="95.0" prefWidth="250.0" styleClass="value-label" text="Không có." wrapText="true" />
+                   <Label fx:id="lblGhiChuValue" layoutX="140.0" layoutY="96.0" prefWidth="250.0" styleClass="value-label" text="Không có." wrapText="true" />
                </Pane>
 
                   <Separator layoutY="216.0" />

@@ -3,6 +3,7 @@ package com.example.pharmacymanagementsystem_qlht.dao;
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.*;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,12 +40,12 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
                     "ORDER BY ts.TenThuoc";
     @Override
     public boolean insert(Thuoc_SanPham e) {
-        return ConnectDB.update(INSERT_SQL,e.getMaThuoc(), e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(),e.getNhomDuocLy().getMaNDL(), e.getLoaiHang().getMaLoaiHang(), e.getHinhAnh(),e.getVitri().getMaKe())>0;
+        return ConnectDB.update(INSERT_SQL,e.getMaThuoc(), e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(),e.getNhomDuocLy()!=null?e.getNhomDuocLy().getMaNDL():null, e.getLoaiHang().getMaLoaiHang()!=null?e.getLoaiHang().getMaLoaiHang():null, e.getHinhAnh(),e.getVitri().getMaKe()!=null?e.getVitri().getMaKe():null)>0;
     }
 
     @Override
     public boolean update(Thuoc_SanPham thuoc) {
-        return ConnectDB.update(UPDATE_SQL, thuoc.getTenThuoc(), thuoc.getHamLuong(), thuoc.getDonViHamLuong(), thuoc.getDuongDung(), thuoc.getQuyCachDongGoi(), thuoc.getSDK_GPNK(), thuoc.getHangSX(), thuoc.getNuocSX(), thuoc.getNhomDuocLy().getMaNDL(), thuoc.getLoaiHang().getMaLoaiHang(), thuoc.getHinhAnh(), thuoc.getVitri().getMaKe(), thuoc.getMaThuoc()) > 0;
+        return ConnectDB.update(UPDATE_SQL, thuoc.getTenThuoc(), thuoc.getHamLuong(), thuoc.getDonViHamLuong(), thuoc.getDuongDung(), thuoc.getQuyCachDongGoi(), thuoc.getSDK_GPNK(), thuoc.getHangSX(), thuoc.getNuocSX(), thuoc.getNhomDuocLy()!=null?thuoc.getNhomDuocLy().getMaNDL():null, thuoc.getLoaiHang().getMaLoaiHang(), thuoc.getHinhAnh(), thuoc.getVitri().getMaKe(), thuoc.getMaThuoc()) > 0;
     }
 
     @Override
@@ -351,5 +352,36 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
             throw new RuntimeException(e);
         }
         return key;
+    }
+
+    public String insertThuocProc(Thuoc_SanPham sp) {
+        String maMoi = null;
+        try {
+            // Gọi stored procedure thêm thuốc
+            ResultSet rs = ConnectDB.query(
+                    "{CALL sp_InsertThuoc_SanPham(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}",
+                    sp.getTenThuoc(),
+                    sp.getHamLuong(),
+                    sp.getDonViHamLuong(),
+                    sp.getDuongDung(),
+                    sp.getQuyCachDongGoi(),
+                    sp.getSDK_GPNK(),
+                    sp.getHangSX(),
+                    sp.getNuocSX(),
+                    (sp.getLoaiHang() != null) ? sp.getLoaiHang().getMaLoaiHang() : null,
+                    (sp.getNhomDuocLy() != null) ? sp.getNhomDuocLy().getMaNDL() : null,
+                    (sp.getVitri() != null) ? sp.getVitri().getMaKe() : null
+            );
+
+            if (rs.next()) {
+                maMoi = rs.getString(1);
+            }
+
+            rs.getStatement().getConnection().close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return maMoi;
     }
 }

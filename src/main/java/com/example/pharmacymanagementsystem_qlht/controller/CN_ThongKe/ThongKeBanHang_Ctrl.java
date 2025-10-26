@@ -26,7 +26,7 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.io.font.constants.StandardFonts;
-import com.itextpdf.io.font.PdfEncodings; // Quan trọng cho Tiếng Việt
+
 
 
 import com.example.pharmacymanagementsystem_qlht.dao.ThongKe_Dao;
@@ -218,14 +218,12 @@ public class ThongKeBanHang_Ctrl extends Application implements Initializable {
         chartDoanhThu.setVisible(false);
         tableDoanhThu.setVisible(true);
 
-        // Xoay nhãn cho dễ đọc
-        xAxis.setTickLabelRotation(-30);
+        // Xoay nhãn
+        xAxis.setTickLabelRotation(-20);
     }
 
 
-    /**
-     * Kiểm tra xem có nên tự động tải dữ liệu "Tùy chọn" hay không
-     */
+
     private void attemptAutoLoadTuyChon() {
         // 1. Chỉ thực thi nếu ComboBox đang là "Tùy chọn"
         String selectedTime = cboThoiGian.getValue();
@@ -236,20 +234,16 @@ public class ThongKeBanHang_Ctrl extends Application implements Initializable {
         LocalDate tuNgay = dateTu.getValue();
         LocalDate denNgay = dateDen.getValue();
 
-        // 2. Kiểm tra ngày
         if (tuNgay == null || denNgay == null) {
-            return; // Một trong hai ngày chưa được chọn, không làm gì cả
+            return;
         }
         if (tuNgay.isAfter(denNgay)) {
             System.out.println("Ngày bắt đầu không thể sau ngày kết thúc");
-            // Xóa dữ liệu cũ để tránh nhầm lẫn
             tableDoanhThu.getItems().clear();
             tableTopSanPham.getItems().clear();
             chartDoanhThu.getData().clear();
             return;
         }
-
-        // 3. Mọi thứ hợp lệ -> Tải dữ liệu
         loadDataTuyChon(tuNgay, denNgay);
     }
 
@@ -262,8 +256,6 @@ public class ThongKeBanHang_Ctrl extends Application implements Initializable {
         tableDoanhThu.setItems(listThongKe);
 
         chartDoanhThu.getData().clear();
-
-        // Quyết định: muốn hiển thị theo thời gian (thường là thế)
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Doanh thu (Tùy chọn)");
 
@@ -290,7 +282,6 @@ public class ThongKeBanHang_Ctrl extends Application implements Initializable {
             return;
         }
 
-        // Lấy dữ liệu hiện tại (đảm bảo listThongKe và listTopSanPham không rỗng)
         if (listThongKe == null || listTopSanPham == null || listThongKe.isEmpty()) {
             showAlert(Alert.AlertType.INFORMATION, "Không có dữ liệu", "Không có dữ liệu thống kê để xuất.");
             return;
@@ -298,6 +289,7 @@ public class ThongKeBanHang_Ctrl extends Application implements Initializable {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Lưu file thống kê");
+        fileChooser.setInitialFileName("BaoCao_" + LocalDate.now());
 
         if (selectedFormat.equals("Excel")) {
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files (*.xlsx)", "*.xlsx"));
@@ -328,30 +320,23 @@ public class ThongKeBanHang_Ctrl extends Application implements Initializable {
 
     private void xuatExcel(File file) throws IOException {
         try (Workbook workbook = new XSSFWorkbook()) {
-            // --- Sheet 1: Thống kê doanh thu ---
             Sheet sheetDT = workbook.createSheet("Thong ke Doanh thu");
-
-            // Tạo font cho header
             Font headerFont = workbook.createFont();
             headerFont.setBold(true);
             CellStyle headerStyle = workbook.createCellStyle();
             headerStyle.setFont(headerFont);
 
-            // Lấy tên cột từ TableView Doanh Thu
             String[] headersDT = {
                     cotTG.getText(), cotSLHoaDon.getText(), cotTongGT.getText(),
                     cotGG.getText(), cotDT.getText(), cotGTDonTra.getText(), cotDoanhThu.getText()
             };
 
-            // Tạo hàng header
             Row headerRowDT = sheetDT.createRow(0);
             for (int i = 0; i < headersDT.length; i++) {
                 Cell cell = headerRowDT.createCell(i);
                 cell.setCellValue(headersDT[i]);
                 cell.setCellStyle(headerStyle);
             }
-
-            // Đổ dữ liệu
             int rowNumDT = 1;
             for (ThongKeBanHang tk : listThongKe) {
                 Row row = sheetDT.createRow(rowNumDT++);
@@ -364,12 +349,10 @@ public class ThongKeBanHang_Ctrl extends Application implements Initializable {
                 row.createCell(6).setCellValue(tk.getDoanhThu());
             }
 
-            // Tự động điều chỉnh độ rộng cột
             for (int i = 0; i < headersDT.length; i++) {
                 sheetDT.autoSizeColumn(i);
             }
 
-            // Ghi ra file
             try (FileOutputStream fileOut = new FileOutputStream(file)) {
                 workbook.write(fileOut);
             }
@@ -385,7 +368,7 @@ public class ThongKeBanHang_Ctrl extends Application implements Initializable {
 
         PdfFont font;
         try {
-            font = PdfFontFactory.createFont();
+            font = PdfFontFactory.createFont(FONT_PATH );
         } catch (IOException e) {
             System.err.println("Không tìm thấy font tại: " + FONT_PATH + ". Sử dụng font mặc định.");
             font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
@@ -393,7 +376,6 @@ public class ThongKeBanHang_Ctrl extends Application implements Initializable {
         document.setFont(font);
 
 
-        // --- Bảng 1: Thống kê doanh thu ---
         document.add(new Paragraph("BÁO CÁO THỐNG KÊ DOANH THU")
                 .setFontSize(18)
                 .setBold()
@@ -408,7 +390,6 @@ public class ThongKeBanHang_Ctrl extends Application implements Initializable {
         Table tableDT = new Table(UnitValue.createPercentArray(columnWidthsDT));
         tableDT.setWidth(UnitValue.createPercentValue(100)); // Rộng 100%
 
-        // Thêm Headers
         tableDT.addHeaderCell(new com.itextpdf.layout.element.Cell().add(new Paragraph(cotTG.getText()).setBold()));
         tableDT.addHeaderCell(new com.itextpdf.layout.element.Cell().add(new Paragraph(cotSLHoaDon.getText()).setBold()));
         tableDT.addHeaderCell(new com.itextpdf.layout.element.Cell().add(new Paragraph(cotTongGT.getText()).setBold()));
@@ -417,7 +398,7 @@ public class ThongKeBanHang_Ctrl extends Application implements Initializable {
         tableDT.addHeaderCell(new com.itextpdf.layout.element.Cell().add(new Paragraph(cotGTDonTra.getText()).setBold()));
         tableDT.addHeaderCell(new com.itextpdf.layout.element.Cell().add(new Paragraph(cotDoanhThu.getText()).setBold()));
 
-        // Thêm dữ liệu
+
         for (ThongKeBanHang tk : listThongKe) {
             tableDT.addCell(tk.getThoiGian());
             tableDT.addCell(String.valueOf(tk.getSoLuongHoaDon()));
@@ -428,12 +409,10 @@ public class ThongKeBanHang_Ctrl extends Application implements Initializable {
             tableDT.addCell(String.valueOf(tk.getDoanhThu()));
         }
         document.add(tableDT);
-
-        // Đóng document
         document.close();
     }
 
-    // Hàm tiện ích để hiển thị thông báo
+
     private void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);

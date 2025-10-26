@@ -6,7 +6,8 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
-<Pane prefHeight="251.0" prefWidth="582.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKeHang.XoaSuaKeHang_Ctrl">
+
+<Pane prefHeight="251.0" prefWidth="582.0" style="-fx-font-size: 13;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKeHang.XoaSuaKeHang_Ctrl">
     <children>
         <Label layoutX="13.5" layoutY="8.0" prefHeight="31.0" prefWidth="555.0" styleClass="lbtitle" text="Chi tiết kệ hàng">
             <font>
@@ -17,7 +18,7 @@
         <Label layoutX="13.5" layoutY="49.0" text="Tên kệ" />
         <Label layoutX="294.0" layoutY="49.0" />
         <TextArea fx:id="txtMota" layoutX="14.0" layoutY="120.0" prefHeight="69.0" prefWidth="555.0" />
-        <Label layoutX="9.0" layoutY="97.0" text="Mô tả" />
+        <Label layoutX="13.0" layoutY="104.0" text="Mô tả" />
         <Pane id="nutThem" fx:id="btnLuu" layoutX="477.0" layoutY="202.0" prefHeight="25.0" prefWidth="91.0">
             <children>
                 <Label id="txtTrang_Bold" layoutX="30.0" layoutY="4.0" text="Lưu" />

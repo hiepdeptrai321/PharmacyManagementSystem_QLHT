@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="582.0" prefWidth="804.0" stylesheets="@../../css/SuaXoaNhanVien.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhanVien.SuaXoaNhanVien_Ctrl">
+<AnchorPane prefHeight="582.0" prefWidth="804.0" style="-fx-font-size: 14;" stylesheets="@../../css/SuaXoaNhanVien.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhanVien.SuaXoaNhanVien_Ctrl">
     <children>
         <Label layoutX="14.0" layoutY="8.0" prefHeight="35.0" prefWidth="226.0" styleClass="lbtitle" text="Cập nhật nhân viên">
             <font>

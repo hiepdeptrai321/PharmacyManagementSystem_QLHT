@@ -6,7 +6,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -19,11 +18,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="895" prefWidth="1646" stylesheets="@../../css/TimKiemHoaDon.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoaDon.TimKiemHoaDon_Ctrl">
+<Pane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="895" prefWidth="1646" style="-fx-font-size: 14 px;" stylesheets="@../../css/TimKiemHoaDon.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoaDon.TimKiemHoaDon_Ctrl">
     <children>
-        <VBox layoutX="10.0" layoutY="14.0">
+        <VBox layoutX="10.0" layoutY="14.0" prefHeight="871.0" prefWidth="1619.0">
             <children>
-                <HBox prefHeight="58.0" prefWidth="1618.0">
+                <HBox prefHeight="58.0" prefWidth="1544.0">
                     <children>
                         <Label id="lbTimKiem" ellipsisString="" prefHeight="53.0" prefWidth="328.0" styleClass="title" text="Tìm kiếm hóa đơn">
                             <font>
@@ -44,18 +43,18 @@
                 <Separator prefWidth="200.0" />
                 <HBox prefHeight="63.0" prefWidth="1618.0">
                     <children>
-                        <ComboBox fx:id="cboTieuChiTimKiem" prefHeight="40.0" prefWidth="165.0" promptText="Tiêu chí tìm kiếm" styleClass="btntim">
+                        <ComboBox fx:id="cboTieuChiTimKiem" prefHeight="40.0" prefWidth="184.0" promptText="Tiêu chí tìm kiếm" styleClass="btntim">
                             <HBox.margin>
                                 <Insets right="5.0" top="10.0" />
                             </HBox.margin>
                         </ComboBox>
-                        <TextField fx:id="txtNoiDungTimKiem" prefHeight="40.0" prefWidth="209.0" promptText="Nhập nội dung tìm kiếm" styleClass="tftim">
+                        <TextField fx:id="txtNoiDungTimKiem" prefHeight="40.0" prefWidth="260.0" promptText="Nhập nội dung tìm kiếm" styleClass="tftim">
                             <HBox.margin>
                                 <Insets top="10.0" />
                             </HBox.margin>
                         </TextField>
-                  <Region prefHeight="63.0" prefWidth="73.0" />
-                  <ImageView fitHeight="20.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                  <Region prefHeight="63.0" prefWidth="32.0" />
+                  <ImageView fitHeight="34.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../img/time-2623.png" />
                      </image>
@@ -63,28 +62,34 @@
                         <Insets right="4.0" top="16.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Label prefHeight="37.0" prefWidth="47.0" styleClass="tftim" text="Từ: ">
+                  <Label prefHeight="37.0" prefWidth="32.0" styleClass="tftim" text="Từ: ">
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Label>
                   <DatePicker fx:id="dpTuNgay" prefHeight="40.0" prefWidth="125.0" styleClass="tftim">
                      <HBox.margin>
                         <Insets right="10.0" top="10.0" />
                      </HBox.margin>
                   </DatePicker>
-                  <Label prefHeight="34.0" prefWidth="28.0" styleClass="tftim" text="Đến: ">
+                  <Label prefHeight="37.0" prefWidth="38.0" styleClass="tftim" text="Đến: ">
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Label>
                   <DatePicker fx:id="dpDenNgay" minHeight="14.0" prefHeight="40.0" prefWidth="125.0" styleClass="tftim">
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
                   </DatePicker>
-                  <Region prefHeight="51.0" prefWidth="30.0" />
-                        <Button fx:id="btnTimKiem" alignment="CENTER_RIGHT" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" prefHeight="40.0" prefWidth="63.0" styleClass="btntim" text="Tìm">
+                  <Region prefHeight="63.0" prefWidth="25.0" />
+                        <Button fx:id="btnTimKiem" alignment="CENTER_RIGHT" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" prefHeight="40.0" prefWidth="72.0" styleClass="btntim" text="Tìm">
                             <HBox.margin>
                                 <Insets left="8.0" top="10.0" />
                             </HBox.margin>
@@ -111,8 +116,8 @@
                                 </ImageView>
                             </graphic>
                         </Button>
-                  <Region prefHeight="63.0" prefWidth="432.0" />
-                  <ComboBox fx:id="cboBoLocNhanh" prefHeight="40.0" prefWidth="208.0" promptText="⌛ Bộ lọc nhanh" styleClass="btntim">
+                  <Region prefHeight="63.0" prefWidth="395.0" />
+                  <ComboBox fx:id="cboBoLocNhanh" prefHeight="41.0" prefWidth="222.0" promptText="⌛ Bộ lọc nhanh" styleClass="btntim">
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
@@ -122,21 +127,17 @@
                         <Insets bottom="5.0" />
                     </VBox.margin>
                 </HBox>
-                <ScrollPane>
-                    <content>
-                        <TableView fx:id="tblHD" prefHeight="730.0" prefWidth="1616.0">
-                            <columns>
-                                <TableColumn fx:id="colMaHD" minWidth="0.0" prefWidth="169.3333282470703" text="Mã hóa đơn" />
-                                <TableColumn fx:id="colNgayLap" minWidth="6.0" prefWidth="226.6666717529297" text="Ngày lập" />
-                                <TableColumn fx:id="colTenKH" prefWidth="370.3999938964844" text="Khách hàng" />
-                                <TableColumn fx:id="colSdtKH" prefWidth="229.5999755859375" text="SĐT" />
-                                <TableColumn fx:id="colTenNV" prefWidth="332.79986572265625" text="Nhân viên" />
-                                <TableColumn fx:id="colSLP" minWidth="0.0" prefWidth="185.6666259765625" text="Số lượng phiếu đổi trả" />
-                                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="107.6666259765625" />
-                            </columns>
-                        </TableView>
-                    </content>
-                </ScrollPane>
+                  <TableView fx:id="tblHD" prefHeight="735.0" prefWidth="1619.0" style="-fx-font-size: 14 px;">
+                      <columns>
+                          <TableColumn fx:id="colMaHD" minWidth="0.0" prefWidth="162.0" style="-fx-alignment: CENTER;" text="Mã hóa đơn" />
+                          <TableColumn fx:id="colNgayLap" minWidth="6.0" prefWidth="255.0" style="-fx-alignment: CENTER;" text="Ngày lập" />
+                          <TableColumn fx:id="colTenKH" prefWidth="351.0" text="Khách hàng" />
+                          <TableColumn fx:id="colSdtKH" prefWidth="229.5999755859375" style="-fx-alignment: CENTER;" text="SĐT" />
+                          <TableColumn fx:id="colTenNV" prefWidth="332.79986572265625" text="Nhân viên" />
+                          <TableColumn fx:id="colSLP" minWidth="0.0" prefWidth="193.0" style="-fx-alignment: CENTER;" text="Số lượng phiếu đổi trả" />
+                          <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="91.0" style="-fx-alignment: CENTER;" />
+                      </columns>
+                  </TableView>
             </children>
         </VBox>
       <ImageView fitHeight="35.0" fitWidth="40.0" layoutX="500.0" layoutY="-91.0" pickOnBounds="true" preserveRatio="true" styleClass="icontime" />

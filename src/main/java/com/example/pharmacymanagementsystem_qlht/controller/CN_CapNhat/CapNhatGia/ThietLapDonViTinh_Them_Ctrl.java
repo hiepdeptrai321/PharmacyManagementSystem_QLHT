@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class ThietLapDonViTinh_Them_Ctrl extends Application {
+public class ThietLapDonViTinh_Them_Ctrl {
 
     // 1. KHAI BÁO THÀNH PHẦN GIAO DIỆN (FXML)
 
@@ -32,16 +32,10 @@ public class ThietLapDonViTinh_Them_Ctrl extends Application {
 
     // 2. KHỞI TẠO (INITIALIZE)
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatGia/ThietLapDonViTinh_Them_GUI.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
     public void initialize(){
         loadCbDVT();
         cbDVCBCheck();
+        btnThemDVT.setOnAction(e-> btnThemDVTClick());
     }
 
     // 3. XỬ LÝ SỰ KIỆN GIAO DIỆN
@@ -52,6 +46,7 @@ public class ThietLapDonViTinh_Them_Ctrl extends Application {
     }
 
     public void loadCbDVT(){
+        cbDVT.getItems().clear();
         DonViTinh_Dao donViTinh_dao = new DonViTinh_Dao();
         List<DonViTinh> list = donViTinh_dao.selectAll();
         for(DonViTinh donViTinh : list){
@@ -59,7 +54,20 @@ public class ThietLapDonViTinh_Them_Ctrl extends Application {
         }
     }
 
-    public void btnThemDVTClick(MouseEvent mouseEvent) {
+    public void btnThemDVTClick() {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatGia/ThemDVT.fxml"));
+            Parent root = loader.load();
+            ThemDVT_Ctrl ctrl = loader.getController();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.showAndWait();
+            loadCbDVT();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public void btnHuyClick(MouseEvent mouseEvent) {
         Stage stage = (Stage) btnHuy.getScene().getWindow();

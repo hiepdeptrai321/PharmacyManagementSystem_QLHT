@@ -6,18 +6,26 @@ import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SanPham_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.KhuyenMai;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.File;
 import java.util.List;
 
 public class DanhMucThuoc_Ctrl extends Application {
@@ -37,6 +45,8 @@ public class DanhMucThuoc_Ctrl extends Application {
     public TextField tfTimThuoc;
     public Button btnTimThuoc;
     public Button btnThemThuoc;
+    @FXML
+    private Button btnLamMoi;
     Thuoc_SanPham_Dao thuocDao = new Thuoc_SanPham_Dao();
     List<Thuoc_SanPham> list;
 
@@ -50,7 +60,12 @@ public class DanhMucThuoc_Ctrl extends Application {
     }
 
     public void initialize() {
-        loadTable();
+        Platform.runLater(() -> {
+            loadTable();
+        });
+        btnLamMoi.setOnAction(e-> LamMoi());
+        tfTimThuoc.setOnAction(e-> timThuoc());
+        btnTimThuoc.setOnAction(e-> timThuoc());
     }
 
 //  3. Tải bảng
@@ -63,10 +78,62 @@ public class DanhMucThuoc_Ctrl extends Application {
         );
         colMaThuoc.setCellValueFactory(new PropertyValueFactory<Thuoc_SanPham,String>("maThuoc"));
         colTenThuoc.setCellValueFactory(new PropertyValueFactory<Thuoc_SanPham,String>("tenThuoc"));
+        colTenThuoc.setCellFactory(col -> new TableCell<Thuoc_SanPham, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colHamLuong.setCellValueFactory(new PropertyValueFactory<Thuoc_SanPham,String>("hamLuongDonVi"));
+        colHamLuong.setCellFactory(col -> new TableCell<Thuoc_SanPham, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colSDK_GPNK.setCellValueFactory(new PropertyValueFactory<Thuoc_SanPham,String>("SDK_GPNK"));
         colXuatXu.setCellValueFactory(new PropertyValueFactory<Thuoc_SanPham,String>("nuocSX"));
+        colXuatXu.setCellFactory(col -> new TableCell<Thuoc_SanPham, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colLoaiHang.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLoaiHang().getTenLoaiHang()));
+        colLoaiHang.setCellFactory(col -> new TableCell<Thuoc_SanPham, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colViTri.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVitri().getTenKe()));
         colChiTiet.setCellFactory(col -> new TableCell<Thuoc_SanPham, String>() {
             private final Button btn = new Button("Chi tiết");
@@ -99,16 +166,17 @@ public class DanhMucThuoc_Ctrl extends Application {
 //  Thêm thuốc
     public void themthuoc(ActionEvent actionEvent) {
         try {
-            Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/ThemThuoc_GUI.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
-
             ThemThuoc_Ctrl ctrl = loader.getController();
             ctrl.setParent(this);
 
-            stage.setScene(scene);
-            stage.show();
+            Stage dialog = new Stage();
+            dialog.initOwner(tbl_Thuoc.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Thêm thuốc");
+            dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -136,6 +204,26 @@ public class DanhMucThuoc_Ctrl extends Application {
     public void refestTable(){
         loadTable();
     }
+    @FXML
+    private void LamMoi() {
+        tfTimThuoc.clear();
+        loadTable();
+    }
 
+    public void btnThemThuocByExcel(ActionEvent actionEvent) {
+        try{
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/ThemThuocBangFileExcel_GUI.fxml"));
+            Parent root = loader.load();
+            Stage dialog = new Stage();
+            dialog.initOwner(tbl_Thuoc.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Thêm thuốc bằng file Excel");
+            dialog.showAndWait();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
+    }
 }

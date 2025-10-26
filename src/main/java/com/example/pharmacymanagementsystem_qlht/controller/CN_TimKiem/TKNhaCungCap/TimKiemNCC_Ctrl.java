@@ -1,12 +1,15 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKNhaCungCap;
 
+import com.example.pharmacymanagementsystem_qlht.model.HoaDon;
 import com.example.pharmacymanagementsystem_qlht.model.NhaCungCap;
 import com.example.pharmacymanagementsystem_qlht.dao.NhaCungCap_Dao;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -79,10 +82,11 @@ public class TimKiemNCC_Ctrl extends Application {
                 setGraphic(empty ? null : btn);
             }
         });
-        loadTable();
         btnTim.setOnAction(e -> TimKiem());
         btnLamMoi.setOnAction(e -> LamMoi());
-
+        Platform.runLater(()->{
+            loadTable();
+        });
     }
 
     @Override
@@ -102,9 +106,48 @@ public class TimKiemNCC_Ctrl extends Application {
         );
         cotMNCC.setCellValueFactory(new PropertyValueFactory<>("maNCC"));
         cotTenNCC.setCellValueFactory(new PropertyValueFactory<>("tenNCC"));
+        cotTenNCC.setCellFactory(col -> new TableCell<NhaCungCap, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         cotDiaChi.setCellValueFactory(new PropertyValueFactory<>("diaChi"));
+        cotDiaChi.setCellFactory(col -> new TableCell<NhaCungCap, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         cotSDT.setCellValueFactory(new PropertyValueFactory<>("SDT"));
         cotEmil.setCellValueFactory(new PropertyValueFactory<>("email"));
+        cotEmil.setCellFactory(col -> new TableCell<NhaCungCap, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         cotChiTiet.setCellFactory(col -> new TableCell<NhaCungCap, String>() {
             private final Button btn = new Button("Chi tiết");
             {

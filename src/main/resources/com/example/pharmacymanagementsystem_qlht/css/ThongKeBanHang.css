@@ -111,3 +111,19 @@
 }
 .date-picker{
 -fx-border-radius:8px}
+
+#btnBieuDo {
+    -fx-background-color: linear-gradient(to right, #f76b1c, #fda34b);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}
+
+#btnBang {
+    -fx-background-color: linear-gradient(to right, #34c759, #5ce27a);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}

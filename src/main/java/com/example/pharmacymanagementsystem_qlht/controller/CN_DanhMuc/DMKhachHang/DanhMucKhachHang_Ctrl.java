@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -68,6 +69,7 @@ public class DanhMucKhachHang_Ctrl extends Application {
         btnLamMoi.setOnAction(e -> LamMoi());
         btnTim.setOnAction(e -> TimKiem());
         btnthemKH.setOnAction(e -> btnThemClick(new KhachHang()));
+        txtTim.setOnAction(e -> TimKiem());
 
 
     }
@@ -79,13 +81,52 @@ public class DanhMucKhachHang_Ctrl extends Application {
         );
         cotMaKH.setCellValueFactory(new PropertyValueFactory<>("MaKH"));
         cotTenKH.setCellValueFactory(new PropertyValueFactory<>("TenKH"));
+        cotTenKH.setCellFactory(col -> new TableCell<KhachHang, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         cotGioiTinh.setCellValueFactory(cellData -> {
             Boolean gt = cellData.getValue().getGioiTinh();
             String gioiTinhText = (gt != null && gt) ? "Nam" : "Nữ";
             return new SimpleStringProperty(gioiTinhText);
         });
+        cotGioiTinh.setCellFactory(col -> new TableCell<KhachHang, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
 
         cotDiaChi.setCellValueFactory(new PropertyValueFactory<>("DiaChi"));
+        cotDiaChi.setCellFactory(col -> new TableCell<KhachHang, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         cotSDT.setCellValueFactory(new PropertyValueFactory<>("sdt"));
 
         cotChiTiet.setCellFactory(col -> new TableCell<KhachHang, String>() {

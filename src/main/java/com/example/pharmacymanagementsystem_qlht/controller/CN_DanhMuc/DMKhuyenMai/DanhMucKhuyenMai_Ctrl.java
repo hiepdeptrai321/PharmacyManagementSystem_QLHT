@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -36,12 +37,14 @@ public class DanhMucKhuyenMai_Ctrl extends Application {
     @FXML private TableColumn<KhuyenMai, java.sql.Date> colNBD;
     @FXML private TableColumn<KhuyenMai, java.sql.Date> colNKT;
     @FXML private TableColumn<KhuyenMai, java.sql.Date> colNgayTao;
+    @FXML private Button btnLamMoi;
 
     private KhuyenMai_Dao khuyenMaiDao = new KhuyenMai_Dao();
 
     public void initialize() {
         loadTable();
         tfTimKM.setOnAction(e -> timKhuyenMai());
+        btnLamMoi.setOnAction(e-> LamMoi());
     }
 
     @Override
@@ -61,6 +64,19 @@ public class DanhMucKhuyenMai_Ctrl extends Application {
         );
         colMaKM.setCellValueFactory(new PropertyValueFactory<>("maKM"));
         colTenKM.setCellValueFactory(new PropertyValueFactory<>("tenKM"));
+        colTenKM.setCellFactory(col -> new TableCell<KhuyenMai, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colLoaiKM.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLoaiKM().getMaLoai()));
         colNBD.setCellValueFactory(new PropertyValueFactory<>("ngayBatDau"));
         colNKT.setCellValueFactory(new PropertyValueFactory<>("ngayKetThuc"));
@@ -119,6 +135,12 @@ public class DanhMucKhuyenMai_Ctrl extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void LamMoi() {
+        tfTimKM.clear();
+        loadTable();
     }
 
     public void timKhuyenMai() {

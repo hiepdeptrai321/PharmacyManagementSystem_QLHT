@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="251.0" prefWidth="582.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKeHang.ThemKe_Ctrl">
+<Pane prefHeight="251.0" prefWidth="582.0" style="-fx-font-size: 13;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKeHang.ThemKe_Ctrl">
     <children>
         <Label layoutX="13.5" layoutY="8.0" prefHeight="31.0" prefWidth="555.0" styleClass="lbtitle" text="Thêm kệ hàng">
             <font>
@@ -19,7 +19,7 @@
         <Label layoutX="13.5" layoutY="49.0" text="Tên kệ" />
         <Label layoutX="294.0" layoutY="49.0" />
         <TextArea fx:id="txtMoTa" layoutX="14.0" layoutY="120.0" prefHeight="69.0" prefWidth="555.0" />
-        <Label layoutX="9.0" layoutY="97.0" text="Mô tả" />
+        <Label layoutX="14.0" layoutY="100.0" text="Mô tả" />
       <Button id="nutThem" fx:id="btnThem" layoutX="479.0" layoutY="202.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="74.0">
          <graphic>
                 <Label id="txtTrang_Bold" text="Thêm" />

@@ -5,35 +5,51 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="895.0" prefWidth="1646.0" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhuyenMai.DanhMucKhuyenMai_Ctrl">
+<AnchorPane prefHeight="895.0" prefWidth="1646.0" style="-fx-font-size: 14;" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhuyenMai.DanhMucKhuyenMai_Ctrl">
     <children>
         <TextField fx:id="tfTimKM" layoutX="12.0" layoutY="51.0" prefHeight="40.0" prefWidth="767.0" promptText="Tìm theo mã, tên khuyến mãi" AnchorPane.topAnchor="51.0" />
         <Button id="btntim" layoutX="789.0" layoutY="51.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timKhuyenMai" prefHeight="30.0" prefWidth="69.0" styleClass="btn" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" AnchorPane.topAnchor="51.0" />
         <Button id="btnthemthuoc" fx:id="btnthemKM" layoutX="1471.0" layoutY="51.0" mnemonicParsing="false" onMouseClicked="#btnThemKMClick" prefHeight="32.0" prefWidth="161.0" styleClass="btn" text="✚Thêm khuyến mãi" AnchorPane.topAnchor="51.0" />
         <TableView id="tableKM" fx:id="tbKM" layoutX="12.0" layoutY="100.0" prefHeight="789.0" prefWidth="1622.0">
             <columns>
-                <TableColumn fx:id="colSTT" prefWidth="48.83333206176758" styleClass="a-center" text="STT" />
-                <TableColumn fx:id="colMaKM" prefWidth="114.16667175292969" styleClass="a-center" text="Mã khuyến mãi" />
+                <TableColumn fx:id="colSTT" prefWidth="48.83333206176758" style="-fx-alignment: CENTER;" styleClass="a-center" text="STT" />
+                <TableColumn fx:id="colMaKM" prefWidth="114.16667175292969" style="-fx-alignment: CENTER;" styleClass="a-center" text="Mã khuyến mãi" />
                 <TableColumn fx:id="colTenKM" prefWidth="348.0" text="Tên khuyến mãi" />
                 <TableColumn fx:id="colLoaiKM" minWidth="0.0" prefWidth="253.0" styleClass="a-center" text="Loại khuyến mãi" />
                 <TableColumn fx:id="colNBD" minWidth="0.0" prefWidth="285.0" styleClass="a-center" text="Ngày bắt đầu" />
                 <TableColumn fx:id="colNKT" minWidth="0.0" prefWidth="236.0" styleClass="a-center" text="Ngày kết thúc" />
-                <TableColumn fx:id="colNgayTao" minWidth="0.0" prefWidth="253.0" text="Ngày tạo khuyến mãi" />
-            <TableColumn fx:id="colChiTiet" prefWidth="82.0" styleClass="a-center" />
+                <TableColumn fx:id="colNgayTao" minWidth="0.0" prefWidth="253.0" style="-fx-alignment: CENTER;" text="Ngày tạo khuyến mãi" />
+            <TableColumn fx:id="colChiTiet" prefWidth="82.0" style="-fx-alignment: CENTER;" styleClass="a-center" />
             </columns>
         </TableView>
       <Pane id="lblpaneTitle" layoutX="13.0" layoutY="4.0" prefHeight="40.0" prefWidth="1632.0">
          <children>
-            <Label id="lbtitle" layoutY="2.0" prefHeight="26.0" prefWidth="405.0" text="Danh mục khuyến mãi">
+            <Label id="lbtitle" layoutY="2.0" prefHeight="36.0" prefWidth="279.0" text="Danh mục khuyến mãi">
                <font>
                   <Font size="48.0" />
                </font>
             </Label>
+            <ImageView fitHeight="35.0" fitWidth="38.0" layoutX="272.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/discounts.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
+      <Button id="btnReset" fx:id="btnLamMoi" layoutX="882.0" layoutY="49.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="53.0">
+         <graphic>
+            <ImageView id="btnReset" fitHeight="31.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/refresh-3104.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
     </children>
 </AnchorPane>

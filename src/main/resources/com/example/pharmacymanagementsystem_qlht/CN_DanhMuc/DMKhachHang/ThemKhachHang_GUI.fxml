@@ -18,7 +18,7 @@
 
 <!-- Wider GridPane layout: increased prefWidth for tab/window, error labels fixed width and ellipsis, compact spacing -->
 
-<GridPane hgap="12" maxHeight="Infinity" maxWidth="Infinity" prefHeight="324.0" prefWidth="688.0" vgap="6" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhachHang.ThemKhachHang_Ctrl">
+<GridPane hgap="12" maxHeight="Infinity" maxWidth="Infinity" prefHeight="324.0" prefWidth="688.0" style="-fx-font-size: 13;" vgap="6" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhachHang.ThemKhachHang_Ctrl">
     <padding>
         <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
     </padding>
@@ -36,7 +36,7 @@
     </rowConstraints>
 
     <!-- Title spanning all columns -->
-    <Label styleClass="lbtitle" text="Thêm khách hàng" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="0">
+    <Label prefHeight="26.0" prefWidth="659.0" styleClass="lbtitle" text="Thêm khách hàng" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="0">
         <font>
             <Font name="System Bold" size="16.0" />
         </font>

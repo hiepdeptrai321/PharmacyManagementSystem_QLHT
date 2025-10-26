@@ -2,18 +2,20 @@
 
 <?import java.net.URL?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="251.0" prefWidth="582.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhomDuocLy.SuaXoaNhomDuocLy">
+<Pane prefHeight="251.0" prefWidth="582.0" style="-fx-font-size: 13;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhomDuocLy.SuaXoaNhomDuocLy">
     <children>
         <Label layoutX="13.5" layoutY="8.0" prefHeight="31.0" prefWidth="555.0" styleClass="lbtitle" text="Chi tiết nhóm dược lý">
             <font>
                 <Font name="System Bold" size="18.0" />
             </font>
         </Label>
+      <Separator layoutX="-8.0" layoutY="38.0" prefHeight="0.0" prefWidth="589.0" />
         <TextField fx:id="txtTenNDL" layoutX="14.0" layoutY="66.0" prefHeight="25.0" prefWidth="555.0" />
         <Label layoutX="13.5" layoutY="49.0" text="Tên nhóm dược lý" />
         <Label layoutX="294.0" layoutY="49.0" />

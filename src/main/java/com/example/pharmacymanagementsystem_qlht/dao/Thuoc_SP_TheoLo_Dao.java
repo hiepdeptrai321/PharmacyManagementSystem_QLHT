@@ -19,7 +19,7 @@ public class Thuoc_SP_TheoLo_Dao implements DaoInterface<Thuoc_SP_TheoLo> {
     private final String SELECT_ALL_SQL = "SELECT * FROM Thuoc_SP_TheoLo";
     private final String SELECT_SLTON_BY_MATHUOC = "SELECT SUM(SoLuongTon) AS TongSoLuongTon FROM Thuoc_SP_TheoLo WHERE MaThuoc = ?";
     private final String SELECT_BY_TUKHOA_SQL =
-            "SELECT t.*, ctdvt.* FROM Thuoc_SP_TheoLo t " +
+            "SELECT t.* FROM Thuoc_SP_TheoLo t " +
                     "JOIN Thuoc_SanPham sp ON t.MaThuoc = sp.MaThuoc " +
                     "WHERE LOWER(t.MaThuoc) LIKE ? OR LOWER(sp.TenThuoc) LIKE ?";
     private static final String UPDATE_TON_KHO_SQL = "UPDATE Thuoc_SP_TheoLo SET SoLuongTon = SoLuongTon - ? WHERE MaThuoc   = ? AND MaLH= ? AND SoLuongTon >= ?";
@@ -194,5 +194,13 @@ public class Thuoc_SP_TheoLo_Dao implements DaoInterface<Thuoc_SP_TheoLo> {
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         }
+    }
+
+    public List<Thuoc_SP_TheoLo> selectHangSapHetHan() {
+        return this.selectBySql("{call sp_HangSapHetHan}");
+    }
+
+    public List<Thuoc_SP_TheoLo> selectHangDaHetHan() {
+        return this.selectBySql("{call sp_HangHetHan}");
     }
 }

@@ -1,26 +1,98 @@
 package com.example.pharmacymanagementsystem_qlht.controller;
 
+import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SP_TheoLo_Dao;
+import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SP_TheoLo;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
-public class CuaSoChinh_QuanLy_Ctrl extends Application {
+public class CuaSoChinh_QuanLy_Ctrl{
     public Pane pnlChung;
     public Menu menuTimKiem;
     public Menu menuDanhMuc;
     public Menu menuCapNhat;
     public Menu menuThongKe;
     public Menu menuXuLy;
+    public Label txtNguoiDung;
+    public Label txtNgayThangNam;
+    public TableView<Thuoc_SP_TheoLo> tblThuocHetHan;
+    public TableColumn<Thuoc_SP_TheoLo, String> colMaThuocHetHan;
+    public TableColumn<Thuoc_SP_TheoLo, String> colLoHangHetHan;
+    public TableColumn<Thuoc_SP_TheoLo, String> colHSDHetHan;
+    public TableView<Thuoc_SP_TheoLo> tblThuocSapHetHan;
+    public TableColumn<Thuoc_SP_TheoLo, String> colMaThuocSapHetHan;
+    public TableColumn<Thuoc_SP_TheoLo, String> colLoHangSapHetHan;
+    public TableColumn<Thuoc_SP_TheoLo, String> colHSDSapHetHan;
+    public Label lbl_SoLuongHangHetHan;
+    public Label lbl_SoLuongHangSapHetHan;
     private int viTri;
+    private List<Thuoc_SP_TheoLo> listThuocHetHan  = new Thuoc_SP_TheoLo_Dao().selectHangDaHetHan();
+    private List<Thuoc_SP_TheoLo> listThuocSapHetHan  = new Thuoc_SP_TheoLo_Dao().selectHangSapHetHan();
+
+    public void initialize(){
+        txtNguoiDung.setText("Người dùng: "+ DangNhap_Ctrl.user.getTenNV());
+        setNgayGio(txtNgayThangNam);
+        loadTableThuocHetHan();
+        loadTableThuocSapHetHan();
+    }
+
+    public void loadTableThuocHetHan(){
+        ObservableList<Thuoc_SP_TheoLo> data = tblThuocHetHan.getItems();
+        data.clear();
+        data.addAll(listThuocHetHan);
+        lbl_SoLuongHangHetHan.setText("Số lượng hàng hết hạn: " +listThuocHetHan.size());
+        colMaThuocHetHan.setCellValueFactory(new PropertyValueFactory<>("maThuoc"));
+        colLoHangHetHan.setCellValueFactory(new PropertyValueFactory<>("maLH"));
+        colHSDSapHetHan.setCellValueFactory(new PropertyValueFactory<>("hsd"));
+    }
+
+    public void loadTableThuocSapHetHan(){
+        ObservableList<Thuoc_SP_TheoLo> data = tblThuocSapHetHan.getItems();
+        data.clear();
+        data.addAll(listThuocSapHetHan);
+        lbl_SoLuongHangSapHetHan.setText("Số lượng hàng sắp hết hạn: " +listThuocSapHetHan.size());
+        colLoHangSapHetHan.setCellValueFactory(new PropertyValueFactory<>("maThuoc"));
+        colLoHangSapHetHan.setCellValueFactory(new PropertyValueFactory<>("maLH"));
+        colLoHangSapHetHan.setCellValueFactory(new PropertyValueFactory<>("hsd"));
+    }
+
+    private void setNgayGio(Label lblNgayGio) {
+        Locale localeVN = new Locale("vi", "VN");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, dd/MM/yyyy HH:mm:ss", localeVN);
+
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(0), event -> {
+                    LocalDateTime now = LocalDateTime.now();
+                    lblNgayGio.setText(now.format(formatter));
+                }),
+                new KeyFrame(Duration.seconds(1))
+        );
+
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
 
     public void selectMenu(int viTriGiaoDien){
         switch (viTriGiaoDien){
@@ -73,15 +145,6 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
                 break;
             }
         }
-    }
-
-    @Override
-    public void start (Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CuaSoChinh_QuanLy_GUI.fxml"));
-        primaryStage.setTitle("Hệ thống quản lý hiệu thuốc");
-        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logo.png")));
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
     }
 
     public void LapHoaDon(ActionEvent actionEvent) {
@@ -207,6 +270,19 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
         }
     }
 
+    //  Danh mục hoạt động
+    public void timKiemHoatDong(ActionEvent actionEvent) {
+        viTri=1;
+        selectMenu(viTri);
+        pnlChung.getChildren().clear();
+        try {
+            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKHoatDong/TKHoatDong_GUI.fxml")));
+            pnlChung.getChildren().add(pane);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 //  2.Chức năng danh mục
 //  Danh mục thuốc
     public void danhMucThuoc(ActionEvent actionEvent) {
@@ -267,19 +343,6 @@ public class CuaSoChinh_QuanLy_Ctrl extends Application {
         pnlChung.getChildren().clear();
         try {
             Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNCC/DanhMucNhaCungCap_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-//  Danh mục hoạt động
-    public void danhMucHoatDong(ActionEvent actionEvent) {
-        viTri=2;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMHoatDong/DanhMucHoatDong_GUI.fxml")));
             pnlChung.getChildren().add(pane);
         } catch (Exception e) {
             e.printStackTrace();

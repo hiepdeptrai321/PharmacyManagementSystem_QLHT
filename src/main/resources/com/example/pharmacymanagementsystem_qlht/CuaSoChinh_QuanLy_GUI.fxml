@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<Pane id="main" prefHeight="1029.0" prefWidth="1646.0" stylesheets="@css/TrangChu.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CuaSoChinh_QuanLy_Ctrl">
+<Pane id="main" prefHeight="1029.0" prefWidth="1646.0" stylesheets="@css/TrangChu.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CuaSoChinh_QuanLy_Ctrl">
     <children>
         <AnchorPane prefHeight="1029.0" prefWidth="1646.0">
             <children>
@@ -35,17 +35,18 @@
                         <MenuItem id="menuItems" mnemonicParsing="false" onAction="#timKiemNhaCungCap" text="Tìm nhà cung cấp" />
                         <MenuItem id="menuItems" mnemonicParsing="false" onAction="#timKiemThuoc" text="Tìm thuốc" />
                         <MenuItem id="menuItems" mnemonicParsing="false" onAction="#timKiemKhachHang" text="Tìm khách hàng" />
+                        <MenuItem id="menuItems" mnemonicParsing="false" onAction="#timKiemHoatDong" text="Tim kiếm hoạt động" />
                             </items>
                         </Menu>
                         <Menu id="menu" fx:id="menuDanhMuc" mnemonicParsing="false" styleClass="menu" text="📁 Danh mục">
                             <items>
                                 <MenuItem id="menuItems" mnemonicParsing="false" onAction="#danhMucThuoc" text="Danh mục thuốc" />
                                 <MenuItem id="menuItems" mnemonicParsing="false" onAction="#danhMucNhanVien" text="Danh mục nhân viên" />
-                        <MenuItem id="menuItems" mnemonicParsing="false" onAction="#danhMucKhachHang" text="Danh mục khác hàng" />
+                        <MenuItem id="menuItems" mnemonicParsing="false" onAction="#danhMucKhachHang" text="Danh mục khách hàng" />
                         <MenuItem id="menuItems" mnemonicParsing="false" onAction="#danhMucKeHang" text="Danh mục kệ hàng" />
-                        <MenuItem id="menuItems" mnemonicParsing="false" onAction="#danhMucNhaCungCap" text="Danh mục nhà cung cấp" />
-                        <MenuItem id="menuItems" mnemonicParsing="false" onAction="#danhMucHoatDong" text="Danh mục hoạt động" />
                         <MenuItem id="menuItems" mnemonicParsing="false" onAction="#danhMucKhuyenMai" text="Danh mục khuyến mãi" />
+                        <MenuItem id="menuItems" mnemonicParsing="false" onAction="#danhMucNhaCungCap" text="Danh mục nhà cung cấp" />
+                        <MenuItem id="menuItems" mnemonicParsing="false" onAction="#danhMucKhuyenMai" text="Danh mục nhóm dược lý" />
                             </items>
                         </Menu>
                         <Menu id="menu" fx:id="menuCapNhat" mnemonicParsing="false" styleClass="menu" text="🔄 Cập nhật">
@@ -67,8 +68,8 @@
                            <items>
                               <MenuItem id="menuItems" mnemonicParsing="false" onAction="#lapHoaDon" text="Lập hóa đơn" />
                               <MenuItem id="menuItems" mnemonicParsing="false" onAction="#lapPhieuDoiHang" text="lập phiếu đổi hàng" />
-                              <MenuItem id="menuItems" mnemonicParsing="false" onAction="#lapPhieuTraHang" text="Lập piếu trả hàng" />
-                              <MenuItem id="menuItems" mnemonicParsing="false" onAction="#lapPhieuDatHang" text="Lập phiếu đặng hàng" />
+                              <MenuItem id="menuItems" mnemonicParsing="false" onAction="#lapPhieuTraHang" text="Lập phiếu trả hàng" />
+                              <MenuItem id="menuItems" mnemonicParsing="false" onAction="#lapPhieuDatHang" text="Lập phiếu đặt hàng" />
                            </items>
                         </Menu>
                                 <MenuItem id="menuItems" mnemonicParsing="false" onAction="#nhapHang" text="Nhập hàng" />
@@ -93,7 +94,7 @@
                             <children>
                                 <Pane prefHeight="395.0" prefWidth="630.0" GridPane.columnIndex="1">
                                     <children>
-                                        <Pane id="paneMain" layoutX="29.0" layoutY="27.0" prefHeight="308.0" prefWidth="511.0">
+                                        <Pane id="paneMain" layoutX="31.0" layoutY="29.0" prefHeight="308.0" prefWidth="509.0">
                                             <children>
                                                 <Label layoutX="127.0" layoutY="138.0" text="35℃">
                                                     <font>
@@ -126,7 +127,7 @@
                                 </Pane>
                                 <Pane prefHeight="515.0" prefWidth="959.0" GridPane.rowIndex="1">
                                     <children>
-                                        <Pane id="paneMain" layoutX="26.0" layoutY="27.0" prefHeight="463.0" prefWidth="1013.0">
+                                        <Pane id="paneMain" layoutX="26.0" layoutY="27.0" prefHeight="454.0" prefWidth="1013.0">
                                             <children>
                                                 <Label layoutX="266.0" layoutY="19.0" text="Doanh thu bán hàng tháng này" textAlignment="CENTER">
                                                     <font>
@@ -164,18 +165,18 @@
                                                         <Font name="System Bold" size="35.0" />
                                                     </font>
                                                 </Label>
-                                                <TableView layoutX="18.0" layoutY="116.0" prefHeight="139.0" prefWidth="465.0">
+                                                <TableView fx:id="tblThuocHetHan" layoutX="18.0" layoutY="116.0" prefHeight="139.0" prefWidth="473.0">
                                                     <columns>
-                                                        <TableColumn prefWidth="107.0" text="Mã thuốc" />
-                                                        <TableColumn prefWidth="104.0" text="Tên thuốc" />
-                                                        <TableColumn prefWidth="114.0" text="Hạn sử dụng" />
+                                                        <TableColumn fx:id="colMaThuocHetHan" prefWidth="148.00012588500977" text="Mã thuốc" />
+                                                        <TableColumn fx:id="colLoHangHetHan" prefWidth="173.142822265625" text="Lô hàng" />
+                                                        <TableColumn fx:id="colHSDHetHan" prefWidth="155.99996948242188" text="Hạn sử dụng" />
                                                     </columns>
                                                 </TableView>
-                                                <TableView layoutX="20.0" layoutY="291.0" prefHeight="141.0" prefWidth="462.0">
+                                                <TableView fx:id="tblThuocSapHetHan" layoutX="20.0" layoutY="291.0" prefHeight="141.0" prefWidth="473.0">
                                                     <columns>
-                                                        <TableColumn prefWidth="107.0" text="Mã thuốc" />
-                                                        <TableColumn prefWidth="104.0" text="Tên thuốc" />
-                                                        <TableColumn prefWidth="114.0" text="Hạn sử dụng" />
+                                                        <TableColumn fx:id="colMaThuocSapHetHan" prefWidth="143.42859268188477" text="Mã thuốc" />
+                                                        <TableColumn fx:id="colLoHangSapHetHan" prefWidth="179.4285888671875" text="Lô hàng" />
+                                                        <TableColumn fx:id="colHSDSapHetHan" prefWidth="151.42855834960938" text="Hạn sử dụng" />
                                                     </columns>
                                                 </TableView>
                                                 <Label fx:id="lbl_SoLuongHangHetHan" layoutX="18.0" layoutY="87.0" text="Hàng hết hạn: 0">
@@ -208,19 +209,19 @@
                                     <children>
                                         <Pane prefHeight="200.0" prefWidth="200.0">
                                             <children>
-                                                <Pane id="paneMain" layoutX="27.0" layoutY="27.0" prefHeight="303.0" prefWidth="475.0">
+                                                <Pane id="paneMain" layoutX="27.0" layoutY="27.0" prefHeight="308.0" prefWidth="480.0">
                                                     <children>
                                                         <Label layoutX="176.0" layoutY="50.0" text="Doanh thu">
                                                             <font>
                                                                 <Font name="System Bold" size="35.0" />
                                                             </font>
                                                         </Label>
-                                                        <Label layoutX="62.0" layoutY="153.0" text="Tháng trước: 10 VND">
+                                                        <Label layoutX="62.0" layoutY="153.0" text="Tháng trước:">
                                                             <font>
                                                                 <Font name="System Bold" size="25.0" />
                                                             </font>
                                                         </Label>
-                                                        <Label layoutX="62.0" layoutY="202.0" text="Tháng này: 15VND">
+                                                        <Label layoutX="62.0" layoutY="202.0" text="Tháng này:">
                                                             <font>
                                                                 <Font name="System Bold" size="25.0" />
                                                             </font>
@@ -231,25 +232,35 @@
                                                                 <Image url="@img/Tien.png" />
                                                             </image>
                                                         </ImageView>
+                                          <Label layoutX="231.0" layoutY="153.0" text="0 VND">
+                                             <font>
+                                                <Font name="System Bold" size="25.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="231.0" layoutY="202.0" text="0 VND">
+                                             <font>
+                                                <Font name="System Bold" size="25.0" />
+                                             </font>
+                                          </Label>
                                                     </children>
                                                 </Pane>
                                             </children>
                                         </Pane>
                                         <Pane prefHeight="241.0" prefWidth="382.0" GridPane.columnIndex="1">
                                             <children>
-                                                <Pane id="paneMain" layoutX="22.0" layoutY="27.0" prefHeight="306.0" prefWidth="485.0">
+                                                <Pane id="paneMain" layoutX="22.0" layoutY="28.0" prefHeight="308.0" prefWidth="480.0">
                                                     <children>
                                                         <Label layoutX="190.0" layoutY="50.0" text="Hóa đơn">
                                                             <font>
                                                                 <Font name="System Bold" size="35.0" />
                                                             </font>
                                                         </Label>
-                                                        <Label layoutX="64.0" layoutY="202.0" text="Tháng này: 10 hóa đơn">
+                                                        <Label layoutX="64.0" layoutY="202.0" text="Tháng này: ">
                                                             <font>
                                                                 <Font name="System Bold" size="25.0" />
                                                             </font>
                                                         </Label>
-                                                        <Label layoutX="64.0" layoutY="153.0" text="Tháng trước: 10 hóa đơn">
+                                                        <Label layoutX="64.0" layoutY="153.0" text="Tháng trước: ">
                                                             <font>
                                                                 <Font name="System Bold" size="25.0" />
                                                             </font>
@@ -259,6 +270,16 @@
                                                                 <Image url="@img/hoaDon.png" />
                                                             </image>
                                                         </ImageView>
+                                          <Label layoutX="240.0" layoutY="153.0" text="0 hóa đơn">
+                                             <font>
+                                                <Font name="System Bold" size="25.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="240.0" layoutY="202.0" text="0 hóa đơn">
+                                             <font>
+                                                <Font name="System Bold" size="25.0" />
+                                             </font>
+                                          </Label>
                                                     </children>
                                                 </Pane>
                                             </children>
@@ -274,6 +295,24 @@
                         <Image url="@img/logo.png" />
                     </image>
                 </ImageView>
+            <Pane id="paneMain" layoutX="1271.0" layoutY="93.0" prefHeight="36.0" prefWidth="337.0">
+               <children>
+                  <Label fx:id="txtNguoiDung" alignment="CENTER" layoutX="24.0" layoutY="8.0" prefHeight="21.0" prefWidth="291.0" text="Người dùng: ">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane id="paneMain" layoutX="1271.0" layoutY="24.0" prefHeight="36.0" prefWidth="337.0">
+               <children>
+                  <Label fx:id="txtNgayThangNam" alignment="CENTER" layoutX="24.0" layoutY="8.0" prefHeight="21.0" prefWidth="291.0" text="N">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
             </children>
         </AnchorPane>
     </children>

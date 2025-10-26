@@ -19,7 +19,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 
-public class ChiTietHoatDong_Ctrl extends Application implements Initializable {
+public class ChiTietHoatDong_Ctrl implements Initializable {
 
     @FXML
     private TextField tfMaHD;
@@ -34,21 +34,6 @@ public class ChiTietHoatDong_Ctrl extends Application implements Initializable {
     private final SimpleDateFormat tsFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
 
     private HoatDong currentHd;
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKHoatDong/ChiTietHoatDong_GUI.fxml"));
-        loader.setController(this); // ensure this instance is used as controller
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-
-        // if loadData was called before start, show data now
-        if (currentHd != null) {
-            loadData(currentHd);
-        }
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -110,7 +95,4 @@ public class ChiTietHoatDong_Ctrl extends Application implements Initializable {
         return s == null ? "" : s;
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 }

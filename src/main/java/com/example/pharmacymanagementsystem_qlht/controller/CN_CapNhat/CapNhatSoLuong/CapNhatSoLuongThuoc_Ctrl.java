@@ -8,6 +8,7 @@ import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -29,6 +30,7 @@ public class CapNhatSoLuongThuoc_Ctrl extends Application {
     public TableColumn<Thuoc_SP_TheoLo, Integer> colSLTon;
     public TableColumn<Thuoc_SP_TheoLo, String> colMaLo;
     public TableColumn<Thuoc_SP_TheoLo, String> colChiTiet;
+    public Button btnLamMoi;
 
     // 2. KHỞI TẠO (INITIALIZE)
     @Override
@@ -41,6 +43,8 @@ public class CapNhatSoLuongThuoc_Ctrl extends Application {
 
     public void initialize() {
         loadTable();
+        tfTimThuoc.setOnAction(e-> timThuoc());
+        btnLamMoi.setOnAction(e-> LamMoi());
     }
     // 3. XỬ LÝ SỰ KIỆN GIAO DIỆN
     public void loadTable() {
@@ -114,5 +118,9 @@ public class CapNhatSoLuongThuoc_Ctrl extends Application {
             e.printStackTrace();
         }
     }
-
+    @FXML
+    private void LamMoi() {
+        tfTimThuoc.clear();
+        loadTable();
+    }
 }

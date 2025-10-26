@@ -11,17 +11,17 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="895.0" prefWidth="1646.0" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhomDuocLy.DanhMucNhomDuocLy_Ctrl">
+<AnchorPane prefHeight="895.0" prefWidth="1646.0" style="-fx-font-size: 14;" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhomDuocLy.DanhMucNhomDuocLy_Ctrl">
     <children>
         <TextField fx:id="txtTimKiem" layoutX="11.0" layoutY="51.0" prefHeight="40.0" prefWidth="772.0" promptText="Tìm theo mã, tên kệ" />
         <Button id="btntim" fx:id="btnTim" layoutX="794.0" layoutY="51.0" minWidth="35.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="77.0" styleClass="btn" text="🔍 Tìm" />
         <Button id="btnthemthuoc" fx:id="btnThem" layoutX="1450.0" layoutY="52.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="176.0" styleClass="btn" text="✚Thêm nhóm dược lý" />
         <TableView id="tablethuoc" fx:id="tbNhomDuocLy" layoutX="12.0" layoutY="102.0" prefHeight="785.0" prefWidth="1624.0">
             <columns>
-                <TableColumn fx:id="cotSTT" prefWidth="90.33333587646484" text="STT" />
-                <TableColumn fx:id="cotMaNDL" prefWidth="260.66666412353516" text="Mã Nhóm Dược Lý" />
+                <TableColumn fx:id="cotSTT" prefWidth="90.33333587646484" style="-fx-alignment: CENTER;" text="STT" />
+                <TableColumn fx:id="cotMaNDL" prefWidth="260.66666412353516" style="-fx-alignment: CENTER;" text="Mã Nhóm Dược Lý" />
                 <TableColumn fx:id="cotTenNDL" minWidth="0.0" prefWidth="1169.0" text="Tên Nhóm Dược Lý" />
-                <TableColumn fx:id="colChiTiet" prefWidth="103.6666259765625" />
+                <TableColumn fx:id="colChiTiet" prefWidth="103.6666259765625" style="-fx-alignment: CENTER;" />
             </columns>
         </TableView>
         <Button id="btnReset" fx:id="btnLamMoi" layoutX="879.0" layoutY="51.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="45.0" />
@@ -37,6 +37,11 @@
                         <Font size="48.0" />
                     </font>
                 </Label>
+            <ImageView fitHeight="34.0" fitWidth="46.0" layoutX="299.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/drugs.png" />
+               </image>
+            </ImageView>
             </children>
         </Pane>
     </children>

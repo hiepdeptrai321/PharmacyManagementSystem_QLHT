@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="286.0" prefWidth="407.0" stylesheets="@../../css/ThemDonViTinh.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatGia.ThietLapDonViTinh_Them_Ctrl">
+<AnchorPane prefHeight="286.0" prefWidth="407.0" style="-fx-font-size: 14;" stylesheets="@../../css/ThemDonViTinh.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatGia.ThietLapDonViTinh_Them_Ctrl">
    <children>
       <Label id="lbtitle" layoutX="21.0" layoutY="8.0" prefHeight="26.0" prefWidth="365.0" text="                       Thiết lập đơn vị tính" textFill="#005711">
          <font>

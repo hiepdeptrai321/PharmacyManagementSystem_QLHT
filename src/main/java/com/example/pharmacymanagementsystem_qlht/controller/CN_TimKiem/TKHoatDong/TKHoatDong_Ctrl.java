@@ -2,11 +2,14 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoatDong;
 
 import com.example.pharmacymanagementsystem_qlht.dao.HoatDong_Dao;
+import com.example.pharmacymanagementsystem_qlht.model.HoaDon;
 import com.example.pharmacymanagementsystem_qlht.model.HoatDong;
 import com.example.pharmacymanagementsystem_qlht.model.NhanVien;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -44,8 +47,11 @@ public class TKHoatDong_Ctrl extends javafx.application.Application {
     public void initialize() {
         configureColumns();
         configureFilters();
-        loadTable();
         if (btnTim != null) btnTim.setOnAction(e -> applySearch());
+        tfTim.setOnAction(e-> applySearch());
+        Platform.runLater(()-> {
+            loadTable();
+        });
     }
 
     private void configureFilters() {
@@ -120,6 +126,19 @@ public class TKHoatDong_Ctrl extends javafx.application.Application {
             String s = nv == null ? "" : nv.getTenNV();
             return new javafx.beans.property.SimpleStringProperty(s);
         });
+        colNguoi.setCellFactory(col -> new TableCell<HoatDong, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
 
         colChiTiet.setCellFactory(col -> new TableCell<HoatDong, String>() {
             private final Button btn = new Button("Chi tiết");
@@ -128,6 +147,7 @@ public class TKHoatDong_Ctrl extends javafx.application.Application {
                     HoatDong hd = getTableView().getItems().get(getIndex());
                     showDetails(hd);
                 });
+                btn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white;");
                 btn.getStyleClass().add("btn");
             }
             @Override
@@ -202,9 +222,6 @@ public class TKHoatDong_Ctrl extends javafx.application.Application {
         }
     }
 
-    private String nullSafe(String s) {
-        return s == null ? "" : s;
-    }
 
     @Override
     public void start(Stage stage) throws Exception {

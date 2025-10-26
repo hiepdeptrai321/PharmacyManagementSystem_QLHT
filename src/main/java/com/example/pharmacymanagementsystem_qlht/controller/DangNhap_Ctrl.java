@@ -31,7 +31,7 @@ public class DangNhap_Ctrl extends Application {
         scene.getStylesheets().add(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/css/DangNhap.css").toExternalForm());
         stage.setScene(scene);
         stage.setResizable(false);
-        stage.show( );
+        stage.show();
     }
 
     public void initialize() {
@@ -94,7 +94,7 @@ public class DangNhap_Ctrl extends Application {
             user = nv;
             String role = nv.getVaiTro();
             try {
-                Stage newStage = new Stage();
+                Stage stage = new Stage();
                 Parent root;
                 if ("Quản lý".equalsIgnoreCase(role)) {
                     root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CuaSoChinh_QuanLy_GUI.fxml"));
@@ -102,10 +102,9 @@ public class DangNhap_Ctrl extends Application {
                     root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CuaSoChinh_NhanVien_GUI.fxml"));
                 }
                 Scene scene = new Scene(root);
-                newStage.setScene(scene);
-                newStage.show();
-                Stage currentStage = (Stage) btnDangNhap.getScene().getWindow();
-                currentStage.close();
+                stage.setScene(scene);
+                stage.show();
+                this.btnDangNhap.getScene().getWindow().hide();
             } catch (Exception e) {
                 e.printStackTrace();
             }

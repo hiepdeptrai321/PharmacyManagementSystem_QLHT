@@ -7,7 +7,6 @@ import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKNhaCung
 import com.example.pharmacymanagementsystem_qlht.dao.ChiTietDonViTinh_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.ChiTietDonViTinh;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
-import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

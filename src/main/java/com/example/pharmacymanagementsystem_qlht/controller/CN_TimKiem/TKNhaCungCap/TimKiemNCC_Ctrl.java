@@ -4,6 +4,7 @@ import com.example.pharmacymanagementsystem_qlht.model.HoaDon;
 import com.example.pharmacymanagementsystem_qlht.model.NhaCungCap;
 import com.example.pharmacymanagementsystem_qlht.dao.NhaCungCap_Dao;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -81,10 +82,11 @@ public class TimKiemNCC_Ctrl extends Application {
                 setGraphic(empty ? null : btn);
             }
         });
-        loadTable();
         btnTim.setOnAction(e -> TimKiem());
         btnLamMoi.setOnAction(e -> LamMoi());
-
+        Platform.runLater(()->{
+            loadTable();
+        });
     }
 
     @Override

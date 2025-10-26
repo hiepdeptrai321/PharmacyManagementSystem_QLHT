@@ -30,7 +30,7 @@ public class CapNhatSoLuongThuoc_Ctrl extends Application {
     public TableColumn<Thuoc_SP_TheoLo, Integer> colSLTon;
     public TableColumn<Thuoc_SP_TheoLo, String> colMaLo;
     public TableColumn<Thuoc_SP_TheoLo, String> colChiTiet;
-    private Button btnLamMoi;
+    public Button btnLamMoi;
 
     // 2. KHỞI TẠO (INITIALIZE)
     @Override

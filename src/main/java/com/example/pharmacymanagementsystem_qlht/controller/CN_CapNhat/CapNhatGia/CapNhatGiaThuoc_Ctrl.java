@@ -33,7 +33,7 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
     public TableColumn<Thuoc_SanPham,String> colGiaNhap;
     public TableColumn<Thuoc_SanPham,String> colGiaBan;
     public TableColumn<Thuoc_SanPham,String> colChiTiet;
-   public Button btnReset;
+    public Button btnReset;
 
     // 2. KHỞI TẠO (INITIALIZE)
 

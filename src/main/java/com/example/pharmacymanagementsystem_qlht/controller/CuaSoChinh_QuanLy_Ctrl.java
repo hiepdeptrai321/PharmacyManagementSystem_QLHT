@@ -272,7 +272,7 @@ public class CuaSoChinh_QuanLy_Ctrl{
 
     //  Danh mục hoạt động
     public void timKiemHoatDong(ActionEvent actionEvent) {
-        viTri=2;
+        viTri=1;
         selectMenu(viTri);
         pnlChung.getChildren().clear();
         try {

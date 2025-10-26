@@ -5,6 +5,7 @@ import com.example.pharmacymanagementsystem_qlht.dao.PhieuDatHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.NhaCungCap;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuDatHang;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -92,7 +93,9 @@ public class TKPhieuDatHang_Ctrl extends Application {
         btnHuyBo.setOnAction(e -> lamMoi());
         // Sự kiện lọc nhanh
         cbLoc.setOnAction(e -> boLocNhanh());
-        loadTable();
+        Platform.runLater(()->{
+            loadTable();
+        });
     }
 
     public void loadTable() {

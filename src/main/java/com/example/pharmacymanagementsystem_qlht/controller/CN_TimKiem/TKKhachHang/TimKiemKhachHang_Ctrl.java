@@ -5,6 +5,7 @@ import com.example.pharmacymanagementsystem_qlht.model.HoaDon;
 import com.example.pharmacymanagementsystem_qlht.model.KhachHang;
 import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -83,13 +84,14 @@ public class TimKiemKhachHang_Ctrl extends Application {
 
         );
         cboTimKiem.setValue("Theo mã, tên khách hàng");
-        loadTable();
         btnLamMoi.setOnAction(e -> LamMoi());
         btnTim.setOnAction(e -> TimKiem());
         tbKhachHang.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
             chonKhachHang(newSel);
         });
-
+        Platform.runLater(()-> {
+            loadTable();
+        });
     }
     public void chonKhachHang(KhachHang kh) {
         if (kh == null) return;

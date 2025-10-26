@@ -5,6 +5,7 @@ import com.example.pharmacymanagementsystem_qlht.dao.HoatDong_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.HoaDon;
 import com.example.pharmacymanagementsystem_qlht.model.HoatDong;
 import com.example.pharmacymanagementsystem_qlht.model.NhanVien;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -46,9 +47,11 @@ public class TKHoatDong_Ctrl extends javafx.application.Application {
     public void initialize() {
         configureColumns();
         configureFilters();
-        loadTable();
         if (btnTim != null) btnTim.setOnAction(e -> applySearch());
         tfTim.setOnAction(e-> applySearch());
+        Platform.runLater(()-> {
+            loadTable();
+        });
     }
 
     private void configureFilters() {

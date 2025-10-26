@@ -24,7 +24,7 @@
             </ImageView>
          </children>
       </Pane>
-      <Button id="btnthemthuoc" fx:id="btnThemThuoc" layoutX="1397.0" layoutY="46.0" mnemonicParsing="false" onAction="#themthuoc" prefHeight="30.0" prefWidth="144.0" text="✚Thêm thuốc" AnchorPane.topAnchor="46.0" />
+      <Button id="btnthemthuoc" fx:id="btnThemThuoc" layoutX="1440.0" layoutY="46.285714285714285" mnemonicParsing="false" onAction="#themthuoc" prefHeight="30.0" prefWidth="144.0" text="✚Thêm thuốc" AnchorPane.topAnchor="46.285714285714285" />
        <TableView fx:id="tbl_Thuoc" layoutX="12.0" layoutY="95.0" prefHeight="786.0" prefWidth="1618.0">
            <columns>
             <TableColumn fx:id="colSTT" prefWidth="54.28570747375488" style="-fx-alignment: CENTER;" text="STT" />
@@ -38,8 +38,7 @@
                <TableColumn fx:id="colChiTiet" prefWidth="82.0" style="-fx-alignment: CENTER;" text="Chi tiết" />
            </columns>
        </TableView>
-      <Button id="btnnhapxuat" fx:id="btnImport" layoutX="1550.0" layoutY="46.0" minWidth="46.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="45.0" text="📥" AnchorPane.topAnchor="46.0" />
-      <Button id="btnnhapxuat" fx:id="btnExport" layoutX="1594.0" layoutY="46.0" minWidth="27.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" text="📤" AnchorPane.topAnchor="46.0" />
+      <Button id="btnnhapxuat" layoutX="1594.0" layoutY="46.285714285714285" minWidth="46.0" mnemonicParsing="false" onAction="#btnThemThuocByExcel" prefHeight="30.0" prefWidth="45.0" text="📥" AnchorPane.topAnchor="46.285714285714285" />
       <Button id="btnReset" fx:id="btnLamMoi" layoutX="452.0" layoutY="46.0" minHeight="16.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timThuoc" prefHeight="40.0" prefWidth="45.0" stylesheets="@../../css/QuanLyThuoc.css">
          <graphic>
             <ImageView fitHeight="32.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">

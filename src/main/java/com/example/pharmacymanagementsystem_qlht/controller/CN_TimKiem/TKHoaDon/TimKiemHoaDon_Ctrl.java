@@ -6,6 +6,7 @@ import com.example.pharmacymanagementsystem_qlht.dao.PhieuTraHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.HoaDon;
 import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -100,7 +101,9 @@ public class TimKiemHoaDon_Ctrl extends Application {
             });
             return row;
         });
-        loadTable();
+        Platform.runLater(()->{
+            loadTable();
+        });
     }
     @Override
     public void start(Stage stage) throws Exception {

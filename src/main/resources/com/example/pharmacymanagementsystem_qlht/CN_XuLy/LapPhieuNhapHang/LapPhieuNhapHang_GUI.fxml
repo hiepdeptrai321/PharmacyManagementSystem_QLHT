@@ -51,7 +51,7 @@
                   </TableView>
                </children>
             </Pane>
-            <Pane prefHeight="171.0" prefWidth="1324.0">
+            <Pane prefHeight="93.0" prefWidth="1324.0">
                <children>
                   <ComboBox fx:id="cbxNCC" editable="true" layoutX="29.0" layoutY="42.0" prefHeight="30.0" prefWidth="257.0" promptText="Chọn nhà cung cấp" />
                   <Pane layoutX="286.0" layoutY="42.0" onMouseClicked="#btnThemNCCClick" prefHeight="30.0" prefWidth="30.0" styleClass="btnThem">

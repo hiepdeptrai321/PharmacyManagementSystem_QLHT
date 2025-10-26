@@ -553,6 +553,14 @@ public class ThemKhuyenMai_Ctrl {
                     ct.setKhuyenMai(km);
                     ctDao.insert(ct);
                 }
+                if ("LKM001".equalsIgnoreCase(km.getLoaiKM().getMaLoai())) {
+                    Thuoc_SP_TangKem_Dao giftDao = new Thuoc_SP_TangKem_Dao();
+                    for (Thuoc_SP_TangKem g : giftItems) {
+                        g.setKhuyenmai(km);
+                        giftDao.insert(g);
+                    }
+                }
+
 
                 showAlert(Alert.AlertType.INFORMATION, owner, "Thành công", "Thêm khuyến mãi thành công.");
                 btnHuyClick();

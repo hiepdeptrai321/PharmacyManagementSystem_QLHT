@@ -16,7 +16,7 @@ public class PhieuDatHang_Dao implements DaoInterface<PhieuDatHang> {
 
     @Override
     public boolean insert(PhieuDatHang e) {
-        return ConnectDB.update(INSERT_SQL, e.getMaPDat(), e.getNgayLap(), e.getSoTienCoc(), e.getGhiChu(), e.getKhachHang().getMaKH())>0;
+        return ConnectDB.update(INSERT_SQL, e.getMaPDat(), e.getNgayLap(), e.getSoTienCoc(), e.getGhiChu(), e.getKhachHang().getMaKH(), e.getNhanVien().getMaNV())>0;
     }
 
     @Override
@@ -60,5 +60,25 @@ public class PhieuDatHang_Dao implements DaoInterface<PhieuDatHang> {
     @Override
     public List<PhieuDatHang> selectAll() {
         return selectBySql(SELECT_ALL_SQL);
+    }
+
+    public String generateNewMaPDat() {
+        String prefix = "PDH";
+        String sql = "SELECT TOP 1 MaPDat FROM PhieuDatHang ORDER BY MaPDat DESC";
+        try {
+            ResultSet rs = ConnectDB.query(sql);
+            if (rs.next()) {
+                String lastMaPDat = rs.getString("MaPDat");
+                int lastNumber = Integer.parseInt(lastMaPDat.substring(prefix.length()));
+                String newMaPDat = String.format("%s%03d", prefix, lastNumber + 1);
+                rs.getStatement().close();
+                return newMaPDat;
+            } else {
+                rs.getStatement().close();
+                return String.format("%s%03d", prefix, 1);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

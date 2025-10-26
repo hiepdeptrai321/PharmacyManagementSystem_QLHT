@@ -21,6 +21,21 @@ public class ChiTietHoaDon_Dao implements  DaoInterface<ChiTietHoaDon> {
     public boolean insert(ChiTietHoaDon e) {
         return ConnectDB.update(INSERT_SQL, e.getHoaDon().getMaHD(), e.getLoHang().getMaLH(), e.getSoLuong(), e.getDonGia(), e.getGiamGia())>0;
     }
+//    public boolean insert(ChiTietHoaDon cthd) {
+//        String sql = "insert into ChiTietHoaDon(MaHD, MaLH, SoLuong, DonGia, GiamGia) values (?, ?, ?, ?, ?)";
+//        try (Connection con = ConnectDB.getConnection();
+//             PreparedStatement ps = con.prepareStatement(sql)) {
+//            ps.setString(1, cthd.getHoaDon().getMaHD());
+//            ps.setString(2, cthd.getLoHang().getMaLH());
+//            ps.setInt(3, cthd.getSoLuong());
+//            ps.setDouble(4, cthd.getDonGia());
+//            ps.setDouble(5, cthd.getGiamGia());
+//            return ps.executeUpdate() > 0;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
 
     @Override
     public boolean update(ChiTietHoaDon e) {
@@ -64,7 +79,6 @@ public class ChiTietHoaDon_Dao implements  DaoInterface<ChiTietHoaDon> {
                 }
                 cthd.setHoaDon(hoaDon);
 
-                // Populate LoHang fully using Thuoc_SP_TheoLo_Dao if present
                 String maLH = rs.getString("MaLH");
                 Thuoc_SP_TheoLo loHang = new Thuoc_SP_TheoLo();
                 if (maLH != null) {

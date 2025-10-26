@@ -23,11 +23,11 @@
             <columns>
                 <TableColumn fx:id="colSTT" prefWidth="60.0" style="-fx-alignment: CENTER;" text="STT" />
                 <TableColumn fx:id="colMaThuoc" prefWidth="190.0" style="-fx-alignment: CENTER;" text="Mã thuốc" />
-                <TableColumn fx:id="colTenThuoc" prefWidth="498.0" style="-fx-alignment: LEFT-CENTER;" text="Tên thuốc" />
+                <TableColumn fx:id="colTenThuoc" prefWidth="498.0" style="-fx-alignment: CENTER_LEFT;" text="Tên thuốc" />
                 <TableColumn fx:id="colDVT" minWidth="0.0" prefWidth="217.0" style="-fx-alignment: CENTER;" text="Đơn vị tính (cơ bản)" />
                 <TableColumn fx:id="colGiaNhap" minWidth="0.0" prefWidth="304.0" style="-fx-alignment: CENTER;" text="Giá nhập (VNĐ)" />
-                <TableColumn fx:id="colGiaBan" minWidth="0.0" prefWidth="285.0" style="-fx-alignment: CENTER;" text="Giá bán (VNĐ)" />
-                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="67.0" style="-fx-alignment: CENTER;" />
+                <TableColumn fx:id="colGiaBan" minWidth="0.0" prefWidth="254.0" style="-fx-alignment: CENTER;" text="Giá bán (VNĐ)" />
+                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="98.0" style="-fx-alignment: CENTER;" />
             </columns>
         </TableView>
       <Button id="btnReset" fx:id="btnReset" layoutX="906.0" layoutY="47.0" mnemonicParsing="false" stylesheets="@../../css/QuanLyThuoc.css">

@@ -34,19 +34,19 @@
                <children>
                   <TableView fx:id="tblNhapThuoc" layoutX="28.0" layoutY="21.0" prefHeight="728.0" prefWidth="1283.0" styleClass="main-table" stylesheets="@../../css/LapHoaDon.css">
                     <columns>
-                      <TableColumn fx:id="colSTT" prefWidth="44.33333206176758" text="STT" />
-                      <TableColumn fx:id="colMaThuoc" prefWidth="128.66666412353516" text="Mã thuốc" />
-                        <TableColumn fx:id="colTenThuoc" prefWidth="222.28565979003906" text="Tên thuốc" />
-                        <TableColumn fx:id="colNSX" prefWidth="114.28579711914062" text="NSX" />
-                        <TableColumn fx:id="colHanSuDung" minWidth="0.666656494140625" prefWidth="105.142822265625" text="HSD" />
-                        <TableColumn fx:id="colLoHang" minWidth="0.0" prefWidth="107.4285888671875" text="Lô Hàng" />
-                        <TableColumn fx:id="colDonViNhap" prefWidth="75.99993896484375" text="Đơn vị nhập" />
-                        <TableColumn fx:id="colSoLuong" prefWidth="59.4285888671875" text="Số lượng" />
-                        <TableColumn fx:id="colDonGiaNhap" prefWidth="114.28582763671875" text="Đơn giá nhập" />
-                        <TableColumn fx:id="colChietKhau" prefWidth="70.2857666015625" text="Chiết khấu" />
-                        <TableColumn fx:id="colThue" prefWidth="39.4287109375" text="Thuế" />
-                        <TableColumn fx:id="colThanhTien" prefWidth="117.714111328125" text="Thành tiền" />
-                        <TableColumn fx:id="colXoa" prefWidth="84.0" />
+                      <TableColumn fx:id="colSTT" prefWidth="44.33333206176758" style="-fx-alignment: CENTER;" text="STT" />
+                      <TableColumn fx:id="colMaThuoc" prefWidth="128.66666412353516" style="-fx-alignment: CENTER;" text="Mã thuốc" />
+                        <TableColumn fx:id="colTenThuoc" prefWidth="222.28565979003906" style="-fx-alignment: CENTER_LEFT;" text="Tên thuốc" />
+                        <TableColumn fx:id="colNSX" prefWidth="114.28579711914062" style="-fx-alignment: CENTER_LEFT;" text="NSX" />
+                        <TableColumn fx:id="colHanSuDung" minWidth="0.666656494140625" prefWidth="105.142822265625" style="-fx-alignment: CENTER;" text="HSD" />
+                        <TableColumn fx:id="colLoHang" minWidth="0.0" prefWidth="107.4285888671875" style="-fx-alignment: CENTER;" text="Lô Hàng" />
+                        <TableColumn fx:id="colDonViNhap" prefWidth="75.99993896484375" style="-fx-alignment: CENTER_LEFT;" text="Đơn vị nhập" />
+                        <TableColumn fx:id="colSoLuong" prefWidth="59.4285888671875" style="-fx-alignment: CENTER;" text="Số lượng" />
+                        <TableColumn fx:id="colDonGiaNhap" prefWidth="114.28582763671875" style="-fx-alignment: CENTER;" text="Đơn giá nhập" />
+                        <TableColumn fx:id="colChietKhau" prefWidth="70.2857666015625" style="-fx-alignment: CENTER;" text="Chiết khấu" />
+                        <TableColumn fx:id="colThue" prefWidth="39.4287109375" style="-fx-alignment: CENTER;" text="Thuế" />
+                        <TableColumn fx:id="colThanhTien" prefWidth="117.714111328125" style="-fx-alignment: CENTER;" text="Thành tiền" />
+                        <TableColumn fx:id="colXoa" prefWidth="84.0" style="-fx-alignment: CENTER;" />
                     </columns>
                   </TableView>
                </children>

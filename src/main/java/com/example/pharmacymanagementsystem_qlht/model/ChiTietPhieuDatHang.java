@@ -8,10 +8,11 @@ public class ChiTietPhieuDatHang {
     private int soLuong;
     private double donGia;
     private double giamGia;
+    private String dvt;
 
     public ChiTietPhieuDatHang() {
     }
-    public ChiTietPhieuDatHang(PhieuDatHang phieuDatHang, Thuoc_SanPham thuoc, int soLuong, double donGia, double giamGia) {
+    public ChiTietPhieuDatHang(PhieuDatHang phieuDatHang, Thuoc_SanPham thuoc, int soLuong, double donGia, double giamGia, String dvt) {
         this.phieuDatHang = phieuDatHang;
         this.thuoc = thuoc;
         this.soLuong = soLuong;
@@ -57,6 +58,14 @@ public class ChiTietPhieuDatHang {
 
     public void setGiamGia(double giamGia) {
         this.giamGia = giamGia;
+    }
+
+    public String getDvt() {
+        return dvt;
+    }
+
+    public void setDvt(String dvt) {
+        this.dvt = dvt;
     }
 
     @Override

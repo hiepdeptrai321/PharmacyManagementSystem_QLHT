@@ -46,6 +46,7 @@ public class ThietLapDonViTinh_SuaXoa_Ctrl {
     }
 
     public void loadCbDVT(){
+        cbDVT.getItems().clear();
         DonViTinh_Dao donViTinh_dao = new DonViTinh_Dao();
         List<DonViTinh> list = donViTinh_dao.selectAll();
         for(DonViTinh donViTinh : list){
@@ -54,6 +55,19 @@ public class ThietLapDonViTinh_SuaXoa_Ctrl {
     }
 
     public void btnThemDVTClick(MouseEvent mouseEvent) {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatGia/ThemDVT.fxml"));
+            Parent root = loader.load();
+            ThemDVT_Ctrl ctrl = loader.getController();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.showAndWait();
+            loadCbDVT();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public void btnHuyClick(MouseEvent mouseEvent) {
         Stage stage = (Stage) btnHuy.getScene().getWindow();

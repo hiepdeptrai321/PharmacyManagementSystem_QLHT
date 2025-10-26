@@ -15,6 +15,7 @@ public class DonViTinh_Dao implements DaoInterface<DonViTinh>{
     private final String SELECT_BY_ID_SQL = "SELECT MaDVT, TenDonViTinh, KiHieu FROM DonViTinh WHERE MaDVT = ?";
     private final String SELECT_ALL_SQL = "SELECT MaDVT, TenDonViTinh, KiHieu FROM DonViTinh";
     private final String SELECT_BY_TEN_SQL = "SELECT MaDVT, TenDonViTinh, KiHieu FROM DonViTinh WHERE TenDonViTinh = ?";
+    private final String SELECT_TOP1_MANCC = "SELECT TOP 1 MaDVT FROM DonViTinh ORDER BY MaDVT DESC";
 
     @Override
     public boolean insert(DonViTinh e) {
@@ -62,5 +63,20 @@ public class DonViTinh_Dao implements DaoInterface<DonViTinh>{
     }
     public DonViTinh selectByTenDVT(String tenDVT) {
         return selectBySql(SELECT_BY_TEN_SQL, tenDVT).get(0);
+    }
+
+    public String generatekeyDonViTinh() {
+        String key = "DVT001";
+        try {
+            String lastKey = ConnectDB.queryTaoMa(SELECT_TOP1_MANCC);
+            if (lastKey != null && lastKey.startsWith("DVT")) {
+                int numericPart = Integer.parseInt(lastKey.substring(3));
+                numericPart++;
+                key = String.format("DVT%02d", numericPart);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return key;
     }
 }

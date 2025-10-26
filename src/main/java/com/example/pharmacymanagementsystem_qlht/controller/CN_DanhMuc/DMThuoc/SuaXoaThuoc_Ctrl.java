@@ -136,7 +136,9 @@ public class SuaXoaThuoc_Ctrl {
         });
 
         cbxLoaiHang.getItems().addAll(new LoaiHang_Dao().getAllTenLH());
+        cbxLoaiHang.getItems().addFirst("Chọn loại hàng");
         cbxViTri.getItems().addAll(new KeHang_Dao().getAllTenKe());
+        cbxViTri.getItems().addFirst("Chọn vị trí");
         cbxNhomDuocLy.getItems().addAll(new NhomDuocLy_Dao().getAllTenNhomDuocLy());
         cbxNhomDuocLy.getItems().addFirst("Chọn nhóm dược lý");
         loadDuLieuThuoc(thuoc);
@@ -145,8 +147,8 @@ public class SuaXoaThuoc_Ctrl {
     public void loadDuLieuThuoc(Thuoc_SanPham thuoc) {
         txtMaThuoc.setText(thuoc.getMaThuoc());
         txtTenThuoc.setText(thuoc.getTenThuoc());
-        cbxLoaiHang.setValue(thuoc.getLoaiHang().getTenLoaiHang());
-        cbxViTri.setValue(thuoc.getVitri().getTenKe());
+        cbxLoaiHang.setValue(thuoc.getLoaiHang()!=null? thuoc.getLoaiHang().getTenLoaiHang() : cbxLoaiHang.getItems().get(0));
+        cbxViTri.setValue(thuoc.getVitri()!=null? thuoc.getVitri().getTenKe() : cbxViTri.getItems().get(0));
         txtHamLuong.setText(String.valueOf(thuoc.getHamLuong()));
         txtHangSanXuat.setText(thuoc.getHangSX());
         txtDonViHamLuong.setText(thuoc.getDonViHamLuong());
@@ -269,8 +271,16 @@ public class SuaXoaThuoc_Ctrl {
                 Thuoc_SanPham thuoc = new Thuoc_SanPham();
                 thuoc.setMaThuoc(txtMaThuoc.getText());
                 thuoc.setTenThuoc(txtTenThuoc.getText().trim());
-                thuoc.setLoaiHang(new LoaiHang_Dao().selectByTenLH(cbxLoaiHang.getSelectionModel().getSelectedItem().toString()));
-                thuoc.setVitri(new KeHang_Dao().selectByTenKe(cbxViTri.getSelectionModel().getSelectedItem().toString()));
+                if(cbxLoaiHang.getSelectionModel().getSelectedIndex() == 0){
+                    thuoc.setLoaiHang(null);
+                }else{
+                    thuoc.setLoaiHang(new LoaiHang_Dao().selectByTenLH(cbxLoaiHang.getSelectionModel().getSelectedItem().toString()));
+                }
+                if(cbxViTri.getSelectionModel().getSelectedIndex() == 0){
+                    thuoc.setVitri(null);
+                }else{
+                    thuoc.setVitri(new KeHang_Dao().selectByTenKe(cbxViTri.getSelectionModel().getSelectedItem().toString()));
+                }
                 thuoc.setHamLuong(Float.parseFloat(txtHamLuong.getText().trim()));
                 thuoc.setHangSX(txtHangSanXuat.getText().trim());
                 thuoc.setDonViHamLuong(txtDonViHamLuong.getText().trim());

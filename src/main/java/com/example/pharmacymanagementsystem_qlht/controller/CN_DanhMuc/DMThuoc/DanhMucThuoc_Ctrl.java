@@ -18,14 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.File;
 import java.util.List;
 
 public class DanhMucThuoc_Ctrl extends Application {
@@ -72,7 +65,6 @@ public class DanhMucThuoc_Ctrl extends Application {
     public void loadTable() {
         list = thuocDao.selectAll();
         ObservableList<Thuoc_SanPham> data = FXCollections.observableArrayList(list);
-
         colSTT.setCellValueFactory(cellData ->
                 new SimpleStringProperty(String.valueOf(tbl_Thuoc.getItems().indexOf(cellData.getValue()) + 1))
         );
@@ -120,7 +112,7 @@ public class DanhMucThuoc_Ctrl extends Application {
                 }
             }
         });
-        colLoaiHang.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLoaiHang().getTenLoaiHang()));
+        colLoaiHang.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLoaiHang()!=null?cellData.getValue().getLoaiHang().getTenLoaiHang():""));
         colLoaiHang.setCellFactory(col -> new TableCell<Thuoc_SanPham, String>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -134,7 +126,7 @@ public class DanhMucThuoc_Ctrl extends Application {
                 }
             }
         });
-        colViTri.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVitri().getTenKe()));
+        colViTri.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVitri()!=null?cellData.getValue().getVitri().getTenKe():""));
         colChiTiet.setCellFactory(col -> new TableCell<Thuoc_SanPham, String>() {
             private final Button btn = new Button("Chi tiết");
             {
@@ -204,6 +196,7 @@ public class DanhMucThuoc_Ctrl extends Application {
     public void refestTable(){
         loadTable();
     }
+
     @FXML
     private void LamMoi() {
         tfTimThuoc.clear();
@@ -216,6 +209,8 @@ public class DanhMucThuoc_Ctrl extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/ThemThuocBangFileExcel_GUI.fxml"));
             Parent root = loader.load();
             Stage dialog = new Stage();
+            ThemThuocBangFileExcel ctrl = loader.getController();
+            ctrl.setDanhMucThuocCtrl(this);
             dialog.initOwner(tbl_Thuoc.getScene().getWindow());
             dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
             dialog.setScene(new Scene(root));

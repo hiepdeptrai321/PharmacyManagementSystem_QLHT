@@ -39,6 +39,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,13 +47,17 @@ import java.util.regex.Pattern;
 public class LapHoaDon_Ctrl extends Application {
 
     private final ObservableList<ChiTietHoaDon> dsChiTietHD = FXCollections.observableArrayList();
-    private final IdentityHashMap<ChiTietHoaDon, ChiTietDonViTinh> dvtTheoDong = new java.util.IdentityHashMap<>();
-    private final AtomicLong demTruyVan = new java.util.concurrent.atomic.AtomicLong(0);
+    private final IdentityHashMap<ChiTietHoaDon, ChiTietDonViTinh> dvtTheoDong = new IdentityHashMap<>();
+    private final AtomicLong demTruyVan = new AtomicLong(0);
+
     private volatile long idTruyVanMoiNhat = 0;
     private volatile Task<List<String>> goiYHienTai;
     private final DichVuKhuyenMai dichVuKM = new DichVuKhuyenMai();
     private final NumberFormat VND = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
     private final Thuoc_SP_TheoLo_Dao loDao = new Thuoc_SP_TheoLo_Dao();
+    private final IdentityHashMap<ChiTietHoaDon, ApDungKhuyenMai> kmTheoDong = new IdentityHashMap<>();
+    private final Thuoc_SanPham_Dao spDao = new Thuoc_SanPham_Dao();
+    private final ConcurrentHashMap<String, String> tenSpCache = new ConcurrentHashMap<>();
 
     @FXML private Button btnThemKH;
     @FXML private DatePicker dpNgayKeDon;
@@ -69,6 +74,7 @@ public class LapHoaDon_Ctrl extends Application {
     @FXML private TableColumn <ChiTietHoaDon, String> colDonGia;
     @FXML private TableColumn <ChiTietHoaDon, String> colChietKhau;
     @FXML private TableColumn <ChiTietHoaDon, String> colThanhTien;
+    @FXML private TableColumn <ChiTietHoaDon, String> colBo;
     @FXML private Label lblTongTien;
     @FXML private Label lblGiamGia;
     @FXML private Label lblVAT;
@@ -77,6 +83,7 @@ public class LapHoaDon_Ctrl extends Application {
     @FXML private Label lblTienThua;
     @FXML private Button btnThanhToan;
     @FXML private Label lblGiamTheoHD;
+    private Stage qrStage;
 
     // popup suggestions
     private final ContextMenu goiYMenu = new ContextMenu();
@@ -112,23 +119,59 @@ public class LapHoaDon_Ctrl extends Application {
     private void xuLyPhuongThucTT() {
         if (cbPhuongThucTT != null) {
             cbPhuongThucTT.getItems().clear();
-            cbPhuongThucTT.getItems().addAll("Phương thức thanh toán", "Tiền mặt", "Chuyển khoản");
-            cbPhuongThucTT.setValue("Phương thức thanh toán");
-            themFieldTienMat("Phương thức thanh toán");
-            cbPhuongThucTT.setOnShowing(event -> {
-                cbPhuongThucTT.getItems().remove("Phương thức thanh toán");
-            });
-            cbPhuongThucTT.setOnHiding(event -> {
-                if (!cbPhuongThucTT.getItems().contains("Phương thức thanh toán")) {
-                    cbPhuongThucTT.getItems().add(0, "Phương thức thanh toán");
-                }
-            });
+            cbPhuongThucTT.getItems().addAll("Tiền mặt", "Chuyển khoản");
+            cbPhuongThucTT.setValue("Tiền mặt");
+            themFieldTienMat("Tiền mặt");
+            anQR();
+
             cbPhuongThucTT.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+                if (newVal == null || newVal.equals(oldVal)) {
+                    return;
+                }
+
                 themFieldTienMat(newVal);
+
                 if ("Chuyển khoản".equals(newVal)) {
                     hienThiQR();
+                } else {
+                    anQR();
                 }
             });
+        }
+    }
+    private void themFieldTienMat(String value) {
+        if (paneTienMat != null) {
+            boolean visible = "Tiền mặt".equals(value);
+            paneTienMat.setVisible(visible);
+            paneTienMat.setManaged(visible);
+        }
+    }
+    private void hienThiQR() {
+        if (qrStage != null && qrStage.isShowing()) {
+            qrStage.toFront();
+            return;
+        }
+
+        qrStage = new Stage();
+
+        VBox vbox = new VBox(10);
+        vbox.setStyle("-fx-padding: 20; -fx-alignment: center;");
+        Label label = new Label("Quét mã QR dưới đây để thanh toán");
+        InputStream is = getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/qr_mb.jpg");
+        Image qrImg = (is != null) ? new Image(is) : new Image(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/img/qr_mb.jpg").toExternalForm());
+        ImageView qrImage = new ImageView(qrImg);
+        qrImage.setFitWidth(500);
+        qrImage.setPreserveRatio(true);
+        vbox.getChildren().addAll(label, qrImage);
+        Scene scene = new Scene(vbox, 600, 600);
+        qrStage.setScene(scene);
+        qrStage.setTitle("Thanh Toán Chuyển Khoản");
+        qrStage.show();
+    }
+
+    private void anQR() {
+        if (qrStage != null && qrStage.isShowing()) {
+            qrStage.close();
         }
     }
     private void xuLyTimThuoc() {
@@ -549,6 +592,51 @@ public class LapHoaDon_Ctrl extends Application {
             });
             canPhai(colThanhTien);
         }
+        if (colBo != null) {
+            // Provide a dummy value so the column renders
+            colBo.setCellValueFactory(data -> new ReadOnlyStringWrapper(""));
+
+            colBo.setCellFactory(tc -> new TableCell<>() {
+                private final Button btn = new Button("↑"); // up arrow
+                {
+                    btn.setTooltip(new Tooltip("Bỏ dòng này"));
+                    btn.setFocusTraversable(false);
+                    btn.setOnAction(e -> {
+                        int index = getIndex();
+                        if (index < 0 || index >= getTableView().getItems().size()) return;
+
+                        ChiTietHoaDon item = getTableView().getItems().get(index);
+                        if (item == null) return;
+
+                        // Clean up per-row mappings to avoid leaks
+                        dvtTheoDong.remove(item);
+                        kmTheoDong.remove(item);
+
+                        // Remove the row; STT will auto-shift (index-based STT)
+                        dsChiTietHD.remove(item);
+
+                        // Refresh UI and totals
+                        if (tblChiTietHD != null) tblChiTietHD.refresh();
+                        capNhatTongTien(); // or tinhTongTien();
+                    });
+                    // Optional styling
+                    btn.setMaxWidth(Double.MAX_VALUE);
+                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                    setStyle("-fx-alignment: center;");
+                }
+                @Override
+                protected void updateItem(String val, boolean empty) {
+                    super.updateItem(val, empty);
+                    setText(null);
+                    setGraphic(empty ? null : btn);
+                }
+            });
+
+            colBo.setSortable(false);
+            colBo.setReorderable(false);
+            colBo.setEditable(false);
+            colBo.setStyle("-fx-alignment: CENTER; -fx-padding: 0 4 0 4;");
+        }
 
         dsChiTietHD.addListener((ListChangeListener<ChiTietHoaDon>) c -> tblChiTietHD.refresh());
     }
@@ -568,8 +656,30 @@ public class LapHoaDon_Ctrl extends Application {
         if (row == null || row.getLoHang() == null) return "";
         var sp = row.getLoHang().getThuoc();
         String ten = (sp != null && sp.getTenThuoc() != null) ? sp.getTenThuoc() : "";
-        String donVi = layTenDonVi(row);
-        return ten;
+        return ten + giftSuffixForRow(row);
+    }
+    private String giftSuffixForRow(ChiTietHoaDon row) {
+        com.example.pharmacymanagementsystem_qlht.service.ApDungKhuyenMai ap = kmTheoDong.get(row);
+        if (ap == null) {
+            if (row == null || row.getLoHang() == null || row.getLoHang().getThuoc() == null) return "";
+            String maThuoc = row.getLoHang().getThuoc().getMaThuoc();
+            ap = kmService.apDungChoSP(maThuoc, Math.max(0, row.getSoLuong()),
+                    java.math.BigDecimal.valueOf(Math.max(0, row.getDonGia())),
+                    java.time.LocalDate.now());
+        }
+        if (ap == null || ap.getFreeItems().isEmpty()) return "";
+        StringBuilder sb = new StringBuilder();
+        for (String ma : ap.getFreeItems().keySet()) {
+            String name = tenSpCache.computeIfAbsent(ma, k -> {
+                var sp = spDao.selectById(k);
+                return (sp != null && sp.getTenThuoc() != null) ? sp.getTenThuoc() : "";
+            });
+            if (name != null && !name.isBlank()) {
+                if (sb.length() > 0) sb.append(", ");
+                sb.append(name);
+            }
+        }
+        return sb.length() > 0 ? " (có tặng kèm " + sb + ")" : "";
     }
     private String layTenDonVi(ChiTietHoaDon row) {
         if (row == null) return "";
@@ -605,11 +715,7 @@ public class LapHoaDon_Ctrl extends Application {
     }
 
 
-    private void themFieldTienMat(String value) {
-        if (paneTienMat != null) {
-            paneTienMat.setVisible("Tiền mặt".equals(value));
-        }
-    }
+
     private int tonToiDaTheoSP(Thuoc_SanPham sp, ChiTietDonViTinh dvt) {
         if (sp == null || sp.getMaThuoc() == null || dvt == null) return Integer.MAX_VALUE;
         int tongTonCoBan = thuocDao.getTongTonCoBan(sp.getMaThuoc());
@@ -632,22 +738,7 @@ public class LapHoaDon_Ctrl extends Application {
         a.showAndWait();
     }
 
-    private void hienThiQR() {
-        Stage qrStage = new Stage();
-        VBox vbox = new VBox(10);
-        vbox.setStyle("-fx-padding: 20; -fx-alignment: center;");
-        Label label = new Label("Quét mã QR dưới đây để thanh toán");
-        // Link ma QR
-        InputStream is = getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/qr_mb.jpg");
-        Image qrImg = (is != null) ? new Image(is) : new Image(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/img/qr_mb.jpg").toExternalForm());
-        ImageView qrImage = new ImageView(qrImg);
-        qrImage.setFitWidth(500);
-        qrImage.setPreserveRatio(true);
-        vbox.getChildren().addAll(label, qrImage);
-        Scene scene = new Scene(vbox, 600, 600);
-        qrStage.setScene(scene);
-        qrStage.show();
-    }
+
 //------------Xử lý khách hàng ----------------
     @FXML
     private void xuLyTimKhachHang() {
@@ -824,8 +915,8 @@ public class LapHoaDon_Ctrl extends Application {
 
 
     private void capNhatTongTien() {
-        BigDecimal tongHang = BigDecimal.ZERO;   // sum of price*qty
-        BigDecimal giamDong = BigDecimal.ZERO;   // sum of per-row discounts
+        BigDecimal tongHang = BigDecimal.ZERO;
+        BigDecimal giamDong = BigDecimal.ZERO;
 
         for (ChiTietHoaDon row : dsChiTietHD) {
             BigDecimal line = BigDecimal.valueOf(row.getDonGia()).multiply(BigDecimal.valueOf(row.getSoLuong()));
@@ -833,17 +924,12 @@ public class LapHoaDon_Ctrl extends Application {
             giamDong = giamDong.add(BigDecimal.valueOf(row.getGiamGia()));
         }
 
-        // Base for invoice-level KM = subtotal after per-row KM
         BigDecimal baseForInvoiceKM = tongHang.subtract(giamDong).max(BigDecimal.ZERO);
 
-        // Only 1 best invoice KM (as per new rule)
         ApDungKhuyenMai kmHD = tinhKMHoaDon(baseForInvoiceKM);
+
         BigDecimal giamHoaDon = kmHD.getDiscount() == null ? BigDecimal.ZERO : kmHD.getDiscount();
-
-        // Base after invoice KM
         BigDecimal baseSauHD = baseForInvoiceKM.subtract(giamHoaDon).max(BigDecimal.ZERO);
-
-        // VAT 5% on the amount after all discounts
         BigDecimal vat = baseSauHD.multiply(new BigDecimal("0.05")).setScale(0, RoundingMode.HALF_UP);
         BigDecimal thanhTien = baseSauHD.add(vat);
 
@@ -865,10 +951,12 @@ public class LapHoaDon_Ctrl extends Application {
         BigDecimal donGia = BigDecimal.valueOf(row.getDonGia());
 
         try {
-            ApDungKhuyenMai kq = tinhKMChoDong(maThuoc, soLuong, donGia);
+            ApDungKhuyenMai kq =
+                    kmService.apDungChoSP(maThuoc, soLuong, donGia, LocalDate.now());
+
+            kmTheoDong.put(row, kq);
             row.setGiamGia(kq != null && kq.getDiscount() != null ? kq.getDiscount().doubleValue() : 0.0);
         } finally {
-            // Recompute totals so invoice KM (best of LKM004/LKM005) stays in sync
             capNhatTongTien();
         }
     }
@@ -882,15 +970,7 @@ public class LapHoaDon_Ctrl extends Application {
 
 
     //-----Xu Ly giao dich
-    private String toTangKemText(Map<String, Integer> freeMap) {
-        if (freeMap == null || freeMap.isEmpty()) return "";
-        StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, Integer> e : freeMap.entrySet()) {
-            if (!sb.isEmpty()) sb.append(", ");
-            sb.append(e.getKey()).append("×").append(e.getValue());
-        }
-        return sb.toString();
-    }
+
     private String cur(BigDecimal v) { return VND.format(v.max(BigDecimal.ZERO)); }
     private void tinhTongTien() {
         if (tblChiTietHD == null) return;

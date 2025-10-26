@@ -9,7 +9,6 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
@@ -31,9 +30,9 @@
                <TableView fx:id="tblChiTietHoaDon" layoutX="9.0" layoutY="103.0" prefHeight="765.0" prefWidth="1130.0" styleClass="main-table">
                    <columns>
                        <TableColumn fx:id="colNSTT" prefWidth="50.0" text="STT" />
-                       <TableColumn fx:id="colNTen" prefWidth="250.0" text="Tên sản phẩm/Hoạt chất" />
-                       <TableColumn fx:id="colNSL" prefWidth="100.0" text="Số lượng" />
-                       <TableColumn fx:id="colNDonVi" prefWidth="100.0" text="Đơn vị" />
+                       <TableColumn fx:id="colNTen" prefWidth="374.0" text="Tên sản phẩm/Hoạt chất" />
+                       <TableColumn fx:id="colNSL" prefWidth="170.0" text="Số lượng" />
+                       <TableColumn fx:id="colNDonVi" prefWidth="111.66668701171875" text="Đơn vị" />
                        <TableColumn fx:id="colNDonGia" prefWidth="100.0" text="Đơn giá" />
                        <TableColumn fx:id="colNChietKhau" prefWidth="100.0" text="Giảm giá" />
                        <TableColumn fx:id="colNThanhTien" prefWidth="100.0" text="Thành tiền" />
@@ -42,21 +41,18 @@
                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                    </columnResizePolicy>
                </TableView>
+               <Label layoutX="10.0" layoutY="6.0" styleClass="title-label" text="CHI TIẾT HÓA ĐƠN" />
             </children>
          </Pane>
     </AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="893.0" prefWidth="436.0" styleClass="right-pane-bg">
          <Pane layoutX="22.0" layoutY="10.399999618530273" prefHeight="873.0" prefWidth="492.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
             <children>
-               <Pane layoutX="-3.0" layoutY="259.0" prefHeight="595.0" prefWidth="457.0" styleClass="info-pane">
-                  <children>
-                     <Label fx:id="lblTenNhanVienValue1" layoutX="140.0" layoutY="5.0" styleClass="value-label" />
-                     <Label fx:id="lblTenKhachHangValue1" layoutX="140.0" layoutY="35.0" styleClass="value-label" />
-                     <Label fx:id="lblSDTKhachHangValue1" layoutX="140.0" layoutY="65.0" styleClass="value-label" />
-                  </children>
+               <Pane layoutX="-3.0" layoutY="334.0" prefHeight="522.0" prefWidth="457.0" styleClass="info-pane">
+
                </Pane>
-                  <Label styleClass="section-label" text="THÔNG TIN HÓA ĐƠN" />
-               <Pane layoutY="41.0" prefHeight="160.0" prefWidth="453.0" styleClass="info-pane">
+                  <Label styleClass="section-label" text="THÔNG TIN GIAO DỊCH" />
+               <Pane layoutY="41.0" prefHeight="213.0" prefWidth="453.0" styleClass="info-pane">
                    <Label layoutX="5.0" layoutY="5.0" styleClass="bold-label" text="Tên nhân viên:" />
                    <Label fx:id="lblTenNhanVienValue" layoutX="140.0" layoutY="5.0" styleClass="value-label" />
                    <Label layoutX="5.0" layoutY="35.0" styleClass="bold-label" text="Tên khách hàng:" />
@@ -68,56 +64,79 @@
                </Pane>
 
                   <Separator layoutY="216.0" />
-                  <Label layoutY="234.39999389648438" styleClass="section-label" text="TÓM TẮT THANH TOÁN" />
-               <Pane layoutY="277.0" prefHeight="280.0" prefWidth="503.0" styleClass="summary-pane">
-                   <Label layoutX="5.0" layoutY="30.0" styleClass="label-normal" text="Tổng tiền hàng (trước VAT):" />
-                   <Label fx:id="lblGiamTheoSP" layoutX="240.0" layoutY="5.0" styleClass="bold-label value-label" text="0 VNĐ" />
-                   <Label layoutX="5.0" layoutY="2.0" styleClass="label-normal" text="Giảm theo sản phẩm::" />
-                   <Label fx:id="lblTongTienHang" layoutX="240.0" layoutY="30.0" styleClass="label-discount bold-label value-label" text="0 VNĐ" />
-                   <Label layoutX="5.0" layoutY="55.0" styleClass="label-normal" text="Thuế (VAT):" />
-                   <Label fx:id="lblVAT" layoutX="240.0" layoutY="55.0" styleClass="bold-label value-label" text="0 VNĐ" />
-                   <Separator layoutY="86.0" prefHeight="2.0" prefWidth="549.0" />
-                   <Label layoutX="5.0" layoutY="143.0" styleClass="bold-label section-label" text="TỔNG THANH TOÁN:" />
-                   <Label fx:id="lblTongThanhToan" layoutX="240.0" layoutY="143.0" styleClass="main-value-label grand-total-value bold-label value-label" text="0 VNĐ" />
-                   <Separator layoutY="130.0" prefHeight="2.0" prefWidth="553.0" />
-                   <Label layoutX="5.0" layoutY="171.0" styleClass="label-normal" text="Phương thức thanh toán:" />
-                   <Label fx:id="lblPhuongThucTT" layoutX="240.0" layoutY="171.0" styleClass="bold-label value-label" text="Tiền mặt" />
-                   <Label layoutX="5.0" layoutY="196.0" styleClass="label-normal" text="Số tiền khách đưa:" />
-                   <Label fx:id="lblSoTienKhachDua" layoutX="240.0" layoutY="196.0" styleClass="bold-label value-label" text="0 VNĐ" />
-                   <Label layoutX="5.0" layoutY="231.0" styleClass="bold-label" text="Tiền thừa trả lại:" />
-                   <Label fx:id="lblTienThua" layoutX="240.0" layoutY="231.0" styleClass="change-due-value bold-label value-label" text="0 VNĐ" />
-                  <Label layoutX="6.0" layoutY="92.0" styleClass="label-normal" text="Giảm theo hóa đơn:" />
-                  <Label fx:id="lblGiamTheoHD" layoutX="241.0" layoutY="92.0" styleClass="bold-label value-label" text="0 VNĐ" />
+                  <Label layoutY="297.3999938964844" styleClass="section-label" text="TÓM TẮT THANH TOÁN" />
+               <Pane layoutY="297.0" prefHeight="361.0" prefWidth="452.0" styleClass="summary-pane">
+                   <Label layoutX="5.0" layoutY="130.0" styleClass="label-normal" text="Tổng tiền hàng (trước VAT):">
+                     <font>
+                        <Font size="13.0" />
+                     </font></Label>
+                   <Label fx:id="lblGiamTheoSP" layoutX="240.0" layoutY="78.0" styleClass="bold-label value-label" text="0 VNĐ">
+                     <font>
+                        <Font size="13.0" />
+                     </font></Label>
+                   <Label layoutX="5.0" layoutY="76.0" styleClass="label-normal" text="Giảm theo sản phẩm::">
+                     <font>
+                        <Font size="13.0" />
+                     </font></Label>
+                   <Label fx:id="lblTongTienHang" layoutX="240.0" layoutY="130.0" styleClass="label-discount bold-label value-label" text="0 VNĐ">
+                     <font>
+                        <Font size="13.0" />
+                     </font></Label>
+                   <Label layoutX="5.0" layoutY="184.0" styleClass="label-normal" text="Thuế (VAT):">
+                     <font>
+                        <Font size="13.0" />
+                     </font></Label>
+                   <Label fx:id="lblVAT" layoutX="240.0" layoutY="184.0" styleClass="bold-label value-label" text="0 VNĐ">
+                     <font>
+                        <Font size="13.0" />
+                     </font></Label>
+                   <Separator layoutY="263.0" prefHeight="2.0" prefWidth="549.0" />
+                   <Label layoutX="5.0" layoutY="278.0" styleClass="bold-label section-label" text="TỔNG THANH TOÁN:">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font></Label>
+                   <Label fx:id="lblTongThanhToan" layoutX="240.0" layoutY="278.0" styleClass="main-value-label grand-total-value bold-label value-label" text="0 VNĐ">
+                     <font>
+                        <Font size="15.0" />
+                     </font></Label>
+                   <Separator layoutY="311.0" prefHeight="2.0" prefWidth="553.0" />
+                  <Label layoutX="6.0" layoutY="230.0" styleClass="label-normal" text="Giảm theo hóa đơn:">
+                     <font>
+                        <Font size="13.0" />
+                     </font></Label>
+                  <Label fx:id="lblGiamTheoHD" layoutX="241.0" layoutY="230.0" styleClass="bold-label value-label" text="0 VNĐ">
+                     <font>
+                        <Font size="13.0" />
+                     </font></Label>
                </Pane>
-
-                  <VBox alignment="BOTTOM_CENTER" layoutY="570.4000244140625">
-                  <Pane prefHeight="110.0" prefWidth="545.0">
-                     <children>
-                          <Button fx:id="btnInHoaDon" layoutX="33.0" layoutY="31.0" prefHeight="70.0" prefWidth="132.0" styleClass="print-btn" text="In Hóa Đơn">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                           <effect>
-                              <DropShadow>
-                                 <color>
-                                    <Color red="0.6526315808296204" green="0.6453801393508911" blue="0.6453801393508911" />
-                                 </color>
-                              </DropShadow>
-                           </effect></Button>
-                          <Button fx:id="btnDong" layoutX="284.0" layoutY="32.0" prefHeight="70.0" prefWidth="132.0" styleClass="danger-btn" text="Đóng">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                           <effect>
-                              <DropShadow>
-                                 <color>
-                                    <Color red="0.6526315808296204" green="0.6453801393508911" blue="0.6453801393508911" />
-                                 </color>
-                              </DropShadow>
-                           </effect></Button>
-                     </children>
-                  </Pane>
-               </VBox>
+               <Pane layoutY="619.0" prefHeight="220.0" prefWidth="452.0">
+                  <children>
+                       <Button fx:id="btnInHoaDon" layoutX="33.0" layoutY="88.0" prefHeight="70.0" prefWidth="132.0" styleClass="print-btn" text="In Hóa Đơn">
+                        <font>
+                           <Font name="System Bold" size="14.0" />
+                        </font>
+                        <effect>
+                           <DropShadow>
+                              <color>
+                                 <Color red="0.6526315808296204" green="0.6453801393508911" blue="0.6453801393508911" />
+                              </color>
+                           </DropShadow>
+                        </effect>
+                     </Button>
+                       <Button fx:id="btnDong" layoutX="284.0" layoutY="89.0" prefHeight="70.0" prefWidth="132.0" styleClass="danger-btn" text="Hoàn Tất">
+                        <font>
+                           <Font name="System Bold" size="14.0" />
+                        </font>
+                        <effect>
+                           <DropShadow>
+                              <color>
+                                 <Color red="0.6526315808296204" green="0.6453801393508911" blue="0.6453801393508911" />
+                              </color>
+                           </DropShadow>
+                        </effect>
+                     </Button>
+                  </children>
+               </Pane>
             </children>
          </Pane>
     </AnchorPane>

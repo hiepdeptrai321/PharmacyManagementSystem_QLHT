@@ -13,11 +13,13 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DichVuKhuyenMai {
     private final ChiTietKhuyenMai_Dao ctDao = new ChiTietKhuyenMai_Dao();
-    private final Thuoc_SP_TangKem_Dao tangKemDao = new Thuoc_SP_TangKem_Dao();
     private final KhuyenMai_Dao kmDao = new KhuyenMai_Dao();
+    private final Thuoc_SP_TangKem_Dao giftDao = new Thuoc_SP_TangKem_Dao();
 
     public ApDungKhuyenMai apDungChoSP(String maThuoc, int soLuong, BigDecimal donGia, LocalDate ngay) {
         ApDungKhuyenMai kq = new ApDungKhuyenMai();
@@ -50,13 +52,33 @@ public class DichVuKhuyenMai {
                 BigDecimal giam = BigDecimal.valueOf(km.getGiaTriKM()).multiply(BigDecimal.valueOf(times));
                 kq.addDiscount(giam);
                 kq.addApplied(km.getMaKM());
-            } else if ("LKM001".equalsIgnoreCase(loai)) {
-                // Tặng kèm
-                for (Thuoc_SP_TangKem tk : tangKemDao.selectByMaKM(km.getMaKM())) {
-                    int slTang = tk.getSoLuong() * times;
-                    kq.addFreeItem(tk.getThuocTangKem().getMaThuoc(), slTang);
+            } else  if ("LKM001".equalsIgnoreCase(loai)) {
+                int ap = Math.max(0, ct.getSlApDung());
+                if (ap <= 0) continue;
+
+                int bundles = soLuong / ap;
+                if (bundles <= 0) continue;
+
+                int maxBundles = ct.getSlToiDa() > 0 ? ct.getSlToiDa() : Integer.MAX_VALUE;
+                bundles = Math.min(bundles, maxBundles);
+
+                List<Thuoc_SP_TangKem> gifts = giftDao.selectByMaKM(km.getMaKM());
+                if (gifts != null) {
+                    for (Thuoc_SP_TangKem g : gifts) {
+                        if (g == null || g.getThuocTangKem() == null) continue;
+                        int qty = Math.max(0, g.getSoLuong()) * bundles;
+                        if (qty > 0) {
+                            kq.addFreeItem(g.getThuocTangKem().getMaThuoc(), qty);
+                        }
+                    }
                 }
-                kq.addApplied(km.getMaKM());
+
+                // Fallback: parse \`MoTa\` if no row in gift table
+                if (kq.getFreeItems().isEmpty()) {
+                    String maTang = parseMaThuocTang(km.getMoTa());
+                    if (maTang != null) kq.addFreeItem(maTang, bundles);
+                }
+                if (!kq.getFreeItems().isEmpty()) kq.addApplied(km.getMaKM());
             }
         }
         return kq;
@@ -110,6 +132,16 @@ public class DichVuKhuyenMai {
             }
         }
         return kq;
+    }
+    private String parseMaThuocTang(String moTa) {
+        if (moTa == null) return null;
+        String[] keys = { "MaThuocTang", "Tang", "FREE" };
+        for (String key : keys) {
+            Pattern p = Pattern.compile("(?i)\\b" + key + "\\s*=\\s*([A-Za-z0-9_\\-]+)");
+            Matcher m = p.matcher(moTa);
+            if (m.find()) return m.group(1);
+        }
+        return null;
     }
 }
 

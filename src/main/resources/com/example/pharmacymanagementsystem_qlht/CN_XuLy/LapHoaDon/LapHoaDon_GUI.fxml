@@ -36,12 +36,13 @@
         <TableView fx:id="tblChiTietHD" layoutX="40.0" layoutY="180.0" prefHeight="686.0" prefWidth="1104.0" styleClass="main-table">
             <columns>
                 <TableColumn fx:id="colSTT" prefWidth="50.0" text="STT" />
-                <TableColumn fx:id="colTenSP" prefWidth="251.0" text="Tên sản phẩm/Hoạt chất" />
-                <TableColumn fx:id="colDonGia" prefWidth="197.0" text="Đơn giá" />
-                <TableColumn fx:id="colSL" prefWidth="129.0" text="Số lượng" />
-                <TableColumn fx:id="colDonVi" prefWidth="113.0" text="Đơn vị" />
-                <TableColumn fx:id="colChietKhau" prefWidth="100.0" text="Giảm giá" />
-                <TableColumn fx:id="colThanhTien" prefWidth="187.0" text="Thành tiền" />
+                <TableColumn fx:id="colTenSP" prefWidth="324.66668701171875" text="Tên sản phẩm/Hoạt chất" />
+                <TableColumn fx:id="colDonGia" prefWidth="143.33331298828125" text="Đơn giá" />
+                <TableColumn fx:id="colSL" prefWidth="131.0" text="Số lượng" />
+                <TableColumn fx:id="colDonVi" prefWidth="100.0" text="Đơn vị" />
+                <TableColumn fx:id="colChietKhau" prefWidth="123.0" text="Giảm giá" />
+                <TableColumn fx:id="colThanhTien" prefWidth="174.0" text="Thành tiền" />
+                <TableColumn fx:id="colBo" prefWidth="55.0" />
 
             </columns>
         </TableView>

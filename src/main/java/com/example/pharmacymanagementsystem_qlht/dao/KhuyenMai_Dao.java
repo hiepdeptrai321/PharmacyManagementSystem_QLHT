@@ -3,6 +3,7 @@ package com.example.pharmacymanagementsystem_qlht.dao;
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.KhuyenMai;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +60,16 @@ public class KhuyenMai_Dao implements DaoInterface<KhuyenMai> {
             throw new RuntimeException(e);
         }
         return khuyenMaiList;
+    }
+    public List<KhuyenMai> selectActiveOn(Date day) {
+        String sql = "SELECT * FROM KhuyenMai WHERE NgayBatDau <= ? AND NgayKetThuc >= ?";
+        return selectBySql(sql, day, day);
+    }
+    public List<KhuyenMai> selectActiveInvoiceOn(Date day) {
+        String sql =
+                "SELECT * FROM KhuyenMai " +
+                        "WHERE NgayBatDau <= ? AND NgayKetThuc >= ? AND MaLoai IN ('LKM004','LKM005')";
+        return selectBySql(sql, day, day);
     }
 
     @Override

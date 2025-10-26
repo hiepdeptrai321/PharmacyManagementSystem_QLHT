@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -27,7 +28,7 @@
                <font>
                   <Font name="System Bold" size="13.0" />
                </font></Label>
-            <Button fx:id="btnXoaRong" layoutX="1009.0" layoutY="21.0" mnemonicParsing="false" onAction="#xoaRong" text="Xóa rỗng" />
+            <Button id="btnXoaRong" fx:id="btnXoaRong" layoutX="1000.0" layoutY="16.0" mnemonicParsing="false" onAction="#xoaRong" text="Xóa rỗng" />
             </children>
         </Pane>
 
@@ -36,66 +37,74 @@
         <TableView fx:id="tblChiTietHD" layoutX="40.0" layoutY="180.0" prefHeight="686.0" prefWidth="1104.0" styleClass="main-table">
             <columns>
                 <TableColumn fx:id="colSTT" prefWidth="50.0" text="STT" />
-                <TableColumn fx:id="colTenSP" prefWidth="251.0" text="Tên sản phẩm/Hoạt chất" />
-                <TableColumn fx:id="colDonGia" prefWidth="197.0" text="Đơn giá" />
-                <TableColumn fx:id="colSL" prefWidth="129.0" text="Số lượng" />
-                <TableColumn fx:id="colDonVi" prefWidth="113.0" text="Đơn vị" />
-                <TableColumn fx:id="colChietKhau" prefWidth="175.0" text="Chiết khấu(%)" />
-                <TableColumn fx:id="colThanhTien" prefWidth="187.0" text="Thành tiền" />
+                <TableColumn fx:id="colTenSP" prefWidth="324.66668701171875" text="Tên sản phẩm/Hoạt chất" />
+                <TableColumn fx:id="colDonGia" prefWidth="143.33331298828125" text="Đơn giá" />
+                <TableColumn fx:id="colSL" prefWidth="131.0" text="Số lượng" />
+                <TableColumn fx:id="colDonVi" prefWidth="100.0" text="Đơn vị" />
+                <TableColumn fx:id="colChietKhau" prefWidth="123.0" text="Giảm giá" />
+                <TableColumn fx:id="colThanhTien" prefWidth="174.0" text="Thành tiền" />
+                <TableColumn fx:id="colBo" prefWidth="55.0" />
+
             </columns>
         </TableView>
 
         <!-- Info Panel -->
         <Pane layoutX="1181.0" layoutY="14.0" prefHeight="867.0" prefWidth="451.0" styleClass="info-pane">
             <children>
-                <Label layoutX="30.0" layoutY="201.0" styleClass="bold-label" text="THÔNG TIN GIAO DỊCH" />
-                <Label layoutX="30.0" layoutY="241.0" text="Họ tên khách hàng:">
+                <Label layoutX="30.0" layoutY="186.0" styleClass="bold-label" text="THÔNG TIN GIAO DỊCH" />
+                <Label layoutX="30.0" layoutY="226.0" text="Họ tên khách hàng:">
                <font>
                   <Font size="14.0" />
                </font></Label>
-                <TextField fx:id="txtTenKH" editable="false" layoutX="191.0" layoutY="235.0" prefHeight="27.0" prefWidth="189.0" />
-                <Button fx:id="btnTimKhachHang" layoutX="383.0" layoutY="235.0" onAction="#xuLyTimKhachHang" prefHeight="27.0" prefWidth="51.0" text="Tìm" />
+                <TextField fx:id="txtTenKH" editable="false" layoutX="191.0" layoutY="220.0" prefHeight="27.0" prefWidth="208.0" />
+                <Button id="btnTimKH" fx:id="btnTimKhachHang" layoutX="66.0" layoutY="301.0" onAction="#xuLyTimKhachHang" prefHeight="28.0" prefWidth="116.0" text="Tìm khách hàng">
+               <font>
+                  <Font size="13.0" />
+               </font></Button>
 
-                <Label layoutX="30.0" layoutY="281.0" text="Số điện thoại:">
+                <Label layoutX="30.0" layoutY="266.0" text="Số điện thoại:">
                <font>
                   <Font size="14.0" />
                </font></Label>
-                <TextField fx:id="txtSDT" editable="false" layoutX="190.0" layoutY="275.0" prefHeight="27.0" prefWidth="190.0" />
+                <TextField fx:id="txtSDT" editable="false" layoutX="190.0" layoutY="260.0" prefHeight="27.0" prefWidth="209.0" />
 
-                <Label layoutX="28.0" layoutY="330.0" text="Nhập mã đơn thuốc:">
+                <Label layoutX="28.0" layoutY="354.0" text="Nhập mã đơn thuốc:">
                <font>
                   <Font size="14.0" />
                </font></Label>
-                <TextField fx:id="txtMaDonThuoc" layoutX="196.0" layoutY="327.0" prefHeight="27.0" prefWidth="204.0" />
+                <TextField fx:id="txtMaDonThuoc" layoutX="191.0" layoutY="351.0" prefHeight="27.0" prefWidth="209.0" />
 
-                <Label layoutX="31.0" layoutY="374.0" text="Ngày kê đơn:">
+                <Label layoutX="30.0" layoutY="398.0" text="Ngày kê đơn:">
                <font>
                   <Font size="14.0" />
                </font></Label>
-                <DatePicker fx:id="dpNgayKeDon" layoutX="196.0" layoutY="371.0" prefHeight="27.0" prefWidth="204.0" />
+                <DatePicker fx:id="dpNgayLap" layoutX="191.0" layoutY="395.0" prefHeight="27.0" prefWidth="209.0" />
 
-                <Label layoutX="30.0" layoutY="471.0" text="Tổng chiết khấu:">
+                <Label layoutX="30.0" layoutY="471.0" text="Tổng giảm giá:">
                <font>
                   <Font size="14.0" />
                </font></Label>
-                <Label fx:id="lblChietKhauValue" layoutX="195.0" layoutY="470.0" prefHeight="20.0" prefWidth="216.0" styleClass="value-label" text="0 VNĐ" />
+                <Label fx:id="lblGiamGia" layoutX="203.0" layoutY="470.0" prefHeight="20.0" prefWidth="216.0" styleClass="value-label" text="0 VNĐ" />
 
                 <Label layoutX="30.0" layoutY="502.0" text="Tổng tiền:">
                <font>
                   <Font size="14.0" />
                </font></Label>
-                <Label fx:id="lblTongTienValue" layoutX="198.0" layoutY="501.0" prefHeight="20.0" prefWidth="210.0" styleClass="value-label" text="0 VNĐ" />
+                <Label fx:id="lblTongTien" layoutX="202.0" layoutY="501.0" prefHeight="20.0" prefWidth="210.0" styleClass="value-label" text="0 VNĐ" />
 
-                <Label layoutX="33.0" layoutY="533.0" text="Thuế (VAT 5%):">
+                <Label layoutX="31.0" layoutY="560.0" text="Thuế (VAT 5%):">
                <font>
                   <Font size="14.0" />
                </font></Label>
-                <Label fx:id="lblVATValue" layoutX="199.0" layoutY="532.0" prefHeight="20.0" prefWidth="204.0" styleClass="value-label" text="0 VNĐ" />
+                <Label fx:id="lblVAT" layoutX="202.0" layoutY="559.0" prefHeight="20.0" prefWidth="204.0" styleClass="value-label" text="0 VNĐ" />
 
-                <Label layoutX="34.0" layoutY="605.0" styleClass="bold-label" text="Thành tiền:" />
-                <Label fx:id="lblThanhTienValue" layoutX="200.0" layoutY="601.0" prefHeight="30.0" prefWidth="204.0" styleClass="main-value-label" text="0 VNĐ" />
+                <Label id="btnThanhTien" layoutX="33.0" layoutY="605.0" styleClass="bold-label" text="Thành tiền:">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+                <Label fx:id="lblThanhTien" layoutX="200.0" layoutY="601.0" prefHeight="30.0" prefWidth="204.0" styleClass="main-value-label" text="0 VNĐ" />
 
-                <Label layoutX="36.0" layoutY="644.0" text="Phương thức thanh toán:">
+                <Label layoutX="33.0" layoutY="644.0" text="Phương thức thanh toán:">
                <font>
                   <Font size="14.0" />
                </font></Label>
@@ -103,16 +112,16 @@
 
                 <Pane fx:id="paneTienMat" layoutX="9.0" layoutY="669.0" prefHeight="87.0" prefWidth="414.0">
                     <children>
-                        <Label layoutX="30.0" layoutY="10.0" text="Số tiền khách đưa:">
+                        <Label layoutX="25.0" layoutY="10.0" text="Số tiền khách đưa:">
                      <font>
                         <Font size="14.0" />
                      </font></Label>
                         <TextField fx:id="txtSoTienKhachDua" layoutX="191.0" layoutY="4.0" prefHeight="27.0" prefWidth="204.0" />
-                        <Label layoutX="30.0" layoutY="40.0" text="Tiền thừa:">
+                        <Label layoutX="24.0" layoutY="40.0" text="Tiền thừa:">
                      <font>
                         <Font size="14.0" />
                      </font></Label>
-                        <Label fx:id="lblTienThuaValue" layoutX="191.0" layoutY="40.0" prefHeight="20.0" prefWidth="204.0" styleClass="value-label" text="0 VNĐ" />
+                        <Label fx:id="lblTienThua" layoutX="191.0" layoutY="40.0" prefHeight="20.0" prefWidth="204.0" styleClass="value-label" text="0 VNĐ" />
                     </children>
                 </Pane>
 
@@ -121,19 +130,34 @@
                         <Font size="13.0" />
                     </font>
                 </Button>
-                <Button fx:id="btnThanhToan" layoutX="240.0" layoutY="788.0" prefHeight="52.0" prefWidth="189.0" styleClass="success-btn" text="Thanh toán">
+                <Button fx:id="btnThanhToan" layoutX="240.0" layoutY="788.0" onAction="#xuLyThanhToan" prefHeight="52.0" prefWidth="189.0" styleClass="success-btn" text="Thanh toán">
                     <font>
                         <Font name="System Bold" size="13.0" />
                     </font>
                 </Button>
-            <Button fx:id="btnThemKH" layoutX="385.0" layoutY="279.0" mnemonicParsing="false" onAction="#xuLyThemKH" prefHeight="25.0" prefWidth="51.0" text="Thêm" />
-            <Separator layoutX="-1.0" layoutY="432.0" prefHeight="8.0" prefWidth="450.0" />
+            <Button id="btnThemKH" fx:id="btnThemKH" layoutX="258.0" layoutY="300.0" mnemonicParsing="false" onAction="#xuLyThemKH" prefHeight="30.0" prefWidth="124.0" text="Thêm khách hàng">
+               <font>
+                  <Font size="13.0" />
+               </font></Button>
+            <Separator layoutX="-1.0" layoutY="442.0" prefHeight="8.0" prefWidth="450.0" />
             <Separator layoutY="159.0" prefHeight="8.0" prefWidth="450.0" />
             <ImageView fitHeight="145.0" fitWidth="433.0" layoutX="11.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../img/new.png" />
                </image>
             </ImageView>
+            <Label layoutX="31.0" layoutY="532.0" text="Giảm giá theo hóa đơn:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblGiamTheoHD" layoutX="202.0" layoutY="531.0" prefHeight="20.0" prefWidth="204.0" styleClass="value-label" text="0 VNĐ" />
+            <Separator layoutX="4.0" layoutY="339.0" prefHeight="8.0" prefWidth="450.0" />
+            <RadioButton fx:id="rbOTC" layoutX="231.0" layoutY="188.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="162.0" text="Không kê đơn (OTC)">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </RadioButton>
             </children>
         </Pane>
       <ImageView fitHeight="53.0" fitWidth="62.0" layoutX="234.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">

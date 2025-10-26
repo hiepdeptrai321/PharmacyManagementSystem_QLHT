@@ -477,6 +477,7 @@ public class LapPhieuDatHang_Ctrl extends Application {
                     tf.setMaxWidth(56);
                     tf.setStyle("-fx-alignment: center-right;");
 
+                    // allow only digits up to reasonable length
                     javafx.scene.control.TextFormatter<Integer> formatter = new javafx.scene.control.TextFormatter<>(change -> {
                         String newText = change.getControlNewText();
                         return newText.matches("\\d{0,6}") ? change : null;

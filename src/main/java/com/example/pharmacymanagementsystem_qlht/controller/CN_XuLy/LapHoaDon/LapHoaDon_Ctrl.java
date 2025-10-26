@@ -1,11 +1,16 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapHoaDon;
 
-import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang.TimKiemKhachHang_Ctrl;
-import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SanPham_Dao;
+import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
+import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang.TimKiemKhachHangTrongHD_Ctrl;
+import com.example.pharmacymanagementsystem_qlht.controller.DangNhap_Ctrl;
+import com.example.pharmacymanagementsystem_qlht.dao.*;
 import com.example.pharmacymanagementsystem_qlht.model.*;
+import com.example.pharmacymanagementsystem_qlht.service.ApDungKhuyenMai;
+import com.example.pharmacymanagementsystem_qlht.service.DichVuKhuyenMai;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -14,6 +19,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -22,25 +28,19 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-// Imports cho việc xuất file PDF
-import javafx.stage.FileChooser;
-import java.io.File;
-import java.io.IOException;
-import com.itextpdf.kernel.font.PdfFont;
-import com.itextpdf.kernel.font.PdfFontFactory;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Table;
-import com.itextpdf.layout.properties.TextAlignment;
-import com.itextpdf.layout.properties.UnitValue;
-import com.itextpdf.io.font.constants.StandardFonts;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.Timestamp;
+
+import java.sql.*;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.LocalDate;
-import java.util.IdentityHashMap;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,53 +48,53 @@ import java.util.regex.Pattern;
 public class LapHoaDon_Ctrl extends Application {
 
     private final ObservableList<ChiTietHoaDon> dsChiTietHD = FXCollections.observableArrayList();
-    private final IdentityHashMap<ChiTietHoaDon, ChiTietDonViTinh> dvtTheoDong = new java.util.IdentityHashMap<>();
-    private final AtomicLong demTruyVan = new java.util.concurrent.atomic.AtomicLong(0);
+    private final IdentityHashMap<ChiTietHoaDon, ChiTietDonViTinh> dvtTheoDong = new IdentityHashMap<>();
+    private final AtomicLong demTruyVan = new AtomicLong(0);
+
     private volatile long idTruyVanMoiNhat = 0;
     private volatile Task<List<String>> goiYHienTai;
-    @FXML
-    private Button btnThemKH;
-    @FXML
-    private DatePicker dpNgayKeDon;
-    @FXML
-    private ChoiceBox<String> cbPhuongThucTT;
-    @FXML
-    private Pane paneTienMat;
-    @FXML
-    private TextField txtTimThuoc;
-    @FXML
-    private TextField txtTenKH;
-    @FXML
-    private TextField txtSDT;
-    @FXML
-    private TextField txtSoTienKhachDua;
-    @FXML
-    private Label lblTienThuaValue;
-    @FXML
-    private TableView<ChiTietHoaDon> tblChiTietHD;
-    @FXML
-    private TableColumn <ChiTietHoaDon, String> colSTT;
-    @FXML
-    private TableColumn <ChiTietHoaDon, String> colTenSP;
-    @FXML
-    private TableColumn <ChiTietHoaDon, String> colSL;
-    @FXML
-    private TableColumn <ChiTietHoaDon, String> colDonVi;
-    @FXML
-    private TableColumn <ChiTietHoaDon, String> colDonGia;
-    @FXML
-    private TableColumn <ChiTietHoaDon, String> colChietKhau;
-    @FXML
-    private TableColumn <ChiTietHoaDon, String> colThanhTien;
-    @FXML
-    private Button btnInHoaDon;
+    private final DichVuKhuyenMai dichVuKM = new DichVuKhuyenMai();
+    private final NumberFormat VND = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+    private final Thuoc_SP_TheoLo_Dao loDao = new Thuoc_SP_TheoLo_Dao();
+    private final IdentityHashMap<ChiTietHoaDon, ApDungKhuyenMai> kmTheoDong = new IdentityHashMap<>();
+    private final Thuoc_SanPham_Dao spDao = new Thuoc_SanPham_Dao();
+    private final ConcurrentHashMap<String, String> tenSpCache = new ConcurrentHashMap<>();
+
+    @FXML private Button btnThemKH;
+    @FXML private DatePicker dpNgayLap;
+    @FXML private ChoiceBox<String> cbPhuongThucTT;
+    @FXML private Pane paneTienMat;
+    @FXML private TextField txtTimThuoc;
+    @FXML private TextField txtTenKH;
+    @FXML private TextField txtSDT;
+    @FXML private TableView<ChiTietHoaDon> tblChiTietHD;
+    @FXML private TableColumn <ChiTietHoaDon, String> colSTT;
+    @FXML private TableColumn <ChiTietHoaDon, String> colTenSP;
+    @FXML private TableColumn <ChiTietHoaDon, String> colSL;
+    @FXML private TableColumn <ChiTietHoaDon, String> colDonVi;
+    @FXML private TableColumn <ChiTietHoaDon, String> colDonGia;
+    @FXML private TableColumn <ChiTietHoaDon, String> colChietKhau;
+    @FXML private TableColumn <ChiTietHoaDon, String> colThanhTien;
+    @FXML private TableColumn <ChiTietHoaDon, String> colBo;
+    @FXML private Label lblTongTien;
+    @FXML private Label lblGiamGia;
+    @FXML private Label lblVAT;
+    @FXML private Label lblThanhTien;
+    @FXML private TextField txtSoTienKhachDua;
+    @FXML private Label lblTienThua;
+    @FXML private Button btnThanhToan;
+    @FXML private Label lblGiamTheoHD;
+    @FXML private RadioButton rbOTC;
+    @FXML private TextField txtMaDonThuoc;
+    private Stage qrStage;
+    private static final String OTC_OFF = "Không kê đơn(OTC)";
+    private static final String OTC_ON  = "Kê đơn(ETC)";
 
     // popup suggestions
     private final ContextMenu goiYMenu = new ContextMenu();
     private final PauseTransition pause = new PauseTransition(Duration.millis(0));
     private final Thuoc_SanPham_Dao thuocDao = new Thuoc_SanPham_Dao();
     private static final String GoiY_css = "/com/example/pharmacymanagementsystem_qlht/css/GoiYThuoc.css";
-    public static final String FONT_PATH = "C:/Windows/Fonts/arial.ttf";
     private boolean GoiY_cssat = false;
     private boolean tamDungGoiY = false;
 
@@ -108,36 +108,100 @@ public class LapHoaDon_Ctrl extends Application {
 
     @FXML
     public void initialize() {
-        dpNgayKeDon.setValue(LocalDate.now());
+        VND.setMaximumFractionDigits(0);
+        dpNgayLap.setValue(LocalDate.now());
         xuLyPhuongThucTT();
         xuLyTimThuoc();
         xuLyCssGoiY();
         xuLyChiTietHD();
-        if (btnInHoaDon != null) {
-            btnInHoaDon.setOnAction(this::xuLyXuatPDF);
-        }
-
+        tblChiTietHD.getItems().addListener((ListChangeListener<Object>) c -> tinhTongTien());
+        tinhTongTien();
+        initTienMatEvents();
+        chuyenHoaDon();
     }
+
+    private void chuyenHoaDon() {
+        if (rbOTC == null) return;
+        ToggleGroup group = rbOTC.getToggleGroup();
+        if (group != null) group.selectToggle(null);
+        rbOTC.setSelected(false);
+
+        rbOTC.textProperty().bind(
+                Bindings.when(rbOTC.selectedProperty())
+                        .then(OTC_ON)
+                        .otherwise(OTC_OFF)
+        );
+        rbOTC.selectedProperty().addListener((obs, was, isSelected) -> applyLoaiHoaDonUI(isSelected));
+        // Apply initial state
+        applyLoaiHoaDonUI(rbOTC.isSelected());
+    }
+    private void applyLoaiHoaDonUI(boolean isETC) {
+        // ETC => allow entering prescription id and date
+        if (txtMaDonThuoc != null) {
+            txtMaDonThuoc.setDisable(!isETC);
+            txtMaDonThuoc.setEditable(isETC);
+            if (!isETC) txtMaDonThuoc.clear();
+        }
+    }
+
+
+
     private void xuLyPhuongThucTT() {
         if (cbPhuongThucTT != null) {
             cbPhuongThucTT.getItems().clear();
-            cbPhuongThucTT.getItems().addAll("Phương thức thanh toán", "Tiền mặt", "Chuyển khoản");
-            cbPhuongThucTT.setValue("Phương thức thanh toán");
-            themFieldTienMat("Phương thức thanh toán");
-            cbPhuongThucTT.setOnShowing(event -> {
-                cbPhuongThucTT.getItems().remove("Phương thức thanh toán");
-            });
-            cbPhuongThucTT.setOnHiding(event -> {
-                if (!cbPhuongThucTT.getItems().contains("Phương thức thanh toán")) {
-                    cbPhuongThucTT.getItems().add(0, "Phương thức thanh toán");
-                }
-            });
+            cbPhuongThucTT.getItems().addAll("Tiền mặt", "Chuyển khoản");
+            cbPhuongThucTT.setValue("Tiền mặt");
+            themFieldTienMat("Tiền mặt");
+            anQR();
+
             cbPhuongThucTT.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+                if (newVal == null || newVal.equals(oldVal)) {
+                    return;
+                }
+
                 themFieldTienMat(newVal);
+
                 if ("Chuyển khoản".equals(newVal)) {
                     hienThiQR();
+                } else {
+                    anQR();
                 }
             });
+        }
+    }
+    private void themFieldTienMat(String value) {
+        if (paneTienMat != null) {
+            boolean visible = "Tiền mặt".equals(value);
+            paneTienMat.setVisible(visible);
+            paneTienMat.setManaged(visible);
+        }
+    }
+    private void hienThiQR() {
+        if (qrStage != null && qrStage.isShowing()) {
+            qrStage.toFront();
+            return;
+        }
+
+        qrStage = new Stage();
+
+        VBox vbox = new VBox(10);
+        vbox.setStyle("-fx-padding: 20; -fx-alignment: center;");
+        Label label = new Label("Quét mã QR dưới đây để thanh toán");
+        InputStream is = getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/qr_mb.jpg");
+        Image qrImg = (is != null) ? new Image(is) : new Image(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/img/qr_mb.jpg").toExternalForm());
+        ImageView qrImage = new ImageView(qrImg);
+        qrImage.setFitWidth(500);
+        qrImage.setPreserveRatio(true);
+        vbox.getChildren().addAll(label, qrImage);
+        Scene scene = new Scene(vbox, 600, 600);
+        qrStage.setScene(scene);
+        qrStage.setTitle("Thanh Toán Chuyển Khoản");
+        qrStage.show();
+    }
+
+    private void anQR() {
+        if (qrStage != null && qrStage.isShowing()) {
+            qrStage.close();
         }
     }
     private void xuLyTimThuoc() {
@@ -192,7 +256,7 @@ public class LapHoaDon_Ctrl extends Application {
         final long thisQueryId = demTruyVan.incrementAndGet();
         idTruyVanMoiNhat = thisQueryId;
 
-        javafx.concurrent.Task<java.util.List<String>> newTask = new javafx.concurrent.Task<>() {
+        Task<List<String>> newTask = new Task<>() {
             @Override
             protected java.util.List<String> call() {
                 if (isCancelled()) return java.util.Collections.emptyList();
@@ -200,7 +264,7 @@ public class LapHoaDon_Ctrl extends Application {
             }
         };
 
-        javafx.concurrent.Task<java.util.List<String>> prev = goiYHienTai;
+        Task<java.util.List<String>> prev = goiYHienTai;
         if (prev != null && prev.isRunning()) {
             prev.cancel(true);
         }
@@ -236,25 +300,25 @@ public class LapHoaDon_Ctrl extends Application {
 
                 final String tenDVTChon = parseDonVi(infoText);
 
-                javafx.scene.layout.HBox row = new javafx.scene.layout.HBox(8);
+                HBox row = new HBox(8);
                 row.getStyleClass().add("suggestion-row");
                 row.setPrefWidth(menuWidth);
                 row.setFillHeight(true);
 
-                javafx.scene.control.Label nameLbl = new javafx.scene.control.Label(medicineName);
+                Label nameLbl = new Label(medicineName);
                 nameLbl.getStyleClass().add("suggestion-name");
                 nameLbl.setWrapText(true);
 
-                javafx.scene.control.Label infoLbl = new javafx.scene.control.Label(infoText.isEmpty() ? "" : " | " + infoText);
+                Label infoLbl = new Label(infoText.isEmpty() ? "" : " | " + infoText);
                 infoLbl.getStyleClass().add("suggestion-detail");
                 infoLbl.setWrapText(true);
 
-                javafx.scene.layout.Region spacer = new javafx.scene.layout.Region();
-                javafx.scene.layout.HBox.setHgrow(spacer, javafx.scene.layout.Priority.ALWAYS);
+                Region spacer = new Region();
+                HBox.setHgrow(spacer, Priority.ALWAYS);
 
                 row.getChildren().addAll(nameLbl, infoLbl, spacer);
 
-                javafx.scene.control.CustomMenuItem mi = new javafx.scene.control.CustomMenuItem(row, true);
+                CustomMenuItem mi = new CustomMenuItem(row, true);
                 mi.getStyleClass().add("suggestion-item");
                 if (index < results.size() - 1) {
                     mi.getStyleClass().add("has-separator");
@@ -272,7 +336,7 @@ public class LapHoaDon_Ctrl extends Application {
             }
 
             if (!goiYMenu.isShowing() && txtTimThuoc.isFocused()) {
-                goiYMenu.show(txtTimThuoc, javafx.geometry.Side.BOTTOM, 0, 0);
+                goiYMenu.show(txtTimThuoc, Side.BOTTOM, 0, 0);
             }
         });
 
@@ -284,10 +348,10 @@ public class LapHoaDon_Ctrl extends Application {
             if (thisQueryId != idTruyVanMoiNhat) return; // ignore stale failures
             goiYMenu.hide();
             System.err.println("Không thể tải gợi ý: " + newTask.getException());
-            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
-                    javafx.scene.control.Alert.AlertType.ERROR,
+            Alert alert = new Alert(
+                    Alert.AlertType.ERROR,
                     "Không thể tải gợi ý thuốc.\nVui lòng thử lại.",
-                    javafx.scene.control.ButtonType.OK
+                    ButtonType.OK
             );
             if (txtTimThuoc != null && txtTimThuoc.getScene() != null) {
                 alert.initOwner(txtTimThuoc.getScene().getWindow());
@@ -360,41 +424,41 @@ public class LapHoaDon_Ctrl extends Application {
         return sp.getDsCTDVT().get(0);
     }
     private void themVaoBang(Thuoc_SanPham sp, String tenDVTChon) {
-        if (sp == null) return;
+        if (sp == null || sp.getMaThuoc() == null) return;
 
-        ChiTietDonViTinh selected = chonDonViTheoTen(sp, tenDVTChon);
-        if (selected == null || selected.getDvt() == null) {
-            System.err.println("Missing unit for: " + sp.getTenThuoc());
+        ChiTietDonViTinh chosen = chonDonViTheoTen(sp, tenDVTChon);
+        if (chosen == null || chosen.getDvt() == null) return;
+
+        int tonBase = tonBase(sp);
+        if (tonBase <= 0) { canhBaoTonKhongDu(); return; }
+
+        int curBase = tongDangChonBase(sp);
+        int addBase = toBaseQty(1, chosen);
+        if (curBase + addBase > tonBase) { canhBaoTonKhongDu(); return; }
+
+        ChiTietHoaDon same = timDongGiongDVT(sp, chosen);
+        if (same != null) {
+            // increase existing row of the same unit if still within stock
+            int remainBaseForThisRow = tonBase - tongDangChonBaseTru(sp, same);
+            int maxForThisRow = (int)Math.floor(remainBaseForThisRow / heSo(chosen));
+            if (same.getSoLuong() + 1 > maxForThisRow) { canhBaoTonKhongDu(); return; }
+            same.setSoLuong(same.getSoLuong() + 1);
+            same.setDonGia(chosen.getGiaBan());
+            apDungKMChoRow(same);
+            if (tblChiTietHD != null) tblChiTietHD.refresh();
             return;
         }
 
-        double donGia = selected.getGiaBan();
-
-        for (ChiTietHoaDon row : dsChiTietHD) {
-            Thuoc_SP_TheoLo lo = row.getLoHang();
-            Thuoc_SanPham rowSp = (lo != null) ? lo.getThuoc() : null;
-            if (rowSp != null && sp.getMaThuoc() != null && sp.getMaThuoc().equals(rowSp.getMaThuoc())) {
-                ChiTietDonViTinh rowDvt = dvtTheoDong.get(row);
-                if (rowDvt != null &&
-                        rowDvt.getDvt() != null &&
-                        selected.getDvt() != null &&
-                        rowDvt.getDvt().getMaDVT().equals(selected.getDvt().getMaDVT())) {
-                    row.setSoLuong(row.getSoLuong() + 1);
-                    if (tblChiTietHD != null) tblChiTietHD.refresh();
-                    return;
-                }
-            }
-        }
+        // create new row with the chosen unit
         ChiTietHoaDon cthd = new ChiTietHoaDon();
         ganThuocVaoCTHD(cthd, sp);
         cthd.setSoLuong(1);
-        cthd.setDonGia(donGia);
-        cthd.setGiamGia(0.0);
+        cthd.setDonGia(chosen.getGiaBan());
+        apDungKMChoRow(cthd);
         dsChiTietHD.add(cthd);
+        dvtTheoDong.put(cthd, chosen);
 
-        // Store the selected unit for this row
-        dvtTheoDong.put(cthd, selected);
-
+        if (tblChiTietHD != null) tblChiTietHD.refresh();
         Platform.runLater(() -> {
             if (txtTimThuoc != null) {
                 txtTimThuoc.requestFocus();
@@ -441,92 +505,91 @@ public class LapHoaDon_Ctrl extends Application {
             );
         }
         if (colSL != null) {
-            colSL.setCellValueFactory(p ->
-                    new ReadOnlyStringWrapper(String.valueOf(p.getValue().getSoLuong()))
-            );
-
+            colSL.setCellValueFactory(p -> new ReadOnlyStringWrapper(String.valueOf(p.getValue().getSoLuong())));
             colSL.setCellFactory(tc -> new TableCell<>() {
-                private final Button btnTru = new Button("+");
-                private final Button btnCong = new Button("-");
-                private final TextField tf = new TextField();
-                private final HBox box = new HBox(6, btnCong, tf, btnTru);
+                private final Button btnMinus = new Button("-");
+                private final Button btnPlus  = new Button("+");
+                private final TextField tf    = new TextField();
+                private final HBox box        = new HBox(6, btnMinus, tf, btnPlus);
 
                 {
                     tf.setPrefWidth(56);
                     tf.setMaxWidth(56);
                     tf.setStyle("-fx-alignment: center-right;");
+                    tf.setTextFormatter(new TextFormatter<>(chg ->
+                            chg.getControlNewText().matches("\\d{0,6}") ? chg : null));
 
-                    TextFormatter<Integer> formatter = new TextFormatter<>(change -> {
-                        String newText = change.getControlNewText();
-                        return newText.matches("\\d{0,6}") ? change : null;
-                    });
-                    tf.setTextFormatter(formatter);
-
-                    btnCong.setOnAction(e -> {
-                        goiYMenu.hide();
-                        pause.stop();
-                        adjust(-1);
-                    });
-                    btnTru.setOnAction(e -> {
-                        goiYMenu.hide();
-                        pause.stop();
-                        adjust(1);
-                    });
-                    tf.setOnAction(e -> {
-                        goiYMenu.hide();
-                        pause.stop();
-                        commitFromText();
-                    });
-                    tf.focusedProperty().addListener((o, w, f) -> {
-                        if (!f) commitFromText();
-                    });
+                    btnMinus.setOnAction(e -> { goiYMenu.hide(); pause.stop(); adjust(-1); });
+                    btnPlus.setOnAction(e -> { goiYMenu.hide(); pause.stop(); adjust(+1); });
+                    tf.setOnAction(e -> { goiYMenu.hide(); pause.stop(); commitFromText(); });
+                    tf.focusedProperty().addListener((o, was, now) -> { if (!now) commitFromText(); });
                 }
 
                 private void adjust(int delta) {
-                    int rowIndex = getIndex();
-                    if (rowIndex < 0 || rowIndex >= getTableView().getItems().size()) return;
-                    ChiTietHoaDon item = getTableView().getItems().get(rowIndex);
-                    if (item == null) return;
-                    int cur = item.getSoLuong();
-                    int next = Math.max(1, cur + delta);
-                    if (next != cur) {
-                        item.setSoLuong(next);
-                        tf.setText(String.valueOf(next));
-                        if (tblChiTietHD != null) tblChiTietHD.refresh();
+                    int idx = getIndex();
+                    if (idx < 0 || idx >= getTableView().getItems().size()) return;
+                    ChiTietHoaDon row = getTableView().getItems().get(idx);
+                    if (row == null) return;
+
+                    Thuoc_SanPham sp = spOf(row);
+                    ChiTietDonViTinh dvt = dvtOf(row);
+                    if (sp == null || dvt == null) return;
+
+                    int cur = row.getSoLuong();
+                    int target = Math.max(1, cur + delta);
+
+                    // compute max allowed for this row given other rows
+                    int max = maxSLDong(row);
+                    if (target > max) {
+                        canhBaoTonKhongDu();
+                        target = Math.max(1, max);
                     }
+                    if (target != cur) {
+                        row.setSoLuong(target);
+                        apDungKMChoRow(row);
+                        if (tblChiTietHD != null) tblChiTietHD.refresh();
+                        tinhTongTien();
+                    }
+                    tf.setText(String.valueOf(row.getSoLuong()));
                 }
 
                 private void commitFromText() {
-                    int rowIndex = getIndex();
-                    if (rowIndex < 0 || rowIndex >= getTableView().getItems().size()) return;
-                    ChiTietHoaDon item = getTableView().getItems().get(rowIndex);
-                    if (item == null) return;
+                    int idx = getIndex();
+                    if (idx < 0 || idx >= getTableView().getItems().size()) return;
+                    ChiTietHoaDon row = getTableView().getItems().get(idx);
+                    if (row == null) return;
+
                     String s = tf.getText();
-                    if (s == null || s.isBlank()) {
-                        tf.setText(String.valueOf(item.getSoLuong()));
-                        return;
-                    }
+                    if (s == null || s.isBlank()) { tf.setText(String.valueOf(row.getSoLuong())); return; }
+
                     try {
-                        int val = Math.max(1, Integer.parseInt(s));
-                        item.setSoLuong(val);
-                        tf.setText(String.valueOf(val));
-                        if (tblChiTietHD != null) tblChiTietHD.refresh();
+                        int entered = Integer.parseInt(s);
+                        if (entered <= 0) entered = 1;
+                        int max = maxSLDong(row);
+                        if (entered > max) {
+                            canhBaoTonKhongDu();
+                            entered = Math.max(1, max);
+                        }
+                        if (entered != row.getSoLuong()) {
+                            row.setSoLuong(entered);
+                            apDungKMChoRow(row);
+                            if (tblChiTietHD != null) tblChiTietHD.refresh();
+                            tinhTongTien();
+                        }
+                        tf.setText(String.valueOf(row.getSoLuong()));
+                        tf.setText(String.valueOf(row.getSoLuong()));
                     } catch (NumberFormatException ignore) {
-                        tf.setText(String.valueOf(item.getSoLuong()));
+                        tf.setText(String.valueOf(row.getSoLuong()));
                     }
                 }
 
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
-                    if (empty) {
-                        setGraphic(null);
-                        setText(null);
-                    } else {
-                        int rowIndex = getIndex();
-                        ChiTietHoaDon rowItem = (rowIndex >= 0 && rowIndex < getTableView().getItems().size())
-                                ? getTableView().getItems().get(rowIndex) : null;
-                        tf.setText(rowItem != null ? String.valueOf(rowItem.getSoLuong()) : "1");
+                    if (empty) { setGraphic(null); setText(null); }
+                    else {
+                        ChiTietHoaDon r = getTableView().getItems().get(getIndex());
+                        tf.setText(r != null ? String.valueOf(r.getSoLuong()) : "1");
                         setGraphic(box);
                         setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                     }
@@ -537,6 +600,7 @@ public class LapHoaDon_Ctrl extends Application {
             colDonVi.setCellValueFactory(p ->
                     new ReadOnlyStringWrapper(layTenDonVi(p.getValue()))
             );
+            canPhai(colDonVi);
         }
         if (colDonGia != null) {
             colDonGia.setCellValueFactory(p ->
@@ -558,6 +622,51 @@ public class LapHoaDon_Ctrl extends Application {
             });
             canPhai(colThanhTien);
         }
+        if (colBo != null) {
+            // Provide a dummy value so the column renders
+            colBo.setCellValueFactory(data -> new ReadOnlyStringWrapper(""));
+
+            colBo.setCellFactory(tc -> new TableCell<>() {
+                private final Button btn = new Button("↑"); // up arrow
+                {
+                    btn.setTooltip(new Tooltip("Bỏ dòng này"));
+                    btn.setFocusTraversable(false);
+                    btn.setOnAction(e -> {
+                        int index = getIndex();
+                        if (index < 0 || index >= getTableView().getItems().size()) return;
+
+                        ChiTietHoaDon item = getTableView().getItems().get(index);
+                        if (item == null) return;
+
+                        // Clean up per-row mappings to avoid leaks
+                        dvtTheoDong.remove(item);
+                        kmTheoDong.remove(item);
+
+                        // Remove the row; STT will auto-shift (index-based STT)
+                        dsChiTietHD.remove(item);
+
+                        // Refresh UI and totals
+                        if (tblChiTietHD != null) tblChiTietHD.refresh();
+                        capNhatTongTien(); // or tinhTongTien();
+                    });
+                    // Optional styling
+                    btn.setMaxWidth(Double.MAX_VALUE);
+                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                    setStyle("-fx-alignment: center;");
+                }
+                @Override
+                protected void updateItem(String val, boolean empty) {
+                    super.updateItem(val, empty);
+                    setText(null);
+                    setGraphic(empty ? null : btn);
+                }
+            });
+
+            colBo.setSortable(false);
+            colBo.setReorderable(false);
+            colBo.setEditable(false);
+            colBo.setStyle("-fx-alignment: CENTER; -fx-padding: 0 4 0 4;");
+        }
 
         dsChiTietHD.addListener((ListChangeListener<ChiTietHoaDon>) c -> tblChiTietHD.refresh());
     }
@@ -577,8 +686,30 @@ public class LapHoaDon_Ctrl extends Application {
         if (row == null || row.getLoHang() == null) return "";
         var sp = row.getLoHang().getThuoc();
         String ten = (sp != null && sp.getTenThuoc() != null) ? sp.getTenThuoc() : "";
-        String donVi = layTenDonVi(row);
-        return ten;
+        return ten + giftSuffixForRow(row);
+    }
+    private String giftSuffixForRow(ChiTietHoaDon row) {
+        com.example.pharmacymanagementsystem_qlht.service.ApDungKhuyenMai ap = kmTheoDong.get(row);
+        if (ap == null) {
+            if (row == null || row.getLoHang() == null || row.getLoHang().getThuoc() == null) return "";
+            String maThuoc = row.getLoHang().getThuoc().getMaThuoc();
+            ap = kmService.apDungChoSP(maThuoc, Math.max(0, row.getSoLuong()),
+                    java.math.BigDecimal.valueOf(Math.max(0, row.getDonGia())),
+                    java.time.LocalDate.now());
+        }
+        if (ap == null || ap.getFreeItems().isEmpty()) return "";
+        StringBuilder sb = new StringBuilder();
+        for (String ma : ap.getFreeItems().keySet()) {
+            String name = tenSpCache.computeIfAbsent(ma, k -> {
+                var sp = spDao.selectById(k);
+                return (sp != null && sp.getTenThuoc() != null) ? sp.getTenThuoc() : "";
+            });
+            if (name != null && !name.isBlank()) {
+                if (sb.length() > 0) sb.append(", ");
+                sb.append(name);
+            }
+        }
+        return sb.length() > 0 ? " (có tặng kèm " + sb + ")" : "";
     }
     private String layTenDonVi(ChiTietHoaDon row) {
         if (row == null) return "";
@@ -614,35 +745,37 @@ public class LapHoaDon_Ctrl extends Application {
     }
 
 
-    private void themFieldTienMat(String value) {
-        if (paneTienMat != null) {
-            paneTienMat.setVisible("Tiền mặt".equals(value));
+
+    private int tonToiDaTheoSP(Thuoc_SanPham sp, ChiTietDonViTinh dvt) {
+        if (sp == null || sp.getMaThuoc() == null || dvt == null) return Integer.MAX_VALUE;
+        int tongTonCoBan = thuocDao.getTongTonCoBan(sp.getMaThuoc());
+        double heSo = dvt.getHeSoQuyDoi() > 0 ? dvt.getHeSoQuyDoi() : 1.0;
+        return (int) Math.floor(tongTonCoBan / heSo);
+    }
+
+    private int tonToiDaTheoDong(ChiTietHoaDon row) {
+        if (row == null || row.getLoHang() == null) return Integer.MAX_VALUE;
+        Thuoc_SanPham sp = row.getLoHang().getThuoc();
+        ChiTietDonViTinh dvt = dvtTheoDong.get(row);
+        return tonToiDaTheoSP(sp, dvt);
+    }
+
+    private void canhBaoTonKhongDu() {
+        Alert a = new Alert(Alert.AlertType.WARNING, "Số lượng tồn không đủ", ButtonType.OK);
+        if (tblChiTietHD != null && tblChiTietHD.getScene() != null) {
+            a.initOwner(tblChiTietHD.getScene().getWindow());
         }
+        a.showAndWait();
     }
 
-    private void hienThiQR() {
-        Stage qrStage = new Stage();
-        VBox vbox = new VBox(10);
-        vbox.setStyle("-fx-padding: 20; -fx-alignment: center;");
-        Label label = new Label("Quét mã QR dưới đây để thanh toán");
-        // Link ma QR
-        InputStream is = getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/qr_mb.jpg");
-        Image qrImg = (is != null) ? new Image(is) : new Image(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/img/qr_mb.jpg").toExternalForm());
-        ImageView qrImage = new ImageView(qrImg);
-        qrImage.setFitWidth(500);
-        qrImage.setPreserveRatio(true);
-        vbox.getChildren().addAll(label, qrImage);
-        Scene scene = new Scene(vbox, 600, 600);
-        qrStage.setScene(scene);
-        qrStage.show();
-    }
 
+//------------Xử lý khách hàng ----------------
     @FXML
     private void xuLyTimKhachHang() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKKhachHang/TKKhachHang_GUI.fxml"));
             Parent root = loader.load();
-            TimKiemKhachHang_Ctrl ctrl = loader.getController();
+            TimKiemKhachHangTrongHD_Ctrl ctrl = loader.getController();
 
             Stage stage = new Stage();
             ctrl.setOnSelected((KhachHang kh) -> {
@@ -697,188 +830,546 @@ public class LapHoaDon_Ctrl extends Application {
             e.printStackTrace();
         }
     }
+    //----------Xử lý tbao SLTon ---------------
+    private double heSo(ChiTietDonViTinh dvt) {
+        return (dvt == null || dvt.getHeSoQuyDoi() <= 0) ? 1.0 : dvt.getHeSoQuyDoi();
+    }
+    private int toBaseQty(int soLuong, ChiTietDonViTinh dvt) {
+        return (int)Math.round(soLuong * heSo(dvt));
+    }
+    private Thuoc_SanPham spOf(ChiTietHoaDon row) {
+        return (row != null && row.getLoHang() != null) ? row.getLoHang().getThuoc() : null;
+    }
+    private ChiTietDonViTinh dvtOf(ChiTietHoaDon row) {
+        return dvtTheoDong.get(row);
+    }
+    private int tonBase(Thuoc_SanPham sp) {
+        return (sp == null) ? 0 : thuocDao.getTongTonCoBan(sp.getMaThuoc());
+    }
+    private ChiTietDonViTinh layDVTCoBan(Thuoc_SanPham sp) {
+        if (sp == null || sp.getDsCTDVT() == null || sp.getDsCTDVT().isEmpty()) return null;
+        for (ChiTietDonViTinh ct : sp.getDsCTDVT()) if (ct.isDonViCoBan()) return ct;
+        // fallback: unit with smallest conversion factor
+        ChiTietDonViTinh min = sp.getDsCTDVT().get(0);
+        for (ChiTietDonViTinh ct : sp.getDsCTDVT()) {
+            if (ct.getHeSoQuyDoi() < min.getHeSoQuyDoi()) min = ct;
+        }
+        return min;
+    }
+    private int fromBaseQty(int baseQty, ChiTietDonViTinh dvt) {
+        return (int) Math.floor(baseQty / heSo(dvt));
+    }
+
+    private int tongDangChonBase(Thuoc_SanPham sp) {
+        if (sp == null || sp.getMaThuoc() == null) return 0;
+        String ma = sp.getMaThuoc();
+        int sum = 0;
+        for (ChiTietHoaDon r : dsChiTietHD) {
+            Thuoc_SanPham rsp = spOf(r);
+            if (rsp != null && ma.equals(rsp.getMaThuoc())) {
+                sum += toBaseQty(r.getSoLuong(), dvtOf(r));
+            }
+        } return sum;
+    }
+
+    private int tongDangChonBaseTru(Thuoc_SanPham sp, ChiTietHoaDon truRow) {
+        if (sp == null || sp.getMaThuoc() == null) return 0;
+        String ma = sp.getMaThuoc();
+        int sum = 0;
+        for (ChiTietHoaDon r : dsChiTietHD) {
+            if (r == truRow) continue;
+            Thuoc_SanPham rsp = spOf(r);
+            if (rsp != null && ma.equals(rsp.getMaThuoc())) {
+                sum += toBaseQty(r.getSoLuong(), dvtOf(r));
+            }
+        }
+        return sum;
+    }
+    private ChiTietHoaDon timDongGiongDVT(Thuoc_SanPham sp, ChiTietDonViTinh dvt) {
+        if (sp == null || sp.getMaThuoc() == null || dvt == null || dvt.getDvt() == null) return null;
+        String ma = sp.getMaThuoc();
+        String maDvt = dvt.getDvt().getMaDVT();
+        for (ChiTietHoaDon r : dsChiTietHD) {
+            Thuoc_SanPham rsp = spOf(r);
+            ChiTietDonViTinh rdvt = dvtOf(r);
+            if (rsp != null && rdvt != null && rdvt.getDvt() != null &&
+                    ma.equals(rsp.getMaThuoc()) && maDvt.equals(rdvt.getDvt().getMaDVT())) {
+                return r;
+            }
+        }
+        return null;
+    }
+    private int maxSLDong(ChiTietHoaDon row) {
+        Thuoc_SanPham sp = spOf(row);
+        ChiTietDonViTinh dvt = dvtOf(row);
+        if (sp == null || dvt == null) return Integer.MAX_VALUE;
+        int baseRemain = tonBase(sp) - tongDangChonBaseTru(sp, row);
+        if (baseRemain <= 0) return 0;
+        return (int)Math.floor(baseRemain / heSo(dvt));
+    }
+    private ChiTietHoaDon gopDongCungSanPhamVeCoBan(Thuoc_SanPham sp) {
+        if (sp == null || sp.getMaThuoc() == null) return null;
+        String ma = sp.getMaThuoc();
+        ChiTietDonViTinh base = layDVTCoBan(sp);
+        if (base == null) return null;
+
+        ChiTietHoaDon first = null;
+        int totalBase = 0;
+        java.util.List<ChiTietHoaDon> remove = new java.util.ArrayList<>();
+
+        for (ChiTietHoaDon r : dsChiTietHD) {
+            Thuoc_SP_TheoLo lo = r.getLoHang();
+            if (lo != null && lo.getThuoc() != null && ma.equals(lo.getThuoc().getMaThuoc())) {
+                if (first == null) first = r; else remove.add(r);
+                totalBase += toBaseQty(r.getSoLuong(), dvtTheoDong.get(r));
+            }
+        }
+
+        if (first != null) {
+            dvtTheoDong.put(first, base);
+            first.setDonGia(base.getGiaBan());
+            first.setSoLuong(fromBaseQty(totalBase, base)); // base unit => exact integer
+            if (!remove.isEmpty()) dsChiTietHD.removeAll(remove);
+        }
+        return first;
+    }
+    //---------Xu Ly Khuyen Mai ---------
+    private final DichVuKhuyenMai kmService = new DichVuKhuyenMai();
+    private ApDungKhuyenMai tinhKMHoaDon(BigDecimal baseSauKMHang) {
+        return kmService.apDungChoHoaDon(baseSauKMHang, LocalDate.now());
+    }
+
+    private ApDungKhuyenMai tinhKMChoDong(String maThuoc, int soLuong, BigDecimal donGia) {
+        return kmService.apDungChoSP(maThuoc, soLuong, donGia, LocalDate.now());
+    }
+
+
+    private void capNhatTongTien() {
+        BigDecimal tongHang = BigDecimal.ZERO;
+        BigDecimal giamDong = BigDecimal.ZERO;
+
+        for (ChiTietHoaDon row : dsChiTietHD) {
+            BigDecimal line = BigDecimal.valueOf(row.getDonGia()).multiply(BigDecimal.valueOf(row.getSoLuong()));
+            tongHang = tongHang.add(line);
+            giamDong = giamDong.add(BigDecimal.valueOf(row.getGiamGia()));
+        }
+
+        BigDecimal baseForInvoiceKM = tongHang.subtract(giamDong).max(BigDecimal.ZERO);
+
+        ApDungKhuyenMai kmHD = tinhKMHoaDon(baseForInvoiceKM);
+
+        BigDecimal giamHoaDon = kmHD.getDiscount() == null ? BigDecimal.ZERO : kmHD.getDiscount();
+        BigDecimal baseSauHD = baseForInvoiceKM.subtract(giamHoaDon).max(BigDecimal.ZERO);
+        BigDecimal vat = baseSauHD.multiply(new BigDecimal("0.05")).setScale(0, RoundingMode.HALF_UP);
+        BigDecimal thanhTien = baseSauHD.add(vat);
+
+        // Update UI
+        if (lblGiamGia != null)     lblGiamGia.setText(cur(giamDong));
+        if (lblTongTien != null)    lblTongTien.setText(cur(baseForInvoiceKM));
+        if (lblGiamTheoHD != null)  lblGiamTheoHD.setText(cur(giamHoaDon));
+        if (lblVAT != null)         lblVAT.setText(cur(vat));
+        if (lblThanhTien != null)   lblThanhTien.setText(cur(thanhTien));
+
+        updateTienThua();
+    }
+    // 5) After updating per-row KM, re-run totals (keeps invoice KM in sync)
+    private void apDungKMChoRow(ChiTietHoaDon row) {
+        if (row == null || row.getLoHang() == null || row.getLoHang().getThuoc() == null) return;
+
+        String maThuoc = row.getLoHang().getThuoc().getMaThuoc();
+        int soLuong = row.getSoLuong();
+        BigDecimal donGia = BigDecimal.valueOf(row.getDonGia());
+
+        try {
+            ApDungKhuyenMai kq =
+                    kmService.apDungChoSP(maThuoc, soLuong, donGia, LocalDate.now());
+
+            kmTheoDong.put(row, kq);
+            row.setGiamGia(kq != null && kq.getDiscount() != null ? kq.getDiscount().doubleValue() : 0.0);
+        } finally {
+            capNhatTongTien();
+        }
+    }
+
+    // 6) Hook recomputation on list changes (add/remove rows)
+    private void initListeners() {
+        // If dsChiTietHD is ObservableList:
+        // dsChiTietHD.addListener((ListChangeListener<ChiTietHoaDon>) c -> capNhatTongTien());
+        // Also call capNhatTongTien() after quantity/price edits.
+    }
+
+
+    //-----Xu Ly giao dich
+
+    private String cur(BigDecimal v) { return VND.format(v.max(BigDecimal.ZERO)); }
+    private void tinhTongTien() {
+        if (tblChiTietHD == null) return;
+
+        BigDecimal tongSauGiamTruocVAT = BigDecimal.ZERO;
+        BigDecimal tongGiamGia = BigDecimal.ZERO;
+
+        for (ChiTietHoaDon r : tblChiTietHD.getItems()) {
+            if (r == null) continue;
+
+            apDungKMChoRow(r);
+
+            BigDecimal soLuong = BigDecimal.valueOf(Math.max(0, r.getSoLuong()));
+            BigDecimal donGia = BigDecimal.valueOf(Math.max(0, r.getDonGia()));
+            BigDecimal giamGia = BigDecimal.valueOf(Math.max(0, r.getGiamGia()));
+
+            BigDecimal thanhTienRaw = soLuong.multiply(donGia);
+            BigDecimal thanhSauGiam = thanhTienRaw.subtract(giamGia);
+            if (thanhSauGiam.signum() < 0) thanhSauGiam = BigDecimal.ZERO;
+
+            tongGiamGia = tongGiamGia.add(giamGia);
+            tongSauGiamTruocVAT = tongSauGiamTruocVAT.add(thanhSauGiam);
+        }
+
+        BigDecimal vat = tongSauGiamTruocVAT.multiply(new BigDecimal("0.05"))
+                .setScale(0, RoundingMode.HALF_UP);
+        BigDecimal thanhTien = tongSauGiamTruocVAT.add(vat);
+
+        if (lblGiamGia != null) lblGiamGia.setText(cur(tongGiamGia));
+        if (lblTongTien != null) lblTongTien.setText(cur(tongSauGiamTruocVAT));
+        if (lblVAT != null) lblVAT.setText(cur(vat));
+        if (lblThanhTien != null) lblThanhTien.setText(cur(thanhTien));
+        updateTienThua();
+    }
+    //----------Xử lý Tien Thua ----------
+    private void initTienMatEvents() {
+        txtSoTienKhachDua.textProperty().addListener((obs, oldVal, newVal) -> updateTienThua());
+        txtSoTienKhachDua.textProperty().addListener((obs, o, n) -> {
+            if (n == null) return;
+            String digits = n.replaceAll("[^\\d]", "");
+            if (!n.equals(digits)) {
+                int caret = txtSoTienKhachDua.getCaretPosition();
+                Platform.runLater(() -> {
+                    txtSoTienKhachDua.setText(digits);
+                    txtSoTienKhachDua.positionCaret(Math.min(caret - (n.length() - digits.length()), digits.length()));
+                });
+            }
+        });
+        updateTienThua();
+    }
+    private void updateTienThua() {
+        long thanhTien = ceilToThousand(parseVND(lblThanhTien.getText()));
+        long khachDua = parseVND(txtSoTienKhachDua.getText());
+
+        if (khachDua < thanhTien) {
+            lblTienThua.setText("Chưa đủ tiền thanh toán");
+            lblTienThua.setStyle("-fx-text-fill: #d32f2f; -fx-font-weight: bold;");
+        } else {
+            long tienThua = khachDua - thanhTien;
+            lblTienThua.setText(formatVND(tienThua));
+            lblTienThua.setStyle("");
+        }
+    }
+
+    private long parseVND(String text) {
+        if (text == null) return 0L;
+        String digits = text.replaceAll("[^\\d]", "");
+        return digits.isEmpty() ? 0L : Long.parseLong(digits);
+    }
+
+    private String formatVND(long amount) {
+        DecimalFormat df = new DecimalFormat("#,###");
+        df.setGroupingUsed(true);
+        return df.format(amount) + " đ";
+    }
+
+    private long ceilToThousand(long amount) {
+        if (amount <= 0) return 0;
+        long mod = amount % 1000;
+        return mod == 0 ? amount : (amount / 1000 + 1) * 1000;
+    }
+
 
     public void xoaRong(ActionEvent actionEvent) {
         txtTimThuoc.setText("");
     }
     @FXML
-    private void xuLyXuatPDF(ActionEvent event) {
-        // 1. Kiểm tra xem có dữ liệu để xuất không
-        if (dsChiTietHD == null || dsChiTietHD.isEmpty()) {
-            showAlert(Alert.AlertType.INFORMATION, "Không có dữ liệu", "Chưa có chi tiết hóa đơn nào để xuất.");
+    private void xuLyThanhToan(ActionEvent actionEvent) {
+        if (tblChiTietHD.getItems() == null || tblChiTietHD.getItems().isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Không có sản phẩm nào để thanh toán.").showAndWait();
             return;
         }
-
-        // 2. Mở FileChooser để người dùng chọn nơi lưu
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Lưu Hóa Đơn PDF");
-        fileChooser.setInitialFileName("HoaDon_" + LocalDate.now());
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files (*.pdf)", "*.pdf"));
-
-        // Lấy cửa sổ hiện tại để hiển thị FileChooser
-        Stage stage = null;
-        if (txtTenKH != null && txtTenKH.getScene() != null) {
-            stage = (Stage) txtTenKH.getScene().getWindow();
+        NhanVien nv = DangNhap_Ctrl.user;
+        if (nv == null) {
+            new Alert(Alert.AlertType.ERROR, "Chưa có nhân viên nào đăng nhập.").showAndWait();
+            return;
         }
+        final String SQL_NEXT_MAHD     = "SELECT TOP 1 MaHD FROM HoaDon ORDER BY MaHD DESC";
+        final String SQL_INSERT_HOADON = "INSERT INTO HoaDon (MaHD, MaNV, MaKH, NgayLap, TrangThai, LoaiHoaDon, MaDonThuoc) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        final String SQL_INSERT_CTHD   = "INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia) VALUES (?, ?, ?, ?, ?)";
+        final String SQL_NEXT_MAKH     = "SELECT TOP 1 MaKH FROM KhachHang ORDER BY MaKH DESC";
+        final String SQL_INSERT_KH     = "INSERT INTO KhachHang (MaKH, TenKH, SDT) VALUES (?, ?, ?)";
 
-        File file = fileChooser.showSaveDialog(stage);
+        Connection con = null;
+        try {
+            con = ConnectDB.getInstance();
+            con.setAutoCommit(false);
+            KhachHang kh = null;
+            if (txtTenKH != null && txtSDT != null) {
+                String ten = txtTenKH.getText();
+                String sdt = txtSDT.getText();
 
-        // 3. Nếu người dùng chọn file, tiến hành xuất
-        if (file != null) {
-            try {
-                xuatHoaDonPDF(file);
-                showAlert(Alert.AlertType.INFORMATION, "Thành công", "Xuất file PDF hóa đơn thành công!");
-            } catch (IOException e) {
-                e.printStackTrace();
-                showAlert(Alert.AlertType.ERROR, "Lỗi", "Có lỗi xảy ra khi xuất file PDF: " + e.getMessage());
+                if ((ten != null && !ten.isBlank()) || (sdt != null && !sdt.isBlank())) {
+                    kh = new KhachHang();
+                    kh.setTenKH(ten);
+                    kh.setSdt(sdt);
+
+                    KhachHang_Dao khDao = new KhachHang_Dao();
+                    kh = khDao.findOrCreateByPhone(sdt, ten);
+                }
+            }
+
+            if (kh != null && (kh.getMaKH() == null || kh.getMaKH().isBlank())) {
+                String maKH = "KH001";
+                try (PreparedStatement ps = con.prepareStatement(SQL_NEXT_MAKH);
+                     ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        String last = rs.getString(1);
+                        try {
+                            int num = Integer.parseInt(last.substring(2)) + 1;
+                            maKH = String.format("KH%03d", num);
+                        } catch (Exception ignored) { }
+                    }
+                }
+                try (PreparedStatement ps = con.prepareStatement(SQL_INSERT_KH)) {
+                    ps.setString(1, maKH);
+                    ps.setString(2, kh.getTenKH());
+                    ps.setString(3, kh.getSdt());
+                    ps.executeUpdate();
+                }
+                kh.setMaKH(maKH);
+            }
+
+            allocateLotsAutomatically(con, tblChiTietHD.getItems());
+
+            // 1 Ktra tồn kho
+            for (ChiTietHoaDon line : tblChiTietHD.getItems()) {
+                Thuoc_SP_TheoLo lo = line.getLoHang();
+                if (lo == null || lo.getMaLH() == null || lo.getMaLH().isBlank()) {
+                    throw new IllegalStateException("Vui lòng chọn lô (MaLH) cho từng sản phẩm trước khi thanh toán.");
+                }
+                Thuoc_SP_TheoLo lotNow = new Thuoc_SP_TheoLo_Dao().selectById(lo.getMaLH());
+                if (lotNow == null) {
+                    throw new IllegalStateException("Không tìm thấy thông tin lô hàng " + lo.getMaLH());
+                }
+                int needBase = line.getSoLuong();
+                if (needBase <= 0) {
+                    throw new IllegalStateException("Số lượng không hợp lệ cho lô hàng " + lo.getMaLH());
+                }
+                if (lotNow.getSoLuongTon() < needBase) {
+                    throw new IllegalStateException("Không đủ số lượng tồn " + lo.getMaLH() + ". Cần " + needBase + ", chỉ còn " + lotNow.getSoLuongTon());
+                }
+            }
+            String loaiHoaDon = "OTC";
+            String maDonThuoc = null;
+
+            // Giả sử rbOTC và txtMaDonThuoc là @FXML
+            if (rbOTC.isSelected()) { // Người dùng chọn "Kê đơn (ETC)"
+                loaiHoaDon = "ETC";
+                maDonThuoc = txtMaDonThuoc.getText(); // Giả sử txtMaDonThuoc là tên @FXML
+
+                if (maDonThuoc == null || maDonThuoc.trim().isEmpty()) {
+                    // new Alert(Alert.AlertType.ERROR, "Hóa đơn ETC bắt buộc phải có Mã đơn thuốc.").showAndWait();
+                    // con.rollback(); // Hủy giao dịch
+                    // return; // Dừng lại
+
+                    // Ném lỗi để đi vào khối catch
+                    throw new IllegalStateException("Hóa đơn Kê đơn (ETC) bắt buộc phải có Mã đơn thuốc.");
+                }
+            }
+
+            // 2) Tạo MaHD
+            String maHD = "HD001";
+            try (PreparedStatement ps = con.prepareStatement(SQL_NEXT_MAHD);
+                 ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    String lastMa = rs.getString(1);
+                    try {
+                        int num = Integer.parseInt(lastMa.substring(2)) + 1;
+                        maHD = String.format("HD%03d", num);
+                    } catch (Exception ignore) { }
+                }
+            }
+
+
+            // 3 Thêm HoaDon
+            try (PreparedStatement ps = con.prepareStatement(SQL_INSERT_HOADON)) {
+                ps.setString(1, maHD);
+                ps.setString(2, nv.getMaNV());
+                ps.setString(3, kh != null ? kh.getMaKH() : null);
+                ps.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
+                ps.setBoolean(5, true);
+                ps.setString(6, loaiHoaDon);
+                ps.setObject(7, maDonThuoc);
+                ps.executeUpdate();
+            }
+
+            // 4 Thêm ChiTietHoaDon
+            Thuoc_SP_TheoLo_Dao loDao = new Thuoc_SP_TheoLo_Dao();
+            for (ChiTietHoaDon line : tblChiTietHD.getItems()) {
+                Thuoc_SP_TheoLo lo = line.getLoHang();
+                String maLH = lo.getMaLH();
+
+                int soLuongBase = line.getSoLuong();;
+                double donGia = line.getDonGia();
+                double giamGia = line.getGiamGia();
+
+                try (PreparedStatement psCT = con.prepareStatement(SQL_INSERT_CTHD)) {
+                    psCT.setString(1, maHD);
+                    psCT.setString(2, maLH);
+                    psCT.setInt(3, soLuongBase);
+                    psCT.setDouble(4, donGia);
+                    psCT.setDouble(5, giamGia);
+                    psCT.executeUpdate();
+                }
+
+                boolean ok = loDao.giamTonKhoByMaLo(con, maLH, soLuongBase);
+                if (!ok) {
+                    throw new IllegalStateException("Không thể cập nhật tồn kho cho lô " + maLH + ". Dữ liệu có thể đã thay đổi.");
+                }
+            }
+
+            con.commit();
+
+            new Alert(Alert.AlertType.INFORMATION, "Lập hóa đơn thành công.").showAndWait();
+
+            tblChiTietHD.getItems().clear();
+            lblTongTien.setText("0 VNĐ");
+            lblVAT.setText("0 VNĐ");
+            lblThanhTien.setText("0 VNĐ");
+            lblGiamGia.setText("0 VNĐ");
+            lblGiamTheoHD.setText("0 VNĐ");
+            txtSoTienKhachDua.clear();
+            lblTienThua.setText("0 VNĐ");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            if (con != null) {
+                try {
+                    if (!con.getAutoCommit()) con.rollback();
+                } catch (Exception ignore) { }
+            }
+            new Alert(Alert.AlertType.ERROR, "Lập hóa đơn thất bại: " + ex.getMessage()).showAndWait();
+        } finally {
+            if (con != null) {
+                try {
+                    con.setAutoCommit(true);
+                    con.close();
+                } catch (Exception ignore) { }
             }
         }
     }
+    private void allocateLotsAutomatically(Connection con, List<ChiTietHoaDon> chiTietList) throws SQLException {
+        Thuoc_SP_TheoLo_Dao loDao = new Thuoc_SP_TheoLo_Dao();
+        List<ChiTietHoaDon> perLotLines = new ArrayList<>();
 
-    private void xuatHoaDonPDF(File file) throws IOException {
-        PdfWriter writer = new PdfWriter(file);
-        PdfDocument pdf = new PdfDocument(writer);
-        Document document = new Document(pdf);
+        Map<String, Integer> sanPhamCanMua = new HashMap<>();
+        Map<String, ChiTietHoaDon> originalLines = new HashMap<>();
 
-        // 1. Thiết lập Font
-        PdfFont font;
+        for (ChiTietHoaDon original : chiTietList) {
+            if (original == null || original.getLoHang() == null || original.getLoHang().getThuoc() == null) {
+                throw new IllegalStateException("Thông tin sản phẩm trong giỏ hàng không hợp lệ.");
+            }
+
+            Thuoc_SanPham sp = original.getLoHang().getThuoc();
+            String maThuoc = sp.getMaThuoc();
+            int requestedDisplayQty = Math.max(0, original.getSoLuong());
+            if (requestedDisplayQty <= 0) continue;
+
+            // Lấy đơn vị tính và hệ số quy đổi
+            ChiTietDonViTinh selDvt = dvtOf(original);
+            if (selDvt == null) selDvt = layDVTCoBan(sp);
+            double factor = heSo(selDvt);
+
+            int requestedBase = (int) Math.round(requestedDisplayQty * factor);
+
+
+            sanPhamCanMua.put(maThuoc, sanPhamCanMua.getOrDefault(maThuoc, 0) + requestedBase);
+
+
+            if (!originalLines.containsKey(maThuoc)) {
+                originalLines.put(maThuoc, original);
+                dvtTheoDong.put(original, selDvt); // Lưu lại DVT gốc
+            }
+        }
+
+        // lap
+        for (String maThuoc : sanPhamCanMua.keySet()) {
+            int remainingBase = sanPhamCanMua.get(maThuoc); // Tổng số lượng cơ bản cần lấy (Vd: 60 viên)
+            ChiTietHoaDon original = originalLines.get(maThuoc); // Dòng gốc để lấy giá, km
+            Thuoc_SanPham sp = original.getLoHang().getThuoc();
+
+            // lấy lô hàng còn và sx theo hsd
+            List<Thuoc_SP_TheoLo> danhSachLo = loDao.selectAllAvailableLots(con, maThuoc);
+
+            if (danhSachLo == null || danhSachLo.isEmpty()) {
+                throw new IllegalStateException("Không đủ hàng cho sản phẩm: " + sp.getTenThuoc());
+            }
+
+            // duyet tung lo và test so lượng
+            for (Thuoc_SP_TheoLo lo : danhSachLo) {
+                if (remainingBase <= 0) break; // Đã lấy đủ hàng, không cần duyệt thêm lô
+
+                int availableBase = lo.getSoLuongTon(); // Số lượng cơ bản tồn kho của lô
+                int takeBase = Math.min(remainingBase, availableBase); // Số lượng cơ bản sẽ lấy từ lô này
+
+                if (takeBase > 0) {
+                    ChiTietHoaDon cthdTheoLo = new ChiTietHoaDon();
+                    cthdTheoLo.setLoHang(lo); // **Quan trọng: gán lô cụ thể**
+
+                    cthdTheoLo.setSoLuong(takeBase);//luu sl co bản
+                    cthdTheoLo.setDonGia(original.getDonGia()); // Lấy giá từ dòng gốc
+
+                    double percent = (double) takeBase / (double) sanPhamCanMua.get(maThuoc);
+                    double giamGiaTheoLo = Math.round(original.getGiamGia() * percent);
+                    cthdTheoLo.setGiamGia(giamGiaTheoLo);
+
+                    perLotLines.add(cthdTheoLo);
+                    dvtTheoDong.put(cthdTheoLo, dvtOf(original));
+
+                    remainingBase -= takeBase; // Giảm số lượng cơ bản cần lấy
+                }
+            } // xong vong lap lô
+
+            //4 ktra sau khi het lo
+            if (remainingBase > 0) {
+                int totalAvailable = sanPhamCanMua.get(maThuoc) - remainingBase;
+                throw new IllegalStateException("Không đủ hàng cho sản phẩm: " + sp.getTenThuoc()
+                        + ". Cần " + sanPhamCanMua.get(maThuoc) + ", chỉ còn " + totalAvailable);
+            }
+        } // het vong lap sp
+        chiTietList.clear();
+        chiTietList.addAll(perLotLines);
+    }
+
+    private String getMaThuocFromRow(ChiTietHoaDon line) {
+        if (line == null || line.getLoHang() == null) return null;
         try {
-            font = PdfFontFactory.createFont(FONT_PATH);
-        } catch (IOException e) {
-            System.err.println("Không tìm thấy font tại: " + FONT_PATH + ". Sử dụng font mặc định.");
-            font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
-        }
-        document.setFont(font);
-
-        // 2. Thêm Thông tin nhà thuốc (Header)
-        document.add(new Paragraph("Quốc Khánh Pharmacy")
-                .setFontSize(16)
-                .setBold()
-                .setTextAlignment(TextAlignment.CENTER));
-        document.add(new Paragraph("Địa chỉ: 12 Đường Nguyễn Văn Bảo, phường 4, Gò Vấp, TP Hồ Chí Minh")
-                .setFontSize(10)
-                .setTextAlignment(TextAlignment.CENTER));
-        document.add(new Paragraph("Hotline: 1800 6868")
-                .setFontSize(10)
-                .setTextAlignment(TextAlignment.CENTER));
-
-        // 3. Thêm Tiêu đề hóa đơn
-        document.add(new Paragraph("HOÁ ĐƠN BÁN LẺ")
-                .setFontSize(18)
-                .setBold()
-                .setTextAlignment(TextAlignment.CENTER)
-                .setMarginTop(15));
-
-        document.add(new Paragraph("Ngày lập: " + (dpNgayKeDon.getValue() != null ? dpNgayKeDon.getValue().toString() : LocalDate.now().toString()))
-                .setTextAlignment(TextAlignment.CENTER));
-
-        // 4. Thêm Thông tin khách hàng
-        document.add(new Paragraph("THÔNG TIN KHÁCH HÀNG")
-                .setFontSize(14)
-                .setBold()
-                .setMarginTop(15));
-
-        document.add(new Paragraph("Khách hàng: " + (txtTenKH.getText() != null ? txtTenKH.getText() : "Khách lẻ")));
-        document.add(new Paragraph("Số điện thoại: " + (txtSDT.getText() != null ? txtSDT.getText() : "")));
-        document.add(new Paragraph("Phương thức thanh toán: " + (cbPhuongThucTT.getValue() != null ? cbPhuongThucTT.getValue() : "Tiền mặt")));
-
-        // 5. Thêm Bảng chi tiết hóa đơn
-        document.add(new Paragraph("DANH SÁCH SẢN PHẨM")
-                .setFontSize(14)
-                .setBold()
-                .setMarginTop(15));
-
-        float[] columnWidths = {1, 5, 1.5f, 2, 2.5f, 2.5f, 3};
-        Table table = new Table(UnitValue.createPercentArray(columnWidths));
-        table.setWidth(UnitValue.createPercentValue(100));
-
-        // Thêm Headers cho bảng
-        table.addHeaderCell(new com.itextpdf.layout.element.Cell().add(new Paragraph(colSTT.getText()).setBold()));
-        table.addHeaderCell(new com.itextpdf.layout.element.Cell().add(new Paragraph(colTenSP.getText()).setBold()));
-        table.addHeaderCell(new com.itextpdf.layout.element.Cell().add(new Paragraph(colSL.getText()).setBold()));
-        table.addHeaderCell(new com.itextpdf.layout.element.Cell().add(new Paragraph(colDonVi.getText()).setBold()));
-        table.addHeaderCell(new com.itextpdf.layout.element.Cell().add(new Paragraph(colDonGia.getText()).setBold()));
-        table.addHeaderCell(new com.itextpdf.layout.element.Cell().add(new Paragraph(colChietKhau.getText()).setBold()));
-        table.addHeaderCell(new com.itextpdf.layout.element.Cell().add(new Paragraph(colThanhTien.getText()).setBold()));
-
-        // 6. Thêm dữ liệu từ dsChiTietHD vào bảng
-        int stt = 1;
-        double tongTienHang = 0;
-        double tongChietKhau = 0;
-
-        for (ChiTietHoaDon cthd : dsChiTietHD) {
-            String tenSP = layTenSP(cthd);
-            int soLuong = cthd.getSoLuong();
-            String donVi = layTenDonVi(cthd);
-            double donGia = cthd.getDonGia();
-            double chietKhau = cthd.getGiamGia();
-            double thanhTien = Math.max(0, (soLuong * donGia) - chietKhau);
-
-            tongTienHang += soLuong * donGia;
-            tongChietKhau += chietKhau;
-
-            table.addCell(String.valueOf(stt++));
-            table.addCell(tenSP);
-            table.addCell(String.valueOf(soLuong)).setTextAlignment(TextAlignment.CENTER);
-            table.addCell(donVi);
-            table.addCell(formatVND(donGia)).setTextAlignment(TextAlignment.RIGHT);
-            table.addCell(formatVND(chietKhau)).setTextAlignment(TextAlignment.RIGHT);
-            table.addCell(formatVND(thanhTien)).setTextAlignment(TextAlignment.RIGHT);
-        }
-        document.add(table);
-
-        // 7. Thêm phần Tổng kết
-        double tongThanhToan = tongTienHang - tongChietKhau;
-
-        document.add(new Paragraph("Tổng tiền hàng: " + formatVND(tongTienHang))
-                .setTextAlignment(TextAlignment.RIGHT)
-                .setMarginTop(10));
-        document.add(new Paragraph("Tổng chiết khấu: " + formatVND(tongChietKhau))
-                .setTextAlignment(TextAlignment.RIGHT));
-        document.add(new Paragraph("TỔNG THANH TOÁN: " + formatVND(tongThanhToan))
-                .setTextAlignment(TextAlignment.RIGHT)
-                .setBold()
-                .setFontSize(14));
-
-        // 8. Thêm Thông tin tiền mặt (Footer) - ĐÃ CẬP NHẬT
-        String phuongThucTT = cbPhuongThucTT.getValue();
-
-        if ("Tiền mặt".equals(phuongThucTT) && txtSoTienKhachDua != null && lblTienThuaValue != null) {
-
-            String tienKhachDuaStr = txtSoTienKhachDua.getText();
-            String tienThuaStr = lblTienThuaValue.getText();
-
-            tienKhachDuaStr = (tienKhachDuaStr == null || tienKhachDuaStr.isBlank())
-                    ? formatVND(0) : tienKhachDuaStr;
-
-            tienThuaStr = (tienThuaStr == null || tienThuaStr.isBlank() || tienThuaStr.equals("0 VNĐ"))
-                    ? formatVND(0) : tienThuaStr;
-
-            // ----- ĐÂY LÀ THAY ĐỔI -----
-            document.add(new Paragraph("Tiền khách đưa: " + tienKhachDuaStr)
-                    .setTextAlignment(TextAlignment.RIGHT)
-                    .setBold() // Thêm in đậm
-                    .setFontSize(14) // Thêm cỡ chữ 14
-                    .setMarginTop(5));
-
-            document.add(new Paragraph("Tiền thừa: " + tienThuaStr)
-                    .setTextAlignment(TextAlignment.RIGHT)
-                    .setBold() // Thêm in đậm
-                    .setFontSize(14)); // Thêm cỡ chữ 14
-            // ----- KẾT THÚC THAY ĐỔI -----
-        }
-
-        // 9. Đóng tài liệu
-        document.close();
+            // common model: lot holds Thuoc object
+            var lo = line.getLoHang();
+            try {
+                if (lo.getThuoc() != null && lo.getThuoc().getMaThuoc() != null) {
+                    return lo.getThuoc().getMaThuoc();
+                }
+            } catch (Exception ignore) { }
+            try {
+                java.lang.reflect.Method m = lo.getClass().getMethod("getMaThuoc");
+                Object v = m.invoke(lo);
+                if (v != null) return String.valueOf(v);
+            } catch (NoSuchMethodException ignore) { }
+        } catch (Exception ignored) { }
+        return null;
     }
 
 
-    private void showAlert(Alert.AlertType alertType, String title, String content) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
+    private int toBaseUnits(ChiTietHoaDon line) {
+        if (line == null) return 0;
+        ChiTietDonViTinh dvt = dvtOf(line);
+        double factor = heSo(dvt);
+        return (int) Math.round(line.getSoLuong() * factor);
     }
 
 }

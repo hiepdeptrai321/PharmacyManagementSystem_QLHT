@@ -6,6 +6,7 @@ import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SanPham_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.KhuyenMai;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,8 +18,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.File;
 import java.util.List;
 
 public class DanhMucThuoc_Ctrl extends Application {
@@ -53,7 +60,9 @@ public class DanhMucThuoc_Ctrl extends Application {
     }
 
     public void initialize() {
-        loadTable();
+        Platform.runLater(() -> {
+            loadTable();
+        });
         btnLamMoi.setOnAction(e-> LamMoi());
         tfTimThuoc.setOnAction(e-> timThuoc());
         btnTimThuoc.setOnAction(e-> timThuoc());
@@ -157,16 +166,17 @@ public class DanhMucThuoc_Ctrl extends Application {
 //  Thêm thuốc
     public void themthuoc(ActionEvent actionEvent) {
         try {
-            Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/ThemThuoc_GUI.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
-
             ThemThuoc_Ctrl ctrl = loader.getController();
             ctrl.setParent(this);
 
-            stage.setScene(scene);
-            stage.show();
+            Stage dialog = new Stage();
+            dialog.initOwner(tbl_Thuoc.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Thêm thuốc");
+            dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -200,4 +210,20 @@ public class DanhMucThuoc_Ctrl extends Application {
         loadTable();
     }
 
+    public void btnThemThuocByExcel(ActionEvent actionEvent) {
+        try{
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/ThemThuocBangFileExcel_GUI.fxml"));
+            Parent root = loader.load();
+            Stage dialog = new Stage();
+            dialog.initOwner(tbl_Thuoc.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Thêm thuốc bằng file Excel");
+            dialog.showAndWait();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
 }

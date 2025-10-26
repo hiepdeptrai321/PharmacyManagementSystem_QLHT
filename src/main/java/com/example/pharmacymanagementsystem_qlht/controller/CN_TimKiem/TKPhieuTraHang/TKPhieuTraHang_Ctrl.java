@@ -5,6 +5,7 @@ import com.example.pharmacymanagementsystem_qlht.model.PhieuDatHang;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuTraHang;
 import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -80,7 +81,9 @@ public class TKPhieuTraHang_Ctrl extends Application {
         btnTimKiem.setOnAction(e -> timKiem());
         btnHuyBo.setOnAction(e -> lamMoi());
         cbLoc.setOnAction(e -> boLocNhanh());
-        loadTable();
+        Platform.runLater(()->{
+            loadTable();
+        });
     }
 
     public void loadTable() {

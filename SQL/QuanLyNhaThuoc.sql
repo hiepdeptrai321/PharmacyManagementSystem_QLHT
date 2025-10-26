@@ -2171,3 +2171,56 @@ BEGIN
     ORDER BY HSD ASC;
 END;
 GO
+
+CREATE PROCEDURE sp_InsertThuoc_SanPham
+    @TenThuoc NVARCHAR(100),
+    @HamLuong INT,
+    @DonViHL VARCHAR(20),
+    @DuongDung NVARCHAR(20),
+    @QuyCachDongGoi NVARCHAR(20),
+    @SDK_GPNK VARCHAR(20),
+    @HangSX NVARCHAR(30),
+    @NuocSX NVARCHAR(20),
+    @MaLoaiHang VARCHAR(10),
+    @MaNDL VARCHAR(10),
+    @ViTri VARCHAR(10)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @NewMaThuoc VARCHAR(10);
+    DECLARE @MaxMa VARCHAR(10);
+    DECLARE @Num INT;
+
+    -- 🔍 Chỉ lấy mã bắt đầu bằng 'TS'
+    SELECT @MaxMa = MAX(MaThuoc)
+    FROM Thuoc_SanPham
+    WHERE MaThuoc LIKE 'TS%';
+
+    -- 🧩 Nếu chưa có dữ liệu, tạo TS001
+    IF @MaxMa IS NULL
+        SET @NewMaThuoc = 'TS001';
+    ELSE
+    BEGIN
+        -- Lấy phần số trong mã (bỏ 'TS')
+        SET @Num = TRY_CAST(SUBSTRING(@MaxMa, 3, LEN(@MaxMa)) AS INT);
+        IF @Num IS NULL SET @Num = 0;
+        SET @Num += 1;
+
+        -- Định dạng mã mới (TS + 3 số)
+        SET @NewMaThuoc = 'TS' + RIGHT('000' + CAST(@Num AS VARCHAR(3)), 3);
+    END;
+
+    -- 🧾 Thêm bản ghi mới
+    INSERT INTO Thuoc_SanPham (
+        MaThuoc, TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi,
+        SDK_GPNK, HangSX, NuocSX, MaLoaiHang, MaNDL, ViTri
+    ) VALUES (
+        @NewMaThuoc, @TenThuoc, @HamLuong, @DonViHL, @DuongDung, @QuyCachDongGoi,
+        @SDK_GPNK, @HangSX, @NuocSX, @MaLoaiHang, @MaNDL, @ViTri
+    );
+
+    -- ✅ Trả về mã mới để hiển thị hoặc log
+    SELECT @NewMaThuoc AS MaThuoc;
+END;
+GO

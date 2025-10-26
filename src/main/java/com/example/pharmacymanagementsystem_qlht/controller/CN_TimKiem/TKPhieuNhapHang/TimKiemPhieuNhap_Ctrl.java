@@ -75,7 +75,6 @@ public class TimKiemPhieuNhap_Ctrl extends Application {
         duLieuChinh.addAll(new PhieuNhap_Dao().selectAll());
         duLieu = new FilteredList<>(duLieuChinh, sp -> true);
         tblPhieuNhap.setItems(duLieu);
-        ThemPhieuNhapVaoCot();
         cbxTimKiem.getItems().addAll("Loại tìm kiếm", "Mã phiếu nhập", "Nhà cung cấp", "Nhân viên");
         cbxTimKiem.setValue("Loại tìm kiếm");
         txtTimKiem.textProperty().addListener((observable, oldValue, newValue) -> TimKiemtxt());
@@ -99,10 +98,12 @@ public class TimKiemPhieuNhap_Ctrl extends Application {
             }
             tpBoLoc.requestLayout(); // ép VBox tính lại layout
         });
-
+        Platform.runLater(()->{
+            loadTable();
+        });
     }
 
-    public void ThemPhieuNhapVaoCot() {
+    public void loadTable() {
         colMaPN.setCellValueFactory(new PropertyValueFactory<>("maPN"));
         colNhaCungCap.setCellValueFactory(cd ->
                 new SimpleStringProperty(cd.getValue().getNhaCungCap().getTenNCC())

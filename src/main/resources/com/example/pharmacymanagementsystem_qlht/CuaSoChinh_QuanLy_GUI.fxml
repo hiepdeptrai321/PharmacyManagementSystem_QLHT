@@ -68,7 +68,7 @@
                            <items>
                               <MenuItem id="menuItems" mnemonicParsing="false" onAction="#lapHoaDon" text="Lập hóa đơn" />
                               <MenuItem id="menuItems" mnemonicParsing="false" onAction="#lapPhieuDoiHang" text="lập phiếu đổi hàng" />
-                              <MenuItem id="menuItems" mnemonicParsing="false" onAction="#lapPhieuTraHang" text="Lập piếu trả hàng" />
+                              <MenuItem id="menuItems" mnemonicParsing="false" onAction="#lapPhieuTraHang" text="Lập phiếu trả hàng" />
                               <MenuItem id="menuItems" mnemonicParsing="false" onAction="#lapPhieuDatHang" text="Lập phiếu đặt hàng" />
                            </items>
                         </Menu>
@@ -216,12 +216,12 @@
                                                                 <Font name="System Bold" size="35.0" />
                                                             </font>
                                                         </Label>
-                                                        <Label layoutX="62.0" layoutY="153.0" text="Tháng trước: 10 VND">
+                                                        <Label layoutX="62.0" layoutY="153.0" text="Tháng trước:">
                                                             <font>
                                                                 <Font name="System Bold" size="25.0" />
                                                             </font>
                                                         </Label>
-                                                        <Label layoutX="62.0" layoutY="202.0" text="Tháng này: 15VND">
+                                                        <Label layoutX="62.0" layoutY="202.0" text="Tháng này:">
                                                             <font>
                                                                 <Font name="System Bold" size="25.0" />
                                                             </font>
@@ -232,6 +232,16 @@
                                                                 <Image url="@img/Tien.png" />
                                                             </image>
                                                         </ImageView>
+                                          <Label layoutX="231.0" layoutY="153.0" text="0 VND">
+                                             <font>
+                                                <Font name="System Bold" size="25.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="231.0" layoutY="202.0" text="0 VND">
+                                             <font>
+                                                <Font name="System Bold" size="25.0" />
+                                             </font>
+                                          </Label>
                                                     </children>
                                                 </Pane>
                                             </children>
@@ -245,12 +255,12 @@
                                                                 <Font name="System Bold" size="35.0" />
                                                             </font>
                                                         </Label>
-                                                        <Label layoutX="64.0" layoutY="202.0" text="Tháng này: 10 hóa đơn">
+                                                        <Label layoutX="64.0" layoutY="202.0" text="Tháng này: ">
                                                             <font>
                                                                 <Font name="System Bold" size="25.0" />
                                                             </font>
                                                         </Label>
-                                                        <Label layoutX="64.0" layoutY="153.0" text="Tháng trước: 10 hóa đơn">
+                                                        <Label layoutX="64.0" layoutY="153.0" text="Tháng trước: ">
                                                             <font>
                                                                 <Font name="System Bold" size="25.0" />
                                                             </font>
@@ -260,6 +270,16 @@
                                                                 <Image url="@img/hoaDon.png" />
                                                             </image>
                                                         </ImageView>
+                                          <Label layoutX="240.0" layoutY="153.0" text="0 hóa đơn">
+                                             <font>
+                                                <Font name="System Bold" size="25.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="240.0" layoutY="202.0" text="0 hóa đơn">
+                                             <font>
+                                                <Font name="System Bold" size="25.0" />
+                                             </font>
+                                          </Label>
                                                     </children>
                                                 </Pane>
                                             </children>

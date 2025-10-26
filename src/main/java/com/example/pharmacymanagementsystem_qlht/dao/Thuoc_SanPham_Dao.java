@@ -40,12 +40,12 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
                     "ORDER BY ts.TenThuoc";
     @Override
     public boolean insert(Thuoc_SanPham e) {
-        return ConnectDB.update(INSERT_SQL,e.getMaThuoc(), e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(),e.getNhomDuocLy()!=null?e.getNhomDuocLy().getMaNDL():null, e.getLoaiHang().getMaLoaiHang()!=null?e.getLoaiHang().getMaLoaiHang():null, e.getHinhAnh(),e.getVitri().getMaKe()!=null?e.getVitri().getMaKe():null)>0;
+        return ConnectDB.update(INSERT_SQL,e.getMaThuoc(), e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(),e.getNhomDuocLy()!=null?e.getNhomDuocLy().getMaNDL():null, e.getLoaiHang()!=null?e.getLoaiHang().getMaLoaiHang():null, e.getHinhAnh(),e.getVitri()!=null?e.getVitri().getMaKe():null)>0;
     }
 
     @Override
     public boolean update(Thuoc_SanPham thuoc) {
-        return ConnectDB.update(UPDATE_SQL, thuoc.getTenThuoc(), thuoc.getHamLuong(), thuoc.getDonViHamLuong(), thuoc.getDuongDung(), thuoc.getQuyCachDongGoi(), thuoc.getSDK_GPNK(), thuoc.getHangSX(), thuoc.getNuocSX(), thuoc.getNhomDuocLy()!=null?thuoc.getNhomDuocLy().getMaNDL():null, thuoc.getLoaiHang().getMaLoaiHang(), thuoc.getHinhAnh(), thuoc.getVitri().getMaKe(), thuoc.getMaThuoc()) > 0;
+        return ConnectDB.update(UPDATE_SQL, thuoc.getTenThuoc(), thuoc.getHamLuong(), thuoc.getDonViHamLuong(), thuoc.getDuongDung(), thuoc.getQuyCachDongGoi(), thuoc.getSDK_GPNK(), thuoc.getHangSX(), thuoc.getNuocSX(), thuoc.getNhomDuocLy()!=null?thuoc.getNhomDuocLy().getMaNDL():null,thuoc.getLoaiHang()!=null? thuoc.getLoaiHang().getMaLoaiHang():null, thuoc.getHinhAnh(), thuoc.getVitri()!=null?thuoc.getVitri().getMaKe():null, thuoc.getMaThuoc()) > 0;
     }
 
     @Override

@@ -29,13 +29,13 @@
            <columns>
             <TableColumn fx:id="colSTT" prefWidth="54.28570747375488" style="-fx-alignment: CENTER;" text="STT" />
                <TableColumn fx:id="colMaThuoc" prefWidth="144.0" style="-fx-alignment: CENTER;" text="Mã thuốc" />
-               <TableColumn fx:id="colTenThuoc" minWidth="0.0" prefWidth="291.6666564941406" text="Tên Thuốc" />
-               <TableColumn fx:id="colHamLuong" prefWidth="78.33331298828125" text="Hàm lượng" />
+               <TableColumn fx:id="colTenThuoc" minWidth="0.0" prefWidth="283.0" text="Tên Thuốc" />
+               <TableColumn fx:id="colHamLuong" prefWidth="88.0" text="Hàm lượng" />
                <TableColumn fx:id="colSDK_GPNK" prefWidth="243.66668701171875" style="-fx-alignment: CENTER;" text="SDK_GPNK" />
                <TableColumn fx:id="colXuatXu" prefWidth="102.0" text="Xuất xứ" />
                <TableColumn fx:id="colLoaiHang" prefWidth="315.3333740234375" text="Loại hàng" />
-               <TableColumn fx:id="colViTri" prefWidth="280.0" style="-fx-alignment: CENTER;" text="Vị trí" />
-               <TableColumn fx:id="colChiTiet" prefWidth="105.0" style="-fx-alignment: CENTER;" text="Chi tiết" />
+               <TableColumn fx:id="colViTri" prefWidth="258.0" style="-fx-alignment: CENTER;" text="Vị trí" />
+               <TableColumn fx:id="colChiTiet" prefWidth="111.0" style="-fx-alignment: CENTER;" />
            </columns>
        </TableView>
       <Button id="btnnhapxuat" layoutX="1594.0" layoutY="46.285714285714285" minWidth="46.0" mnemonicParsing="false" onAction="#btnThemThuocByExcel" prefHeight="30.0" prefWidth="45.0" text="📥" AnchorPane.topAnchor="46.285714285714285" />

@@ -20,8 +20,8 @@
             <columns>
                 <TableColumn fx:id="cotSTT" prefWidth="90.33333587646484" style="-fx-alignment: CENTER;" text="STT" />
                 <TableColumn fx:id="cotMaNDL" prefWidth="260.66666412353516" style="-fx-alignment: CENTER;" text="Mã Nhóm Dược Lý" />
-                <TableColumn fx:id="cotTenNDL" minWidth="0.0" prefWidth="1151.0" text="Tên Nhóm Dược Lý" />
-                <TableColumn fx:id="colChiTiet" prefWidth="122.0" style="-fx-alignment: CENTER;" />
+                <TableColumn fx:id="cotTenNDL" minWidth="0.0" prefWidth="1139.0" text="Tên Nhóm Dược Lý" />
+                <TableColumn fx:id="colChiTiet" prefWidth="117.0" style="-fx-alignment: CENTER;" />
             </columns>
         </TableView>
         <Button id="btnReset" fx:id="btnLamMoi" layoutX="879.0" layoutY="51.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="45.0" />

@@ -32,11 +32,11 @@
                 <TableColumn fx:id="colTenNV" prefWidth="224.0" text="Tên nhân viên" />
                 <TableColumn fx:id="colGioiTinh" minWidth="0.0" prefWidth="134.0" text="Giới tính" />
                 <TableColumn fx:id="colSDT" minWidth="0.0" prefWidth="191.0" style="-fx-alignment: CENTER;" text="SDT" />
-                <TableColumn fx:id="colNgaySinh" minWidth="0.0" prefWidth="208.0" style="-fx-alignment: CENTER;" text="Ngày sinh" />
-                <TableColumn fx:id="colEmail" minWidth="0.0" prefWidth="225.0" text="Email" />
-                <TableColumn fx:id="colDiaChi" minWidth="0.0" prefWidth="218.0" text="Địa chỉ" />
-            <TableColumn fx:id="colTrangThai" prefWidth="133.0" text="Trạng thái" />
-            <TableColumn fx:id="colCapNhat" prefWidth="116.0" style="-fx-alignment: CENTER;" text="Cập nhật" />
+                <TableColumn fx:id="colNgaySinh" minWidth="0.0" prefWidth="197.0" style="-fx-alignment: CENTER;" text="Ngày sinh" />
+                <TableColumn fx:id="colEmail" minWidth="0.0" prefWidth="236.0" text="Email" />
+                <TableColumn fx:id="colDiaChi" minWidth="0.0" prefWidth="210.0" text="Địa chỉ" />
+            <TableColumn fx:id="colTrangThai" prefWidth="135.0" text="Trạng thái" />
+            <TableColumn fx:id="colCapNhat" prefWidth="108.0" style="-fx-alignment: CENTER;" text="Cập nhật" />
             </columns>
         </TableView>
       <Button id="btnReset" fx:id="btnLamMoi" layoutX="874.0" layoutY="47.0" minWidth="35.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="47.0" stylesheets="@../../css/QuanLyThuoc.css">

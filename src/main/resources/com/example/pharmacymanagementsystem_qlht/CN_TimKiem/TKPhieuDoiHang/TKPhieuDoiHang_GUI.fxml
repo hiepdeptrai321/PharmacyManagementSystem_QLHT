@@ -132,8 +132,8 @@
                                 <TableColumn fx:id="colNgayLap" minWidth="6.0" prefWidth="228.66665649414062" style="-fx-alignment: CENTER;" text="Ngày lập" />
                                 <TableColumn fx:id="colTenKH" prefWidth="320.7999267578125" text="Khách hàng" />
                                 <TableColumn fx:id="colSdtKH" prefWidth="235.20001220703125" style="-fx-alignment: CENTER;" text="SĐT" />
-                                <TableColumn fx:id="colTenNV" prefWidth="280.0" text="Nhân viên" />
-                                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="98.0" style="-fx-alignment: CENTER;" />
+                                <TableColumn fx:id="colTenNV" prefWidth="262.0" text="Nhân viên" />
+                                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="95.0" style="-fx-alignment: CENTER;" />
                             </columns>
                         </TableView>
                     </content>

@@ -21,9 +21,9 @@
                 <TableColumn fx:id="colTenKM" prefWidth="381.0" style="-fx-alignment: CENTER_LEFT;" text="Tên khuyến mãi" />
                 <TableColumn fx:id="colLoaiKM" minWidth="0.0" prefWidth="172.0" style="-fx-alignment: CENTER;" styleClass="a-center" text="Loại khuyến mãi" />
                 <TableColumn fx:id="colGiaTri" minWidth="0.0" prefWidth="185.0" style="-fx-alignment: CENTER;" text="Giá trị " />
-                <TableColumn fx:id="colNBD" minWidth="0.0" prefWidth="285.0" style="-fx-alignment: CENTER;" styleClass="a-center" text="Ngày bắt đầu" />
+                <TableColumn fx:id="colNBD" minWidth="0.0" prefWidth="267.0" style="-fx-alignment: CENTER;" styleClass="a-center" text="Ngày bắt đầu" />
                 <TableColumn fx:id="colNKT" minWidth="0.0" prefWidth="241.0" style="-fx-alignment: CENTER;" styleClass="a-center" text="Ngày kết thúc" />
-            <TableColumn fx:id="colChiTiet" prefWidth="103.0" style="-fx-alignment: CENTER;" styleClass="a-center" />
+            <TableColumn fx:id="colChiTiet" prefWidth="104.0" style="-fx-alignment: CENTER;" styleClass="a-center" />
             </columns>
         </TableView>
       <Pane id="lblpaneTitle" layoutY="2.0" prefHeight="40.0" prefWidth="1655.0">

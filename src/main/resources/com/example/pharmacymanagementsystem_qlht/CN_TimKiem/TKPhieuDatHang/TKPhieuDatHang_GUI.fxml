@@ -132,7 +132,7 @@
                                 <TableColumn fx:id="colTenKH" prefWidth="352.8000183105469" text="Khách hàng" />
                                 <TableColumn fx:id="colSdtKH" prefWidth="231.199951171875" style="-fx-alignment: CENTER;" text="Số điện thoại" />
                                 <TableColumn fx:id="colSoTienCoc" minWidth="0.0" prefWidth="223.99993896484375" style="-fx-alignment: CENTER;" text="Số tiền cọc" />
-                                <TableColumn fx:id="colTenNV" prefWidth="318.0" text="Nhân viên" />
+                                <TableColumn fx:id="colTenNV" prefWidth="297.0" text="Nhân viên" />
                                 <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="93.0" style="-fx-alignment: CENTER;" />
                             </columns>
                         </TableView>

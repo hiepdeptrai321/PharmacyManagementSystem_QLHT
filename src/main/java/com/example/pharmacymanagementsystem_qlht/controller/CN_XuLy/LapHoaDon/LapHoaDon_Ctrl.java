@@ -34,7 +34,18 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Timestamp;
-
+import javafx.stage.FileChooser;
+import java.io.File;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
+import com.itextpdf.io.font.constants.StandardFonts;
 import java.sql.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -46,7 +57,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LapHoaDon_Ctrl extends Application {
-
+    public static final String FONT_PATH = "C:/Windows/Fonts/arial.ttf";
     private final ObservableList<ChiTietHoaDon> dsChiTietHD = FXCollections.observableArrayList();
     private final IdentityHashMap<ChiTietHoaDon, ChiTietDonViTinh> dvtTheoDong = new IdentityHashMap<>();
     private final AtomicLong demTruyVan = new AtomicLong(0);
@@ -59,7 +70,7 @@ public class LapHoaDon_Ctrl extends Application {
     private final IdentityHashMap<ChiTietHoaDon, ApDungKhuyenMai> kmTheoDong = new IdentityHashMap<>();
     private final Thuoc_SanPham_Dao spDao = new Thuoc_SanPham_Dao();
     private final ConcurrentHashMap<String, String> tenSpCache = new ConcurrentHashMap<>();
-
+    @FXML private Button btnInHoaDon;
     @FXML private Button btnThemKH;
     @FXML private DatePicker dpNgayLap;
     @FXML private ChoiceBox<String> cbPhuongThucTT;
@@ -118,6 +129,9 @@ public class LapHoaDon_Ctrl extends Application {
         tinhTongTien();
         initTienMatEvents();
         chuyenHoaDon();
+        if (btnInHoaDon != null) {
+            btnInHoaDon.setOnAction(this::xuLyXuatPDF);
+        }
     }
 
     private void chuyenHoaDon() {
@@ -1372,4 +1386,196 @@ public class LapHoaDon_Ctrl extends Application {
         return (int) Math.round(line.getSoLuong() * factor);
     }
 
+    @FXML
+    private void xuLyXuatPDF(ActionEvent event) {
+        // 1. Kiểm tra dữ liệu
+        if (dsChiTietHD == null || dsChiTietHD.isEmpty()) {
+            showAlert(Alert.AlertType.INFORMATION, "Không có dữ liệu", "Chưa có chi tiết hóa đơn nào để xuất.");
+            return;
+        }
+
+        // 2. Mở FileChooser
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Lưu Hóa Đơn PDF");
+        fileChooser.setInitialFileName("HoaDon_" + LocalDate.now());
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files (*.pdf)", "*.pdf"));
+
+        Stage stage = null;
+        if (btnInHoaDon != null && btnInHoaDon.getScene() != null) {
+            stage = (Stage) btnInHoaDon.getScene().getWindow();
+        }
+
+        File file = fileChooser.showSaveDialog(stage);
+
+        // 3. Gọi hàm xuất PDF
+        if (file != null) {
+            try {
+                xuatHoaDonPDF(file);
+                showAlert(Alert.AlertType.INFORMATION, "Thành công", "Xuất file PDF hóa đơn thành công!");
+            } catch (IOException e) {
+                e.printStackTrace();
+                showAlert(Alert.AlertType.ERROR, "Lỗi", "Có lỗi xảy ra khi xuất file PDF: " + e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Phương thức chính tạo nội dung file PDF.
+     */
+    private void xuatHoaDonPDF(File file) throws IOException {
+        PdfWriter writer = new PdfWriter(file);
+        PdfDocument pdf = new PdfDocument(writer);
+        Document document = new Document(pdf);
+
+        // 1. Thiết lập Font (để hỗ trợ tiếng Việt)
+        PdfFont font;
+        try {
+            font = PdfFontFactory.createFont(FONT_PATH);
+        } catch (IOException e) {
+            System.err.println("Không tìm thấy font tại: " + FONT_PATH + ". Sử dụng font mặc định.");
+            font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
+        }
+        document.setFont(font);
+
+        // 2. Header (Thông tin nhà thuốc)
+        document.add(new Paragraph("Quốc Khánh Pharmacy")
+                .setFontSize(16)
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER));
+        document.add(new Paragraph("Địa chỉ: Số 12 Đường Nguyễn Văn Bảo, Phường Hạnh Thông, TP Hồ Chí Minh")
+                .setFontSize(10)
+                .setTextAlignment(TextAlignment.CENTER));
+        document.add(new Paragraph("Hotline: 1800 6868")
+                .setFontSize(10)
+                .setTextAlignment(TextAlignment.CENTER));
+
+        // 3. Tiêu đề Hóa đơn
+        document.add(new Paragraph("HOÁ ĐƠN BÁN LẺ")
+                .setFontSize(18)
+                .setBold()
+                .setTextAlignment(TextAlignment.CENTER)
+                .setMarginTop(15));
+
+        document.add(new Paragraph("Ngày lập: " + (dpNgayLap.getValue() != null ? dpNgayLap.getValue().toString() : LocalDate.now().toString()))
+                .setTextAlignment(TextAlignment.CENTER));
+
+        // 4. Mã đơn thuốc (NẾU CÓ)
+        if (rbOTC != null && rbOTC.isSelected()) { // rbOTC là "Kê đơn (ETC)"
+            String maDonThuoc = (txtMaDonThuoc != null) ? txtMaDonThuoc.getText() : "";
+            if (maDonThuoc != null && !maDonThuoc.isBlank()) {
+                document.add(new Paragraph("Mã đơn thuốc: " + maDonThuoc)
+                        .setTextAlignment(TextAlignment.CENTER)
+                        .setFontSize(10));
+            }
+        }
+
+        // 5. Thông tin khách hàng
+        document.add(new Paragraph("THÔNG TIN KHÁCH HÀNG")
+                .setFontSize(14)
+                .setBold()
+                .setMarginTop(15));
+
+        document.add(new Paragraph("Khách hàng: " + (txtTenKH.getText() != null ? txtTenKH.getText() : "Khách lẻ")));
+        document.add(new Paragraph("Số điện thoại: " + (txtSDT.getText() != null ? txtSDT.getText() : "")));
+        document.add(new Paragraph("Phương thức thanh toán: " + (cbPhuongThucTT.getValue() != null ? cbPhuongThucTT.getValue() : "Tiền mặt")));
+
+        // 6. Bảng chi tiết sản phẩm
+        document.add(new Paragraph("CHI TIẾT HOÁ ĐƠN")
+                .setFontSize(14)
+                .setBold()
+                .setMarginTop(15));
+
+        float[] columnWidths = {1, 5, 1.5f, 2, 2.5f, 2.5f, 3}; // 7 cột
+        Table table = new Table(UnitValue.createPercentArray(columnWidths));
+        table.setWidth(UnitValue.createPercentValue(100));
+
+        // Headers của bảng
+        table.addHeaderCell(new com.itextpdf.layout.element.Cell().add(new Paragraph(colSTT.getText()).setBold()));
+        table.addHeaderCell(new com.itextpdf.layout.element.Cell().add(new Paragraph(colTenSP.getText()).setBold()));
+        table.addHeaderCell(new com.itextpdf.layout.element.Cell().add(new Paragraph(colSL.getText()).setBold()));
+        table.addHeaderCell(new com.itextpdf.layout.element.Cell().add(new Paragraph(colDonVi.getText()).setBold()));
+        table.addHeaderCell(new com.itextpdf.layout.element.Cell().add(new Paragraph(colDonGia.getText()).setBold()));
+        table.addHeaderCell(new com.itextpdf.layout.element.Cell().add(new Paragraph(colChietKhau.getText()).setBold()));
+        table.addHeaderCell(new com.itextpdf.layout.element.Cell().add(new Paragraph(colThanhTien.getText()).setBold()));
+
+        // Dữ liệu bảng
+        int stt = 1;
+        for (ChiTietHoaDon cthd : dsChiTietHD) {
+            String tenSP = layTenSP(cthd); // Sử dụng hàm có sẵn
+            int soLuong = cthd.getSoLuong();
+            String donVi = layTenDonVi(cthd); // Sử dụng hàm có sẵn
+            double donGia = cthd.getDonGia();
+            double chietKhau = cthd.getGiamGia();
+            double thanhTien = Math.max(0, (soLuong * donGia) - chietKhau);
+
+            table.addCell(String.valueOf(stt++));
+            table.addCell(tenSP);
+            table.addCell(String.valueOf(soLuong)).setTextAlignment(TextAlignment.CENTER);
+            table.addCell(donVi);
+            table.addCell(formatVND(donGia)).setTextAlignment(TextAlignment.CENTER);
+            table.addCell(formatVND(chietKhau)).setTextAlignment(TextAlignment.CENTER);
+            table.addCell(formatVND(thanhTien)).setTextAlignment(TextAlignment.CENTER);
+        }
+        document.add(table);
+
+        // 7. Tổng kết (Đọc từ Label)
+        document.add(new Paragraph("Tổng tiền: " + lblTongTien.getText())
+                .setTextAlignment(TextAlignment.RIGHT)
+                .setMarginTop(10));
+        document.add(new Paragraph("Tổng giảm giá: " + lblGiamGia.getText())
+                .setTextAlignment(TextAlignment.RIGHT));
+        document.add(new Paragraph("Giảm giá theo hóa đơn: " + lblGiamTheoHD.getText())
+                .setTextAlignment(TextAlignment.RIGHT));
+        document.add(new Paragraph("Thuế (VAT 5%): " + lblVAT.getText())
+                .setTextAlignment(TextAlignment.RIGHT));
+        document.add(new Paragraph("TỔNG THANH TOÁN: " + lblThanhTien.getText())
+                .setTextAlignment(TextAlignment.RIGHT)
+                .setBold()
+                .setFontSize(14));
+
+        // 8. Thông tin tiền mặt (Footer)
+        String phuongThucTT = cbPhuongThucTT.getValue();
+        if ("Tiền mặt".equals(phuongThucTT) && txtSoTienKhachDua != null && lblTienThua != null) {
+
+            String tienKhachDuaStr = txtSoTienKhachDua.getText();
+            String tienThuaStr = lblTienThua.getText();
+
+            // Format lại tiền khách đưa (vì nó là số)
+            try {
+                tienKhachDuaStr = formatVND(parseVND(tienKhachDuaStr));
+            } catch (Exception e) {
+                tienKhachDuaStr = "0 đ";
+            }
+
+            // Xử lý text "Chưa đủ tiền"
+            if (tienThuaStr.contains("Chưa đủ")) {
+                tienThuaStr = "0 đ";
+            }
+
+            document.add(new Paragraph("Tiền khách đưa: " + tienKhachDuaStr)
+                    .setTextAlignment(TextAlignment.RIGHT)
+                    .setBold()
+                    .setFontSize(14)
+                    .setMarginTop(5));
+
+            document.add(new Paragraph("Tiền thừa: " + tienThuaStr)
+                    .setTextAlignment(TextAlignment.RIGHT)
+                    .setBold()
+                    .setFontSize(14));
+        }
+
+        // 9. Đóng file
+        document.close();
+    }
+
+    /**
+     * Phương thức trợ giúp để hiển thị Alert
+     */
+    private void showAlert(Alert.AlertType alertType, String title, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
 }

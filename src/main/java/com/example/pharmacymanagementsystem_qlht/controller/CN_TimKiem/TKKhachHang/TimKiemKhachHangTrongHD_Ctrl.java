@@ -1,8 +1,8 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang;
 
-import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
 import com.example.pharmacymanagementsystem_qlht.dao.KhachHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.KhachHang;
+import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class TimKiemKhachHang_Ctrl extends Application {
+public class TimKiemKhachHangTrongHD_Ctrl extends Application {
     // 1. KHAI BÁO THÀNH PHẦN GIAO DIỆN (FXML)
     @FXML
     private Button btnLamMoi;
@@ -84,10 +84,20 @@ public class TimKiemKhachHang_Ctrl extends Application {
         loadTable();
         btnLamMoi.setOnAction(e -> LamMoi());
         btnTim.setOnAction(e -> TimKiem());
-       ;
+        tbKhachHang.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
+            chonKhachHang(newSel);
+        });
 
     }
-
+    public void chonKhachHang(KhachHang kh) {
+        if (kh == null) return;
+        if (onSelected != null) onSelected.accept(kh);
+        // Close this window
+        if (tbKhachHang != null && tbKhachHang.getScene() != null) {
+            Stage st = (Stage) tbKhachHang.getScene().getWindow();
+            if (st != null) st.close();
+        }
+    }
 
     @Override
     public void start(Stage primaryStage) throws IOException {

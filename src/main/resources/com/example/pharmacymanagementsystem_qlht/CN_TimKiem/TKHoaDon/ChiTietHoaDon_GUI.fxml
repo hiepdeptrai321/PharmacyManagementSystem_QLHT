@@ -18,12 +18,34 @@
     <AnchorPane minHeight="0.0" minWidth="0.0">
          <Pane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-               <Pane layoutX="6.0" layoutY="43.0">
+               <Pane layoutX="6.0" layoutY="43.0" prefHeight="29.0" prefWidth="857.0">
                   <children>
-                      <Label styleClass="bold-label" text="Mã hóa đơn: " />
-                      <Label fx:id="lblMaHoaDonValue" layoutX="93.5999984741211" layoutY="0.800000011920929" styleClass="value-label" text="HD012345" />
-                      <Label fx:id="lblNgayLapValue" layoutX="346.0" layoutY="1.0" prefHeight="20.0" prefWidth="99.0" styleClass="value-label" text="01/10/2025" />
-                      <Label layoutX="282.0" layoutY="2.0" styleClass="bold-label label-padding" text="Ngày lập: " />
+                      <Label styleClass="bold-label" text="Mã hóa đơn: ">
+                        <font>
+                           <Font size="13.0" />
+                        </font></Label>
+                      <Label fx:id="lblMaHoaDonValue" layoutX="93.5999984741211" layoutY="0.800000011920929" styleClass="value-label" text="HD012345">
+                        <font>
+                           <Font size="13.0" />
+                        </font></Label>
+                      <Label fx:id="lblNgayLapValue" layoutX="346.0" layoutY="1.0" prefHeight="20.0" prefWidth="99.0" styleClass="value-label" text="01/10/2025">
+                        <font>
+                           <Font size="13.0" />
+                        </font></Label>
+                      <Label layoutX="282.0" layoutY="2.0" styleClass="bold-label label-padding" text="Ngày lập: ">
+                        <font>
+                           <Font size="13.0" />
+                        </font></Label>
+                     <Label fx:id="lblMaDonThuoc" layoutX="690.0" prefHeight="20.0" prefWidth="99.0" styleClass="value-label" text="0">
+                        <font>
+                           <Font size="13.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="lblLoaiHoaDon" layoutX="491.0" layoutY="1.0" prefHeight="19.0" prefWidth="188.0" styleClass="bold-label label-padding" text="Hóa đơn cho thuốc kê đơn(OTC)">
+                        <font>
+                           <Font size="13.0" />
+                        </font>
+                     </Label>
                   </children>
                </Pane>
                   <Label layoutX="5.0" layoutY="69.0" styleClass="section-label" text="DANH SÁCH SẢN PHẨM" />

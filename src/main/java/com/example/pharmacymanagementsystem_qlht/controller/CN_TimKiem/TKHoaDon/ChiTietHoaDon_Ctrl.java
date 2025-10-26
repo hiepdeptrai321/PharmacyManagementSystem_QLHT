@@ -49,6 +49,8 @@ public class ChiTietHoaDon_Ctrl {
 
     @FXML private Button btnDong;
     @FXML private Button btnInHoaDon;
+    @FXML private Label lblLoaiHoaDon;
+    @FXML private Label lblMaHoaDon;
 
     private HoaDon hoaDon;
     private final HoaDon_Dao hdDao = new HoaDon_Dao();
@@ -214,13 +216,13 @@ public class ChiTietHoaDon_Ctrl {
         return ten;
     }
     private static String formatVNDTable(double v) {
-        java.text.DecimalFormat df = new java.text.DecimalFormat("#,##0");
+        DecimalFormat df = new DecimalFormat("#,##0");
         df.setGroupingUsed(true);
         return df.format(Math.max(0, Math.round(v))) + " đ";
     }
 
     private static String formatVNDLabel(BigDecimal v) {
-        java.text.DecimalFormat df = new java.text.DecimalFormat("#,##0");
+        DecimalFormat df = new DecimalFormat("#,##0");
         df.setGroupingUsed(true);
         return df.format(v.max(BigDecimal.ZERO)) + " VND";
     }
@@ -230,25 +232,27 @@ public class ChiTietHoaDon_Ctrl {
     }
 
     private static String safeStr(String s) { return s == null ? "" : s; }
+
     private String tenDonViCoBan(Thuoc_SP_TheoLo lo) {
         if (lo == null || lo.getThuoc() == null) return "";
         var sp = lo.getThuoc();
         String maThuoc = sp.getMaThuoc();
         if (maThuoc == null || maThuoc.isBlank()) return "";
 
-        // cache hit
+        // 1
         if (baseUnitCache.containsKey(maThuoc)) return baseUnitCache.get(maThuoc);
-
-        // prefer in-memory dsCTDVT if present
+        //2
         List<ChiTietDonViTinh> ds = (sp.getDsCTDVT() != null && !sp.getDsCTDVT().isEmpty())
                 ? sp.getDsCTDVT()
                 : ctdvtDao.selectByMaThuoc(maThuoc); // DAO fallback
 
         ChiTietDonViTinh base = null;
         if (ds != null && !ds.isEmpty()) {
+            //3
             for (ChiTietDonViTinh ct : ds) {
                 if (ct != null && ct.isDonViCoBan()) { base = ct; break; }
             }
+            //4
             if (base == null) {
                 ChiTietDonViTinh min = null;
                 for (ChiTietDonViTinh ct : ds) {
@@ -258,6 +262,7 @@ public class ChiTietHoaDon_Ctrl {
                 }
                 base = min;
             }
+            //5
             if (base != null && base.getDvt() != null && base.getDvt().getTenDonViTinh() != null) {
                 String ten = base.getDvt().getTenDonViTinh();
                 baseUnitCache.put(maThuoc, ten);
@@ -265,7 +270,6 @@ public class ChiTietHoaDon_Ctrl {
             }
         }
 
-        // last resort: a direct property on product if available
         try {
             String ten = sp.getTenDVTCoBan();
             if (ten != null) {

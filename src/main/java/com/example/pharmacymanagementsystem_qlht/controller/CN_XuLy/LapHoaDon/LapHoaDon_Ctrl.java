@@ -1,7 +1,7 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapHoaDon;
 
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
-import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang.TimKiemKhachHang_Ctrl;
+import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang.TimKiemKhachHangTrongHD_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.controller.DangNhap_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.dao.*;
 import com.example.pharmacymanagementsystem_qlht.model.*;
@@ -10,6 +10,7 @@ import com.example.pharmacymanagementsystem_qlht.service.DichVuKhuyenMai;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -60,7 +61,7 @@ public class LapHoaDon_Ctrl extends Application {
     private final ConcurrentHashMap<String, String> tenSpCache = new ConcurrentHashMap<>();
 
     @FXML private Button btnThemKH;
-    @FXML private DatePicker dpNgayKeDon;
+    @FXML private DatePicker dpNgayLap;
     @FXML private ChoiceBox<String> cbPhuongThucTT;
     @FXML private Pane paneTienMat;
     @FXML private TextField txtTimThuoc;
@@ -83,7 +84,10 @@ public class LapHoaDon_Ctrl extends Application {
     @FXML private Label lblTienThua;
     @FXML private Button btnThanhToan;
     @FXML private Label lblGiamTheoHD;
+    @FXML private RadioButton rbOTC;
     private Stage qrStage;
+    private static final String OTC_OFF = "Không kê đơn(OTC)";
+    private static final String OTC_ON  = "Kê đơn(ETC)";
 
     // popup suggestions
     private final ContextMenu goiYMenu = new ContextMenu();
@@ -104,7 +108,7 @@ public class LapHoaDon_Ctrl extends Application {
     @FXML
     public void initialize() {
         VND.setMaximumFractionDigits(0);
-        dpNgayKeDon.setValue(LocalDate.now());
+        dpNgayLap.setValue(LocalDate.now());
         xuLyPhuongThucTT();
         xuLyTimThuoc();
         xuLyCssGoiY();
@@ -112,6 +116,24 @@ public class LapHoaDon_Ctrl extends Application {
         tblChiTietHD.getItems().addListener((ListChangeListener<Object>) c -> tinhTongTien());
         tinhTongTien();
         initTienMatEvents();
+        chuyenHoaDon();
+    }
+    private void chuyenHoaDon() {
+        if (rbOTC == null) return;
+
+        // If this RadioButton is inside a ToggleGroup and you want no default selection:
+        ToggleGroup group = rbOTC.getToggleGroup();
+        if (group != null) group.selectToggle(null);
+
+        // Default state: not selected
+        rbOTC.setSelected(false);
+
+        // Text changes with selection
+        rbOTC.textProperty().bind(
+                Bindings.when(rbOTC.selectedProperty())
+                        .then(OTC_ON)
+                        .otherwise(OTC_OFF)
+        );
     }
 
 
@@ -745,7 +767,7 @@ public class LapHoaDon_Ctrl extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKKhachHang/TKKhachHang_GUI.fxml"));
             Parent root = loader.load();
-            TimKiemKhachHang_Ctrl ctrl = loader.getController();
+            TimKiemKhachHangTrongHD_Ctrl ctrl = loader.getController();
 
             Stage stage = new Stage();
             ctrl.setOnSelected((KhachHang kh) -> {

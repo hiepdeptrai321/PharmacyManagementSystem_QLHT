@@ -1,6 +1,6 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDatHang;
 
-import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang.TimKiemKhachHang_Ctrl;
+import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang.TimKiemKhachHangTrongHD_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SanPham_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.*;
 import javafx.animation.PauseTransition;
@@ -21,11 +21,9 @@ import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -574,7 +572,7 @@ public class LapPhieuDatHang_Ctrl extends Application {
             }
 
             // If controller is the typed search controller, set the callback like LapHoaDon_Ctrl
-            if (ctrl instanceof TimKiemKhachHang_Ctrl tkCtrl) {
+            if (ctrl instanceof TimKiemKhachHangTrongHD_Ctrl tkCtrl) {
                 tkCtrl.setOnSelected((KhachHang kh) -> {
                     if (tfTenKH != null) tfTenKH.setText(kh.getTenKH());
                     if (tfSDT != null) tfSDT.setText(kh.getSdt());

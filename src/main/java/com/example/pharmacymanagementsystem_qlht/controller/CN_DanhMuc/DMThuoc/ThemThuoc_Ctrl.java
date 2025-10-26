@@ -186,13 +186,25 @@ public class ThemThuoc_Ctrl {
             thuocThem.setHamLuong(Float.parseFloat(txtHamLuong.getText()));
             thuocThem.setDonViHamLuong(txtDonViHamLuong.getText());
             thuocThem.setHangSX(txtHangSanXuat.getText());
-            thuocThem.setNhomDuocLy(new NhomDuocLy_Dao().selectByTenNhomDuocLy(cbxNhomDuocLy.getSelectionModel().getSelectedItem().toString()));
+            if(cbxNhomDuocLy.getSelectionModel().getSelectedIndex() > 0){
+                thuocThem.setNhomDuocLy(new NhomDuocLy_Dao().selectByTenNhomDuocLy(cbxNhomDuocLy.getSelectionModel().getSelectedItem().toString()));
+            }else{
+                thuocThem.setNhomDuocLy(null);
+            }
             thuocThem.setNuocSX(txtNuocSanXuat.getText());
             thuocThem.setQuyCachDongGoi(txtQuyCachDongGoi.getText());
             thuocThem.setSDK_GPNK(txtSDK_GPNK.getText());
             thuocThem.setDuongDung(txtDuongDung.getText());
-            thuocThem.setLoaiHang(new LoaiHang_Dao().selectByTenLoaiHang(cbxLoaiHang.getSelectionModel().getSelectedItem().toString()));
-            thuocThem.setVitri(new KeHang_Dao().selectByTenKe(cbxViTri.getSelectionModel().getSelectedItem().toString()));
+            if (cbxLoaiHang.getSelectionModel().getSelectedIndex() > 0){
+                thuocThem.setLoaiHang(new LoaiHang_Dao().selectByTenLoaiHang(cbxLoaiHang.getSelectionModel().getSelectedItem().toString()));
+            }else{
+                thuocThem.setLoaiHang(null);
+            }
+            if(cbxViTri.getSelectionModel().getSelectedIndex() > 0){
+                thuocThem.setVitri(new KeHang_Dao().selectByTenKe(cbxViTri.getSelectionModel().getSelectedItem().toString()));
+            }else{
+                thuocThem.setVitri(null);
+            }
 
 //          Get image
             Image image = imgThuoc_SanPham.getImage();
@@ -312,20 +324,6 @@ public class ThemThuoc_Ctrl {
             alert.setTitle("Lỗi");
             alert.setHeaderText(null);
             alert.setContentText("Tên thuốc không được để trống!");
-            alert.showAndWait();
-            return false;
-        }else if(cbxLoaiHang.getSelectionModel().getSelectedIndex() == 0){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi");
-            alert.setHeaderText(null);
-            alert.setContentText("Vui lòng chọn loại hàng!");
-            alert.showAndWait();
-            return false;
-        }else if(cbxViTri.getSelectionModel().getSelectedIndex() == 0) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi");
-            alert.setHeaderText(null);
-            alert.setContentText("Vui lòng chọn vị trí!");
             alert.showAndWait();
             return false;
         }else if(txtHamLuong.getText().isEmpty()){

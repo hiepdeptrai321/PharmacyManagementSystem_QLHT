@@ -1148,7 +1148,7 @@ public class LapHoaDon_Ctrl extends Application {
                 if (lotNow == null) {
                     throw new IllegalStateException("Không tìm thấy thông tin lô hàng " + lo.getMaLH());
                 }
-                int needBase = toBaseUnits(line);
+                int needBase = line.getSoLuong();
                 if (needBase <= 0) {
                     throw new IllegalStateException("Số lượng không hợp lệ cho lô hàng " + lo.getMaLH());
                 }
@@ -1187,7 +1187,7 @@ public class LapHoaDon_Ctrl extends Application {
                 Thuoc_SP_TheoLo lo = line.getLoHang();
                 String maLH = lo.getMaLH();
 
-                int soLuongBase = toBaseUnits(line);
+                int soLuongBase = line.getSoLuong();;
                 double donGia = line.getDonGia();
                 double giamGia = line.getGiamGia();
 
@@ -1239,44 +1239,81 @@ public class LapHoaDon_Ctrl extends Application {
         Thuoc_SP_TheoLo_Dao loDao = new Thuoc_SP_TheoLo_Dao();
         List<ChiTietHoaDon> perLotLines = new ArrayList<>();
 
+        Map<String, Integer> sanPhamCanMua = new HashMap<>();
+        Map<String, ChiTietHoaDon> originalLines = new HashMap<>();
+
         for (ChiTietHoaDon original : chiTietList) {
             if (original == null || original.getLoHang() == null || original.getLoHang().getThuoc() == null) {
-                throw new IllegalStateException("Thông tin sản phẩm không hợp lệ.");
+                throw new IllegalStateException("Thông tin sản phẩm trong giỏ hàng không hợp lệ.");
             }
+
             Thuoc_SanPham sp = original.getLoHang().getThuoc();
+            String maThuoc = sp.getMaThuoc();
             int requestedDisplayQty = Math.max(0, original.getSoLuong());
             if (requestedDisplayQty <= 0) continue;
 
+            // Lấy đơn vị tính và hệ số quy đổi
             ChiTietDonViTinh selDvt = dvtOf(original);
             if (selDvt == null) selDvt = layDVTCoBan(sp);
             double factor = heSo(selDvt);
 
-            int remainingBase = (int) Math.round(requestedDisplayQty * factor);
+            int requestedBase = (int) Math.round(requestedDisplayQty * factor);
 
-            while (remainingBase > 0) {
-                Thuoc_SP_TheoLo lo = loDao.selectOldestAvailableLot(con, sp.getMaThuoc());
-                if (lo == null) {
-                    throw new IllegalStateException("Không đủ hàng cho sản phẩm: " + sp.getTenThuoc());
-                }
 
-                int availableBase = lo.getSoLuongTon();
-                int takeBase = Math.min(remainingBase, availableBase);
-                int takeDisplay = (int) Math.round(takeBase / factor);
-                if (takeDisplay <= 0) takeDisplay = 1; // ensure at least one display unit
+            sanPhamCanMua.put(maThuoc, sanPhamCanMua.getOrDefault(maThuoc, 0) + requestedBase);
 
-                ChiTietHoaDon cthdTheoLo = new ChiTietHoaDon();
-                cthdTheoLo.setLoHang(lo);
-                cthdTheoLo.setSoLuong(takeDisplay);
-                cthdTheoLo.setDonGia(original.getDonGia());
-                cthdTheoLo.setGiamGia(original.getGiamGia());
 
-                perLotLines.add(cthdTheoLo);
-                dvtTheoDong.put(cthdTheoLo, selDvt);
-
-                remainingBase -= takeBase;
+            if (!originalLines.containsKey(maThuoc)) {
+                originalLines.put(maThuoc, original);
+                dvtTheoDong.put(original, selDvt); // Lưu lại DVT gốc
             }
         }
 
+        // lap
+        for (String maThuoc : sanPhamCanMua.keySet()) {
+            int remainingBase = sanPhamCanMua.get(maThuoc); // Tổng số lượng cơ bản cần lấy (Vd: 60 viên)
+            ChiTietHoaDon original = originalLines.get(maThuoc); // Dòng gốc để lấy giá, km
+            Thuoc_SanPham sp = original.getLoHang().getThuoc();
+
+            // lấy lô hàng còn và sx theo hsd
+            List<Thuoc_SP_TheoLo> danhSachLo = loDao.selectAllAvailableLots(con, maThuoc);
+
+            if (danhSachLo == null || danhSachLo.isEmpty()) {
+                throw new IllegalStateException("Không đủ hàng cho sản phẩm: " + sp.getTenThuoc());
+            }
+
+            // duyet tung lo và test so lượng
+            for (Thuoc_SP_TheoLo lo : danhSachLo) {
+                if (remainingBase <= 0) break; // Đã lấy đủ hàng, không cần duyệt thêm lô
+
+                int availableBase = lo.getSoLuongTon(); // Số lượng cơ bản tồn kho của lô
+                int takeBase = Math.min(remainingBase, availableBase); // Số lượng cơ bản sẽ lấy từ lô này
+
+                if (takeBase > 0) {
+                    ChiTietHoaDon cthdTheoLo = new ChiTietHoaDon();
+                    cthdTheoLo.setLoHang(lo); // **Quan trọng: gán lô cụ thể**
+
+                    cthdTheoLo.setSoLuong(takeBase);//luu sl co bản
+                    cthdTheoLo.setDonGia(original.getDonGia()); // Lấy giá từ dòng gốc
+
+                    double percent = (double) takeBase / (double) sanPhamCanMua.get(maThuoc);
+                    double giamGiaTheoLo = Math.round(original.getGiamGia() * percent);
+                    cthdTheoLo.setGiamGia(giamGiaTheoLo);
+
+                    perLotLines.add(cthdTheoLo);
+                    dvtTheoDong.put(cthdTheoLo, dvtOf(original));
+
+                    remainingBase -= takeBase; // Giảm số lượng cơ bản cần lấy
+                }
+            } // xong vong lap lô
+
+            //4 ktra sau khi het lo
+            if (remainingBase > 0) {
+                int totalAvailable = sanPhamCanMua.get(maThuoc) - remainingBase;
+                throw new IllegalStateException("Không đủ hàng cho sản phẩm: " + sp.getTenThuoc()
+                        + ". Cần " + sanPhamCanMua.get(maThuoc) + ", chỉ còn " + totalAvailable);
+            }
+        } // het vong lap sp
         chiTietList.clear();
         chiTietList.addAll(perLotLines);
     }

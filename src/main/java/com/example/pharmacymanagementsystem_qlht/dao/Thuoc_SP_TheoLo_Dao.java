@@ -139,6 +139,28 @@ public class Thuoc_SP_TheoLo_Dao implements DaoInterface<Thuoc_SP_TheoLo> {
         }
         return null;
     }
+    public List<Thuoc_SP_TheoLo> selectAllAvailableLots(Connection con, String maThuoc) throws SQLException {
+        List<Thuoc_SP_TheoLo> list = new ArrayList<>();
+        String sql = "SELECT MaLH, MaPN, MaThuoc, SoLuongTon, NSX, HSD FROM Thuoc_SP_TheoLo WHERE MaThuoc = ? AND SoLuongTon > 0 ORDER BY HSD ASC, NSX ASC, MaLH ASC";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, maThuoc);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Thuoc_SP_TheoLo lo = new Thuoc_SP_TheoLo();
+                    lo.setMaLH(rs.getString("MaLH"));
+                    lo.setSoLuongTon(rs.getInt("SoLuongTon"));
+                    lo.setNsx(rs.getDate("NSX"));
+                    lo.setHsd(rs.getDate("HSD"));
+                    lo.setPhieuNhap(new ChiTietPhieuNhap_Dao().selectById(rs.getString("MaPN"), rs.getString("MaThuoc"), rs.getString("MaLH")));
+                    lo.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getString("MaThuoc")));
+                    list.add(lo);
+                }
+            }
+        }
+        return list;
+    }
+
 //    public Thuoc_SP_TheoLo selectOldestAvailableLot(String maThuoc) {
 //        Thuoc_SP_TheoLo lo = null;
 //        String sql = "select top 1 * from Thuoc_SP_TheoLo where MaThuoc = ? and SoLuongTon > 0 order by HSD asc, NSX asc";

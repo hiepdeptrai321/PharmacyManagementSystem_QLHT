@@ -1,8 +1,6 @@
-/* Custom CSS cho giao diện gợi ý tìm kiếm thuốc */
 
-/* Làm cho toàn bộ ContextMenu rộng hơn và nổi bật */
 .context-menu.suggestion-menu {
-    -fx-background-color: #ffffff;           /* Opaque background */
+    -fx-background-color: #ffffff;
     -fx-background-insets: 0;
     -fx-background-radius: 10;
     -fx-padding: 8;
@@ -11,24 +9,22 @@
     -fx-border-radius: 10;
 }
 
-/* Tùy chỉnh Label hiển thị nội dung gợi ý */
 .custom-suggestion-label {
-    -fx-padding: 8px 10px; /* Tăng khoảng đệm để mục lớn hơn */
-    -fx-font-size: 14px; /* Tăng kích thước chữ */
-    -fx-font-weight: bold; /* Tên thuốc nổi bật hơn */
+    -fx-padding: 8px 10px;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
     -fx-text-fill: #333333;
 }
 
-/* Tùy chỉnh mục gợi ý (CustomMenuItem) */
 .custom-suggestion-item .label {
-    -fx-padding: 0; /* Loại bỏ padding mặc định của MenuItem */
+    -fx-padding: 0;
 }
 
 /* Hiệu ứng hover cho mục gợi ý */
 .custom-suggestion-item:focused > .container > .label,
 .custom-suggestion-item:hover > .container > .label {
     -fx-background-color: #e0f0ff; /* Màu nền khi rê chuột (xanh nhạt) */
-    -fx-text-fill: #007bff; /* Màu chữ khi rê chuột */
+    -fx-text-fill: #007bff;
 }
 
 /* Thêm dải phân cách (viền dưới) cho tất cả các mục trừ mục cuối cùng */
@@ -61,7 +57,7 @@
 .suggestion-detail { -fx-text-fill: #262626; }
 .suggestion-row {
     -fx-padding: 10 14;
-    //-fx-background-color: #ece2e2;
+//-fx-background-color: #ece2e2;
     -fx-background-color: #c4dcfb;
     -fx-background-radius: 10;
     -fx-alignment: center-left;
@@ -69,16 +65,4 @@
 .menu-item:focused .suggestion-row,
 .suggestion-row:hover {
     -fx-background-color: #e3d9d9;
-}
-.menu-item-goi-y {
-    -fx-background-color: white;
-    -fx-text-fill: #333;
-    -fx-padding: 5 10;
-    -fx-font-size: 14px;
-}
-
-.menu-item-goi-y:hover {
-    -fx-background-color: #e0f0ff;
-    -fx-text-fill: #0066cc;
-    -fx-cursor: hand;
 }

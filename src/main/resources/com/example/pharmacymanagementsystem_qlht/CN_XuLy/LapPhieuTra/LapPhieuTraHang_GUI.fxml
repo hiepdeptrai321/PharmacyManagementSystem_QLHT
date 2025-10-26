@@ -28,13 +28,13 @@
         <Label layoutX="40.0" layoutY="21.0" styleClass="title-label" text="LẬP PHIẾU TRẢ HÀNG" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="18.0" />
 
         <!-- Khu vực tìm kiếm hóa đơn gốc -->
-        <Pane fx:id="searchPane" layoutY="71.2" prefHeight="70.0" prefWidth="1163.0" styleClass="search-pane" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="453.0" AnchorPane.topAnchor="71.0">
+        <Pane fx:id="searchPane" layoutY="71.2" prefHeight="70.0" prefWidth="766.0" styleClass="search-pane" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="850.0" AnchorPane.topAnchor="71.0">
             <children>
                 <Label layoutX="20.0" layoutY="20.0" text="Tìm hóa đơn gốc:">
                    <font>
                       <Font name="System Bold" size="13.0" />
                    </font></Label>
-                <TextField fx:id="txtTimHoaDon" layoutX="130.0" layoutY="15.0" prefHeight="27.0" prefWidth="967.0" promptText="Nhập mã hóa đơn hoặc tên khách hàng ..." />
+                <TextField fx:id="txtTimHoaDon" layoutX="130.0" layoutY="15.0" prefHeight="27.0" prefWidth="563.0" promptText="Nhập mã hóa đơn hoặc tên khách hàng ..." />
             </children>
         </Pane>
 
@@ -50,7 +50,7 @@
                 <TableColumn prefWidth="107.2000732421875" text="Số lượng" />
                 <TableColumn prefWidth="137.5999755859375" text="Đơn vị" />
                 <TableColumn prefWidth="126.4000244140625" text="Đơn giá" />
-                <TableColumn prefWidth="114.39996337890625" text="Chiết khấu" />
+                <TableColumn prefWidth="114.39996337890625" text="Giảm giá" />
                 <TableColumn prefWidth="142.4000244140625" text="Thành tiền" />
             </columns>
         </TableView>
@@ -61,11 +61,11 @@
             <columns>
                 <TableColumn prefWidth="40.0" text="STT" />
                 <TableColumn prefWidth="394.3999786376953" text="Tên sản phẩm" />
-                <TableColumn prefWidth="132.79998779296875" text="Số lượng trả" />
-                <TableColumn prefWidth="116.0" text="Đơn vị" />
-                <TableColumn prefWidth="114.400146484375" text="Đơn giá" />
-                <TableColumn prefWidth="86.4000244140625" text="Thành tiền" />
-                <TableColumn prefWidth="205.59991455078125" text="Lý do trả" />
+                <TableColumn prefWidth="114.33331298828125" text="Số lượng trả" />
+                <TableColumn prefWidth="93.66668701171875" text="Đơn vị" />
+                <TableColumn prefWidth="115.6666259765625" text="Đơn giá" />
+                <TableColumn prefWidth="122.33331298828125" text="Thành tiền" />
+                <TableColumn prefWidth="212.66668701171875" text="Lý do trả" />
                 <TableColumn prefWidth="61.20009765624991" text="Xóa" />
             </columns>
         </TableView>

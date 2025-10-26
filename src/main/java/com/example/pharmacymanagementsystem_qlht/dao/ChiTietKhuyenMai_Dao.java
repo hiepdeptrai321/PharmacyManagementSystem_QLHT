@@ -15,7 +15,12 @@ public class ChiTietKhuyenMai_Dao implements DaoInterface<ChiTietKhuyenMai> {
     private final String SELECT_ALL_SQL = "SELECT MaThuoc, MaKM, SLApDung, SLToiDa FROM ChiTietKhuyenMai";
     private final String SELECT_BY_MAKM_SQL = "SELECT MaThuoc, MaKM, SLApDung, SLToiDa FROM ChiTietKhuyenMai WHERE MaKM=?";
     private final String DELETE_BY_MAKM_SQL = "DELETE FROM ChiTietKhuyenMai WHERE MaKM=?";
+    private final String SELECT_BY_MATHUOC_SQL =
+            "SELECT MaThuoc, MaKM, SLApDung, SLToiDa FROM ChiTietKhuyenMai WHERE MaThuoc=?";
 
+    public List<ChiTietKhuyenMai> selectByMaThuoc(String maThuoc) {
+        return selectBySql(SELECT_BY_MATHUOC_SQL, maThuoc);
+    }
     @Override
     public boolean insert(ChiTietKhuyenMai e) {
         return ConnectDB.update(INSERT_SQL, e.getThuoc().getMaThuoc(), e.getKhuyenMai().getMaKM(), e.getSlApDung(), e.getSlToiDa())>0;
@@ -60,6 +65,15 @@ public class ChiTietKhuyenMai_Dao implements DaoInterface<ChiTietKhuyenMai> {
         }
         return list;
     }
+    public List<ChiTietKhuyenMai> selectActiveByMaThuoc(String maThuoc, java.sql.Date today) {
+        String sql =
+                "SELECT ct.MaThuoc, ct.MaKM, ct.SLApDung, ct.SLToiDa " +
+                        "FROM ChiTietKhuyenMai ct " +
+                        "JOIN KhuyenMai km ON km.MaKM = ct.MaKM " +
+                        "WHERE ct.MaThuoc = ? AND km.NgayBatDau <= ? AND km.NgayKetThuc >= ?";
+        return selectBySql(sql, maThuoc, today, today);
+    }
+
 
     @Override
     public List<ChiTietKhuyenMai> selectAll() {

@@ -3,16 +3,13 @@ package com.example.pharmacymanagementsystem_qlht.connectDB;
 import com.example.pharmacymanagementsystem_qlht.controller.DangNhap_Ctrl;
 
 import java.nio.charset.StandardCharsets;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 
 public class ConnectDB {
 
-    static String url = "jdbc:sqlserver://localhost:1433;databaseName=QuanLyNhaThuoc;encrypt=true;trustServerCertificate=true;useUnicode=true;characterEncoding=UTF-8";
-    static String user = "sa";
-    static String password = "sapassword";
+    public static String url = "jdbc:sqlserver://localhost:1433;databaseName=QuanLyNhaThuoc;encrypt=true;trustServerCertificate=true;useUnicode=true;characterEncoding=UTF-8";
+    public static String user = "sa";
+    public static String password = "sapassword";
 
     public static PreparedStatement getStmt(String sql, Object... args) throws Exception {
         Connection con = DriverManager.getConnection(url, user, password);
@@ -37,6 +34,20 @@ public class ConnectDB {
         }
         return stmt;
     }
+//    public Connection getConnection() throws SQLException {
+//        Connection con = DriverManager.getConnection(url, user, password);
+//        // set CONTEXT_INFO to propagate current user (same logic as in getStmt)
+//        if (DangNhap_Ctrl.user != null) {
+//            try (PreparedStatement ps = con.prepareStatement("SET CONTEXT_INFO ?")) {
+//                byte[] maNvBytes = new byte[128];
+//                byte[] actualBytes = DangNhap_Ctrl.user.getMaNV().getBytes(StandardCharsets.UTF_8);
+//                System.arraycopy(actualBytes, 0, maNvBytes, 0, Math.min(actualBytes.length, maNvBytes.length));
+//                ps.setBytes(1, maNvBytes);
+//                ps.execute();
+//            } catch (SQLException ignored) { /* ignore context-info failures */ }
+//        }
+//        return con;
+//    }
 
     public static int update(String sql, Object... args) {
         try {
@@ -73,5 +84,19 @@ public class ConnectDB {
         return maGenerate;
     }
 
+
+    public static Connection getInstance() throws SQLException {
+        Connection con = DriverManager.getConnection(url, user, password);
+        if (DangNhap_Ctrl.user != null) {
+            try (PreparedStatement ps = con.prepareStatement("SET CONTEXT_INFO ?")) {
+                byte[] maNvBytes = new byte[128];
+                byte[] actualBytes = DangNhap_Ctrl.user.getMaNV().getBytes(StandardCharsets.UTF_8);
+                System.arraycopy(actualBytes, 0, maNvBytes, 0, Math.min(actualBytes.length, maNvBytes.length));
+                ps.setBytes(1, maNvBytes);
+                ps.execute();
+            } catch (SQLException ignored) { }
+        }
+        return con;
+    }
 
 }

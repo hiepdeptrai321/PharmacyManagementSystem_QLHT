@@ -262,6 +262,14 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
         }
         return suggestions;
     }
+    public int getTongTonCoBan(String maThuoc) {
+        String sql = "SELECT COALESCE(SUM(SoLuongTon), 0) FROM Thuoc_SP_TheoLo WHERE MaThuoc = ?";
+        try (ResultSet rs = ConnectDB.query(sql, maThuoc)) {
+            return rs.next() ? rs.getInt(1) : 0;
+        } catch (Exception e) {
+            throw new RuntimeException("Lỗi lấy tổng tồn: " + e.getMessage(), e);
+        }
+    }
 
     public List<String> timTheoTen(String keyword, int limit) {
         if (keyword == null) keyword = "";

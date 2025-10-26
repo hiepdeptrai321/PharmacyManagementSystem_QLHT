@@ -72,8 +72,14 @@
     -fx-font-weight: bold;
 }
 
-.table-view .table-row-cell:filled:selected, .table-view .table-row-cell:focused:selected {
-    -fx-background-color: #bbdefb;
+/*.table-view .table-row-cell:filled:selected, .table-view .table-row-cell:focused:selected {*/
+/*    -fx-background-color: #ffffff;*/
+/*    -fx-text-fill: #000000;*/
+/*}*/
+
+#btnThanhTien {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
 }
 
 .text-field, .text-area {
@@ -117,4 +123,54 @@
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, #bdbdbd, 6, 0.15, 0, 2);
 }
+#btnTimKH, #btnThemKH {
+    -fx-background-color: #f0f0f0; /* Màu nền xám rất nhạt */
+    -fx-padding: 6px;
+
+    -fx-background-radius: 50%;
+    -fx-border-radius: 50%;
+
+    -fx-cursor: hand;
+}
+
+#btnTimKH {
+
+   // -fx-graphic: url("../img/free-search-icon-2911-thumb.png");
+    -fx-background-size: 16px 16px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
+
+#btnThemKH {
+
+    //-fx-graphic: url("../img/free-icon-add-user-302.png");
+    -fx-background-size: 16px 16px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+}
+
+/* ----- Hiệu ứng khi rê chuột vào ----- */
+#btnTimKH:hover {
+    -fx-background-color: #3498DB; /* Chuyển màu xanh khi hover */
+}
+#btnThemKH:hover {
+    -fx-background-color: #2ECC71; /* Chuyển màu xanh lá khi hover */
+}
+
+#btnXoaRong, #btnLapHoaDon, #btnInHoaDon {
+    -fx-padding: 8px 15px;
+    -fx-background-radius: 8px; /* Bo góc 8px */
+    -fx-border-radius: 8px;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white; /* Chữ màu trắng */
+    -fx-cursor: hand;
+    -fx-graphic-text-gap: 8px; /* Khoảng cách giữa icon và chữ */
+}
+
+#btnXoaRong {
+    -fx-background-color: #E74C3C; /* Màu đỏ cam */
+    //-fx-graphic: url("../img/trash-can-10416.png");
+}
+
 

@@ -3,7 +3,10 @@ package com.example.pharmacymanagementsystem_qlht.dao;
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.KhachHang;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +21,11 @@ public class KhachHang_Dao implements DaoInterface<KhachHang> {
 
     @Override
     public boolean insert(KhachHang e) {
-        // Nếu MaKH chưa có -> tự động sinh
         if (e.getMaKH() == null || e.getMaKH().trim().isEmpty()) {
             e.setMaKH(generateNewMaKH());
         }
-
-        // Nếu trạng thái null -> mặc định là hoạt động (true)
         Boolean trangThai = e.getTrangThai() == null ? true : e.getTrangThai();
 
-        // Nếu giới tính null -> mặc định là Nam (true)
         Boolean gioiTinh = e.getGioiTinh() == null ? true : e.getGioiTinh();
 
         final int MAX_RETRY = 5;
@@ -51,6 +50,39 @@ public class KhachHang_Dao implements DaoInterface<KhachHang> {
             }
         }
         return false;
+    }
+
+    public KhachHang findOrCreateByPhone(Connection con, String sdt, String ten) throws SQLException {
+        final String SELECT = "select * from KhachHang where SDT = ?";
+        final String INSERT = "insert into KhachHang (MaKH, TenKH, SDT) values (?, ?, ?)";
+        try (PreparedStatement ps = con.prepareStatement(SELECT)) {
+            ps.setString(1, sdt);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    KhachHang kh = new KhachHang();
+                    kh.setMaKH(rs.getString("MaKH"));
+                    kh.setTenKH(rs.getString("TenKH"));
+                    kh.setSdt(rs.getString("SDT"));
+                    return kh;
+                }
+            }
+        }
+        String newMa = "KH" + System.currentTimeMillis(); // hoặc tự sinh theo format
+        try (PreparedStatement ps = con.prepareStatement(INSERT)) {
+            ps.setString(1, newMa);
+            ps.setString(2, ten);
+            ps.setString(3, sdt);
+            ps.executeUpdate();
+        }
+        KhachHang kh = new KhachHang();
+        kh.setMaKH(newMa);
+        kh.setTenKH(ten);
+        kh.setSdt(sdt);
+        return kh;
+    }
+    public KhachHang findOrCreateByPhone(String sdt, String ten) throws SQLException {
+        Connection con = ConnectDB.getInstance();
+        return findOrCreateByPhone(con, sdt, ten);
     }
 
 
@@ -98,12 +130,6 @@ public class KhachHang_Dao implements DaoInterface<KhachHang> {
         return list;
     }
 
-    /**
-     * Refresh customer status based on last purchase:
-     * - If customer has a purchase within last 1 year -> 'Kích hoạt'
-     * - Else if customer has purchases but last is older than 1 year -> 'Ngưng'
-     * - Else (no purchases) -> keep existing TrangThai (do not change)
-     */
     public void refreshTrangThai() {
         String sql = "UPDATE KhachHang SET TrangThai = CASE " +
                 "WHEN EXISTS (SELECT 1 FROM HoaDon WHERE HoaDon.MaKH = KhachHang.MaKH AND NgayLap >= DATEADD(year, -1, GETDATE())) THEN 'Hoạt động' " +
@@ -117,10 +143,6 @@ public class KhachHang_Dao implements DaoInterface<KhachHang> {
         return  this.selectBySql(SELECT_ALL_SQL);
     }
 
-    /**
-     * Generate a new MaKH by taking the last MaKH in descending order and incrementing the numeric suffix.
-     * Format: KH%03d (e.g., KH011 -> KH012). If no existing rows, returns KH001.
-     */
     public String generateNewMaKH() {
         // Preferred: use SQL Server SEQUENCE if available (atomic and safe under concurrency)
         try {
@@ -133,12 +155,9 @@ public class KhachHang_Dao implements DaoInterface<KhachHang> {
             }
             rsSeq.getStatement().getConnection().close();
         } catch (Exception ignore) {
-            // Sequence may not exist; fall back to previous method
         }
 
-        // Fallback: read highest MaKH and increment numeric suffix (works when MaKH formatted as KH###)
         String newMa = "KH001";
-        // Order by numeric suffix of MaKH (substring after 'KH'), safe for values like KH009, KH010, KH100
         String sql = "SELECT TOP 1 MaKH FROM KhachHang ORDER BY TRY_CONVERT(INT, SUBSTRING(MaKH, 3, 100)) DESC";
         try {
             java.sql.ResultSet rs = ConnectDB.query(sql);

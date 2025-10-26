@@ -636,9 +636,11 @@ public class SuaKhuyenMai_Ctrl {
             for (Thuoc_SP_TangKem g : oldGifts) {
                 giftDao.deleteById(g.getThuocTangKem().getMaThuoc(), maKM);
             }
-            for (Thuoc_SP_TangKem g : giftItems) {
-                g.setKhuyenmai(km);
-                giftDao.insert(g);
+            if (loai != null && "LKM001".equalsIgnoreCase(loai.getMaLoai())) {
+                for (Thuoc_SP_TangKem g : giftItems) { // prefer backing list over table items
+                    g.setKhuyenmai(km); // correct setter name
+                    giftDao.insert(g);
+                }
             }
 
             // 7. Close form

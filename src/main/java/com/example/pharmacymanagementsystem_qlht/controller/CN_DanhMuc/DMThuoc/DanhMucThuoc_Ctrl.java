@@ -53,7 +53,9 @@ public class DanhMucThuoc_Ctrl extends Application {
     }
 
     public void initialize() {
-        loadTable();
+        Platform.runLater(() -> {
+            loadTable();
+        });
         btnLamMoi.setOnAction(e-> LamMoi());
         tfTimThuoc.setOnAction(e-> timThuoc());
         btnTimThuoc.setOnAction(e-> timThuoc());
@@ -207,6 +209,8 @@ public class DanhMucThuoc_Ctrl extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/ThemThuocBangFileExcel_GUI.fxml"));
             Parent root = loader.load();
             Stage dialog = new Stage();
+            ThemThuocBangFileExcel ctrl = loader.getController();
+            ctrl.setDanhMucThuocCtrl(this);
             dialog.initOwner(tbl_Thuoc.getScene().getWindow());
             dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
             dialog.setScene(new Scene(root));

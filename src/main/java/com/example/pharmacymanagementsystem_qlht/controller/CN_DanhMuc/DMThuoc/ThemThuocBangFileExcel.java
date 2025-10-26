@@ -29,6 +29,7 @@ public class ThemThuocBangFileExcel {
     public Label lblThongTinFile;
     public ImageView btnXoa;
     public Button btnLuu;
+    private DanhMucThuoc_Ctrl danhMucThuocCtrl;
 
     public List<Thuoc_SanPham> danhSachThuoc = new ArrayList<>();
 
@@ -38,6 +39,9 @@ public class ThemThuocBangFileExcel {
         btnXoa.setVisible(false);
     }
 //  ==================================================================hàm xử lý
+    public void setDanhMucThuocCtrl(DanhMucThuoc_Ctrl ctrl){
+        this.danhMucThuocCtrl = ctrl;
+    }
 //  Thả file dữ liệu
     public void thaFileDuLieu(DragEvent dragEvent) {
         Dragboard db = dragEvent.getDragboard();
@@ -171,6 +175,7 @@ public class ThemThuocBangFileExcel {
         for(Thuoc_SanPham thuoc : danhSachThuoc){
             thuocDao.insertThuocProc(thuoc);
         }
+        danhMucThuocCtrl.loadTable();
     }
 
 //  Tải file mẫu

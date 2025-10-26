@@ -6,7 +6,7 @@ USE QuanLyNhaThuoc;
 GO
 
 --Link thư mục hình ảnh thuốc 
-DECLARE @path NVARCHAR(255) = N'D:\IUH\hk5\PTUD_Java\Project\PharmacyManagementSystem_QLHT\SQL\imgThuoc\';
+DECLARE @path NVARCHAR(255) = N'C:\Users\Nhut Hao\Desktop\New folder (2)\PharmacyManagementSystem_QLHT\SQL\imgThuoc\';
 
 -- =========================
 -- Bảng KhachHang
@@ -1614,23 +1614,41 @@ CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_TuanNay
 AS
 BEGIN
     SET NOCOUNT ON;
+
+    -- Đặt ngày đầu tuần là Thứ Hai (an toàn, không ảnh hưởng session khác)
+    SET DATEFIRST 1;
+
+    -- Tính toán ngày đầu tuần (Thứ Hai) và cuối tuần (Chủ Nhật)
+    DECLARE @Today DATE = GETDATE();
+    DECLARE @StartOfWeek DATE = DATEADD(dd, 1 - DATEPART(dw, @Today), @Today);
+    DECLARE @EndOfWeek DATE = DATEADD(dd, 6, @StartOfWeek); -- Thêm 6 ngày vào Thứ Hai
+
     WITH DoanhSoTheoNgay AS (
-        SELECT CONVERT(date, HD.NgayLap) AS Ngay, COUNT(DISTINCT HD.MaHD) AS SoLuongHoaDon, ISNULL(SUM(CTHD.SoLuong * CTHD.DonGia), 0) AS TongGiaTri, ISNULL(SUM(CTHD.SoLuong * CTHD.GiamGia), 0) AS GiamGia
+        SELECT CONVERT(date, HD.NgayLap) AS Ngay,
+               COUNT(DISTINCT HD.MaHD) AS SoLuongHoaDon,
+               ISNULL(SUM(CTHD.SoLuong * CTHD.DonGia), 0) AS TongGiaTri,
+               ISNULL(SUM(CTHD.SoLuong * CTHD.GiamGia), 0) AS GiamGia
         FROM HoaDon HD JOIN ChiTietHoaDon CTHD ON HD.MaHD = CTHD.MaHD
-        WHERE DATEPART(week, HD.NgayLap) = DATEPART(week, GETDATE()) AND DATEPART(year, HD.NgayLap) = DATEPART(year, GETDATE())
+        -- Lọc theo khoảng ngày đã tính
+        WHERE CONVERT(date, HD.NgayLap) BETWEEN @StartOfWeek AND @EndOfWeek
         GROUP BY CONVERT(date, HD.NgayLap)
     ),
     TraHangTheoNgay AS (
-        SELECT CONVERT(date, PT.NgayLap) AS Ngay, COUNT(DISTINCT PT.MaPT) AS SoLuongDonTra, ISNULL(SUM(CTPT.SoLuong * (CTPT.DonGia - CTPT.GiamGia)), 0) AS GiaTriDonTra
+        SELECT CONVERT(date, PT.NgayLap) AS Ngay,
+               COUNT(DISTINCT PT.MaPT) AS SoLuongDonTra,
+               ISNULL(SUM(CTPT.SoLuong * (CTPT.DonGia - CTPT.GiamGia)), 0) AS GiaTriDonTra
         FROM PhieuTraHang PT JOIN ChiTietPhieuTraHang CTPT ON PT.MaPT = CTPT.MaPT
-        WHERE DATEPART(week, PT.NgayLap) = DATEPART(week, GETDATE()) AND DATEPART(year, PT.NgayLap) = DATEPART(year, GETDATE())
+        -- Lọc theo khoảng ngày đã tính
+        WHERE CONVERT(date, PT.NgayLap) BETWEEN @StartOfWeek AND @EndOfWeek
         GROUP BY CONVERT(date, PT.NgayLap)
     )
     SELECT
-        -- SỬA Ở ĐÂY: từ 'dd' thành 'dd/MM'
         FORMAT(ISNULL(DS.Ngay, TH.Ngay), 'dd/MM') AS ThoiGian,
-        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon, ISNULL(DS.TongGiaTri, 0) AS TongGiaTri, ISNULL(DS.GiamGia, 0) AS GiamGia,
-        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra, ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
+        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon,
+        ISNULL(DS.TongGiaTri, 0) AS TongGiaTri,
+        ISNULL(DS.GiamGia, 0) AS GiamGia,
+        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra,
+        ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
         (ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0) - ISNULL(TH.GiaTriDonTra, 0)) AS DoanhThu
     FROM DoanhSoTheoNgay DS FULL OUTER JOIN TraHangTheoNgay TH ON DS.Ngay = TH.Ngay
     ORDER BY ISNULL(DS.Ngay, TH.Ngay);
@@ -1745,13 +1763,31 @@ CREATE OR ALTER PROCEDURE sp_Top5SanPham_TuanNay
 AS
 BEGIN
     SET NOCOUNT ON;
-    SELECT TOP 5 T.MaThuoc, T.TenThuoc, SUM(CTHD.SoLuong) AS SoLuong, SUM(CTHD.SoLuong * (CTHD.DonGia - CTHD.GiamGia)) AS ThanhTien
+
+    -- 1. Đặt ngày đầu tuần là Thứ Hai
+    SET DATEFIRST 1;
+
+    -- 2. Tính toán ngày đầu tuần (Thứ Hai) và cuối tuần (Chủ Nhật)
+    DECLARE @Today DATE = GETDATE();
+    DECLARE @StartOfWeek DATE = DATEADD(dd, 1 - DATEPART(dw, @Today), @Today);
+    DECLARE @EndOfWeek DATE = DATEADD(dd, 6, @StartOfWeek);
+
+    -- 3. Truy vấn
+    SELECT TOP 5
+        T.MaThuoc,
+        T.TenThuoc,
+        SUM(CTHD.SoLuong) AS SoLuong,
+        SUM(CTHD.SoLuong * (CTHD.DonGia - CTHD.GiamGia)) AS ThanhTien
     FROM ChiTietHoaDon CTHD
     JOIN HoaDon HD ON CTHD.MaHD = HD.MaHD
     JOIN Thuoc_SP_TheoLo L ON CTHD.MaLH = L.MaLH
     JOIN Thuoc_SanPham T ON L.MaThuoc = T.MaThuoc
-    WHERE DATEPART(week, HD.NgayLap) = DATEPART(week, GETDATE()) AND DATEPART(year, HD.NgayLap) = DATEPART(year, GETDATE())
-    GROUP BY T.MaThuoc, T.TenThuoc ORDER BY SoLuong DESC;
+
+    -- 4. Sửa điều kiện WHERE để dùng khoảng ngày tuyệt đối
+    WHERE CONVERT(date, HD.NgayLap) BETWEEN @StartOfWeek AND @EndOfWeek
+
+    GROUP BY T.MaThuoc, T.TenThuoc
+    ORDER BY SoLuong DESC;
 END;
 GO
 

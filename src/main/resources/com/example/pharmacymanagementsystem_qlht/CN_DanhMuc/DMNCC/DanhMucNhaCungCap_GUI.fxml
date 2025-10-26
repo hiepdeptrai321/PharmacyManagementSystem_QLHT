@@ -33,8 +33,8 @@
                 <TableColumn fx:id="colDiaChi" minWidth="0.0" prefWidth="179.0" text="Địa chỉ" />
                 <TableColumn fx:id="colSDT" minWidth="0.0" prefWidth="265.0" style="-fx-alignment: CENTER;" text="Số điện thoại" />
                 <TableColumn fx:id="colEmail" minWidth="0.0" prefWidth="213.0" text="Email" />
-                <TableColumn fx:id="colGhiChu" minWidth="0.0" prefWidth="339.0" text="Ghi chú" />
-                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="104.0" style="-fx-alignment: CENTER;" />
+                <TableColumn fx:id="colGhiChu" minWidth="0.0" prefWidth="327.0" text="Ghi chú" />
+                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="116.0" style="-fx-alignment: CENTER;" />
             </columns>
         </TableView>
         <Button id="btnnhapxuat" layoutX="1553.0" layoutY="47.0" minWidth="46.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="45.0" text="📥" AnchorPane.topAnchor="47.0" />

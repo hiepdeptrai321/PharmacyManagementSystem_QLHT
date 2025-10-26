@@ -22,13 +22,18 @@
                 <TableColumn fx:id="colLoaiKM" minWidth="0.0" prefWidth="172.0" style="-fx-alignment: CENTER;" styleClass="a-center" text="Loại khuyến mãi" />
                 <TableColumn fx:id="colGiaTri" minWidth="0.0" prefWidth="185.0" style="-fx-alignment: CENTER;" text="Giá trị " />
                 <TableColumn fx:id="colNBD" minWidth="0.0" prefWidth="285.0" style="-fx-alignment: CENTER;" styleClass="a-center" text="Ngày bắt đầu" />
-                <TableColumn fx:id="colNKT" minWidth="0.0" prefWidth="249.0" style="-fx-alignment: CENTER;" styleClass="a-center" text="Ngày kết thúc" />
-            <TableColumn fx:id="colChiTiet" prefWidth="95.0" style="-fx-alignment: CENTER;" styleClass="a-center" />
+                <TableColumn fx:id="colNKT" minWidth="0.0" prefWidth="241.0" style="-fx-alignment: CENTER;" styleClass="a-center" text="Ngày kết thúc" />
+            <TableColumn fx:id="colChiTiet" prefWidth="103.0" style="-fx-alignment: CENTER;" styleClass="a-center" />
             </columns>
         </TableView>
       <Pane id="lblpaneTitle" layoutY="2.0" prefHeight="40.0" prefWidth="1655.0">
          <children>
             <Label id="lbtitle" layoutX="15.0" layoutY="2.0" prefHeight="36.0" prefWidth="307.0" text="Cập nhật khuyến mãi" />
+            <ImageView fitHeight="65.0" fitWidth="122.0" layoutX="272.0" layoutY="-12.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/coupon.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
       <Button id="btnReset" fx:id="btnReset" layoutX="874.0" layoutY="47.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timKhuyenMai" prefHeight="40.0" prefWidth="50.0" styleClass="btn" stylesheets="@../../css/QuanLyThuoc.css">

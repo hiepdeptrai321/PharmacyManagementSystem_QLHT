@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.geometry.Point3D?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -15,8 +17,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <Pane id="main" prefHeight="1029.0" prefWidth="1646.0" stylesheets="@css/TrangChu.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CuaSoChinh_QuanLy_Ctrl">
@@ -295,18 +299,48 @@
                         <Image url="@img/logo.png" />
                     </image>
                 </ImageView>
-            <Pane id="paneMain" layoutX="1271.0" layoutY="93.0" prefHeight="36.0" prefWidth="337.0">
+            <Pane id="paneMainThoiGian" layoutX="1271.0" layoutY="93.0" prefHeight="36.0" prefWidth="337.0">
                <children>
-                  <Label fx:id="txtNguoiDung" alignment="CENTER" layoutX="24.0" layoutY="8.0" prefHeight="21.0" prefWidth="291.0" text="Người dùng: ">
+                  <Label fx:id="txtNgayThangNam" alignment="CENTER" layoutX="24.0" layoutY="8.0" prefHeight="21.0" prefWidth="291.0">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
                </children>
             </Pane>
-            <Pane id="paneMain" layoutX="1271.0" layoutY="24.0" prefHeight="36.0" prefWidth="337.0">
+            <Pane id="pnlThongTin" fx:id="pnlThongTin" layoutX="1287.0" layoutY="59.0" prefHeight="107.0" prefWidth="305.0">
                <children>
-                  <Label fx:id="txtNgayThangNam" alignment="CENTER" layoutX="24.0" layoutY="8.0" prefHeight="21.0" prefWidth="291.0" text="N">
+                  <VBox layoutX="-1.0" prefHeight="107.0" prefWidth="307.0">
+                     <children>
+                        <HBox layoutX="10.0" layoutY="10.0" prefHeight="35.0" prefWidth="307.0">
+                           <children>
+                              <Label prefHeight="30.0" prefWidth="52.0" text="Vai trò:">
+                                 <HBox.margin>
+                                    <Insets left="35.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Pane id="paneLabelThongTin" prefHeight="30.0" prefWidth="191.0">
+                                 <children>
+                                    <Label fx:id="lblVaiTro" layoutX="14.0" layoutY="1.0" prefHeight="30.0" prefWidth="158.0" />
+                                 </children>
+                              </Pane>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <Pane prefHeight="62.0" prefWidth="307.0">
+                           <children>
+                              <Button id="btnDangXuat" layoutX="110.0" layoutY="12.0" mnemonicParsing="false" onAction="#btnDangXuatClick" text="Đăng xuất" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+               </children>
+            </Pane>
+            <Pane id="paneMainTenSD" layoutX="1271.0" layoutY="24.0" onMouseClicked="#pnlNguoiDungClick" prefHeight="36.0" prefWidth="337.0">
+               <children>
+                  <Label fx:id="txtNguoiDung" alignment="CENTER" layoutX="24.0" layoutY="8.0" prefHeight="21.0" prefWidth="291.0" text="Người dùng:">
                      <font>
                         <Font size="15.0" />
                      </font>

@@ -13,7 +13,9 @@ public class ChiTietDonViTinh_Dao implements DaoInterface<ChiTietDonViTinh> {
     private final String UPDATE_SQL = "UPDATE ChiTietDonViTinh SET HeSoQuyDoi=?, GiaNhap=?, GiaBan=?, DonViCoBan=? WHERE MaThuoc=? AND MaDVT=?";
     private final String DELETE_BY_ID_SQL = "DELETE FROM ChiTietDonViTinh WHERE MaThuoc=? AND MaDVT=?";
     private final String SELECT_BY_ID_SQL = "SELECT MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan FROM ChiTietDonViTinh WHERE MaThuoc=? AND MaDVT=?";
-    private final String SELECT_ALL_SQL = "SELECT MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan FROM ChiTietDonViTinh";
+    private final String SELECT_ALL_SQL = "SELECT Thuoc_SanPham.MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan FROM ChiTietDonViTinh" +
+            " JOIN Thuoc_SanPham ON ChiTietDonViTinh.MaThuoc = Thuoc_SanPham.MaThuoc " +
+            " WHERE Thuoc_SanPham.TrangThaiXoa = 0 ";
     private final String SELECT_BY_MATHUOC_SQL = "SELECT MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan FROM ChiTietDonViTinh WHERE MaThuoc=?";
     @Override
     public boolean insert(ChiTietDonViTinh e) {

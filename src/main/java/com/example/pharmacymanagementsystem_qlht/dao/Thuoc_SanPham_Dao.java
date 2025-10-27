@@ -14,7 +14,7 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
     private final String INSERT_SQL = "INSERT INTO Thuoc_SanPham (MaThuoc,TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaNDL, MaLoaiHang, HinhAnh, ViTri) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE Thuoc_SanPham SET TenThuoc=?, HamLuong=?, DonViHL=?, DuongDung=?, QuyCachDongGoi=?, SDK_GPNK=?, HangSX=?, NuocSX=?, MaNDL=?, MaLoaiHang=?, HinhAnh=?, ViTri=? WHERE MaThuoc=?";
     private final String DELETE_SQL = "DELETE FROM Thuoc_SanPham WHERE MaThuoc=?";
-    private final String SELECT_ALL_SQL = "SELECT * FROM Thuoc_SanPham";
+    private final String SELECT_ALL_SQL = "SELECT * FROM Thuoc_SanPham WHERE TrangThaiXoa = 0";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM Thuoc_SanPham WHERE MaThuoc=?";
     private final String SELECT_BY_TUKHOA_SQL = "SELECT * FROM Thuoc_SanPham WHERE TenThuoc LIKE ? OR MaThuoc LIKE ?";
     private final String SELECT_THUOC_SANPHAM_DONVICOBAN_SQL =
@@ -383,5 +383,10 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
             e.printStackTrace();
         }
         return maMoi;
+    }
+
+    public boolean xoaThuoc_SanPham(String maThuoc) {
+        String sql = "UPDATE Thuoc_SanPham SET TrangThaiXoa = 1 WHERE MaThuoc = ?";
+        return ConnectDB.update(sql, maThuoc) > 0;
     }
 }

@@ -52,6 +52,22 @@
     -fx-background-radius: 20px;
 }
 
+#paneMainThoiGian{
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ff9041;
+    -fx-border-width: 2px;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+}
+#paneMainTenSD{
+    -fx-background-color: #ffffff;
+    -fx-border-color: #1e90ff;
+    -fx-border-width: 0.5px;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(30, 144, 255, 0.7), 10, 0, 0, 4);
+}
+
 .table-view {
     -fx-focus-traversable: false;
 }
@@ -79,4 +95,31 @@
 
 .menu-item .label {
     -fx-text-fill: black; /* màu chữ bình thường */
+}
+
+#pnlThongTin{
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(108, 108, 108, 0.7), 8, 0, 0, 2);
+}
+
+#custom-textfield {
+    -fx-background-color: #e8e8e8;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-padding: 5 10 5 10;
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+#btnDangXuat{
+    -fx-background-color: #ff4d4d;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5px;
+    -fx-padding: 8 15 8 15;
+}
+
+#paneLabelThongTin{
+    -fx-background-color: #f1f1f1;
+    -fx-background-radius: 20px;
 }

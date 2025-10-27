@@ -17,10 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -63,6 +60,10 @@ public class CuaSoChinh_QuanLy_Ctrl{
     public Label lblDoanhThuThangNay;
     public Label lblHoaDonThangTruoc;
     public Label lblHoaDonThangNay;
+    public Pane pnlThongTin;
+    public Pane pnlNguoiDung;
+    public TextField txtVaiTroNhanVien;
+    public Label lblVaiTro;
     private int viTri;
     private List<Thuoc_SP_TheoLo> listThuocHetHan  = new Thuoc_SP_TheoLo_Dao().selectHangDaHetHan();
     private List<Thuoc_SP_TheoLo> listThuocSapHetHan  = new Thuoc_SP_TheoLo_Dao().selectHangSapHetHan();
@@ -74,6 +75,7 @@ public class CuaSoChinh_QuanLy_Ctrl{
         loadTableThuocSapHetHan();
         setThongKeLabelsAndData();
         setupGlobalShortcuts();
+        pnlThongTin.setVisible(false);
     }
 
     private void loadView(int menuIndex, String fxmlPath) {
@@ -87,6 +89,8 @@ public class CuaSoChinh_QuanLy_Ctrl{
             e.printStackTrace();
             System.err.println("Không thể tải FXML: " + fxmlPath);
         }
+        pnlThongTin.setVisible(false);
+
     }
 
     public void loadTableThuocHetHan(){
@@ -363,15 +367,6 @@ public class CuaSoChinh_QuanLy_Ctrl{
 
 //  Lập phiếu đặt hàng
     public void lapPhieuDatHang(ActionEvent actionEvent) {
-        viTri=5;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapPhieuDat/LapPhieuDatHang_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         loadView(5, "/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapPhieuTra/LapPhieuTraHang_GUI.fxml");
     }
 
@@ -439,4 +434,24 @@ public class CuaSoChinh_QuanLy_Ctrl{
 
     }
 
+    public void pnlNguoiDungClick(MouseEvent mouseEvent) {
+        pnlThongTin.setVisible(!pnlThongTin.isVisible());
+        lblVaiTro.setText(DangNhap_Ctrl.user.getVaiTro().toString());
+    }
+
+
+    public void btnDangXuatClick(ActionEvent actionEvent) {
+        try {
+            Stage stage = new Stage();
+            Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/DangNhap_GUI.fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Đăng nhập hệ thống quản lý nhà thuốc");
+            stage.show();
+            // Đóng cửa sổ hiện tại
+            pnlChung.getScene().getWindow().hide();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

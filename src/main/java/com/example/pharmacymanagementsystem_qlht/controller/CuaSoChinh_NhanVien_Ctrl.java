@@ -62,6 +62,8 @@ public class CuaSoChinh_NhanVien_Ctrl{
     public Label lblDoanhThuThangNay;
     public Label lblHoaDonThangTruoc;
     public Label lblHoaDonThangNay;
+    public Pane pnlThongTin;
+    public Label lblVaiTro;
     private int viTri;
     private List<Thuoc_SP_TheoLo> listThuocHetHan  = new Thuoc_SP_TheoLo_Dao().selectHangDaHetHan();
     private List<Thuoc_SP_TheoLo> listThuocSapHetHan  = new Thuoc_SP_TheoLo_Dao().selectHangSapHetHan();
@@ -73,6 +75,7 @@ public class CuaSoChinh_NhanVien_Ctrl{
         loadTableThuocSapHetHan();
         setThongKeLabelsAndData();
         setupGlobalShortcuts();
+        pnlThongTin.setVisible(false);
     }
 
     public void loadTableThuocHetHan(){
@@ -389,4 +392,23 @@ public class CuaSoChinh_NhanVien_Ctrl{
     }
 
 
+    public void btnDangXuatClick(ActionEvent actionEvent) {
+        try {
+            Stage stage = new Stage();
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/DangNhap_GUI.fxml")));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Đăng nhập hệ thống quản lý nhà thuốc");
+            stage.show();
+            // Đóng cửa sổ hiện tại
+            pnlChung.getScene().getWindow().hide();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void pnlNguoiDungClick(MouseEvent mouseEvent) {
+        pnlThongTin.setVisible(!pnlThongTin.isVisible());
+        lblVaiTro.setText(DangNhap_Ctrl.user.getVaiTro().toString());
+    }
 }

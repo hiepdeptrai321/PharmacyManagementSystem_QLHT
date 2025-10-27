@@ -2363,34 +2363,34 @@ GO
 
 
 
---Trigger + Job – Trả hàng tự động sau 7 ngày
-CREATE OR ALTER TRIGGER trg_TuDongTraHangSau7Ngay
-ON PhieuDatHang
-AFTER UPDATE
-AS
-BEGIN
-    SET NOCOUNT ON;
+----Trigger + Job – Trả hàng tự động sau 7 ngày
+--CREATE OR ALTER TRIGGER trg_TuDongTraHangSau7Ngay
+--ON PhieuDatHang
+--AFTER UPDATE
+--AS
+--BEGIN
+--    SET NOCOUNT ON;
 
-    -- Trả hàng về kho nếu phiếu quá 7 ngày mà chưa hoàn thành
-    UPDATE tsl
-    SET SoLuongTon = SoLuongTon + tsl.SoLuongGiu,
-        SoLuongGiu = 0
-    FROM Thuoc_SP_TheoLo tsl
-    WHERE EXISTS (
-        SELECT 1
-        FROM ChiTietPhieuDatHang ct
-        JOIN PhieuDatHang pd ON ct.MaPDat = pd.MaPDat
-        WHERE pd.TrangThai <> 2
-          AND DATEDIFF(DAY, pd.NgayLap, GETDATE()) > 7
-          AND ct.MaThuoc = tsl.MaThuoc
-    );
+--    -- Trả hàng về kho nếu phiếu quá 7 ngày mà chưa hoàn thành
+--    UPDATE tsl
+--    SET SoLuongTon = SoLuongTon + tsl.SoLuongGiu,
+--        SoLuongGiu = 0
+--    FROM Thuoc_SP_TheoLo tsl
+--    WHERE EXISTS (
+--        SELECT 1
+--        FROM ChiTietPhieuDatHang ct
+--        JOIN PhieuDatHang pd ON ct.MaPDat = pd.MaPDat
+--        WHERE pd.TrangThai <> 2
+--          AND DATEDIFF(DAY, pd.NgayLap, GETDATE()) > 7
+--          AND ct.MaThuoc = tsl.MaThuoc
+--    );
 
-    UPDATE PhieuDatHang
-    SET TrangThai = 3 -- đã hủy
-    WHERE TrangThai <> 2
-      AND DATEDIFF(DAY, NgayLap, GETDATE()) > 7;
-END;
-GO
+--    UPDATE PhieuDatHang
+--    SET TrangThai = 3 -- đã hủy
+--    WHERE TrangThai <> 2
+--      AND DATEDIFF(DAY, NgayLap, GETDATE()) > 7;
+--END;
+--GO
 
 
 --TRIGGER CẬP NHẬT TRẠNG THÁI ĐẶT HÀNG KHI CÓ THAY ĐỔI TRÊN BẢNG THUỐC_SP_THEOLO

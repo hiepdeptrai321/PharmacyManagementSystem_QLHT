@@ -36,9 +36,9 @@
             </ImageView>
          </children>
       </Pane>
-      <Button id="btnReset" fx:id="btnReset" layoutX="874.0" layoutY="47.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timKhuyenMai" prefHeight="40.0" prefWidth="50.0" styleClass="btn" stylesheets="@../../css/QuanLyThuoc.css">
+      <Button id="btnReset" fx:id="btnReset" layoutX="874.0" layoutY="47.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timKhuyenMai" prefHeight="40.0" prefWidth="44.0" styleClass="btn" stylesheets="@../../css/QuanLyThuoc.css">
          <graphic>
-            <ImageView fitHeight="32.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="20.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../img/refresh-3104.png" />
                </image>

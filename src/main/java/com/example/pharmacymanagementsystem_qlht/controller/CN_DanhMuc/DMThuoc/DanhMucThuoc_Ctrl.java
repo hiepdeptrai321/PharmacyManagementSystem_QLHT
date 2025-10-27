@@ -19,6 +19,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class DanhMucThuoc_Ctrl extends Application {
@@ -192,6 +194,8 @@ public class DanhMucThuoc_Ctrl extends Application {
     }
 
     public void refestTable(){
+        list.clear();
+        list = thuocDao.selectAll();
         loadTable();
     }
 

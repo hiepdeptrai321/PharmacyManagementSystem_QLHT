@@ -74,13 +74,19 @@
     -fx-border-radius: 6;
     -fx-text-fill: white;
 }
-#btnReset{
--fx-background-color: green;   /* trong suốt nền */
-    -fx-border-color: transparent;       /* bỏ viền */
+#btnReset {
+    -fx-background-color: #2ECC71; /* Màu xanh lá 'flat UI' */
+    -fx-border-color: transparent;
     -fx-font-size: 14px;
     -fx-background-radius: 6;
+    -fx-border-radius: 6;
     -fx-cursor: hand;
     -fx-graphic-text-gap: 8;
     -fx-min-height: 32px;
-    -fx-border-radius: 6;
+}
+#btnReset:hover {
+    -fx-background-color: #29b765; /* Hơi đậm hơn khi di chuột qua */
+}
+#btnReset:pressed {
+    -fx-background-color: #25a25a; /* Đậm hơn khi nhấn */
 }

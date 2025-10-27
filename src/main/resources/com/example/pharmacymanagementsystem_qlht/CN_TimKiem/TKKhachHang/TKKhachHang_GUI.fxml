@@ -70,7 +70,7 @@
                                 </ImageView>
                             </graphic>
                         </Button>
-                        <Button id="btnhuy" fx:id="btnLamMoi" mnemonicParsing="false" prefHeight="40.0" prefWidth="52.0">
+                        <Button id="btnReset" fx:id="btnLamMoi" mnemonicParsing="false" prefHeight="40.0" prefWidth="52.0" stylesheets="@../../css/QuanLyThuoc.css">
                             <HBox.margin>
                                 <Insets top="10.0" />
                             </HBox.margin>

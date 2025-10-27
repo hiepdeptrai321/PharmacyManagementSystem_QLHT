@@ -3,6 +3,7 @@ package com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMThuoc;
 import com.example.pharmacymanagementsystem_qlht.dao.*;
 import com.example.pharmacymanagementsystem_qlht.model.ChiTietHoatChat;
 import com.example.pharmacymanagementsystem_qlht.model.HoatChat;
+import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SP_TheoLo;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -61,7 +62,7 @@ public class SuaXoaThuoc_Ctrl {
     public ImageView imgThuoc_SanPham;
     private ObservableList<HoatChat> allHoatChat;
     private List<ChiTietHoatChat> listChiTietHoatChat = new ArrayList<>();
-    private String maThuoc;
+    private Thuoc_SanPham thuocTempDeXemSoLuongTon;
     private Consumer<Thuoc_SanPham> onAdded;
     private Consumer<Thuoc_SanPham> onDeleted;
     private DanhMucThuoc_Ctrl danhMucThuoc_Ctrl;
@@ -69,7 +70,7 @@ public class SuaXoaThuoc_Ctrl {
     @FXML
     public void initialize(Thuoc_SanPham thuoc) {
         listChiTietHoatChat = new ChiTietHoatChat_Dao().selectAll();
-
+        thuocTempDeXemSoLuongTon = thuoc;
         tblHoatChat.setEditable(true);
         colHamLuong.setCellFactory(TextFieldTableCell.forTableColumn(new FloatStringConverter()));
         colHamLuong.setOnEditCommit(event -> {
@@ -366,17 +367,32 @@ public class SuaXoaThuoc_Ctrl {
     }
 
     public void btnXoa(ActionEvent actionEvent) {
-//        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Bạn có chắc muốn xoá thuốc này?", ButtonType.YES, ButtonType.NO);
-//        confirm.setHeaderText(null);
-//        confirm.showAndWait().ifPresent(btn -> {
-//            if (btn == ButtonType.YES) {
-//                Thuoc_SanPham_Dao thuoc_dao = new Thuoc_SanPham_Dao();
-//                thuoc_dao.deleteById(txtMaThuoc.getText().trim());
-//                if (onDeleted != null) onDeleted.accept(thuoc_dao.selectById(txtMaThuoc.getText().trim()));
-//                danhMucThuoc_Ctrl.refestTable();
-//                dong();
-//            }
-//        });
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Bạn có chắc muốn xoá thuốc này?", ButtonType.YES, ButtonType.NO);
+        confirm.setHeaderText(null);
+        confirm.showAndWait().ifPresent(btn -> {
+            if (btn == ButtonType.YES) {
+                Thuoc_SanPham_Dao thuoc_dao = new Thuoc_SanPham_Dao();
+                Thuoc_SP_TheoLo_Dao thuocSpTheoLoDao = new Thuoc_SP_TheoLo_Dao();
+                if(thuocSpTheoLoDao.selectSoLuongTonByMaThuoc(thuocTempDeXemSoLuongTon.getMaThuoc())>0){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Lỗi");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Thuốc "+ thuocTempDeXemSoLuongTon.getTenThuoc() + " hiện đang có tồn kho, bạn có muốn xóa không");
+                    alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+                    alert.showAndWait().ifPresent(response -> {
+                        if (response == ButtonType.YES) {
+                            thuoc_dao.xoaThuoc_SanPham(thuocTempDeXemSoLuongTon.getMaThuoc());
+                            danhMucThuoc_Ctrl.refestTable();
+                            dong();
+                        }
+                    });
+                }else{
+                    thuoc_dao.xoaThuoc_SanPham(thuocTempDeXemSoLuongTon.getMaThuoc());
+                    danhMucThuoc_Ctrl.refestTable();
+                    dong();
+                }
+            }
+        });
     }
 
     public void chonFile(ActionEvent actionEvent) {

@@ -9,6 +9,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,6 +24,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -42,7 +45,6 @@ public class CuaSoChinh_NhanVien_Ctrl {
     public Menu menuTimKiem;
     public Menu menuDanhMuc;
     public Menu menuCapNhat;
-    public Menu menuThongKe;
     public Menu menuXuLy;
     public Label txtNguoiDung;
     public Label txtNgayThangNam;
@@ -61,6 +63,8 @@ public class CuaSoChinh_NhanVien_Ctrl {
     public Label lblDoanhThuThangNay;
     public Label lblHoaDonThangTruoc;
     public Label lblHoaDonThangNay;
+    public Pane pnlThongTin;
+    public Label lblVaiTro;
     private int viTri;
     private List<Thuoc_SP_TheoLo> listThuocHetHan  = new Thuoc_SP_TheoLo_Dao().selectHangDaHetHan();
     private List<Thuoc_SP_TheoLo> listThuocSapHetHan  = new Thuoc_SP_TheoLo_Dao().selectHangSapHetHan();
@@ -71,6 +75,8 @@ public class CuaSoChinh_NhanVien_Ctrl {
         loadTableThuocHetHan();
         loadTableThuocSapHetHan();
         setThongKeLabelsAndData();
+        setupGlobalShortcuts();
+        pnlThongTin.setVisible(false);
     }
 
     public void loadTableThuocHetHan(){
@@ -164,7 +170,7 @@ public class CuaSoChinh_NhanVien_Ctrl {
                 menuTimKiem.setStyle("-fx-background-color: #1e90ff");
                 menuDanhMuc.setStyle("-fx-background-color: #1e90ff");
                 menuCapNhat.setStyle("-fx-background-color: #1e90ff");
-                menuThongKe.setStyle("-fx-background-color: #1e90ff");
+                // Đã xóa menuThongKe
                 menuXuLy.setStyle("-fx-background-color: #1e90ff");
                 break;
             }
@@ -172,7 +178,7 @@ public class CuaSoChinh_NhanVien_Ctrl {
                 menuTimKiem.setStyle("-fx-background-color: #003cff");
                 menuDanhMuc.setStyle("-fx-background-color: #1e90ff");
                 menuCapNhat.setStyle("-fx-background-color: #1e90ff");
-                menuThongKe.setStyle("-fx-background-color: #1e90ff");
+                // Đã xóa menuThongKe
                 menuXuLy.setStyle("-fx-background-color: #1e90ff");
                 break;
             }
@@ -180,7 +186,7 @@ public class CuaSoChinh_NhanVien_Ctrl {
                 menuTimKiem.setStyle("-fx-background-color: #1e90ff");
                 menuDanhMuc.setStyle("-fx-background-color: #003cff");
                 menuCapNhat.setStyle("-fx-background-color: #1e90ff");
-                menuThongKe.setStyle("-fx-background-color: #1e90ff");
+                // Đã xóa menuThongKe
                 menuXuLy.setStyle("-fx-background-color: #1e90ff");
                 break;
             }
@@ -188,7 +194,7 @@ public class CuaSoChinh_NhanVien_Ctrl {
                 menuTimKiem.setStyle("-fx-background-color: #1e90ff");
                 menuDanhMuc.setStyle("-fx-background-color: #1e90ff");
                 menuCapNhat.setStyle("-fx-background-color: #003cff");
-                menuThongKe.setStyle("-fx-background-color: #1e90ff");
+                // Đã xóa menuThongKe
                 menuXuLy.setStyle("-fx-background-color: #1e90ff");
                 break;
             }
@@ -196,7 +202,7 @@ public class CuaSoChinh_NhanVien_Ctrl {
                 menuTimKiem.setStyle("-fx-background-color: #1e90ff");
                 menuDanhMuc.setStyle("-fx-background-color: #1e90ff");
                 menuCapNhat.setStyle("-fx-background-color: #1e90ff");
-                menuThongKe.setStyle("-fx-background-color: #1e90ff");
+                // Đã xóa menuThongKe
                 menuXuLy.setStyle("-fx-background-color: #003cff");
                 break;
             }
@@ -207,283 +213,203 @@ public class CuaSoChinh_NhanVien_Ctrl {
         viTri=5;
         selectMenu(viTri);
     }
-
-    public void AnhChuyenTrangChu(MouseEvent mouseEvent) {
-        viTri=0;
+    private void loadView(int menuIndex, String fxmlPath) {
+        viTri = menuIndex;
         selectMenu(viTri);
         pnlChung.getChildren().clear();
-        try{
-            Pane pane = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/TrangChu_GUI.fxml"));
+        try {
+            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxmlPath)));
             pnlChung.getChildren().add(pane);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
+            System.err.println("Không thể tải FXML: " + fxmlPath);
         }
+    }
+
+    public void AnhChuyenTrangChu(MouseEvent mouseEvent) {
+        loadView(0, "/com/example/pharmacymanagementsystem_qlht/TrangChu_GUI.fxml");
 
     }
 
     //  1.Chức năng tìm kiếm
 //  Tìm kiếm hóa đơn
     public void timKiemHoaDon(ActionEvent actionEvent) {
-        viTri=1;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKHoaDon/TKHoaDon_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadView(1, "/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKHoaDon/TKHoaDon_GUI.fxml");
     }
 
     //  Tìm kiếm phiếu nhập
     public void timKiemPhieuNhap(ActionEvent actionEvent) {
-        viTri=1;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuNhapHang/TKPhieuNhapHang_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadView(1, "/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuNhapHang/TKPhieuNhapHang_GUI.fxml");
     }
 
     //  Tìm kiếm phiếu đổi hàng
     public void timKiemPhieuDoiHang(ActionEvent actionEvent) {
-        viTri=1;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuDoiHang/TKPhieuDoiHang_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadView(1, "/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuDoiHang/TKPhieuDoiHang_GUI.fxml");
     }
 
     //  Tìm kiếm phiếu trả hàng
     public void timKiemPhieuTraHang(ActionEvent actionEvent) {
-        viTri=1;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuTraHang/TKPhieuTraHang_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadView(1, "/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuTraHang/TKPhieuTraHang_GUI.fxml");
     }
 
     //  Tìm kiếm phiếu đặt hàng
     public void timKiemPhieuDatHang(ActionEvent actionEvent) {
-        viTri=1;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuDatHang/TKPhieuDatHang_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadView(1, "/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuDatHang/TKPhieuDatHang_GUI.fxml");
     }
 
     //  Tìm kiếm nhà cung cấp
     public void timKiemNhaCungCap(ActionEvent actionEvent) {
-        viTri=1;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKNhaCungCap/TKNCC_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadView(1, "/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKNhaCungCap/TKNCC_GUI.fxml");
     }
 
     //  Tìm kiếm thuốc
     public void timKiemThuoc(ActionEvent actionEvent) {
-        viTri=1;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKThuoc/TKThuoc_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadView(1, "/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKThuoc/TKThuoc_GUI.fxml");
     }
 
     //  Tìm kiếm khách hàng
     public void timKiemKhachHang(ActionEvent actionEvent) {
-        viTri=1;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKKhachHang/TKKhachHang_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadView(1, "/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKKhachHang/TKKhachHang_GUI.fxml");
     }
     //  2.Chức năng danh mục
 //  Danh mục thuốc
     public void danhMucThuoc(ActionEvent actionEvent) {
-        viTri=2;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/DanhMucThuoc_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadView(2, "/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/DanhMucThuoc_GUI.fxml");
     }
 
 
     //  Danh mục khách hàng
     public void danhMucKhachHang(ActionEvent actionEvent) {
-        viTri=2;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhachHang/DanhMucKhachHang_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadView(2, "/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhachHang/DanhMucKhachHang_GUI.fxml");
     }
 
     //  Danh mục kệ hàng
     public void danhMucKeHang(ActionEvent actionEvent) {
-        viTri=2;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKeHang/DanhMucKeHang_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadView(2, "/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKeHang/DanhMucKeHang_GUI.fxml");
     }
 
     //  Danh mục nhà cung cấp
     public void danhMucNhaCungCap(ActionEvent actionEvent) {
-        viTri=2;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNCC/DanhMucNhaCungCap_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadView(2, "/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNCC/DanhMucNhaCungCap_GUI.fxml");
     }
 
     public void danhMucNhomDuocLy(ActionEvent actionEvent) {
-        viTri=2;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNhomDuocLy/DanhMucNhomDuocLy.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadView(2, "/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNhomDuocLy/DanhMucNhomDuocLy.fxml");
     }
 
     //  3.Chức năng cập nhật
 //  Cập nhật giá bán
     public void CapNhatGiaBan(ActionEvent actionEvent) {
-        viTri=3;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatGia/CapNhatGiaThuoc_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadView(3, "/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatGia/CapNhatGiaThuoc_GUI.fxml");
     }
 
     //  Cập nhật tồn kho
     public void capNhatTonKho(ActionEvent actionEvent) {
-        viTri=3;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatSoLuong/CapNhatSoLuongThuoc_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadView(3, "/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatSoLuong/CapNhatSoLuongThuoc_GUI.fxml");
     }
 
     //  5.Chức năng xử lý
 //  Lập hóa đơn
     public void lapHoaDon(ActionEvent actionEvent) {
-        viTri=5;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapHoaDon/LapHoaDon_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadView(5, "/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapHoaDon/LapHoaDon_GUI.fxml");
     }
 
     //  Lập phiếu đổi hàng
     public void lapPhieuDoiHang(ActionEvent actionEvent) {
-        viTri=5;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapPhieuDoi/LapPhieuDoiHang_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadView(5, "/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapPhieuDoi/LapPhieuDoiHang_GUI.fxml");
     }
 
     //  Lập phiếu trả hàng
     public void lapPhieuTraHang(ActionEvent actionEvent) {
-        viTri=5;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapPhieuTra/LapPhieuTraHang_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadView(5, "/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapPhieuTra/LapPhieuTraHang_GUI.fxml");
     }
 
     //  Lập phiếu đặt hàng
     public void lapPhieuDatHang(ActionEvent actionEvent) {
-        viTri=5;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
-        try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapPhieuDat/LapPhieuDatHang_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        loadView(5, "/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapPhieuTra/LapPhieuDatHang_GUI.fxml");
     }
 
     //  Lập phiếu nhập hàng
     public void nhapHang(ActionEvent actionEvent) {
-        viTri=5;
-        selectMenu(viTri);
-        pnlChung.getChildren().clear();
+        loadView(5, "/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapPhieuNhapHang/LapPhieuNhapHang_GUI.fxml");
+    }
+    private void addShortcut(Scene scene, KeyCodeCombination keyCombination, Runnable action) {
+        scene.getAccelerators().put(keyCombination, action);
+    }
+    private void setupGlobalShortcuts() {
+        // Phải dùng Platform.runLater để đợi Scene được tạo
+        Platform.runLater(() -> {
+            Scene scene = pnlChung.getScene(); // Lấy scene từ pane chính
+            if (scene == null) {
+                System.err.println("Không thể lấy Scene để gán phím tắt.");
+                return;
+            }
+
+            // --- ĐỊNH NGHĨA PHÍM TẮT TOÀN CỤC (F1-F8) ---
+
+            // F1: Trang chủ
+            addShortcut(scene, new KeyCodeCombination(KeyCode.F1), () ->
+                    loadView(0, "/com/example/pharmacymanagementsystem_qlht/TrangChu_GUI.fxml")
+            );
+
+            // F2: Lập hóa đơn
+            addShortcut(scene, new KeyCodeCombination(KeyCode.F2), () ->
+                    loadView(5, "/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapHoaDon/LapHoaDon_GUI.fxml")
+            );
+
+            // F3: Đặt hàng (Lập phiếu đặt hàng)
+            addShortcut(scene, new KeyCodeCombination(KeyCode.F3), () ->
+                    loadView(5, "/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapPhieuDat/LapPhieuDatHang_GUI.fxml")
+            );
+
+            // F4: Nhập hàng (Lập phiếu nhập hàng)
+            addShortcut(scene, new KeyCodeCombination(KeyCode.F4), () ->
+                    loadView(5, "/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapPhieuNhapHang/LapPhieuNhapHang_GUI.fxml")
+            );
+
+            // F5: Tìm khách hàng
+            addShortcut(scene, new KeyCodeCombination(KeyCode.F5), () ->
+                    loadView(1, "/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKKhachHang/TKKhachHang_GUI.fxml")
+            );
+
+            // F6: Tìm thuốc
+            addShortcut(scene, new KeyCodeCombination(KeyCode.F6), () ->
+                    loadView(1, "/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKThuoc/TKThuoc_GUI.fxml")
+            );
+
+            // F7: Cập nhật giá
+            addShortcut(scene, new KeyCodeCombination(KeyCode.F7), () ->
+                    loadView(3, "/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatGia/CapNhatGiaThuoc_GUI.fxml")
+            );
+
+            // F8: Cập nhật số lượng (Tồn kho)
+            addShortcut(scene, new KeyCodeCombination(KeyCode.F8), () ->
+                    loadView(3, "/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatSoLuong/CapNhatSoLuongThuoc_GUI.fxml")
+            );
+
+        });
+        pnlChung.requestFocus();
+
+    }
+
+
+    public void btnDangXuatClick(ActionEvent actionEvent) {
         try {
-            Pane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapPhieuNhapHang/LapPhieuNhapHang_GUI.fxml")));
-            pnlChung.getChildren().add(pane);
+            Stage stage = new Stage();
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/DangNhap_GUI.fxml")));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Đăng nhập hệ thống quản lý nhà thuốc");
+            stage.show();
+            // Đóng cửa sổ hiện tại
+            pnlChung.getScene().getWindow().hide();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-
-
+    public void pnlNguoiDungClick(MouseEvent mouseEvent) {
+        pnlThongTin.setVisible(!pnlThongTin.isVisible());
+        lblVaiTro.setText(DangNhap_Ctrl.user.getVaiTro().toString());
+    }
 }

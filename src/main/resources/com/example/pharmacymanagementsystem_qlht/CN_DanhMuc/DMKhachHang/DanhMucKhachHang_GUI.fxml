@@ -42,7 +42,7 @@
         </TableView>
       <Button id="btnReset" fx:id="btnLamMoi" layoutX="881.0" layoutY="48.0" minHeight="39.0" minWidth="43.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="43.0" stylesheets="@../../css/QuanLyThuoc.css">
          <graphic>
-            <ImageView fitHeight="32.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="20.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../img/refresh-3104.png" />
                </image>

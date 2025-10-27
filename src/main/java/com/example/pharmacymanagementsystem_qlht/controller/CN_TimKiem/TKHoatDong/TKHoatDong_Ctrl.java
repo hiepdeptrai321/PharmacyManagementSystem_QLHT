@@ -28,6 +28,7 @@ public class TKHoatDong_Ctrl extends javafx.application.Application {
 
     @FXML private TextField tfTim;
     @FXML private Button btnTim;
+    @FXML private Button btnLamMoi;
     @FXML private TableView<HoatDong> tbHoatDong;
     @FXML private TableColumn<HoatDong, String> colSTT;
     @FXML private TableColumn<HoatDong, String> colMa;
@@ -52,6 +53,7 @@ public class TKHoatDong_Ctrl extends javafx.application.Application {
         Platform.runLater(()-> {
             loadTable();
         });
+        btnLamMoi.setOnAction(e-> LamMoi());
     }
 
     private void configureFilters() {
@@ -221,7 +223,11 @@ public class TKHoatDong_Ctrl extends javafx.application.Application {
             e.printStackTrace();
         }
     }
-
+    @FXML
+    private void LamMoi() {
+        tfTim.clear();
+        loadTable();
+    }
 
     @Override
     public void start(Stage stage) throws Exception {

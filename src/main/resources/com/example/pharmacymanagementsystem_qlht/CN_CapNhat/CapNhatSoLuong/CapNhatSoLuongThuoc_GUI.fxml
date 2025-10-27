@@ -37,7 +37,7 @@
       </TableView>
       <Button id="btnReset" fx:id="btnLamMoi" layoutX="882.0" layoutY="47.0" minWidth="47.0" mnemonicParsing="false" onMouseClicked="#timThuoc" prefHeight="40.0" prefWidth="47.0" stylesheets="@../../css/QuanLyThuoc.css">
          <graphic>
-            <ImageView fitHeight="37.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="20.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../img/refresh-3104.png" />
                </image>

@@ -58,5 +58,14 @@
             </ImageView>
          </children>
       </Pane>
+      <Button id="btnReset" fx:id="btnLamMoi" layoutX="835.0" layoutY="58.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="50.0">
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/refresh-3104.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
     </children>
 </AnchorPane>

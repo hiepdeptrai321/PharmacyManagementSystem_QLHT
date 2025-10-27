@@ -45,7 +45,7 @@
         <ComboBox fx:id="cbxTimKiem" layoutX="21.0" layoutY="79.0" prefHeight="40.0" prefWidth="179.0" promptText="Tìm theo" styleClass="btntim" />
         <TextField fx:id="txtTimKiem" layoutX="210.0" layoutY="79.0" prefHeight="40.0" prefWidth="379.0" promptText="Tìm kiếm" styleClass="tftim" />
 
-        <Button id="btnhuy" layoutX="601.0" layoutY="81.0" mnemonicParsing="false" onAction="#btnXoaRong" prefHeight="21.0" prefWidth="52.0" styleClass="btntim">
+        <Button id="btnReset" layoutX="601.0" layoutY="81.0" mnemonicParsing="false" onAction="#btnXoaRong" prefHeight="21.0" prefWidth="52.0" styleClass="btntim" stylesheets="@../../css/QuanLyThuoc.css">
             <graphic>
                 <ImageView fitHeight="20.0" fitWidth="34.0" preserveRatio="true">
                     <image>
@@ -85,8 +85,8 @@
                     <TableColumn fx:id="colNhaCungCap" prefWidth="259.0" text="Nhà cung cấp" />
                     <TableColumn fx:id="colNhanVien" prefWidth="236.0" text="Nhân viên" />
                     <TableColumn fx:id="colGhiChu" prefWidth="355.0" text="Ghi chú" />
-                    <TableColumn fx:id="colTrangThai" prefWidth="269.0" style="-fx-alignment: CENTER;" text="Trạng thái" />
-                    <TableColumn fx:id="colChiTiet" prefWidth="97.0" />
+                    <TableColumn fx:id="colTrangThai" prefWidth="259.0" style="-fx-alignment: CENTER;" text="Trạng thái" />
+                    <TableColumn fx:id="colChiTiet" prefWidth="93.0" style="-fx-alignment: CENTER;" />
                 </columns>
             </TableView>
         </VBox>

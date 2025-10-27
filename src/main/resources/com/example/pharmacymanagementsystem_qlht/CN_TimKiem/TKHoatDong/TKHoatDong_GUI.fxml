@@ -24,8 +24,8 @@
                 <TableColumn fx:id="colLoai" prefWidth="315.0" style="-fx-alignment: CENTER;" text="Loại hoạt động" />
                 <TableColumn fx:id="colBang" minWidth="0.0" prefWidth="248.3333740234375" style="-fx-alignment: CENTER;" text="Bảng dữ liệu" />
                 <TableColumn fx:id="colThoiGian" minWidth="0.0" prefWidth="265.33331298828125" style="-fx-alignment: CENTER;" text="Thời gian" />
-                <TableColumn fx:id="colNguoi" minWidth="0.0" prefWidth="377.0" text="Người thực hiện" />
-                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="79.0" style="-fx-alignment: CENTER;" />
+                <TableColumn fx:id="colNguoi" minWidth="0.0" prefWidth="337.0" text="Người thực hiện" />
+                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="100.0" style="-fx-alignment: CENTER;" />
             </columns>
         </TableView>
       <ImageView fitHeight="32.0" fitWidth="36.0" layoutX="379.0" layoutY="62.0" pickOnBounds="true" preserveRatio="true">
@@ -51,6 +51,11 @@
                   <Font size="48.0" />
                </font>
             </Label>
+            <ImageView fitHeight="40.0" fitWidth="54.0" layoutX="244.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/log.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
     </children>

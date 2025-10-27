@@ -67,7 +67,7 @@
                         <Menu id="menuItems" mnemonicParsing="false" styleClass="menu" text="Bán hàng">
                            <items>
                               <MenuItem id="menuItems" mnemonicParsing="false" onAction="#lapHoaDon" text="Lập hóa đơn" />
-                              <MenuItem id="menuItems" mnemonicParsing="false" onAction="#lapPhieuDoiHang" text="lập phiếu đổi hàng" />
+                              <MenuItem id="menuItems" mnemonicParsing="false" onAction="#lapPhieuDoiHang" text="Lập phiếu đổi hàng" />
                               <MenuItem id="menuItems" mnemonicParsing="false" onAction="#lapPhieuTraHang" text="Lập phiếu trả hàng" />
                               <MenuItem id="menuItems" mnemonicParsing="false" onAction="#lapPhieuDatHang" text="Lập phiếu đặt hàng" />
                            </items>
@@ -134,7 +134,7 @@
                                                         <Font name="System Bold" size="35.0" />
                                                     </font>
                                                 </Label>
-                                                <LineChart layoutX="29.0" layoutY="71.0" prefHeight="340.0" prefWidth="953.0">
+                                                <LineChart fx:id="chartDoanhThuThangNay" layoutX="29.0" layoutY="71.0" prefHeight="340.0" prefWidth="953.0">
                                                     <xAxis>
                                                         <CategoryAxis side="BOTTOM" />
                                                     </xAxis>
@@ -232,12 +232,12 @@
                                                                 <Image url="@img/Tien.png" />
                                                             </image>
                                                         </ImageView>
-                                          <Label layoutX="231.0" layoutY="153.0" text="0 VND">
+                                          <Label fx:id="lblDoanhThuThangTruoc" layoutX="231.0" layoutY="153.0" text="0 VND">
                                              <font>
                                                 <Font name="System Bold" size="25.0" />
                                              </font>
                                           </Label>
-                                          <Label layoutX="231.0" layoutY="202.0" text="0 VND">
+                                          <Label fx:id="lblDoanhThuThangNay" layoutX="231.0" layoutY="202.0" text="0 VND">
                                              <font>
                                                 <Font name="System Bold" size="25.0" />
                                              </font>
@@ -270,12 +270,12 @@
                                                                 <Image url="@img/hoaDon.png" />
                                                             </image>
                                                         </ImageView>
-                                          <Label layoutX="240.0" layoutY="153.0" text="0 hóa đơn">
+                                          <Label fx:id="lblHoaDonThangTruoc" layoutX="240.0" layoutY="153.0" text="0 hóa đơn">
                                              <font>
                                                 <Font name="System Bold" size="25.0" />
                                              </font>
                                           </Label>
-                                          <Label layoutX="240.0" layoutY="202.0" text="0 hóa đơn">
+                                          <Label fx:id="lblHoaDonThangNay" layoutX="240.0" layoutY="202.0" text="0 hóa đơn">
                                              <font>
                                                 <Font name="System Bold" size="25.0" />
                                              </font>

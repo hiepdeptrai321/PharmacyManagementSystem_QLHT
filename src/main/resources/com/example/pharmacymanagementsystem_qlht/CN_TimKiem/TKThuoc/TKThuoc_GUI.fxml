@@ -45,7 +45,7 @@
                </VBox.margin>
                <children>
                         <TextField fx:id="txtTimKiem" layoutX="199.0" layoutY="9.0" prefHeight="40.0" prefWidth="477.0" promptText="Nhập thông tin" />
-                        <Button id="btnhuy" layoutX="1558.0" layoutY="9.0" mnemonicParsing="false" onAction="#btnXoaRong" prefHeight="40.0" prefWidth="52.0">
+                        <Button id="btnReset" layoutX="1558.0" layoutY="9.0" mnemonicParsing="false" onAction="#btnXoaRong" prefHeight="40.0" prefWidth="52.0" stylesheets="@../../css/QuanLyThuoc.css">
                             <graphic>
                                 <ImageView fitHeight="20.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                                     <image>

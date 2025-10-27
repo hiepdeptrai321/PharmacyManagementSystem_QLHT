@@ -76,9 +76,13 @@ public class SuaXoaThuoc_Ctrl {
             ChiTietHoatChat hoatChatMoi = event.getRowValue();
             hoatChatMoi.setHamLuong(event.getNewValue());
 
-            for(ChiTietHoatChat chtc : listChiTietHoatChat) {
-                if(chtc.getThuoc().getMaThuoc().equals(hoatChatMoi.getThuoc().getMaThuoc()) && chtc.getHoatChat().getMaHoatChat().equals(hoatChatMoi.getHoatChat().getMaHoatChat())) {
+            for (ChiTietHoatChat chtc : listChiTietHoatChat) {
+                if (chtc.getThuoc() != null && hoatChatMoi.getThuoc() != null &&
+                        chtc.getThuoc().getMaThuoc().equals(hoatChatMoi.getThuoc().getMaThuoc()) &&
+                        chtc.getHoatChat().getMaHoatChat().equals(hoatChatMoi.getHoatChat().getMaHoatChat())) {
+
                     chtc.setHamLuong(hoatChatMoi.getHamLuong());
+                    chtc.setThuoc(thuoc);
                     break;
                 }
             }
@@ -104,6 +108,7 @@ public class SuaXoaThuoc_Ctrl {
                 if(tblHoatChat.getItems().stream().noneMatch(item -> item.getHoatChat().getMaHoatChat().equals(hoatChat.getMaHoatChat()))) {
                     ChiTietHoatChat chtc = new ChiTietHoatChat();
                     chtc.setHoatChat(hoatChat);
+                    chtc.setThuoc(thuoc);
 //                  Tạo dialog để nhập hàm lượng cho hoạt chất
                     TextInputDialog dialog = new TextInputDialog();
                     dialog.setTitle("Nhập hàm lượng");

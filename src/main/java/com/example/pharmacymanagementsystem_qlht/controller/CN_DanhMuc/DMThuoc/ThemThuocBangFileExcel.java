@@ -1,17 +1,25 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMThuoc;
 
 import com.example.pharmacymanagementsystem_qlht.dao.*;
+import com.example.pharmacymanagementsystem_qlht.model.ChiTietHoatChat;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -171,11 +179,39 @@ public class ThemThuocBangFileExcel {
 
 //  Lưu dữ liệu vào database
     public void btnLuuClick(ActionEvent actionEvent) {
-        Thuoc_SanPham_Dao thuocDao = new Thuoc_SanPham_Dao();
-        for(Thuoc_SanPham thuoc : danhSachThuoc){
-            thuocDao.insertThuocProc(thuoc);
-        }
-        danhMucThuocCtrl.loadTable();
+//        Lấy root hiện tại
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        Scene scene = stage.getScene();
+        AnchorPane root = (AnchorPane) scene.getRoot();
+//      Tạo overlay làm mờ nền
+        StackPane overlay = new StackPane();
+        overlay.setStyle("-fx-background-color: rgba(0,0,0,0.4);");
+        ProgressIndicator progress = new ProgressIndicator();
+        overlay.getChildren().add(progress);
+
+//      Căn overlay phủ toàn màn hình
+        AnchorPane.setTopAnchor(overlay, 0.0);
+        AnchorPane.setRightAnchor(overlay, 0.0);
+        AnchorPane.setBottomAnchor(overlay, 0.0);
+        AnchorPane.setLeftAnchor(overlay, 0.0);
+
+//      Thêm overlay vào AnchorPane
+        root.getChildren().add(overlay);
+
+//      Tạo luồng riêng để xử lý cập nhật (tránh lag UI)
+        new Thread(() -> {
+            Thuoc_SanPham_Dao thuocDao = new Thuoc_SanPham_Dao();
+            for(Thuoc_SanPham thuoc : danhSachThuoc){
+                thuocDao.insertThuocProc(thuoc);
+            }
+            danhMucThuocCtrl.loadTable();
+            // Quay lại luồng giao diện để loại bỏ overlay
+            Platform.runLater(() -> {
+                root.getChildren().remove(overlay);
+                stage.close();
+            });
+        }).start();
+
     }
 
 //  Tải file mẫu

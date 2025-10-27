@@ -125,7 +125,7 @@
                     </children>
                 </Pane>
 
-                <Button fx:id="btnDatHang" layoutX="30.0" layoutY="788.0" prefHeight="52.0" prefWidth="189.0" styleClass="print-btn" text="In hóa đơn">
+                <Button fx:id="btnInHoaDon" layoutX="30.0" layoutY="788.0" prefHeight="52.0" prefWidth="189.0" styleClass="print-btn" text="In hóa đơn">
                     <font>
                         <Font size="13.0" />
                     </font>

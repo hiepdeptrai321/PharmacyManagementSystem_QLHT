@@ -26,9 +26,8 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.io.font.constants.StandardFonts;
-
-
-
+import java.text.DecimalFormat;
+import javafx.scene.control.TableCell;
 import com.example.pharmacymanagementsystem_qlht.dao.ThongKe_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.ThongKeBanHang;
 import com.example.pharmacymanagementsystem_qlht.model.ThongKeSanPham;
@@ -123,7 +122,7 @@ public class ThongKeBanHang_Ctrl extends Application implements Initializable {
         btnXuat.setOnAction(e-> xuatFile(e));
         chartDoanhThu.managedProperty().bind(chartDoanhThu.visibleProperty());
         tableDoanhThu.managedProperty().bind(tableDoanhThu.visibleProperty());
-
+        DecimalFormat formatter = new DecimalFormat("#,##0");
         cboThoiGian.getItems().addAll("Hôm nay", "Tuần này", "Tháng này", "Quý này", "Tùy chọn");
         cboXuatfile.getItems().addAll("Excel", "PDF");
 
@@ -131,15 +130,72 @@ public class ThongKeBanHang_Ctrl extends Application implements Initializable {
         cotTG.setCellValueFactory(new PropertyValueFactory<>("thoiGian"));
         cotSLHoaDon.setCellValueFactory(new PropertyValueFactory<>("soLuongHoaDon"));
         cotTongGT.setCellValueFactory(new PropertyValueFactory<>("tongGiaTri"));
+        cotTongGT.setCellFactory(col -> new TableCell<ThongKeBanHang, Double>() {
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null); // Không hiển thị gì nếu ô rỗng
+                } else {
+                    // Dùng formatter để định dạng số và hiển thị
+                    setText(formatter.format(item));
+                }
+            }
+        });
         cotGG.setCellValueFactory(new PropertyValueFactory<>("giamGia"));
+        cotGG.setCellFactory(col -> new TableCell<ThongKeBanHang, Double>() {
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(formatter.format(item));
+                }
+            }
+        });
         cotDT.setCellValueFactory(new PropertyValueFactory<>("soLuongDonTra"));
         cotGTDonTra.setCellValueFactory(new PropertyValueFactory<>("giaTriDonTra"));
+        cotGTDonTra.setCellFactory(col -> new TableCell<ThongKeBanHang, Double>() {
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(formatter.format(item));
+                }
+            }
+        });
         cotDoanhThu.setCellValueFactory(new PropertyValueFactory<>("doanhThu"));
+        cotDoanhThu.setCellFactory(col -> new TableCell<ThongKeBanHang, Double>() {
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(formatter.format(item));
+                }
+            }
+        });
+
 
         cotMaThuoc.setCellValueFactory(new PropertyValueFactory<>("maThuoc"));
         cotTenThuoc.setCellValueFactory(new PropertyValueFactory<>("tenThuoc"));
         cotSL.setCellValueFactory(new PropertyValueFactory<>("soLuong"));
         cotThanhTien.setCellValueFactory(new PropertyValueFactory<>("thanhTien"));
+        cotThanhTien.setCellFactory(col -> new TableCell<ThongKeSanPham, Double>() {
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(formatter.format(item));
+                }
+            }
+        });
 
         lblTu.setVisible(false);
         dateTu.setVisible(false);

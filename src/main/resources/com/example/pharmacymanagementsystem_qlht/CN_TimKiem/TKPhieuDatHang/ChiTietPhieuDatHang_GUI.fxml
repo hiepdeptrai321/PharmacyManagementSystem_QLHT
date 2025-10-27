@@ -107,6 +107,18 @@
                      </Button>
                   </children>
                </Pane>
+               <Button fx:id="btnLapHoaDon" layoutX="6.0" layoutY="690.0" prefHeight="53.0" prefWidth="543.0" styleClass="primary-btn" text="Lập hóa đơn">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font>
+                  <effect>
+                     <DropShadow>
+                        <color>
+                           <Color red="0.6526315808296204" green="0.6453801393508911" blue="0.6453801393508911" />
+                        </color>
+                     </DropShadow>
+                  </effect>
+               </Button>
             </children>
          </Pane>
     </AnchorPane>

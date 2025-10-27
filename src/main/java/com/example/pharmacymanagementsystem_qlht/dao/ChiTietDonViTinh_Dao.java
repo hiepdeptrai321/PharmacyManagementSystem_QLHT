@@ -5,8 +5,7 @@ import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.ChiTietDonViTinh;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ChiTietDonViTinh_Dao implements DaoInterface<ChiTietDonViTinh> {
     private final String INSERT_SQL = "INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES (?, ?, ?, ?, ?, ?)";
@@ -64,4 +63,5 @@ public class ChiTietDonViTinh_Dao implements DaoInterface<ChiTietDonViTinh> {
     public List<ChiTietDonViTinh> selectByMaThuoc(Object... keys) {
         return selectBySql(SELECT_BY_MATHUOC_SQL, keys);
     }
+
 }

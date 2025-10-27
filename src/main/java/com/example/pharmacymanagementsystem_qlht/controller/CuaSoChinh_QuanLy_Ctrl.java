@@ -29,6 +29,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class CuaSoChinh_QuanLy_Ctrl{
+    public static CuaSoChinh_QuanLy_Ctrl instance;
     public Pane pnlChung;
     public Menu menuTimKiem;
     public Menu menuDanhMuc;

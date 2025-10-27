@@ -162,9 +162,7 @@ public class TKPhieuDatHang_Ctrl extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuDatHang/ChiTietPhieuDatHang_GUI.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-
-//            this.getClass();
-            com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDatHang.ChiTietPhieuDatHang_Ctrl ctrl = loader.getController();
+            ChiTietPhieuDatHang_Ctrl ctrl = loader.getController();
             ctrl.setPhieuDatHang(pdh);
             stage.setScene(scene);
             stage.show();

@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
     private final String INSERT_SQL = "INSERT INTO Thuoc_SanPham (MaThuoc,TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaNDL, MaLoaiHang, HinhAnh, ViTri) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -18,7 +20,7 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
     private final String SELECT_BY_ID_SQL = "SELECT * FROM Thuoc_SanPham WHERE MaThuoc=?";
     private final String SELECT_BY_TUKHOA_SQL = "SELECT * FROM Thuoc_SanPham WHERE TenThuoc LIKE ? OR MaThuoc LIKE ?";
     private final String SELECT_THUOC_SANPHAM_DONVICOBAN_SQL =
-            "SELECT * FROM Thuoc_SanPham ts " +
+            "SELECT DISTINCT ts.* FROM Thuoc_SanPham ts " +
                     "JOIN ChiTietDonViTinh ctdvt ON ts.MaThuoc = ctdvt.MaThuoc " +
                     "WHERE ctdvt.DonViCoBan = 1";
 

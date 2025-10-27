@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import java.util.Objects;
 
 public class CuaSoChinh_NhanVien_Ctrl extends Application {
+    public static CuaSoChinh_NhanVien_Ctrl instance;
     public Pane pnlChung;
     public Menu menuTimKiem;
     public Menu menuDanhMuc;

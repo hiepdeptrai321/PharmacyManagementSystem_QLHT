@@ -26,6 +26,11 @@
                   <Point3D />
                </rotationAxis>
             </Label>
+            <ImageView fitHeight="38.0" fitWidth="38.0" layoutX="287.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/import.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
       <Pane layoutY="44.0" prefHeight="154.0" prefWidth="1321.0">

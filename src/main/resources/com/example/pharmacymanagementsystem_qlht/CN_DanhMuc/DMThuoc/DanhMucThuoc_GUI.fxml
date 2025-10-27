@@ -41,7 +41,7 @@
       <Button id="btnnhapxuat" layoutX="1594.0" layoutY="46.285714285714285" minWidth="46.0" mnemonicParsing="false" onAction="#btnThemThuocByExcel" prefHeight="30.0" prefWidth="45.0" text="📥" AnchorPane.topAnchor="46.285714285714285" />
       <Button id="btnReset" fx:id="btnLamMoi" layoutX="452.0" layoutY="46.0" minHeight="16.0" minWidth="35.0" mnemonicParsing="false" onMouseClicked="#timThuoc" prefHeight="40.0" prefWidth="45.0" stylesheets="@../../css/QuanLyThuoc.css">
          <graphic>
-            <ImageView fitHeight="32.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="20.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../img/refresh-3104.png" />
                </image>

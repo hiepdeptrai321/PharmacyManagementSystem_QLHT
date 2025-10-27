@@ -42,9 +42,9 @@
             </ImageView>
          </children>
       </Pane>
-      <Button id="btnReset" fx:id="btnLamMoi" layoutX="882.0" layoutY="49.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="53.0">
+      <Button id="btnReset" fx:id="btnLamMoi" layoutX="882.0" layoutY="49.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="44.0">
          <graphic>
-            <ImageView id="btnReset" fitHeight="31.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView id="btnReset" fitHeight="20.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../img/refresh-3104.png" />
                </image>

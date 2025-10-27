@@ -1305,9 +1305,9 @@ BEGIN
     BEGIN
         -- ✅ Nối vào log thuốc gần nhất
         UPDATE HoatDong
-        SET NoiDung = NoiDung 
-            + CHAR(13) + CHAR(10) 
-            + N'Cập nhật hoạt chất:' + CHAR(13) + CHAR(10) 
+        SET NoiDung = NoiDung
+            + CHAR(13) + CHAR(10)
+            + N'Cập nhật hoạt chất:' + CHAR(13) + CHAR(10)
             + @NoiDung
         WHERE ID = @ID;
     END
@@ -1318,7 +1318,7 @@ BEGIN
         VALUES (
             @LoaiHD,
             'Thuoc_SanPham',
-            N'Cập nhật hoạt chất cho thuốc [' + @MaThuoc + N']:' 
+            N'Cập nhật hoạt chất cho thuốc [' + @MaThuoc + N']:'
             + CHAR(13) + CHAR(10) + @NoiDung,
             @MaNV
         );
@@ -1407,8 +1407,8 @@ BEGIN
     SET NOCOUNT ON;
 
     DECLARE @MaThuoc VARCHAR(10);
-    DECLARE @LoaiHD NVARCHAR(50);
     DECLARE @NoiDung NVARCHAR(MAX) = N'';
+    DECLARE @LoaiHD NVARCHAR(50);
     DECLARE @context VARBINARY(128) = CONTEXT_INFO();
     DECLARE @MaNV VARCHAR(10) = RTRIM(REPLACE(CAST(@context AS VARCHAR(128)), CHAR(0), ''));
 
@@ -1429,17 +1429,17 @@ BEGIN
     -- 🧠 Tạo mô tả chi tiết thay đổi
     ----------------------------------------------------------
     ;WITH ThayDoi AS (
-        SELECT 
+        SELECT
             COALESCE(i.MaDVT, d.MaDVT) AS MaDVT,
             dvt.TenDonViTinh,
             ISNULL(d.GiaBan, 0) AS GiaBanCu,
             ISNULL(i.GiaBan, 0) AS GiaBanMoi,
             ISNULL(d.HeSoQuyDoi, 0) AS HeSoCu,
             ISNULL(i.HeSoQuyDoi, 0) AS HeSoMoi,
-            CASE 
+            CASE
                 WHEN d.MaDVT IS NULL THEN N'Thêm mới'
                 WHEN i.MaDVT IS NULL THEN N'Xóa'
-                WHEN (ISNULL(d.GiaBan,0) <> ISNULL(i.GiaBan,0) 
+                WHEN (ISNULL(d.GiaBan,0) <> ISNULL(i.GiaBan,0)
                    OR ISNULL(d.HeSoQuyDoi,0) <> ISNULL(i.HeSoQuyDoi,0)) THEN N'Cập nhật'
                 ELSE N'Không đổi'
             END AS TrangThai
@@ -1450,10 +1450,10 @@ BEGIN
     SELECT @NoiDung = STRING_AGG(
         CONCAT(
             CHAR(13)+CHAR(10), N' - ', TenDonViTinh, N': ',
-            CASE 
+            CASE
                 WHEN TrangThai = N'Thêm mới' THEN N'Thêm mới (Giá bán: ' + FORMAT(GiaBanMoi, 'N0') + N', Hệ số: ' + CAST(HeSoMoi AS NVARCHAR(10)) + N')'
                 WHEN TrangThai = N'Xóa' THEN N'Xóa (Giá bán cũ: ' + FORMAT(GiaBanCu, 'N0') + N', Hệ số: ' + CAST(HeSoCu AS NVARCHAR(10)) + N')'
-                WHEN TrangThai = N'Cập nhật' THEN 
+                WHEN TrangThai = N'Cập nhật' THEN
                     N'Cập nhật: Giá bán ' + FORMAT(GiaBanCu, 'N0') + N' → ' + FORMAT(GiaBanMoi, 'N0') +
                     N'; Hệ số ' + CAST(HeSoCu AS NVARCHAR(10)) + N' → ' + CAST(HeSoMoi AS NVARCHAR(10))
                 ELSE N'Không thay đổi'
@@ -1517,33 +1517,33 @@ BEGIN
 
     -- 🔹 Cập nhật trạng thái cho các chi tiết phiếu đặt
     UPDATE ctpd
-    SET ctpd.TrangThai = 
-        CASE 
-            WHEN tong.TongTon >= ctpd.SoLuong THEN 1 
-            ELSE 0 
+    SET ctpd.TrangThai =
+        CASE
+            WHEN tong.TongTon >= ctpd.SoLuong THEN 1
+            ELSE 0
         END
     FROM ChiTietPhieuDatHang ctpd
     JOIN @Thuoc t ON ctpd.MaThuoc = t.MaThuoc
     CROSS APPLY (
-        SELECT SUM(SoLuongTon) AS TongTon 
-        FROM Thuoc_SP_TheoLo 
+        SELECT SUM(SoLuongTon) AS TongTon
+        FROM Thuoc_SP_TheoLo
         WHERE MaThuoc = ctpd.MaThuoc
     ) tong;
 
     -- 🔹 Cập nhật trạng thái tổng cho phiếu đặt
     UPDATE p
-    SET p.TrangThai = 
-        CASE 
+    SET p.TrangThai =
+        CASE
             WHEN NOT EXISTS (
-                SELECT 1 
+                SELECT 1
                 FROM ChiTietPhieuDatHang c
                 WHERE c.MaPDat = p.MaPDat AND c.TrangThai = 0
             )
-            THEN 1 ELSE 0 
+            THEN 1 ELSE 0
         END
     FROM PhieuDatHang p
     WHERE EXISTS (
-        SELECT 1 
+        SELECT 1
         FROM ChiTietPhieuDatHang c
         JOIN @Thuoc t ON c.MaThuoc = t.MaThuoc
         WHERE c.MaPDat = p.MaPDat
@@ -1580,9 +1580,9 @@ BEGIN
 
         -- Cập nhật trạng thái từng chi tiết phiếu đặt có liên quan
         UPDATE ctpd
-        SET TrangThai = 
-            CASE 
-                WHEN @TongTon >= CEILING(ctpd.SoLuong * 
+        SET TrangThai =
+            CASE
+                WHEN @TongTon >= CEILING(ctpd.SoLuong *
                     ISNULL(
                         (SELECT HeSoQuyDoi FROM ChiTietDonViTinh dvt
                          WHERE dvt.MaThuoc = ctpd.MaThuoc AND dvt.MaDVT = ctpd.MaDVT),
@@ -1598,9 +1598,9 @@ BEGIN
         -- Nếu tất cả chi tiết đủ hàng thì cập nhật phiếu
         UPDATE pd
         SET TrangThai =
-            CASE 
+            CASE
                 WHEN NOT EXISTS (
-                    SELECT 1 FROM ChiTietPhieuDatHang 
+                    SELECT 1 FROM ChiTietPhieuDatHang
                     WHERE MaPDat = pd.MaPDat AND TrangThai = 0
                 ) THEN 1
                 ELSE 0
@@ -1625,7 +1625,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    DECLARE 
+    DECLARE
         @MaThuoc VARCHAR(10),
         @MaDVT VARCHAR(10),
         @SoLuong INT,
@@ -1656,7 +1656,7 @@ BEGIN
         DECLARE curLo CURSOR FOR
             SELECT MaLH, SoLuongTon
             FROM Thuoc_SP_TheoLo
-            WHERE MaThuoc = @MaThuoc 
+            WHERE MaThuoc = @MaThuoc
               AND HSD > GETDATE()
             ORDER BY HSD ASC;  -- FEFO: gần hết hạn trước
         OPEN curLo;
@@ -1730,7 +1730,7 @@ GO
 
 --USE msdb;
 --GO
---EXEC sp_add_job 
+--EXEC sp_add_job
 --    @job_name = N'Job_TuDongTraHangHetHan';
 
 --EXEC sp_add_jobstep
@@ -1827,6 +1827,7 @@ GO
 -- ==========================================================
 
 -- 1. DOANH THU: Hôm nay (Theo giờ)
+
 CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_HomNay
 AS
 BEGIN
@@ -1845,27 +1846,26 @@ BEGIN
     )
     SELECT
         ISNULL(DS.ThoiGian, TH.ThoiGian) AS ThoiGian,
-        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon, ISNULL(DS.TongGiaTri, 0) AS TongGiaTri, ISNULL(DS.GiamGia, 0) AS GiamGia,
-        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra, ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
-        (ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0) - ISNULL(TH.GiaTriDonTra, 0)) AS DoanhThu
+        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon,
+        ISNULL(DS.TongGiaTri, 0) AS TongGiaTri,
+        ISNULL(DS.GiamGia, 0) AS GiamGia,
+        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra,
+        ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
+        -- [ĐÃ CẬP NHẬT] Doanh thu ròng * 1.05
+        ((ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0)) - ISNULL(TH.GiaTriDonTra, 0)) * 1.05 AS DoanhThu
     FROM DoanhSoTheoGio DS FULL OUTER JOIN TraHangTheoGio TH ON DS.ThoiGian = TH.ThoiGian
     ORDER BY ThoiGian;
 END;
 GO
 
--- 2. DOANH THU: Tuần này (Theo ngày, nhãn 'dd')
 CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_TuanNay
 AS
 BEGIN
     SET NOCOUNT ON;
-
-    -- Đặt ngày đầu tuần là Thứ Hai (an toàn, không ảnh hưởng session khác)
     SET DATEFIRST 1;
-
-    -- Tính toán ngày đầu tuần (Thứ Hai) và cuối tuần (Chủ Nhật)
     DECLARE @Today DATE = GETDATE();
     DECLARE @StartOfWeek DATE = DATEADD(dd, 1 - DATEPART(dw, @Today), @Today);
-    DECLARE @EndOfWeek DATE = DATEADD(dd, 6, @StartOfWeek); -- Thêm 6 ngày vào Thứ Hai
+    DECLARE @EndOfWeek DATE = DATEADD(dd, 6, @StartOfWeek);
 
     WITH DoanhSoTheoNgay AS (
         SELECT CONVERT(date, HD.NgayLap) AS Ngay,
@@ -1873,7 +1873,6 @@ BEGIN
                ISNULL(SUM(CTHD.SoLuong * CTHD.DonGia), 0) AS TongGiaTri,
                ISNULL(SUM(CTHD.SoLuong * CTHD.GiamGia), 0) AS GiamGia
         FROM HoaDon HD JOIN ChiTietHoaDon CTHD ON HD.MaHD = CTHD.MaHD
-        -- Lọc theo khoảng ngày đã tính
         WHERE CONVERT(date, HD.NgayLap) BETWEEN @StartOfWeek AND @EndOfWeek
         GROUP BY CONVERT(date, HD.NgayLap)
     ),
@@ -1882,7 +1881,6 @@ BEGIN
                COUNT(DISTINCT PT.MaPT) AS SoLuongDonTra,
                ISNULL(SUM(CTPT.SoLuong * (CTPT.DonGia - CTPT.GiamGia)), 0) AS GiaTriDonTra
         FROM PhieuTraHang PT JOIN ChiTietPhieuTraHang CTPT ON PT.MaPT = CTPT.MaPT
-        -- Lọc theo khoảng ngày đã tính
         WHERE CONVERT(date, PT.NgayLap) BETWEEN @StartOfWeek AND @EndOfWeek
         GROUP BY CONVERT(date, PT.NgayLap)
     )
@@ -1893,13 +1891,13 @@ BEGIN
         ISNULL(DS.GiamGia, 0) AS GiamGia,
         ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra,
         ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
-        (ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0) - ISNULL(TH.GiaTriDonTra, 0)) AS DoanhThu
+        -- [ĐÃ CẬP NHẬT] Doanh thu ròng * 1.05
+        ((ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0)) - ISNULL(TH.GiaTriDonTra, 0)) * 1.05 AS DoanhThu
     FROM DoanhSoTheoNgay DS FULL OUTER JOIN TraHangTheoNgay TH ON DS.Ngay = TH.Ngay
     ORDER BY ISNULL(DS.Ngay, TH.Ngay);
 END;
 GO
 
--- 3. CẬP NHẬT SP "THÁNG NÀY"
 CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_ThangNay
 AS
 BEGIN
@@ -1917,44 +1915,54 @@ BEGIN
         GROUP BY CONVERT(date, PT.NgayLap)
     )
     SELECT
-        -- SỬA Ở ĐÂY: từ 'dd' thành 'dd/MM'
         FORMAT(ISNULL(DS.Ngay, TH.Ngay), 'dd/MM') AS ThoiGian,
-        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon, ISNULL(DS.TongGiaTri, 0) AS TongGiaTri, ISNULL(DS.GiamGia, 0) AS GiamGia,
-        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra, ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
-        (ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0) - ISNULL(TH.GiaTriDonTra, 0)) AS DoanhThu
+        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon,
+        ISNULL(DS.TongGiaTri, 0) AS TongGiaTri,
+        ISNULL(DS.GiamGia, 0) AS GiamGia,
+        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra,
+        ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
+        -- [ĐÃ CẬP NHẬT] Doanh thu ròng * 1.05
+        ((ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0)) - ISNULL(TH.GiaTriDonTra, 0)) * 1.05 AS DoanhThu
     FROM DoanhSoTheoNgay DS FULL OUTER JOIN TraHangTheoNgay TH ON DS.Ngay = TH.Ngay
     ORDER BY ISNULL(DS.Ngay, TH.Ngay);
 END;
 GO
 
--- 4. DOANH THU: Quý này (Lấy tất cả các quý trong năm)
-CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_QuyNay
+CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_NamNay
 AS
 BEGIN
     SET NOCOUNT ON;
-    WITH DoanhSoTheoQuy AS (
-        SELECT DATEPART(quarter, HD.NgayLap) AS Quy, COUNT(DISTINCT HD.MaHD) AS SoLuongHoaDon, ISNULL(SUM(CTHD.SoLuong * CTHD.DonGia), 0) AS TongGiaTri, ISNULL(SUM(CTHD.SoLuong * CTHD.GiamGia), 0) AS GiamGia
+    WITH DoanhSoTheoThang AS (
+        SELECT DATEPART(month, HD.NgayLap) AS Thang,
+               COUNT(DISTINCT HD.MaHD) AS SoLuongHoaDon,
+               ISNULL(SUM(CTHD.SoLuong * CTHD.DonGia), 0) AS TongGiaTri,
+               ISNULL(SUM(CTHD.SoLuong * CTHD.GiamGia), 0) AS GiamGia
         FROM HoaDon HD JOIN ChiTietHoaDon CTHD ON HD.MaHD = CTHD.MaHD
         WHERE DATEPART(year, HD.NgayLap) = DATEPART(year, GETDATE())
-        GROUP BY DATEPART(quarter, HD.NgayLap)
+        GROUP BY DATEPART(month, HD.NgayLap)
     ),
-    TraHangTheoQuy AS (
-        SELECT DATEPART(quarter, PT.NgayLap) AS Quy, COUNT(DISTINCT PT.MaPT) AS SoLuongDonTra, ISNULL(SUM(CTPT.SoLuong * (CTPT.DonGia - CTPT.GiamGia)), 0) AS GiaTriDonTra
+    TraHangTheoThang AS (
+        SELECT DATEPART(month, PT.NgayLap) AS Thang,
+               COUNT(DISTINCT PT.MaPT) AS SoLuongDonTra,
+               ISNULL(SUM(CTPT.SoLuong * (CTPT.DonGia - CTPT.GiamGia)), 0) AS GiaTriDonTra
         FROM PhieuTraHang PT JOIN ChiTietPhieuTraHang CTPT ON PT.MaPT = CTPT.MaPT
         WHERE DATEPART(year, PT.NgayLap) = DATEPART(year, GETDATE())
-        GROUP BY DATEPART(quarter, PT.NgayLap)
+        GROUP BY DATEPART(month, PT.NgayLap)
     )
     SELECT
-        CONCAT(N'Quý ', ISNULL(DS.Quy, TH.Quy)) AS ThoiGian, -- Nhãn 'Quý 1', 'Quý 2'...
-        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon, ISNULL(DS.TongGiaTri, 0) AS TongGiaTri, ISNULL(DS.GiamGia, 0) AS GiamGia,
-        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra, ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
-        (ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0) - ISNULL(TH.GiaTriDonTra, 0)) AS DoanhThu
-    FROM DoanhSoTheoQuy DS FULL OUTER JOIN TraHangTheoQuy TH ON DS.Quy = TH.Quy
-    ORDER BY ISNULL(DS.Quy, TH.Quy);
+        FORMAT(DATEFROMPARTS(DATEPART(year, GETDATE()), ISNULL(DS.Thang, TH.Thang), 1), 'MM/yyyy') AS ThoiGian,
+        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon,
+        ISNULL(DS.TongGiaTri, 0) AS TongGiaTri,
+        ISNULL(DS.GiamGia, 0) AS GiamGia,
+        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra,
+        ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
+        -- [ĐÃ CẬP NHẬT] Doanh thu ròng * 1.05
+        ((ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0)) - ISNULL(TH.GiaTriDonTra, 0)) * 1.05 AS DoanhThu
+    FROM DoanhSoTheoThang DS FULL OUTER JOIN TraHangTheoThang TH ON DS.Thang = TH.Thang
+    ORDER BY ISNULL(DS.Thang, TH.Thang);
 END;
 GO
 
--- 5. DOANH THU: Tùy chọn (Theo khoảng ngày)
 CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_TuyChon
     @NgayBatDau DATE,
     @NgayKetThuc DATE
@@ -1975,9 +1983,13 @@ BEGIN
     )
     SELECT
         FORMAT(ISNULL(DS.Ngay, TH.Ngay), 'dd/MM') AS ThoiGian,
-        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon, ISNULL(DS.TongGiaTri, 0) AS TongGiaTri, ISNULL(DS.GiamGia, 0) AS GiamGia,
-        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra, ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
-        (ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0) - ISNULL(TH.GiaTriDonTra, 0)) AS DoanhThu
+        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon,
+        ISNULL(DS.TongGiaTri, 0) AS TongGiaTri,
+        ISNULL(DS.GiamGia, 0) AS GiamGia,
+        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra,
+        ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
+        -- [ĐÃ CẬP NHẬT] Doanh thu ròng * 1.05
+        ((ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0)) - ISNULL(TH.GiaTriDonTra, 0)) * 1.05 AS DoanhThu
     FROM DoanhSoTheoNgay DS FULL OUTER JOIN TraHangTheoNgay TH ON DS.Ngay = TH.Ngay
     ORDER BY ISNULL(DS.Ngay, TH.Ngay);
 END;
@@ -2051,7 +2063,7 @@ END;
 GO
 
 -- 9. TOP 5: Quý này
-CREATE OR ALTER PROCEDURE sp_Top5SanPham_QuyNay
+CREATE OR ALTER PROCEDURE sp_Top5SanPham_NamNay
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -2060,7 +2072,8 @@ BEGIN
     JOIN HoaDon HD ON CTHD.MaHD = HD.MaHD
     JOIN Thuoc_SP_TheoLo L ON CTHD.MaLH = L.MaLH
     JOIN Thuoc_SanPham T ON L.MaThuoc = T.MaThuoc
-    WHERE DATEPART(quarter, HD.NgayLap) = DATEPART(quarter, GETDATE()) AND DATEPART(year, HD.NgayLap) = DATEPART(year, GETDATE())
+    -- 👇 [THAY ĐỔI] Lọc theo năm hiện tại (bỏ điều kiện quý)
+    WHERE DATEPART(year, HD.NgayLap) = DATEPART(year, GETDATE())
     GROUP BY T.MaThuoc, T.TenThuoc ORDER BY SoLuong DESC;
 END;
 GO

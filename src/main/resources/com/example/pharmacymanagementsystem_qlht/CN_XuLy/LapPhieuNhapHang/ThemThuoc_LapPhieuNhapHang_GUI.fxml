@@ -5,15 +5,17 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="405.0" prefWidth="955.0" stylesheets="@../../css/ThemThuoc.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuNhapHang.ThemThuoc_LapPhieuNhapHang_Ctrl">
+<AnchorPane prefHeight="405.0" prefWidth="955.0" stylesheets="@../../css/ThemThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuNhapHang.ThemThuoc_LapPhieuNhapHang_Ctrl">
     <children>
-        <Label layoutX="14.0" layoutY="8.0" prefHeight="31.0" prefWidth="932.0" styleClass="lbtitle" text="Thêm thuốc">
+        <Label layoutX="14.0" layoutY="20.0" prefHeight="33.0" prefWidth="932.0" styleClass="lbtitle" text="Thêm thuốc">
             <font>
                 <Font name="System Bold" size="18.0" />
             </font>
@@ -38,7 +40,12 @@
                                             </font>
                                         </Label>
                                         <TextField fx:id="tfTenThuoc" layoutX="338.0" layoutY="36.0" prefHeight="32.0" prefWidth="356.0" style="-fx-max-height: 30;" />
-                              <Button id="btnthemdvt" layoutX="713.0" layoutY="34.0" mnemonicParsing="false" onAction="#btnThemThuocClick" text="Thêm Thuốc" />
+                              <Button id="btnthemdvt" layoutX="707.0" layoutY="34.0" mnemonicParsing="false" onAction="#btnThemThuocClick" text="✚Thêm Thuốc" />
+                              <ImageView fitHeight="34.0" fitWidth="34.0" layoutX="110.0" layoutY="-6.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../img/medicine.png" />
+                                 </image>
+                              </ImageView>
                                     </children>
                                 </Pane>
                                 <Pane prefHeight="52.0" prefWidth="932.0" style="-fx-min-height: 10;" />
@@ -49,17 +56,17 @@
             <Region prefHeight="43.0" prefWidth="932.0" />
                 <Pane maxHeight="46.0" prefHeight="46.0" prefWidth="932.0" style="-fx-max-height: 30;" styleClass="pnlthongtin">
                     <children>
-                        <Label layoutY="-19.0" prefHeight="61.0" prefWidth="942.0" styleClass="lbtitle" text="Đơn vị tính &amp; giá bán">
+                        <Label layoutY="-38.0" prefHeight="61.0" prefWidth="942.0" styleClass="lbtitle" text="Đơn vị tính &amp; giá bán">
                             <font>
                                 <Font size="18.0" />
                             </font>
                         </Label>
-                        <Button id="btnthemdvt" fx:id="btnThietLapGia" layoutX="707.0" layoutY="-6.0" minHeight="30.0" mnemonicParsing="false" onAction="#btnThietLapGiaClick" prefHeight="32.0" prefWidth="225.0" text="✚Thiết lập giá bán &amp; đơn vị tính" />
+                        <Button id="btngiaban" fx:id="btnThietLapGia" layoutX="707.0" layoutY="-27.0" minHeight="30.0" mnemonicParsing="false" onAction="#btnThietLapGiaClick" prefHeight="32.0" prefWidth="225.0" text="✚Thiết lập giá bán &amp; đơn vị tính" />
                     </children>
                 </Pane>
                 <VBox prefHeight="188.0" prefWidth="932.0">
                     <children>
-                        <TableView fx:id="tbDVT" prefHeight="214.0" prefWidth="932.0">
+                        <TableView fx:id="tbDVT" prefHeight="224.0" prefWidth="932.0">
                             <columns>
                                 <TableColumn fx:id="colDVT" prefWidth="128.0" text="Đơn vị tính" />
                                 <TableColumn fx:id="colKH" prefWidth="103.0" text="Kí hiệu" />

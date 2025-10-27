@@ -40,9 +40,12 @@
          </Pane>
     </AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" styleClass="right-pane-bg">
-         <Pane layoutX="27.2" layoutY="10.4" prefWidth="379.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <Pane layoutY="10.0" prefWidth="379.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
             <children>
-                  <Label styleClass="section-label" text="THÔNG TIN PHIẾU ĐỔI" />
+                  <Label text="THÔNG TIN PHIẾU ĐỔI">
+                  <font>
+                     <Font name="System Bold" size="24.0" />
+                  </font></Label>
                <Pane layoutY="41.0" prefHeight="160.0" prefWidth="545.0" styleClass="info-pane">
                    <Label layoutX="5.0" layoutY="5.0" styleClass="bold-label" text="Tên nhân viên lập:" />
                    <Label fx:id="lblTenNhanVienValue" layoutX="160.0" layoutY="5.0" styleClass="value-label" />
@@ -58,21 +61,42 @@
                </Pane>
 
                   <Separator layoutY="216.0" />
-                  <Label layoutY="234.4" styleClass="section-label" text="TÓM TẮT ĐỔI HÀNG" />
+                  <Label layoutY="234.4" text="TÓM TẮT ĐỔI HÀNG">
+                  <font>
+                     <Font name="System Bold" size="24.0" />
+                  </font></Label>
                <Pane layoutY="275.0" prefHeight="280.0" prefWidth="545.0" styleClass="summary-pane">
-                   <Label layoutX="5.0" layoutY="5.0" styleClass="label-normal" text="Tổng tiền đổi (trước CK/VAT):" />
+                   <Label layoutX="5.0" layoutY="5.0" styleClass="label-normal" text="Tổng tiền đổi (trước CK/VAT):">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
                    <Label fx:id="lblTongTienDoiValue" layoutX="240.0" layoutY="5.0" styleClass="bold-label value-label" text="0 VNĐ" />
-                   <Label layoutX="5.0" layoutY="30.0" styleClass="label-normal" text="Chiết khấu Phiếu đổi:" />
+                   <Label layoutX="5.0" layoutY="30.0" styleClass="label-normal" text="Chiết khấu Phiếu đổi:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
                    <Label fx:id="lblChietKhauPDoiValue" layoutX="240.0" layoutY="30.0" styleClass="label-discount bold-label value-label" text="0 VNĐ" />
-                   <Label layoutX="5.0" layoutY="55.0" styleClass="label-normal" text="Thuế (VAT):" />
+                   <Label layoutX="5.0" layoutY="55.0" styleClass="label-normal" text="Thuế (VAT):">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
                    <Label fx:id="lblThueVATValue" layoutX="240.0" layoutY="55.0" styleClass="bold-label value-label" text="0 VNĐ" />
                    <Separator layoutY="85.0" prefHeight="2.0" prefWidth="547.0" />
-                   <Label layoutX="5.0" layoutY="100.0" styleClass="bold-label section-label" text="TỔNG TIỀN ĐỔI:" />
+                   <Label layoutX="5.0" layoutY="100.0" styleClass="bold-label section-label" text="TỔNG TIỀN ĐỔI:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
                    <Label fx:id="lblTongTienPhaiDoiValue" layoutX="240.0" layoutY="100.0" styleClass="main-value-label grand-total-value bold-label value-label" text="0 VNĐ" />
                    <Separator layoutY="130.0" prefHeight="2.0" prefWidth="555.0" />
-                   <Label layoutX="5.0" layoutY="150.0" styleClass="label-normal" text="Phương thức thanh toán:" />
+                   <Label layoutX="5.0" layoutY="150.0" styleClass="label-normal" text="Phương thức thanh toán:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
                    <Label fx:id="lblPTTTValue" layoutX="240.0" layoutY="150.0" styleClass="bold-label value-label" text="Tiền mặt" />
-                   <Label layoutX="5.0" layoutY="175.0" styleClass="label-normal" text="Số tiền đã thanh toán:" />
+                   <Label layoutX="5.0" layoutY="175.0" styleClass="label-normal" text="Số tiền đã thanh toán:">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
                    <Label fx:id="lblTienDaThanhToanValue" layoutX="240.0" layoutY="175.0" styleClass="bold-label value-label" text="0 VNĐ" />
                    <Label layoutX="5.0" layoutY="210.0" styleClass="bold-label" text="Còn phải thanh toán:" />
                    <Label fx:id="lblTienConLaiValue" layoutX="240.0" layoutY="210.0" styleClass="change-due-value bold-label value-label" text="0 VNĐ" />
@@ -91,7 +115,8 @@
                                     <Color red="0.6526315808296204" green="0.6453801393508911" blue="0.6453801393508911" />
                                  </color>
                               </DropShadow>
-                           </effect></Button>
+                           </effect>
+                        </Button>
                           <Button fx:id="btnDong" layoutY="61.0" prefHeight="51.0" prefWidth="547.0" styleClass="danger-btn" text="Đóng">
                            <font>
                               <Font name="System Bold" size="14.0" />

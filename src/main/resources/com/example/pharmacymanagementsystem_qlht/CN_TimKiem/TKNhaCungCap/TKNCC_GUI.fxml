@@ -27,9 +27,6 @@
                             <font>
                                 <Font size="36.0" />
                             </font>
-                            <cursor>
-                                <Cursor fx:constant="NONE" />
-                            </cursor>
                         </Label>
                         <Label />
                         <ImageView fitHeight="53.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">

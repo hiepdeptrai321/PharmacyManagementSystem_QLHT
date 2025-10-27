@@ -97,7 +97,7 @@
             </font>
         </Label>
         <Button id="btnXoa" layoutX="13.0" layoutY="546.0" mnemonicParsing="false" onAction="#btnXoa" prefHeight="25.0" prefWidth="55.0" text="Xóa" />
-      <Button id="btnThemtk" layoutX="550.0" layoutY="546.0" mnemonicParsing="false" onAction="#btnSuaTaiKhoan" prefHeight="25.0" prefWidth="98.0" text="Sửa tài khoản" />
+      <Button id="btnThemtk" layoutX="532.0" layoutY="546.0" mnemonicParsing="false" onAction="#btnSuaTaiKhoan" prefHeight="30.0" prefWidth="116.0" text="Sửa tài khoản" />
           <ImageView fitHeight="49.0" fitWidth="41.0" layoutX="233.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
               <image>
                   <Image url="@../../img/free-icon-person-and-gear-9847.png" />
@@ -105,7 +105,7 @@
           </ImageView>
       <Button id="btnHuy" layoutX="655.0" layoutY="546.0" mnemonicParsing="false" onAction="#btnHuy" prefHeight="25.0" prefWidth="55.0" text="Hủy" />
       <DatePicker fx:id="txtNgaySinh" layoutX="14.0" layoutY="258.0" prefHeight="25.0" prefWidth="249.0" />
-      <Button id="btnThemtk" layoutX="437.0" layoutY="546.0" mnemonicParsing="false" onAction="#btnThayDoiLuong" prefHeight="25.0" prefWidth="106.0" text="Thay đổi lương" />
+      <Button id="btnThemtk" layoutX="390.0" layoutY="546.0" mnemonicParsing="false" onAction="#btnThayDoiLuong" prefHeight="30.0" prefWidth="132.0" text="Thay đổi lương" />
       <TableView fx:id="tblLuongNV" layoutX="14.0" layoutY="386.0" prefHeight="147.0" prefWidth="776.0">
         <columns>
           <TableColumn fx:id="colMaLuong" prefWidth="102.33333587646484" text="Mã lương" />

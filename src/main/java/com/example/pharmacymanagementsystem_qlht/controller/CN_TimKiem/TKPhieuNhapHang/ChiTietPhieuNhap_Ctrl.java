@@ -3,9 +3,12 @@ package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuN
 import com.example.pharmacymanagementsystem_qlht.dao.ChiTietPhieuNhap_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuNhap;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuNhap;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+
 import java.util.List;
 
 public class ChiTietPhieuNhap_Ctrl {
@@ -25,6 +28,12 @@ public class ChiTietPhieuNhap_Ctrl {
     public Label lblTongGiaNhap;
     public TableColumn<ChiTietPhieuNhap,String> colMaLoHang;
 
+    public void initialize(){
+        Platform.runLater(()->{
+            Stage dialog = (Stage) txtGhiChu.getScene().getWindow();
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+        });
+    }
 
     public void load(PhieuNhap temp){
 

@@ -51,7 +51,7 @@ public class ChiTietNhaCungCap_Ctrl{
             dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
         });
     }
-    
+
     public void setNhaCungCap(NhaCungCap ncc) {
         this.nhaCungCap = ncc;
         hienThiThongTin(ncc);

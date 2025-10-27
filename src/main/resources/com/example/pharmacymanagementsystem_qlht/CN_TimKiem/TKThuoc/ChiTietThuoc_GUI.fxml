@@ -103,7 +103,7 @@
             <Font size="15.0" />
          </font>
       </Label>
-      <Pane id="btnHuy" layoutX="871.0" layoutY="452.0" prefHeight="36.0" prefWidth="102.0">
+      <Pane id="btnHuy" layoutX="871.0" layoutY="452.0" onMouseClicked="#btnThoatClick" prefHeight="36.0" prefWidth="102.0">
          <children>
             <Label id="lblTrang" layoutX="30.0" layoutY="8.0" prefHeight="21.0" prefWidth="42.0" text="Thoát">
                <font>

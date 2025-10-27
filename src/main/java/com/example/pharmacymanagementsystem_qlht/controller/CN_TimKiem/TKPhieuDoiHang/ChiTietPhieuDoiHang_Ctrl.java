@@ -4,6 +4,7 @@ import com.example.pharmacymanagementsystem_qlht.dao.ChiTietPhieuDoiHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuDoiHang;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuDoiHang;
 import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -89,6 +90,10 @@ public class ChiTietPhieuDoiHang_Ctrl  {
     @FXML
     public void initialize() {
         btnDong.setOnAction(e -> ((Stage) btnDong.getScene().getWindow()).close());
+        Platform.runLater(()->{
+            Stage dialog = (Stage) btnDong.getScene().getWindow();
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+        });
     }
     public void setPhieuDoiHang(PhieuDoiHang pDoi) {
         this.phieuDoiHang = pDoi;

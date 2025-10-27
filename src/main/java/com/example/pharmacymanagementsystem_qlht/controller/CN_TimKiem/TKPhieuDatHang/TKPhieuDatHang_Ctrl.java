@@ -171,11 +171,15 @@ public class TKPhieuDatHang_Ctrl extends Application {
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuDatHang/ChiTietPhieuDatHang_GUI.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
             ChiTietPhieuDatHang_Ctrl ctrl = loader.getController();
             ctrl.setPhieuDatHang(pdh);
-            stage.setScene(scene);
-            stage.show();
+            Stage dialog = new Stage();
+            dialog.initOwner(btnTimKiem.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Chi tiết hoạt động");
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+            dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }

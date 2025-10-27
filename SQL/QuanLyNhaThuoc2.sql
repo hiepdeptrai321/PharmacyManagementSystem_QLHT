@@ -1,12 +1,12 @@
-use master
-CREATE DATABASE QuanLyNhaThuoc;
-GO
+﻿--use master
+--CREATE DATABASE QuanLyNhaThuoc;
+--GO
 
-USE QuanLyNhaThuoc;
-GO
+--USE QuanLyNhaThuoc;
+--GO
 
---Link thư mục hình ảnh thuốc
-DECLARE @path NVARCHAR(255) = N'C:\Users\Nhut Hao\Desktop\New folder (2)\PharmacyManagementSystem_QLHT\SQL\imgThuoc\';
+--Link thư mục hình ảnh thuốc 
+DECLARE @path NVARCHAR(255) = N'D:\documents\GitHub\PharmacyManagementSystem_QLHT\SQL\imgThuoc\';
 
 -- =========================
 -- Bảng KhachHang
@@ -156,6 +156,27 @@ CREATE TABLE Thuoc_SP_TheoLo (
     PRIMARY KEY (MaLH),
     FOREIGN KEY (MaPN, MaThuoc,MaLH) REFERENCES ChiTietPhieuNhap(MaPN, MaThuoc,MaLH)
 );
+-- =========================
+-- Bảng DonViTinh
+-- =========================
+CREATE TABLE DonViTinh (
+    MaDVT      VARCHAR(10) PRIMARY KEY,
+    TenDonViTinh NVARCHAR(50) NOT NULL,
+    KiHieu     NVARCHAR(10) NOT NULL
+);
+
+-- =========================
+-- Bảng ChiTietDonViTinh
+-- =========================
+CREATE TABLE ChiTietDonViTinh (
+    MaThuoc       VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
+    MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT),
+    HeSoQuyDoi INT NOT NULL,
+    GiaNhap    FLOAT NOT NULL,
+    GiaBan     FLOAT NOT NULL,
+	DonViCoBan BIT NOT NULL DEFAULT 0,
+	PRIMARY KEY(MaThuoc, MaDVT)
+);
 
 -- =========================
 -- Bảng HoaDon
@@ -164,6 +185,8 @@ CREATE TABLE HoaDon (
     MaHD       VARCHAR(10) PRIMARY KEY,
     NgayLap    DATETIME NOT NULL,
     TrangThai  NVARCHAR(10) NOT NULL,
+	MaDonThuoc VARCHAR(20) NULL,
+	LoaiHoaDon VARCHAR(3) NOT NULL DEFAULT 'OTC',
 	MaKH       VARCHAR(10) FOREIGN KEY REFERENCES KhachHang(MaKH),
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV)
 );
@@ -175,11 +198,11 @@ CREATE TABLE HoaDon (
 CREATE TABLE ChiTietHoaDon (
 	MaHD       VARCHAR(10) FOREIGN KEY REFERENCES HoaDon(MaHD),
     MaLH       VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SP_TheoLo(MaLH),
+	MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT) ,
     SoLuong    INT NOT NULL,
-	MaDVT      VARCHAR(10),
     DonGia     FLOAT NOT NULL,
     GiamGia    FLOAT NOT NULL,
-	PRIMARY KEY (MaHD, MaLH)
+	PRIMARY KEY (MaHD, MaLH, MaDVT)
 );
 
 -- =========================
@@ -227,7 +250,6 @@ CREATE TABLE ChiTietPhieuDatHang (
 CREATE TABLE PhieuDoiHang (
     MaPD       VARCHAR(10) PRIMARY KEY,
     NgayLap    DATE NOT NULL,
-    LyDoDoi    NVARCHAR(255) NOT NULL,
     GhiChu     NVARCHAR(255),
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV),
     MaKH       VARCHAR(10) FOREIGN KEY REFERENCES KhachHang(MaKH),
@@ -242,10 +264,9 @@ CREATE TABLE ChiTietPhieuDoiHang (
     MaPD       VARCHAR(10) FOREIGN KEY REFERENCES PhieuDoiHang(MaPD),
 	MaThuoc    VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
     SoLuong    INT NOT NULL,
-	MaDVT      VARCHAR(10),
-    DonGia     FLOAT NOT NULL,
-    GiamGia    FLOAT NOT NULL,
-    PRIMARY KEY (MaLH, MaPD,MaThuoc)
+	MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT),
+	LyDoDoi    NVARCHAR(255) NOT NULL,
+    PRIMARY KEY (MaLH, MaPD,MaThuoc, MaDVT)
 );
 
 -- =========================
@@ -254,7 +275,6 @@ CREATE TABLE ChiTietPhieuDoiHang (
 CREATE TABLE PhieuTraHang (
     MaPT       VARCHAR(10) PRIMARY KEY,
     NgayLap    DATE NOT NULL,
-    LyDoTra    NVARCHAR(20) NOT NULL,
     GhiChu     NVARCHAR(255),
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV),
     MaHD       VARCHAR(10) FOREIGN KEY REFERENCES HoaDon(MaHD),
@@ -269,10 +289,11 @@ CREATE TABLE ChiTietPhieuTraHang (
     MaPT       VARCHAR(10) NOT NULL FOREIGN KEY REFERENCES PhieuTraHang(MaPT),
 	MaThuoc    VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
     SoLuong    INT NOT NULL,
-	MaDVT      VARCHAR(10),
+	MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT),
     DonGia     FLOAT NOT NULL,
     GiamGia    FLOAT NOT NULL,
-    PRIMARY KEY (MaLH, MaPT,MaThuoc)
+	LyDoTra    NVARCHAR(20) NOT NULL,
+    PRIMARY KEY (MaLH, MaPT,MaThuoc, MaDVT)
 );
 
 -- =========================
@@ -293,27 +314,7 @@ CREATE TABLE ChiTietHoatChat (
     PRIMARY KEY (MaHoatChat, MaThuoc)
 );
 
--- =========================
--- Bảng DonViTinh
--- =========================
-CREATE TABLE DonViTinh (
-    MaDVT      VARCHAR(10) PRIMARY KEY,
-    TenDonViTinh NVARCHAR(50) NOT NULL,
-    KiHieu     NVARCHAR(10) NOT NULL
-);
 
--- =========================
--- Bảng ChiTietDonViTinh
--- =========================
-CREATE TABLE ChiTietDonViTinh (
-    MaThuoc       VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
-    MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT),
-    HeSoQuyDoi INT NOT NULL,
-    GiaNhap    FLOAT NOT NULL,
-    GiaBan     FLOAT NOT NULL,
-	DonViCoBan BIT NOT NULL DEFAULT 0,
-	PRIMARY KEY(MaThuoc, MaDVT)
-);
 -- =========================
 -- Bảng LoaiKhuyenMai
 -- =========================
@@ -794,26 +795,26 @@ GO
 
 INSERT INTO ChiTietHoatChat (MaHoatChat, MaThuoc, HamLuong) VALUES
 -- Thuốc tây
-('HC001','TS001',500),
-('HC006','TS002',500),
-('HC008','TS003',250),
-('HC051','TS004',1000),
-('HC002','TS005',400),
-('HC004','TS006',81),
-('HC042','TS007',10),
-('HC017','TS008',20),
-('HC034','TS009',500),
-('HC031','TS010',20),
-('HC001','TS011',650),
-('HC006','TS012',250),
-('HC008','TS013',500),
-('HC051','TS014',500),
-('HC002','TS015',200),
-('HC004','TS016',500),
-('HC042','TS017',5),
-('HC017','TS018',40),
-('HC034','TS019',850),
-('HC031','TS020',40);
+('HC001','TS001',500),   
+('HC006','TS002',500),   
+('HC008','TS003',250),   
+('HC051','TS004',1000),  
+('HC002','TS005',400),   
+('HC004','TS006',81),    
+('HC042','TS007',10),    
+('HC017','TS008',20),   
+('HC034','TS009',500),   
+('HC031','TS010',20),   
+('HC001','TS011',650),  
+('HC006','TS012',250),   
+('HC008','TS013',500),   
+('HC051','TS014',500),   
+('HC002','TS015',200),   
+('HC004','TS016',500),  
+('HC042','TS017',5),     
+('HC017','TS018',40),    
+('HC034','TS019',850),   
+('HC031','TS020',40); 
 
 INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
 VALUES
@@ -896,7 +897,7 @@ VALUES
 ('LKM005', N'Giảm phần trăm theo tổng hóa đơn', N'Khách hàng được giảm theo tỷ lệ phần trăm trên tổng hóa đơn');
 
 
-INSERT INTO KhuyenMai
+INSERT INTO KhuyenMai 
 (MaKM, TenKM, GiaTriKM, GiaTriApDung, LoaiGiaTri, NgayBatDau, NgayKetThuc, MoTa, MaLoai)
 VALUES
 -- Giảm theo sản phẩm
@@ -912,19 +913,19 @@ VALUES
 ('KM020', N'Máy đo HA giảm 100k', 100000, 0, 'VND', '2025-10-01', '2025-12-31', N'Giảm 100.000đ cho Máy đo huyết áp bắp tay', 'LKM002'),
 
 -- Giảm trực tiếp theo tổng hóa đơn (LKM004)
-('KM021', N'Hóa đơn trên 300k giảm 30k', 30000, 300000, 'VND', '2025-10-01', '2025-10-31',
+('KM021', N'Hóa đơn trên 300k giảm 30k', 30000, 300000, 'VND', '2025-10-01', '2025-10-31', 
  N'Khách hàng có hóa đơn từ 300.000đ trở lên sẽ được giảm trực tiếp 30.000đ', 'LKM004'),
-('KM022', N'Hóa đơn trên 500k giảm 70k', 70000, 500000, 'VND', '2025-10-10', '2025-11-10',
+('KM022', N'Hóa đơn trên 500k giảm 70k', 70000, 500000, 'VND', '2025-10-10', '2025-11-10', 
  N'Khách hàng có hóa đơn từ 500.000đ trở lên sẽ được giảm trực tiếp 70.000đ', 'LKM004'),
-('KM023', N'Hóa đơn trên 1 triệu giảm 150k', 150000, 1000000, 'VND', '2025-10-15', '2025-12-15',
+('KM023', N'Hóa đơn trên 1 triệu giảm 150k', 150000, 1000000, 'VND', '2025-10-15', '2025-12-15', 
  N'Giảm ngay 150.000đ khi tổng hóa đơn đạt từ 1.000.000đ', 'LKM004'),
 
 -- Giảm phần trăm theo tổng hóa đơn (LKM005)
-('KM024', N'Hóa đơn trên 200k giảm 5%', 5, 200000, '%', '2025-10-01', '2025-11-01',
+('KM024', N'Hóa đơn trên 200k giảm 5%', 5, 200000, '%', '2025-10-01', '2025-11-01', 
  N'Khách hàng có hóa đơn từ 200.000đ trở lên được giảm 5% tổng giá trị hóa đơn', 'LKM005'),
-('KM025', N'Hóa đơn trên 800k giảm 8%', 8, 800000, '%', '2025-10-05', '2025-11-30',
+('KM025', N'Hóa đơn trên 800k giảm 8%', 8, 800000, '%', '2025-10-05', '2025-11-30', 
  N'Khách hàng có hóa đơn từ 800.000đ trở lên được giảm 8% tổng giá trị hóa đơn', 'LKM005'),
-('KM026', N'Hóa đơn trên 1.5 triệu giảm 10%', 10, 1500000, '%', '2025-10-20', '2025-12-31',
+('KM026', N'Hóa đơn trên 1.5 triệu giảm 10%', 10, 1500000, '%', '2025-10-20', '2025-12-31', 
  N'Khách hàng có hóa đơn từ 1.500.000đ trở lên được giảm 10% tổng giá trị hóa đơn', 'LKM005');
 
 
@@ -936,7 +937,7 @@ VALUES
 ('TS007', 'KM012', 1, 50),  -- Amoxicillin giảm tiền
 ('TS015', 'KM012', 1, 50),  -- Amoxicillin giảm tiền
 ('TS003', 'KM013', 1, 50),  -- Cefuroxime giảm %
-('TS005', 'KM013', 1, 50),  --
+('TS005', 'KM013', 1, 50),  -- 
 ('TS004', 'KM014', 2, 20),  -- Vitamin C mua 2 tặng 1 (áp dụng tối đa 20 lần / hóa đơn)
 ('TS005', 'KM015', 1, 50),  -- Ibuprofen giảm tiền
 ('TS343', 'KM016', 1, 50),  -- Ginkgo giảm %
@@ -1023,26 +1024,28 @@ VALUES
 ('PDH002', 'TS003', 3, 15000, 0.1,  'DVT03');  -- Ibuprofen - Hộp
 
 
+
+
 -- Dữ liệu mẫu cho PhieuDoiHang (Không thay đổi)
 INSERT INTO PhieuDoiHang (MaPD, NgayLap, GhiChu, MaNV, MaKH, MaHD)
-VALUES
-    ('PD001', '2025-10-15',  N'Đổi 1 hộp Ibuprofen cùng loại', 'NV002', NULL, 'HD003'),
-    ('PD002', '2025-10-16',  N'Đổi 5 viên Paracetamol', 'NV001', 'KH001', 'HD001'),
-    ('PD003', '2025-10-17',  N'Đổi 1 hộp Vitamin D3', 'NV003', NULL, 'HD005')
+VALUES 
+('PD001', '2025-10-15',  N'Đổi 1 hộp Ibuprofen cùng loại', 'NV002', NULL, 'HD003'),
+('PD002', '2025-10-16',  N'Đổi 5 viên Paracetamol', 'NV001', 'KH001', 'HD001'),
+('PD003', '2025-10-17',  N'Đổi 1 hộp Vitamin D3', 'NV003', NULL, 'HD005')
 
 
-    INSERT INTO ChiTietPhieuDoiHang (MaLH, MaPD, MaThuoc, MaDVT, SoLuong, LyDoDoi)
+INSERT INTO ChiTietPhieuDoiHang (MaLH, MaPD, MaThuoc, MaDVT, SoLuong, LyDoDoi)
 VALUES
-    ('LH00003', 'PD001', 'TS005', 'DVT03',  1, N'Hộp bị móp'),
-    ('LH00001', 'PD002', 'TS001', 'DVT01',  5, N'Viên cũ bị gãy'),
-    ('LH00011', 'PD003', 'TS336', 'DVT03',  1, N'Hộp bị ướt')
+('LH00003', 'PD001', 'TS005', 'DVT03',  1, N'Hộp bị móp'),
+('LH00001', 'PD002', 'TS001', 'DVT01',  5, N'Viên cũ bị gãy'),
+('LH00011', 'PD003', 'TS336', 'DVT03',  1, N'Hộp bị ướt')
 
 -- Dữ liệu mẫu cho PhieuTraHang (Sửa định dạng ngày tháng)
 INSERT INTO PhieuTraHang (MaPT, NgayLap, GhiChu, MaNV, MaHD, MaKH)
 VALUES
-    ('PT001', '2025-09-13', N'Trả lại Hoạt huyết dưỡng não và Cao ích mẫu', 'NV001', 'HD004', 'KH003'),
-    ('PT002', '2025-09-15', N'Trả lại Kem chống nắng', 'NV002', 'HD008', 'KH005'),
-    ('PT003', '2025-09-16', N'Trả lại Găng tay y tế', 'NV003', 'HD006', 'KH004');
+('PT001', '2025-09-13', N'Trả lại Hoạt huyết dưỡng não và Cao ích mẫu', 'NV001', 'HD004', 'KH003'),
+('PT002', '2025-09-15', N'Trả lại Kem chống nắng', 'NV002', 'HD008', 'KH005'),
+('PT003', '2025-09-16', N'Trả lại Găng tay y tế', 'NV003', 'HD006', 'KH004');
 
 INSERT INTO ChiTietPhieuTraHang (MaLH, MaPT, MaThuoc, MaDVT, SoLuong, DonGia, GiamGia, LyDoTra)
 VALUES
@@ -1166,19 +1169,19 @@ INSERT INTO HoaDon (MaHD, NgayLap, TrangThai, MaKH, MaNV) VALUES
 ('HD052','2025-12-30 10:30',N'Hoàn tất','KH043','NV043');
 
 -- CHI TIẾT HÓA ĐƠN
-INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia) VALUES
-('HD041','LH00046',30,1600,0),
-('HD042','LH00047',20,1800,0),
-('HD043','LH00048',25,1900,0),
-('HD044','LH00049',40,2100,0),
-('HD045','LH00050',50,2200,0),
-('HD046','LH00050',45,2300,0),
-('HD047','LH00045',35,2000,0),
-('HD048','LH00044',40,2100,0),
-('HD049','LH00043',30,1900,0),
-('HD050','LH00051',20,2000,0),
-('HD051','LH00052',25,2100,0),
-('HD052','LH00053',30,2200,0);
+--INSERT INTO ChiTietHoaDon (MaHD, MaLH, SoLuong, DonGia, GiamGia) VALUES
+--('HD041','LH00046',30,1600,0),
+--('HD042','LH00047',20,1800,0),
+--('HD043','LH00048',25,1900,0),
+--('HD044','LH00049',40,2100,0),
+--('HD045','LH00050',50,2200,0),
+--('HD046','LH00050',45,2300,0),
+--('HD047','LH00045',35,2000,0),
+--('HD048','LH00044',40,2100,0),
+--('HD049','LH00043',30,1900,0),
+--('HD050','LH00051',20,2000,0),
+--('HD051','LH00052',25,2100,0),
+--('HD052','LH00053',30,2200,0);
 
 
 --=======================================================================================================================
@@ -2147,7 +2150,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT
+    SELECT 
         MaThuoc,
         MaLH,
         HSD
@@ -2162,7 +2165,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT
+    SELECT 
         MaThuoc,
         MaLH,
         HSD
@@ -2224,9 +2227,4 @@ BEGIN
     SELECT @NewMaThuoc AS MaThuoc;
 END;
 GO
-ALTER TABLE HoaDon
-    ADD LoaiHoaDon VARCHAR(3) NOT NULL DEFAULT 'OTC';
-go
-ALTER TABLE HoaDon
-    ADD MaDonThuoc VARCHAR(20) NULL;
-go
+

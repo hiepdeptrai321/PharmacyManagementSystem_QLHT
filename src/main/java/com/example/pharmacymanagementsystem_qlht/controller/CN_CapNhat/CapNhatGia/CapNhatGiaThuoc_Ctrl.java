@@ -121,7 +121,7 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
         Thuoc_SanPham_Dao ts_dao = new Thuoc_SanPham_Dao();
         List<Thuoc_SanPham> dsTSLoc;
         if (keyword.isEmpty()) {
-            dsTSLoc = ts_dao.selectAllSLTheoDonViCoBan_ChiTietDVT();
+            dsTSLoc = ts_dao.selectAllSLTheoDonViCoBan_ChiTietDVT_Ver2();
         } else {
             dsTSLoc = ts_dao.selectSLTheoDonViCoBanByTuKhoa_ChiTietDVT(keyword);
         }

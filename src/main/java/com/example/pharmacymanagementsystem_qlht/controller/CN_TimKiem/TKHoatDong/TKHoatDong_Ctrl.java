@@ -215,10 +215,13 @@ public class TKHoatDong_Ctrl extends javafx.application.Application {
             if (ctrl instanceof ChiTietHoatDong_Ctrl) {
                 ((ChiTietHoatDong_Ctrl) ctrl).loadData(hd);
             }
-            Scene scene = new Scene(root);
-            chiTiet.setScene(scene);
-            chiTiet.setTitle("Chi tiết hoạt động");
-            chiTiet.show();
+            Stage dialog = new Stage();
+            dialog.initOwner(btnLamMoi.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Chi tiết hoạt động");
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+            dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -42,11 +42,9 @@ public class PhieuNhap_Dao implements DaoInterface<PhieuNhap>{
         return this.selectBySql(SELECT_BY_ID_SQL, keys).get(0);
     }
 
-    @Override
     public List<PhieuNhap> selectBySql(String sql, Object... args) {
         List<PhieuNhap> phieuNhapList = new ArrayList<>();
-        try {
-            ResultSet rs = ConnectDB.query(sql, args);
+        try (ResultSet rs = ConnectDB.query(sql, args)) {
             while (rs.next()) {
                 PhieuNhap pn = new PhieuNhap();
                 pn.setMaPN(rs.getString("MaPN"));
@@ -58,7 +56,8 @@ public class PhieuNhap_Dao implements DaoInterface<PhieuNhap>{
                 phieuNhapList.add(pn);
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new RuntimeException("Lỗi khi truy vấn SQL: " + sql, e);
         }
         return phieuNhapList;
     }

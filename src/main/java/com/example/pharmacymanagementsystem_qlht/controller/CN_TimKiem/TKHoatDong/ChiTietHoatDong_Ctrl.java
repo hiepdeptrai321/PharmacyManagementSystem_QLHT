@@ -1,6 +1,7 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoatDong;
 
 import com.example.pharmacymanagementsystem_qlht.model.HoatDong;
+import com.example.pharmacymanagementsystem_qlht.model.NhanVien;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -75,8 +76,9 @@ public class ChiTietHoatDong_Ctrl implements Initializable {
             return;
         }
 
+
         String ma = tryInvokeStringMethod(nv, "getMaNV", "getMaNhanVien", "getId", "getMa");
-        String ten = tryInvokeStringMethod(nv, "getHoTen", "getTen", "getName", "toString");
+        String ten = tryInvokeStringMethod(nv,  "getTenNV","toString");
         if (ten == null || ten.isEmpty()) ten = nv.toString();
 
         tfMaNV.setText(nullSafe(ma));

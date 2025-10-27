@@ -40,7 +40,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class CuaSoChinh_NhanVien_Ctrl{
+public class CuaSoChinh_NhanVien_Ctrl {
+    public static CuaSoChinh_NhanVien_Ctrl instance;
     public Pane pnlChung;
     public Menu menuTimKiem;
     public Menu menuDanhMuc;
@@ -230,6 +231,7 @@ public class CuaSoChinh_NhanVien_Ctrl{
             e.printStackTrace();
             System.err.println("Không thể tải FXML: " + fxmlPath);
         }
+        pnlChung.requestFocus();
     }
 
     public void AnhChuyenTrangChu(MouseEvent mouseEvent) {

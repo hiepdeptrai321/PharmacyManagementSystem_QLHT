@@ -48,6 +48,8 @@ public class TKPhieuDatHang_Ctrl extends Application {
     @FXML
     private TableColumn<PhieuDatHang, String> colSoTienCoc;
     @FXML
+    private TableColumn<PhieuDatHang, String> colTT;
+    @FXML
     private TableColumn<PhieuDatHang, String> colChiTiet;
     @FXML
     private ComboBox<String> cboTimKiem; //
@@ -153,6 +155,14 @@ public class TKPhieuDatHang_Ctrl extends Application {
                 setGraphic(empty ? null : btn);
             }
         });
+        colTT.setCellValueFactory(cellData ->{
+            String trangThai;
+            if(cellData.getValue().getTrangthai() == 0) trangThai = "Chưa có hàng";
+            else if(cellData.getValue().getTrangthai() == 1) trangThai = "Sẵn hàng";
+            else trangThai = "Đã hoàn thành";
+            return new SimpleStringProperty(trangThai);
+        });
+
         tblPD.setItems(data);
     }
 
@@ -162,9 +172,7 @@ public class TKPhieuDatHang_Ctrl extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuDatHang/ChiTietPhieuDatHang_GUI.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
-
-//            this.getClass();
-            com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDatHang.ChiTietPhieuDatHang_Ctrl ctrl = loader.getController();
+            ChiTietPhieuDatHang_Ctrl ctrl = loader.getController();
             ctrl.setPhieuDatHang(pdh);
             stage.setScene(scene);
             stage.show();

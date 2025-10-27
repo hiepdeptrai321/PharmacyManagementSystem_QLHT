@@ -132,3 +132,11 @@
     -fx-text-fill: #008000;
 }
 
+.label.status-available {
+    -fx-text-fill: #2e7d32; /* green */
+}
+
+.label.status-unavailable {
+    -fx-text-fill: #c62828; /* red */
+}
+

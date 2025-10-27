@@ -38,6 +38,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class CuaSoChinh_QuanLy_Ctrl{
+    public static CuaSoChinh_QuanLy_Ctrl instance;
     public Pane pnlChung;
     public Menu menuTimKiem;
     public Menu menuDanhMuc;
@@ -90,7 +91,9 @@ public class CuaSoChinh_QuanLy_Ctrl{
             e.printStackTrace();
             System.err.println("Không thể tải FXML: " + fxmlPath);
         }
+        pnlChung.requestFocus();
         pnlThongTin.setVisible(false);
+        pnlChung.requestFocus();
 
     }
 
@@ -374,7 +377,7 @@ public class CuaSoChinh_QuanLy_Ctrl{
 
 //  Lập phiếu đặt hàng
     public void lapPhieuDatHang(ActionEvent actionEvent) {
-        loadView(5, "/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapPhieuTra/LapPhieuTraHang_GUI.fxml");
+        loadView(5, "/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapPhieuDat/LapPhieuDatHang_GUI.fxml");
     }
 
 //  Lập phiếu nhập hàng

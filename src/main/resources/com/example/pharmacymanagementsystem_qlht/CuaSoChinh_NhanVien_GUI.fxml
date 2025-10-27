@@ -33,8 +33,8 @@
                                 <MenuItem id="menuItems" mnemonicParsing="false" onAction="#timKiemPhieuTraHang" text="Tìm phiếu trả hàng" />
                                 <MenuItem id="menuItems" mnemonicParsing="false" onAction="#timKiemPhieuDatHang" text="Tìm phiếu đặt hàng" />
                                 <MenuItem id="menuItems" mnemonicParsing="false" onAction="#timKiemNhaCungCap" text="Tìm nhà cung cấp" />
-                                <MenuItem id="menuItems" mnemonicParsing="false" onAction="#timKiemThuoc" text="Tìm thuốc" />
-                                <MenuItem id="menuItems" mnemonicParsing="false" onAction="#timKiemKhachHang" text="Tìm khách hàng" />
+                                <MenuItem id="menuItems" accelerator="F6" mnemonicParsing="false" onAction="#timKiemThuoc" text="Tìm thuốc" />
+                                <MenuItem id="menuItems" accelerator="F5" mnemonicParsing="false" onAction="#timKiemKhachHang" text="Tìm khách hàng" />
                             </items>
                         </Menu>
                         <Menu id="menu" fx:id="menuDanhMuc" mnemonicParsing="false" styleClass="menu" text="📁 Danh mục">
@@ -48,21 +48,21 @@
                         </Menu>
                         <Menu id="menu" fx:id="menuCapNhat" mnemonicParsing="false" styleClass="menu" text="🔄 Cập nhật">
                             <items>
-                                <MenuItem id="menuItems" mnemonicParsing="false" onAction="#CapNhatGiaBan" text="Cập nhật giá bán" />
-                                <MenuItem id="menuItems" mnemonicParsing="false" onAction="#capNhatTonKho" text="Cập nhật tồn kho" />
+                                <MenuItem id="menuItems" accelerator="F7" mnemonicParsing="false" onAction="#CapNhatGiaBan" text="Cập nhật giá bán" />
+                                <MenuItem id="menuItems" accelerator="F8" mnemonicParsing="false" onAction="#capNhatTonKho" text="Cập nhật tồn kho" />
                             </items>
                         </Menu>
                         <Menu id="menu" fx:id="menuXuLy" mnemonicParsing="false" styleClass="menu" text="🛠 Xử lý">
                             <items>
                                 <Menu id="menuItems" mnemonicParsing="false" styleClass="menu" text="Bán hàng">
                                     <items>
-                                        <MenuItem id="menuItems" mnemonicParsing="false" onAction="#lapHoaDon" text="Lập hóa đơn" />
+                                        <MenuItem id="menuItems" accelerator="F2" mnemonicParsing="false" onAction="#lapHoaDon" text="Lập hóa đơn" />
                                         <MenuItem id="menuItems" mnemonicParsing="false" onAction="#lapPhieuDoiHang" text="Lập phiếu đổi hàng" />
                                         <MenuItem id="menuItems" mnemonicParsing="false" onAction="#lapPhieuTraHang" text="Lập phiếu trả hàng" />
-                                        <MenuItem id="menuItems" mnemonicParsing="false" onAction="#lapPhieuDatHang" text="Lập phiếu đặt hàng" />
+                                        <MenuItem id="menuItems" accelerator="F3" mnemonicParsing="false" onAction="#lapPhieuDatHang" text="Lập phiếu đặt hàng" />
                                     </items>
                                 </Menu>
-                                <MenuItem id="menuItems" mnemonicParsing="false" onAction="#nhapHang" text="Nhập hàng" />
+                                <MenuItem id="menuItems" accelerator="F4" mnemonicParsing="false" onAction="#nhapHang" text="Nhập hàng" />
                             </items>
                         </Menu>
                     </menus>

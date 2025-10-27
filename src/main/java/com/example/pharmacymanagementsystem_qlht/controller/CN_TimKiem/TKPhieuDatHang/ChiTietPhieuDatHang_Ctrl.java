@@ -153,15 +153,21 @@ public class ChiTietPhieuDatHang_Ctrl  {
         if (phieuDatHang != null && lbTT != null) {
             final String STATUS_AV = "status-available";
             final String STATUS_UNAV = "status-unavailable";
+            final String STATUS_FI = "status-finished";
 
             Platform.runLater(() -> {
                 lbTT.getStyleClass().removeAll(STATUS_AV, STATUS_UNAV);
-                if (phieuDatHang.isTrangthai()) {
-                    lbTT.setText("Sẵn hàng");
-                    lbTT.getStyleClass().add(STATUS_AV);
-                } else {
+                if(phieuDatHang.getTrangthai() == 0){
                     lbTT.setText("Chưa có hàng");
+                    lbTT.getStyleClass().add(STATUS_AV);
+                }
+                else if(phieuDatHang.getTrangthai() == 1){
+                    lbTT.setText("Sẵn hàng");
                     lbTT.getStyleClass().add(STATUS_UNAV);
+                }
+                else{
+                    lbTT.setText("Đã hoàn thành");
+                    lbTT.getStyleClass().add(STATUS_FI);
                 }
             });
         }

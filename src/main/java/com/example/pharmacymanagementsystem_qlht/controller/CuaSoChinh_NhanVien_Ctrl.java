@@ -224,6 +224,7 @@ public class CuaSoChinh_NhanVien_Ctrl {
             e.printStackTrace();
             System.err.println("Không thể tải FXML: " + fxmlPath);
         }
+        pnlChung.requestFocus();
     }
 
     public void AnhChuyenTrangChu(MouseEvent mouseEvent) {

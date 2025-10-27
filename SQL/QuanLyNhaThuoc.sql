@@ -152,6 +152,8 @@ CREATE TABLE Thuoc_SP_TheoLo (
     MaThuoc VARCHAR(10),
     MaLH    VARCHAR(10),
     SoLuongTon INT,
+	SoLuongDat INT DEFAULT 0,
+	SoLuongGiu INT DEFAULT 0,
     NSX DATE,
     HSD DATE,
     PRIMARY KEY (MaLH),
@@ -206,7 +208,7 @@ CREATE TABLE PhieuDatHang (
     GhiChu     NVARCHAR(255),
     MaKH       VARCHAR(10) FOREIGN KEY REFERENCES KhachHang(MaKH),
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV),
-	TrangThai BIT DEFAULT 0
+	TrangThai INT DEFAULT 0
 );
 
 -- =========================
@@ -1500,9 +1502,279 @@ BEGIN
 END;
 GO
 
+--TRIGGER CẬP NHẬT TRẠNG THÁI ĐẶT HÀNG KHI CÓ THAY ĐỔI TRÊN BẢNG THUỐC_SP_THEOLO
+CREATE OR ALTER TRIGGER trg_UpdateTrangThaiDatHang_WhenTonChange
+ON Thuoc_SP_TheoLo
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- 🔹 Lấy danh sách thuốc bị ảnh hưởng
+    DECLARE @Thuoc TABLE (MaThuoc VARCHAR(10));
+    INSERT INTO @Thuoc (MaThuoc)
+    SELECT DISTINCT MaThuoc FROM inserted;
+
+    -- 🔹 Cập nhật trạng thái cho các chi tiết phiếu đặt
+    UPDATE ctpd
+    SET ctpd.TrangThai = 
+        CASE 
+            WHEN tong.TongTon >= ctpd.SoLuong THEN 1 
+            ELSE 0 
+        END
+    FROM ChiTietPhieuDatHang ctpd
+    JOIN @Thuoc t ON ctpd.MaThuoc = t.MaThuoc
+    CROSS APPLY (
+        SELECT SUM(SoLuongTon) AS TongTon 
+        FROM Thuoc_SP_TheoLo 
+        WHERE MaThuoc = ctpd.MaThuoc
+    ) tong;
+
+    -- 🔹 Cập nhật trạng thái tổng cho phiếu đặt
+    UPDATE p
+    SET p.TrangThai = 
+        CASE 
+            WHEN NOT EXISTS (
+                SELECT 1 
+                FROM ChiTietPhieuDatHang c
+                WHERE c.MaPDat = p.MaPDat AND c.TrangThai = 0
+            )
+            THEN 1 ELSE 0 
+        END
+    FROM PhieuDatHang p
+    WHERE EXISTS (
+        SELECT 1 
+        FROM ChiTietPhieuDatHang c
+        JOIN @Thuoc t ON c.MaThuoc = t.MaThuoc
+        WHERE c.MaPDat = p.MaPDat
+    );
+END;
+GO
+--================================================================================================================================================================================================
+--================================================================================================================================================================================================
+--================================================================================================================================================================================================
+--XỬ LÝ ĐƠN ĐẶT HÀNG
+
+--Trigger – Cập nhật trạng thái Phiếu Đặt Hàng khi thay đổi tồn
+
+CREATE OR ALTER TRIGGER trg_CapNhatTrangThaiDatHang
+ON Thuoc_SP_TheoLo
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @MaThuoc VARCHAR(10);
+
+    DECLARE cur CURSOR FOR
+        SELECT DISTINCT MaThuoc FROM inserted;
+    OPEN cur;
+    FETCH NEXT FROM cur INTO @MaThuoc;
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        DECLARE @TongTon INT = (
+            SELECT SUM(SoLuongTon)
+            FROM Thuoc_SP_TheoLo
+            WHERE MaThuoc = @MaThuoc
+        );
+
+        -- Cập nhật trạng thái từng chi tiết phiếu đặt có liên quan
+        UPDATE ctpd
+        SET TrangThai = 
+            CASE 
+                WHEN @TongTon >= CEILING(ctpd.SoLuong * 
+                    ISNULL(
+                        (SELECT HeSoQuyDoi FROM ChiTietDonViTinh dvt
+                         WHERE dvt.MaThuoc = ctpd.MaThuoc AND dvt.MaDVT = ctpd.MaDVT),
+                        1
+                    )
+                )
+                THEN 1
+                ELSE 0
+            END
+        FROM ChiTietPhieuDatHang ctpd
+        WHERE ctpd.MaThuoc = @MaThuoc;
+
+        -- Nếu tất cả chi tiết đủ hàng thì cập nhật phiếu
+        UPDATE pd
+        SET TrangThai =
+            CASE 
+                WHEN NOT EXISTS (
+                    SELECT 1 FROM ChiTietPhieuDatHang 
+                    WHERE MaPDat = pd.MaPDat AND TrangThai = 0
+                ) THEN 1
+                ELSE 0
+            END
+        FROM PhieuDatHang pd
+        WHERE EXISTS (
+            SELECT 1 FROM ChiTietPhieuDatHang ctpd
+            WHERE ctpd.MaPDat = pd.MaPDat AND ctpd.MaThuoc = @MaThuoc
+        );
+
+        FETCH NEXT FROM cur INTO @MaThuoc;
+    END
+    CLOSE cur;
+    DEALLOCATE cur;
+END;
+GO
+
+--Procedure – Duyệt Phiếu Đặt (Giữ hàng theo lô FEFO)
+CREATE OR ALTER PROCEDURE sp_DuyetPhieuDatHang
+    @MaPDat VARCHAR(10)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE 
+        @MaThuoc VARCHAR(10),
+        @MaDVT VARCHAR(10),
+        @SoLuong INT,
+        @HeSo FLOAT,
+        @SoLuongCoBan INT;
+
+    DECLARE cur CURSOR FOR
+        SELECT MaThuoc, MaDVT, SoLuong
+        FROM ChiTietPhieuDatHang
+        WHERE MaPDat = @MaPDat;
+
+    OPEN cur;
+    FETCH NEXT FROM cur INTO @MaThuoc, @MaDVT, @SoLuong;
+
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        -- Lấy hệ số quy đổi sang đơn vị cơ bản
+        SELECT @HeSo = ISNULL(HeSoQuyDoi, 1)
+        FROM ChiTietDonViTinh
+        WHERE MaThuoc = @MaThuoc AND MaDVT = @MaDVT;
+
+        SET @SoLuongCoBan = CEILING(@SoLuong * @HeSo);
+        DECLARE @CanTru INT = @SoLuongCoBan;
+
+        DECLARE @MaLH VARCHAR(10), @Ton INT;
+
+        -- Duyệt theo thứ tự hạn sử dụng gần nhất (FEFO)
+        DECLARE curLo CURSOR FOR
+            SELECT MaLH, SoLuongTon
+            FROM Thuoc_SP_TheoLo
+            WHERE MaThuoc = @MaThuoc 
+              AND HSD > GETDATE()
+            ORDER BY HSD ASC;  -- FEFO: gần hết hạn trước
+        OPEN curLo;
+        FETCH NEXT FROM curLo INTO @MaLH, @Ton;
+
+        WHILE @@FETCH_STATUS = 0 AND @CanTru > 0
+        BEGIN
+            DECLARE @Tru INT = CASE WHEN @Ton >= @CanTru THEN @CanTru ELSE @Ton END;
+
+            UPDATE Thuoc_SP_TheoLo
+            SET SoLuongTon = SoLuongTon - @Tru,
+                SoLuongGiu = SoLuongGiu + @Tru
+            WHERE MaLH = @MaLH;
+
+            SET @CanTru = @CanTru - @Tru;
+            FETCH NEXT FROM curLo INTO @MaLH, @Ton;
+        END
+
+        CLOSE curLo;
+        DEALLOCATE curLo;
+
+        FETCH NEXT FROM cur INTO @MaThuoc, @MaDVT, @SoLuong;
+    END
+
+    CLOSE cur;
+    DEALLOCATE cur;
+
+    -- Sau khi duyệt xong phiếu
+    UPDATE PhieuDatHang
+    SET TrangThai = 2 -- đã duyệt, đang giữ hàng
+    WHERE MaPDat = @MaPDat;
+END;
+GO
 
 
 
+--Trigger + Job – Trả hàng tự động sau 7 ngày
+CREATE OR ALTER TRIGGER trg_TuDongTraHangSau7Ngay
+ON PhieuDatHang
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Trả hàng về kho nếu phiếu quá 7 ngày mà chưa hoàn thành
+    UPDATE tsl
+    SET SoLuongTon = SoLuongTon + tsl.SoLuongGiu,
+        SoLuongGiu = 0
+    FROM Thuoc_SP_TheoLo tsl
+    WHERE EXISTS (
+        SELECT 1
+        FROM ChiTietPhieuDatHang ct
+        JOIN PhieuDatHang pd ON ct.MaPDat = pd.MaPDat
+        WHERE pd.TrangThai <> 2
+          AND DATEDIFF(DAY, pd.NgayLap, GETDATE()) > 7
+          AND ct.MaThuoc = tsl.MaThuoc
+    );
+
+    UPDATE PhieuDatHang
+    SET TrangThai = 3 -- đã hủy
+    WHERE TrangThai <> 2
+      AND DATEDIFF(DAY, NgayLap, GETDATE()) > 7;
+END;
+GO
+
+
+
+
+--🔹 SQL Job – Tự động chạy mỗi ngày 0h00
+-- Tạo job SQL Agent tự động
+
+--USE msdb;
+--GO
+--EXEC sp_add_job 
+--    @job_name = N'Job_TuDongTraHangHetHan';
+
+--EXEC sp_add_jobstep
+--    @job_name = N'Job_TuDongTraHangHetHan',
+--    @step_name = N'TraHangSau7Ngay',
+--    @subsystem = N'TSQL',
+--    @command = N'
+--        UPDATE tsl
+--        SET SoLuongTon = SoLuongTon + tsl.SoLuongGiu,
+--            SoLuongGiu = 0
+--        FROM Thuoc_SP_TheoLo tsl
+--        WHERE EXISTS (
+--            SELECT 1
+--            FROM ChiTietPhieuDatHang ct
+--            JOIN PhieuDatHang pd ON ct.MaPDat = pd.MaPDat
+--            WHERE pd.TrangThai <> 2
+--              AND DATEDIFF(DAY, pd.NgayLap, GETDATE()) > 7
+--              AND ct.MaThuoc = tsl.MaThuoc
+--        );
+
+--        UPDATE PhieuDatHang
+--        SET TrangThai = 3
+--        WHERE TrangThai <> 2
+--          AND DATEDIFF(DAY, NgayLap, GETDATE()) > 7;
+--    ';
+
+--EXEC sp_add_schedule
+--    @schedule_name = N'HangNgayLuc0h',
+--    @freq_type = 4,            -- daily
+--    @freq_interval = 1,
+--    @active_start_time = 000000;  -- 00:00:00
+
+--EXEC sp_attach_schedule
+--    @job_name = N'Job_TuDongTraHangHetHan',
+--    @schedule_name = N'HangNgayLuc0h';
+
+--EXEC sp_add_jobserver
+--    @job_name = N'Job_TuDongTraHangHetHan';
+--GO
+
+
+--================================================================================================================================================================================================
+--================================================================================================================================================================================================
+--================================================================================================================================================================================================
 CREATE PROCEDURE sp_InsertNhanVien
     @HoTen NVARCHAR(50),
     @SDT VARCHAR(15),

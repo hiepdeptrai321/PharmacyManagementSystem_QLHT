@@ -156,7 +156,10 @@ public class TKPhieuDatHang_Ctrl extends Application {
             }
         });
         colTT.setCellValueFactory(cellData ->{
-            String trangThai = cellData.getValue().isTrangthai() ? "Sẵn hàng" : "Chưa có hàng";
+            String trangThai;
+            if(cellData.getValue().getTrangthai() == 0) trangThai = "Chưa có hàng";
+            else if(cellData.getValue().getTrangthai() == 1) trangThai = "Sẵn hàng";
+            else trangThai = "Đã hoàn thành";
             return new SimpleStringProperty(trangThai);
         });
 

@@ -3,7 +3,10 @@ package com.example.pharmacymanagementsystem_qlht.dao;
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuDatHang;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +51,7 @@ public class PhieuDatHang_Dao implements DaoInterface<PhieuDatHang> {
                 pdh.setGhiChu(rs.getString("GhiChu"));
                 pdh.setKhachHang(new KhachHang_Dao().selectById(rs.getString("MaKH")));
                 pdh.setNhanVien(new NhanVien_Dao().selectById(rs.getString("MaNV")));
-                pdh.setTrangthai(rs.getBoolean("TrangThai"));
+                pdh.setTrangthai(rs.getInt("TrangThai"));
                 list.add(pdh);
             }
             rs.getStatement().close();
@@ -80,6 +83,22 @@ public class PhieuDatHang_Dao implements DaoInterface<PhieuDatHang> {
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public boolean duyetPhieuDatHang(String maPhieuDat) {
+        String sql = "{CALL sp_DuyetPhieuDatHang(?)}";
+
+        try (Connection con = ConnectDB.getInstance();
+             CallableStatement cs = con.prepareCall(sql)) {
+
+            cs.setString(1, maPhieuDat);
+            cs.execute();
+            return true;
+
+        } catch (SQLException e) {
+            System.err.println("❌ Lỗi khi duyệt phiếu đặt hàng: " + e.getMessage());
+            return false;
         }
     }
 }

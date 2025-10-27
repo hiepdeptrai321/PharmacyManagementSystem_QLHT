@@ -10,7 +10,7 @@ public class PhieuDatHang {
     private String ghiChu;
     private KhachHang khachHang;
     private NhanVien nhanVien;
-    private boolean trangthai;
+    private int trangthai;
 
     public PhieuDatHang() {
     }
@@ -71,11 +71,11 @@ public class PhieuDatHang {
         this.nhanVien = nhanVien;
     }
 
-    public boolean isTrangthai() {
+    public int getTrangthai() {
         return trangthai;
     }
 
-    public void setTrangthai(boolean trangthai) {
+    public void setTrangthai(int trangthai) {
         this.trangthai = trangthai;
     }
 

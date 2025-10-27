@@ -91,6 +91,7 @@ public class CuaSoChinh_QuanLy_Ctrl{
             System.err.println("Không thể tải FXML: " + fxmlPath);
         }
         pnlThongTin.setVisible(false);
+        pnlChung.requestFocus();
 
     }
 

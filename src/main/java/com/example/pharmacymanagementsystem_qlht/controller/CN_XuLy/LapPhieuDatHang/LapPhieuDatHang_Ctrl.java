@@ -933,6 +933,8 @@ public class LapPhieuDatHang_Ctrl extends Application {
                 ctDao.insert(ct);
             }
 
+            pdDao.duyetPhieuDatHang(pd.getMaPDat());
+
             Platform.runLater(() -> {
                 Alert a = new Alert(Alert.AlertType.INFORMATION);
                 a.setTitle("Success");

@@ -2,6 +2,7 @@ package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuD
 
 import com.example.pharmacymanagementsystem_qlht.TienIch.VNDFormatter;
 import com.example.pharmacymanagementsystem_qlht.dao.PhieuDatHang_Dao;
+import com.example.pharmacymanagementsystem_qlht.dao.PhieuNhap_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.NhaCungCap;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuDatHang;
 import javafx.application.Application;
@@ -168,10 +169,12 @@ public class TKPhieuDatHang_Ctrl extends Application {
 
     private void btnChiTietClick(PhieuDatHang pdh) {
         try {
-            Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuDatHang/ChiTietPhieuDatHang_GUI.fxml"));
             Parent root = loader.load();
             ChiTietPhieuDatHang_Ctrl ctrl = loader.getController();
+            PhieuDatHang_Dao pdhdao = new PhieuDatHang_Dao();
+            pdhdao.duyetPhieuDatHang(pdh.getMaPDat());
+            ctrl.setPhieuDatHang(pdhdao.selectById(pdh.getMaPDat()));
             ctrl.setPhieuDatHang(pdh);
             Stage dialog = new Stage();
             dialog.initOwner(btnTimKiem.getScene().getWindow());

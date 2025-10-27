@@ -2,6 +2,8 @@ package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuD
 
 import com.example.pharmacymanagementsystem_qlht.dao.ChiTietPhieuDatHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.dao.DonViTinh_Dao;
+import com.example.pharmacymanagementsystem_qlht.dao.PhieuDatHang_Dao;
+import com.example.pharmacymanagementsystem_qlht.dao.PhieuNhap_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.*;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;

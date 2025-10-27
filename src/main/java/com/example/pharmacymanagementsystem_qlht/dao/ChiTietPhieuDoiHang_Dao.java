@@ -6,6 +6,7 @@ import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuTraHang;
 import com.example.pharmacymanagementsystem_qlht.model.DonViTinh;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,7 +82,7 @@ public class ChiTietPhieuDoiHang_Dao implements DaoInterface<ChiTietPhieuDoiHang
                     // Optional: log the exception for debugging
                 }
                 ct.setSoLuong(rs.getInt("SoLuong"));
-                ct.setLyDoDoi(rs.getString("LyDoDoi"));
+                ct.setLyDoDoi(safeGetString(rs, "LyDoDoi"));
 
                 list.add(ct);
             }
@@ -90,6 +91,22 @@ public class ChiTietPhieuDoiHang_Dao implements DaoInterface<ChiTietPhieuDoiHang
             throw new RuntimeException(e);
         }
         return list;
+    }
+    private String safeGetString(ResultSet rs, String column) {
+        try {
+            ResultSetMetaData md = rs.getMetaData();
+            int cols = md.getColumnCount();
+            for (int i = 1; i <= cols; i++) {
+                String label = md.getColumnLabel(i);
+                String name = md.getColumnName(i);
+                if (column.equalsIgnoreCase(label) || column.equalsIgnoreCase(name)) {
+                    return rs.getString(column);
+                }
+            }
+        } catch (Exception ignored) {}
+        // fallback: try common alternate names
+        try { return rs.getString("LyDo"); } catch (Exception ignored) {}
+        return null;
     }
 
     @Override

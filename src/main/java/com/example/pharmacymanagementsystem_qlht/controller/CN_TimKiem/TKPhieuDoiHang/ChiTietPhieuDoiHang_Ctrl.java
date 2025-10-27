@@ -5,6 +5,7 @@ import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuDoiHang;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuDoiHang;
 import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -103,5 +104,11 @@ public class ChiTietPhieuDoiHang_Ctrl  {
             );
             colLyDo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPhieuDoiHang().getLyDoDoi()));
         }
+    }
+
+    public void xuLyInPhieu(ActionEvent actionEvent) {
+    }
+
+    public void xuLyDong(ActionEvent actionEvent) {
     }
 }

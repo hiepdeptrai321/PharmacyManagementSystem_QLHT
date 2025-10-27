@@ -191,7 +191,6 @@ CREATE TABLE HoaDon (
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV)
 );
 
-
 -- =========================
 -- Bảng ChiTietHoaDon
 -- =========================

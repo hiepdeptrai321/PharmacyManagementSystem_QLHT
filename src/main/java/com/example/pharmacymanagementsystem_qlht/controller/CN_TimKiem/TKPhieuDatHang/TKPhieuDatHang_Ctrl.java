@@ -2,6 +2,7 @@ package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuD
 
 import com.example.pharmacymanagementsystem_qlht.TienIch.VNDFormatter;
 import com.example.pharmacymanagementsystem_qlht.dao.PhieuDatHang_Dao;
+import com.example.pharmacymanagementsystem_qlht.dao.PhieuNhap_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.NhaCungCap;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuDatHang;
 import javafx.application.Application;
@@ -173,7 +174,9 @@ public class TKPhieuDatHang_Ctrl extends Application {
             Parent root = loader.load();
             Scene scene = new Scene(root);
             ChiTietPhieuDatHang_Ctrl ctrl = loader.getController();
-            ctrl.setPhieuDatHang(pdh);
+            PhieuDatHang_Dao pdhdao = new PhieuDatHang_Dao();
+            pdhdao.duyetPhieuDatHang(pdh.getMaPDat());
+            ctrl.setPhieuDatHang(pdhdao.selectById(pdh.getMaPDat()));
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {

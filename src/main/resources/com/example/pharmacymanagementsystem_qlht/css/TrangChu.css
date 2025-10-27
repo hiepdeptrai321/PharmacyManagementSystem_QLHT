@@ -1,3 +1,8 @@
+.menu-item .accelerator-text {
+    -fx-text-fill: #999999;
+    -fx-opacity: 0.5; /* 1.0 là rõ hoàn toàn, 0.0 là tàng hình */
+}
+
 #menuBar{
     -fx-background-color: #1e90ff;
 }

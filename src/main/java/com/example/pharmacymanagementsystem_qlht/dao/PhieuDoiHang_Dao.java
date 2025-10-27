@@ -8,20 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PhieuDoiHang_Dao implements DaoInterface<PhieuDoiHang> {
-    private final String INSERT_SQL = "INSERT INTO PhieuDoiHang (MaPD, MaNV, MaKH, NgayLap, LyDoDoi, GhiChu, MaHD) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE PhieuDoiHang SET MaNV=?, MaKH=?, NgayLap=?, LyDoDoi=?, GhiChu=?, MaHD=? WHERE MaPD=?";
+    private final String INSERT_SQL = "INSERT INTO PhieuDoiHang (MaPD, MaNV, MaKH, NgayLap, GhiChu, MaHD) VALUES ( ?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE PhieuDoiHang SET MaNV=?, MaKH=?, NgayLap=?, GhiChu=?, MaHD=? WHERE MaPD=?";
     private final String DELETE_BY_ID_SQL = "DELETE FROM PhieuDoiHang WHERE MaPD=?";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM PhieuDoiHang WHERE MaPD=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM PhieuDoiHang";
 
     @Override
     public boolean insert(PhieuDoiHang e) {
-        return ConnectDB.update(INSERT_SQL, e.getMaPD(), e.getNhanVien().getMaNV(), e.getKhachHang().getMaKH(), e.getNgayLap(), e.getLyDoDoi(), e.getGhiChu(), e.getHoaDon().getMaHD())>0;
+        return ConnectDB.update(INSERT_SQL, e.getMaPD(), e.getNhanVien().getMaNV(), e.getKhachHang().getMaKH(), e.getNgayLap(), e.getGhiChu(), e.getHoaDon().getMaHD())>0;
     }
 
     @Override
     public boolean update(PhieuDoiHang e) {
-        return ConnectDB.update(UPDATE_SQL, e.getNhanVien().getMaNV(), e.getKhachHang().getMaKH(), e.getNgayLap(), e.getLyDoDoi(), e.getGhiChu(), e.getHoaDon().getMaHD(), e.getMaPD())>0;
+        return ConnectDB.update(UPDATE_SQL, e.getNhanVien().getMaNV(), e.getKhachHang().getMaKH(), e.getNgayLap(), e.getGhiChu(), e.getHoaDon().getMaHD(), e.getMaPD())>0;
     }
 
     @Override
@@ -63,6 +63,24 @@ public class PhieuDoiHang_Dao implements DaoInterface<PhieuDoiHang> {
         }
         return list;
     }
+    public String generateNewMaPD() {
+        String newMaPD = "PD001";
+        String SELECT_TOP1_SQL = "SELECT TOP 1 MaPD FROM PhieuDoiHang ORDER BY MaPD DESC";
+        try {
+            ResultSet rs = ConnectDB.query(SELECT_TOP1_SQL);
+            if (rs.next()) {
+                String lastMaPD = rs.getString("MaPD");
+                int stt = Integer.parseInt(lastMaPD.substring(2));
+                stt++;
+                newMaPD = String.format("PD%03d", stt);
+            }
+            rs.getStatement().close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return newMaPD;
+    }
+
 
     @Override
     public List<PhieuDoiHang> selectAll() {

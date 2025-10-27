@@ -161,26 +161,6 @@ public class Thuoc_SP_TheoLo_Dao implements DaoInterface<Thuoc_SP_TheoLo> {
         return list;
     }
 
-//    public Thuoc_SP_TheoLo selectOldestAvailableLot(String maThuoc) {
-//        Thuoc_SP_TheoLo lo = null;
-//        String sql = "select top 1 * from Thuoc_SP_TheoLo where MaThuoc = ? and SoLuongTon > 0 order by HSD asc, NSX asc";
-//        try {
-//            ResultSet rs = ConnectDB.query(sql, maThuoc);
-//            if (rs.next()) {
-//                lo = new Thuoc_SP_TheoLo();
-//                lo.setMaLH(rs.getString("MaLH"));
-//                lo.setSoLuongTon(rs.getInt("SoLuongTon"));
-//                lo.setNsx(rs.getDate("NSX"));
-//                lo.setHsd(rs.getDate("HSD"));
-//            }
-//            if (rs != null) {
-//                rs.getStatement().getConnection().close();
-//            }
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//        return lo;
-//    }
 
     // Optional convenience overload if you only have lot id on hand
     public boolean giamTonKhoByMaLo(Connection conn, String maLH, int soLuongCanGiam) throws SQLException {
@@ -194,6 +174,18 @@ public class Thuoc_SP_TheoLo_Dao implements DaoInterface<Thuoc_SP_TheoLo> {
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         }
+    }
+    public List<Thuoc_SP_TheoLo> selectLoHangFEFO_Multi(String maThuoc, int soLuongCan) {
+        String sql = "SELECT * FROM Thuoc_SP_TheoLo WHERE MaThuoc = ? AND SoLuongTon > 0 ORDER BY HSD ASC";
+        List<Thuoc_SP_TheoLo> list = selectBySql(sql, maThuoc);
+        List<Thuoc_SP_TheoLo> kq = new ArrayList<>();
+        int tong = 0;
+        for (Thuoc_SP_TheoLo lo : list) {
+            kq.add(lo);
+            tong += lo.getSoLuongTon();
+            if (tong >= soLuongCan) break;
+        }
+        return tong >= soLuongCan ? kq : new ArrayList<>();
     }
 
     public List<Thuoc_SP_TheoLo> selectHangSapHetHan() {

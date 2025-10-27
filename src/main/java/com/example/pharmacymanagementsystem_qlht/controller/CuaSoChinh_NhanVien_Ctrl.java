@@ -44,7 +44,6 @@ public class CuaSoChinh_NhanVien_Ctrl{
     public Menu menuTimKiem;
     public Menu menuDanhMuc;
     public Menu menuCapNhat;
-    public Menu menuThongKe;
     public Menu menuXuLy;
     public Label txtNguoiDung;
     public Label txtNgayThangNam;
@@ -167,7 +166,7 @@ public class CuaSoChinh_NhanVien_Ctrl{
                 menuTimKiem.setStyle("-fx-background-color: #1e90ff");
                 menuDanhMuc.setStyle("-fx-background-color: #1e90ff");
                 menuCapNhat.setStyle("-fx-background-color: #1e90ff");
-                menuThongKe.setStyle("-fx-background-color: #1e90ff");
+                // Đã xóa menuThongKe
                 menuXuLy.setStyle("-fx-background-color: #1e90ff");
                 break;
             }
@@ -175,7 +174,7 @@ public class CuaSoChinh_NhanVien_Ctrl{
                 menuTimKiem.setStyle("-fx-background-color: #003cff");
                 menuDanhMuc.setStyle("-fx-background-color: #1e90ff");
                 menuCapNhat.setStyle("-fx-background-color: #1e90ff");
-                menuThongKe.setStyle("-fx-background-color: #1e90ff");
+                // Đã xóa menuThongKe
                 menuXuLy.setStyle("-fx-background-color: #1e90ff");
                 break;
             }
@@ -183,7 +182,7 @@ public class CuaSoChinh_NhanVien_Ctrl{
                 menuTimKiem.setStyle("-fx-background-color: #1e90ff");
                 menuDanhMuc.setStyle("-fx-background-color: #003cff");
                 menuCapNhat.setStyle("-fx-background-color: #1e90ff");
-                menuThongKe.setStyle("-fx-background-color: #1e90ff");
+                // Đã xóa menuThongKe
                 menuXuLy.setStyle("-fx-background-color: #1e90ff");
                 break;
             }
@@ -191,7 +190,7 @@ public class CuaSoChinh_NhanVien_Ctrl{
                 menuTimKiem.setStyle("-fx-background-color: #1e90ff");
                 menuDanhMuc.setStyle("-fx-background-color: #1e90ff");
                 menuCapNhat.setStyle("-fx-background-color: #003cff");
-                menuThongKe.setStyle("-fx-background-color: #1e90ff");
+                // Đã xóa menuThongKe
                 menuXuLy.setStyle("-fx-background-color: #1e90ff");
                 break;
             }
@@ -199,7 +198,7 @@ public class CuaSoChinh_NhanVien_Ctrl{
                 menuTimKiem.setStyle("-fx-background-color: #1e90ff");
                 menuDanhMuc.setStyle("-fx-background-color: #1e90ff");
                 menuCapNhat.setStyle("-fx-background-color: #1e90ff");
-                menuThongKe.setStyle("-fx-background-color: #1e90ff");
+                // Đã xóa menuThongKe
                 menuXuLy.setStyle("-fx-background-color: #003cff");
                 break;
             }

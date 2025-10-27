@@ -1,8 +1,7 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDoi;
 
-import com.example.pharmacymanagementsystem_qlht.dao.ChiTietHoaDon_Dao;
-import com.example.pharmacymanagementsystem_qlht.dao.HoaDon_Dao;
-import com.example.pharmacymanagementsystem_qlht.dao.KhachHang_Dao;
+import com.example.pharmacymanagementsystem_qlht.controller.DangNhap_Ctrl;
+import com.example.pharmacymanagementsystem_qlht.dao.*;
 import com.example.pharmacymanagementsystem_qlht.model.*;
 import com.example.pharmacymanagementsystem_qlht.service.DoiHangItem;
 import javafx.application.Application;
@@ -18,12 +17,10 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class LapPhieuDoiHang_Ctrl extends Application {
     @FXML private TextField txtTimHoaDonGoc;
@@ -50,6 +47,7 @@ public class LapPhieuDoiHang_Ctrl extends Application {
     @FXML private TextField lblTenKH;
     @FXML private TextField lblSDT;
     @FXML private DatePicker dpNgayLapPhieu;
+    @FXML private TextField txtLyDoDoi;
     @FXML private TextArea txtGhiChu;
 
     // State
@@ -64,13 +62,14 @@ public class LapPhieuDoiHang_Ctrl extends Application {
 
     @FXML
     public void initialize() {
-        if (dpNgayLapPhieu != null) dpNgayLapPhieu.setValue(LocalDate.now());
+        dpNgayLapPhieu.setValue(LocalDate.now());
         guiMacDinh();
     }
 
     private void xuLyChuyenSangDoi(ChiTietHoaDon cthdGoc) {
         if (cthdGoc == null || cthdGoc.getLoHang() == null) return;
-        String key = cthdGoc.getLoHang().getMaLH();
+        String key = cthdGoc.getLoHang().getMaLH() + "_" +
+                (cthdGoc.getDvt() != null ? cthdGoc.getDvt().getMaDVT() : "null");
         int max = Math.max(0, cthdGoc.getSoLuong());
         DoiHangItem vm = doiByMaLH.get(key);
         if (vm == null) {
@@ -122,8 +121,15 @@ public class LapPhieuDoiHang_Ctrl extends Application {
             alignRight(colSoLuongGoc);
         }
         if (colDonViGoc != null) {
-            colDonViGoc.setCellValueFactory(p -> javafx.beans.binding.Bindings.createStringBinding(
-                    () -> donViCoBan(p.getValue())));
+            colDonViGoc.setCellValueFactory(p -> javafx.beans.binding.Bindings.createStringBinding(() -> {
+                ChiTietHoaDon cthd = p.getValue();
+                if (cthd == null) return "";
+                DonViTinh dvt = cthd.getDvt();
+                if (dvt != null && dvt.getTenDonViTinh() != null) {
+                    return dvt.getTenDonViTinh();
+                }
+                return donViCoBan(cthd); // fallback
+            }));
             alignRight(colDonViGoc);
         }
         if (colDonGiaGoc != null) {
@@ -186,8 +192,15 @@ public class LapPhieuDoiHang_Ctrl extends Application {
                     () -> tenSP(p.getValue().getGoc())));
         }
         if (colDonViDoi != null) {
-            colDonViDoi.setCellValueFactory(p -> javafx.beans.binding.Bindings.createStringBinding(
-                    () -> donViCoBan(p.getValue().getGoc())));
+            colDonViDoi.setCellValueFactory(p -> javafx.beans.binding.Bindings.createStringBinding(() -> {
+                ChiTietHoaDon goc = p.getValue().getGoc();
+                if (goc == null) return "";
+                DonViTinh dvt = goc.getDvt();
+                if (dvt != null && dvt.getTenDonViTinh() != null) {
+                    return dvt.getTenDonViTinh();
+                }
+                return donViCoBan(goc);
+            }));
             alignRight(colDonViDoi);
         }
         if (colSoLuongDoi != null) {
@@ -382,8 +395,108 @@ public class LapPhieuDoiHang_Ctrl extends Application {
     public void xuLyInPhieuDoi(ActionEvent actionEvent) {
         System.out.println("In phiếu đổi clicked");
     }
-
     public void xuLyDoiHang(ActionEvent actionEvent) {
-        System.out.println("Đổi hàng clicked");
+        if (dsDoi.isEmpty()) {
+            alert(Alert.AlertType.WARNING, "Không có sản phẩm nào để đổi.");
+            return;
+        }
+
+        try {
+            // Tạo phiếu đổi
+            PhieuDoiHang phieu = new PhieuDoiHang();
+            PhieuDoiHang_Dao pdDao = new PhieuDoiHang_Dao();
+            phieu.setMaPD(pdDao.generateNewMaPD());
+            phieu.setNgayLap(new Timestamp(System.currentTimeMillis()));
+
+            // Gán hóa đơn gốc
+            if (lblMaHDGoc != null && lblMaHDGoc.getText() != null) {
+                HoaDon hdGoc = hoaDonDao.selectById(lblMaHDGoc.getText());
+                phieu.setHoaDon(hdGoc);
+
+                // Nếu cần lưu khách hàng theo hoá đơn luôn
+                if (hdGoc != null && hdGoc.getMaKH() != null) {
+                    phieu.setKhachHang(hdGoc.getMaKH());
+                }
+            }
+
+            phieu.setNhanVien(DangNhap_Ctrl.user);
+            String lyDo = txtLyDoDoi != null ? txtLyDoDoi.getText() : "";
+            phieu.setLyDoDoi(lyDo.trim().isEmpty() ? "Khách trả đổi sản phẩm" : lyDo);
+            phieu.setGhiChu(txtGhiChu == null ? "" : txtGhiChu.getText());
+
+            new PhieuDoiHang_Dao().insert(phieu);
+
+            Thuoc_SP_TheoLo_Dao loDao = new Thuoc_SP_TheoLo_Dao();
+            ChiTietPhieuDoiHang_Dao ctpdDao = new ChiTietPhieuDoiHang_Dao();
+
+            for (DoiHangItem item : dsDoi) {
+                ChiTietHoaDon goc = item.getGoc();
+                if (goc == null || goc.getLoHang() == null) continue;
+
+                Thuoc_SP_TheoLo loCu = goc.getLoHang();
+                int soLuong = item.getSoLuongDoi();
+
+                // Giảm tồn kho lô cũ
+               // loCu.setSoLuongTon(Math.max(0, loCu.getSoLuongTon() - soLuong));
+                loCu.setSoLuongTon(Math.max(0, loCu.getSoLuongTon()));
+                loDao.update(loCu);
+
+                // FEFO: phân bổ từ nhiều lô
+                int soLuongCan = soLuong;
+                List<Thuoc_SP_TheoLo> loMoiList =
+                        loDao.selectLoHangFEFO_Multi(loCu.getThuoc().getMaThuoc(), soLuongCan);
+
+                if (loMoiList == null || loMoiList.isEmpty()) {
+                    alert(Alert.AlertType.WARNING, "Không đủ tồn để đổi: " + tenSP(goc));
+                    continue;
+                }
+
+                List<ChiTietPhieuDoiHang> dsChiTietTheoLo = new ArrayList<>();
+
+                for (Thuoc_SP_TheoLo loMoi : loMoiList) {
+                    if (soLuongCan <= 0) break;
+
+                    int tonLoMoi = loMoi.getSoLuongTon();
+                    if (tonLoMoi <= 0) continue;
+
+                    int soXuat = Math.min(tonLoMoi, soLuongCan);
+
+                    loMoi.setSoLuongTon(tonLoMoi - soXuat);
+                    loDao.update(loMoi);
+
+                    soLuongCan -= soXuat;
+                    String lyDoItem = item.getLyDo() == null ? "Hàng lỗi" : item.getLyDo();
+                    ChiTietPhieuDoiHang ctpd = new ChiTietPhieuDoiHang(
+                            loMoi,
+                            phieu,
+                            loMoi.getThuoc(),
+                            soXuat,
+                            goc.getDvt(),
+                            lyDoItem
+
+                    );
+                    dsChiTietTheoLo.add(ctpd);
+                }
+
+                // Nếu vẫn còn thiếu hàng => rollback riêng sản phẩm này
+                if (soLuongCan > 0) {
+                    alert(Alert.AlertType.WARNING, "Không đủ tồn để đổi: " + tenSP(goc));
+                    continue;
+                }
+
+                for (ChiTietPhieuDoiHang ctSave : dsChiTietTheoLo) {
+                    ctpdDao.insert(ctSave);
+                }
+            }
+
+            alert(Alert.AlertType.INFORMATION, "Đổi hàng thành công!");
+            dsDoi.clear();
+            doiByMaLH.clear();
+            tblSanPhamDoi.refresh();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            alert(Alert.AlertType.ERROR, "Lỗi khi đổi hàng: " + e.getMessage());
+        }
     }
 }

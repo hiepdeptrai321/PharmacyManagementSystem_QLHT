@@ -63,8 +63,8 @@
             <columns>
                 <TableColumn fx:id="colSTTDoi" prefWidth="50.0" text="STT" />
                 <TableColumn fx:id="colTenSPDoi" prefWidth="445.6001205444336" text="Tên sản phẩm" />
-                <TableColumn fx:id="colSoLuongDoi" prefWidth="99.66668701171875" text="Số lượng đổi" />
-                <TableColumn fx:id="colDonViDoi" prefWidth="115.6666259765625" text="Đơn vị" />
+                <TableColumn fx:id="colSoLuongDoi" prefWidth="124.3333740234375" text="Số lượng đổi" />
+                <TableColumn fx:id="colDonViDoi" prefWidth="92.6666259765625" text="Đơn vị" />
                 <TableColumn fx:id="colLyDo" prefWidth="370.3333740234375" text="Lý do đổi" />
                 <TableColumn fx:id="colBo" prefWidth="68.6666259765625" text="Bỏ" />
             </columns>

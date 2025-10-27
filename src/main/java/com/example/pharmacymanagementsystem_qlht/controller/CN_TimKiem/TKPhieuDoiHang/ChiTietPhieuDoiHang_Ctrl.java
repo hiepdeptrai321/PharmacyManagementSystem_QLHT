@@ -66,20 +66,6 @@ public class ChiTietPhieuDoiHang_Ctrl  {
     @FXML
     private Label lblTenNhanVienValue;
 
-    @FXML
-    private Label lblThueVATValue;
-
-    @FXML
-    private Label lblTienConLaiValue;
-
-    @FXML
-    private Label lblTienDaThanhToanValue;
-
-    @FXML
-    private Label lblTongTienDoiValue;
-
-    @FXML
-    private Label lblTongTienPhaiDoiValue;
 
     @FXML
     private TableView<ChiTietPhieuDoiHang> tblChiTietPhieuDoi;
@@ -101,13 +87,6 @@ public class ChiTietPhieuDoiHang_Ctrl  {
             lblTenNhanVienValue.setText(phieuDoiHang.getNhanVien().getTenNV());
             lblTenKhachHangValue.setText(phieuDoiHang.getKhachHang() != null ? phieuDoiHang.getKhachHang().getTenKH() : "Khách lẻ");
             lblSDTKhachHangValue.setText(phieuDoiHang.getKhachHang() != null ? phieuDoiHang.getKhachHang().getSdt() : "");
-            //lblPTTTValue.setText(phieuDoiHang.get());
-            //lblChietKhauPDoiValue.setText(String.valueOf(phieuDoiHang.getChietKhau()) + "%");
-            //lblTongTienPhaiDoiValue.setText(String.format("%.2f", phieuDoiHang.tinhTongTienPhaiDoi()));
-            //lblTongTienDoiValue.setText(String.format("%.2f", phieuDoiHang.tinhTongTienDoi()));
-            //lblTienDaThanhToanValue.setText(String.format("%.2f", phieuDoiHang.getTienDaThanhToan()));
-            //lblTienConLaiValue.setText(String.format("%.2f", phieuDoiHang.tinhTienConLai()));
-            //lblThueVATValue.setText(String.format("%.2f", phieuDoiHang.tinhThueVAT()));
             lblGhiChuValue.setText(phieuDoiHang.getGhiChu() != null ? phieuDoiHang.getGhiChu() : "");
             //tblChiTietPhieuDoi.setItems(phieuDoiHang.getChiTietPhieuDoiHang());
 

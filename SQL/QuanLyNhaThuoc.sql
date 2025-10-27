@@ -229,10 +229,12 @@ CREATE TABLE ChiTietPhieuDatHang (
 -- =========================
 -- Bảng PhieuDoiHang
 -- =========================
+-- =========================
+-- Bảng PhieuDoiHang
+-- =========================
 CREATE TABLE PhieuDoiHang (
     MaPD       VARCHAR(10) PRIMARY KEY,
     NgayLap    DATE NOT NULL,
-    LyDoDoi    NVARCHAR(255) NOT NULL,
     GhiChu     NVARCHAR(255),
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV),
     MaKH       VARCHAR(10) FOREIGN KEY REFERENCES KhachHang(MaKH),
@@ -247,10 +249,9 @@ CREATE TABLE ChiTietPhieuDoiHang (
     MaPD       VARCHAR(10) FOREIGN KEY REFERENCES PhieuDoiHang(MaPD),
 	MaThuoc    VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
     SoLuong    INT NOT NULL,
-	MaDVT      VARCHAR(10),
-    DonGia     FLOAT NOT NULL,
-    GiamGia    FLOAT NOT NULL,
-    PRIMARY KEY (MaLH, MaPD,MaThuoc)
+	MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT),
+	LyDoDoi    NVARCHAR(255) NOT NULL,
+    PRIMARY KEY (MaLH, MaPD,MaThuoc, MaDVT)
 );
 
 -- =========================
@@ -259,7 +260,6 @@ CREATE TABLE ChiTietPhieuDoiHang (
 CREATE TABLE PhieuTraHang (
     MaPT       VARCHAR(10) PRIMARY KEY,
     NgayLap    DATE NOT NULL,
-    LyDoTra    NVARCHAR(20) NOT NULL,
     GhiChu     NVARCHAR(255),
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV),
     MaHD       VARCHAR(10) FOREIGN KEY REFERENCES HoaDon(MaHD),
@@ -274,10 +274,11 @@ CREATE TABLE ChiTietPhieuTraHang (
     MaPT       VARCHAR(10) NOT NULL FOREIGN KEY REFERENCES PhieuTraHang(MaPT),
 	MaThuoc    VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
     SoLuong    INT NOT NULL,
-	MaDVT      VARCHAR(10),
+	MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT),
     DonGia     FLOAT NOT NULL,
     GiamGia    FLOAT NOT NULL,
-    PRIMARY KEY (MaLH, MaPT,MaThuoc)
+	LyDoTra    NVARCHAR(255) NOT NULL,
+    PRIMARY KEY (MaLH, MaPT,MaThuoc, MaDVT)
 );
 
 -- =========================
@@ -799,26 +800,26 @@ GO
 
 INSERT INTO ChiTietHoatChat (MaHoatChat, MaThuoc, HamLuong) VALUES
 -- Thuốc tây
-('HC001','TS001',500),   
-('HC006','TS002',500),   
-('HC008','TS003',250),   
-('HC051','TS004',1000),  
-('HC002','TS005',400),   
-('HC004','TS006',81),    
-('HC042','TS007',10),    
-('HC017','TS008',20),   
-('HC034','TS009',500),   
-('HC031','TS010',20),   
-('HC001','TS011',650),  
-('HC006','TS012',250),   
-('HC008','TS013',500),   
-('HC051','TS014',500),   
-('HC002','TS015',200),   
-('HC004','TS016',500),  
-('HC042','TS017',5),     
-('HC017','TS018',40),    
-('HC034','TS019',850),   
-('HC031','TS020',40); 
+('HC001','TS001',500),
+('HC006','TS002',500),
+('HC008','TS003',250),
+('HC051','TS004',1000),
+('HC002','TS005',400),
+('HC004','TS006',81),
+('HC042','TS007',10),
+('HC017','TS008',20),
+('HC034','TS009',500),
+('HC031','TS010',20),
+('HC001','TS011',650),
+('HC006','TS012',250),
+('HC008','TS013',500),
+('HC051','TS014',500),
+('HC002','TS015',200),
+('HC004','TS016',500),
+('HC042','TS017',5),
+('HC017','TS018',40),
+('HC034','TS019',850),
+('HC031','TS020',40);
 
 INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
 VALUES
@@ -901,7 +902,7 @@ VALUES
 ('LKM005', N'Giảm phần trăm theo tổng hóa đơn', N'Khách hàng được giảm theo tỷ lệ phần trăm trên tổng hóa đơn');
 
 
-INSERT INTO KhuyenMai 
+INSERT INTO KhuyenMai
 (MaKM, TenKM, GiaTriKM, GiaTriApDung, LoaiGiaTri, NgayBatDau, NgayKetThuc, MoTa, MaLoai)
 VALUES
 -- Giảm theo sản phẩm
@@ -917,19 +918,19 @@ VALUES
 ('KM020', N'Máy đo HA giảm 100k', 100000, 0, 'VND', '2025-10-01', '2025-12-31', N'Giảm 100.000đ cho Máy đo huyết áp bắp tay', 'LKM002'),
 
 -- Giảm trực tiếp theo tổng hóa đơn (LKM004)
-('KM021', N'Hóa đơn trên 300k giảm 30k', 30000, 300000, 'VND', '2025-10-01', '2025-10-31', 
+('KM021', N'Hóa đơn trên 300k giảm 30k', 30000, 300000, 'VND', '2025-10-01', '2025-10-31',
  N'Khách hàng có hóa đơn từ 300.000đ trở lên sẽ được giảm trực tiếp 30.000đ', 'LKM004'),
-('KM022', N'Hóa đơn trên 500k giảm 70k', 70000, 500000, 'VND', '2025-10-10', '2025-11-10', 
+('KM022', N'Hóa đơn trên 500k giảm 70k', 70000, 500000, 'VND', '2025-10-10', '2025-11-10',
  N'Khách hàng có hóa đơn từ 500.000đ trở lên sẽ được giảm trực tiếp 70.000đ', 'LKM004'),
-('KM023', N'Hóa đơn trên 1 triệu giảm 150k', 150000, 1000000, 'VND', '2025-10-15', '2025-12-15', 
+('KM023', N'Hóa đơn trên 1 triệu giảm 150k', 150000, 1000000, 'VND', '2025-10-15', '2025-12-15',
  N'Giảm ngay 150.000đ khi tổng hóa đơn đạt từ 1.000.000đ', 'LKM004'),
 
 -- Giảm phần trăm theo tổng hóa đơn (LKM005)
-('KM024', N'Hóa đơn trên 200k giảm 5%', 5, 200000, '%', '2025-10-01', '2025-11-01', 
+('KM024', N'Hóa đơn trên 200k giảm 5%', 5, 200000, '%', '2025-10-01', '2025-11-01',
  N'Khách hàng có hóa đơn từ 200.000đ trở lên được giảm 5% tổng giá trị hóa đơn', 'LKM005'),
-('KM025', N'Hóa đơn trên 800k giảm 8%', 8, 800000, '%', '2025-10-05', '2025-11-30', 
+('KM025', N'Hóa đơn trên 800k giảm 8%', 8, 800000, '%', '2025-10-05', '2025-11-30',
  N'Khách hàng có hóa đơn từ 800.000đ trở lên được giảm 8% tổng giá trị hóa đơn', 'LKM005'),
-('KM026', N'Hóa đơn trên 1.5 triệu giảm 10%', 10, 1500000, '%', '2025-10-20', '2025-12-31', 
+('KM026', N'Hóa đơn trên 1.5 triệu giảm 10%', 10, 1500000, '%', '2025-10-20', '2025-12-31',
  N'Khách hàng có hóa đơn từ 1.500.000đ trở lên được giảm 10% tổng giá trị hóa đơn', 'LKM005');
 
 
@@ -941,7 +942,7 @@ VALUES
 ('TS007', 'KM012', 1, 50),  -- Amoxicillin giảm tiền
 ('TS015', 'KM012', 1, 50),  -- Amoxicillin giảm tiền
 ('TS003', 'KM013', 1, 50),  -- Cefuroxime giảm %
-('TS005', 'KM013', 1, 50),  -- 
+('TS005', 'KM013', 1, 50),  --
 ('TS004', 'KM014', 2, 20),  -- Vitamin C mua 2 tặng 1 (áp dụng tối đa 20 lần / hóa đơn)
 ('TS005', 'KM015', 1, 50),  -- Ibuprofen giảm tiền
 ('TS343', 'KM016', 1, 50),  -- Ginkgo giảm %
@@ -1028,47 +1029,38 @@ VALUES
 ('PDH002', 'TS003', 3, 15000, 0.1,  'DVT03', 1);  -- Ibuprofen - Hộp
 
 
-
-
 -- Dữ liệu mẫu cho PhieuDoiHang (Không thay đổi)
-INSERT INTO PhieuDoiHang (MaPD, NgayLap, LyDoDoi, GhiChu, MaNV, MaKH, MaHD)
+INSERT INTO PhieuDoiHang (MaPD, NgayLap, GhiChu, MaNV, MaKH, MaHD)
+VALUES 
+('PD001', '2025-10-15',  N'Đổi 1 hộp Ibuprofen cùng loại', 'NV002', NULL, 'HD003'),
+('PD002', '2025-10-16',  N'Đổi 5 viên Paracetamol', 'NV001', 'KH001', 'HD001'),
+('PD003', '2025-10-17',  N'Đổi 1 hộp Vitamin D3', 'NV003', NULL, 'HD005')
+
+
+INSERT INTO ChiTietPhieuDoiHang (MaLH, MaPD, MaThuoc, MaDVT, SoLuong, LyDoDoi)
 VALUES
-('PD001', '2025-09-12', N'Đổi sang loại khác', N'Khách vãng lai, đổi Ibuprofen sang Aspirin', 'NV002', NULL, 'HD003'),
-('PD002', '2025-09-14', N'Khách muốn mua loại lớn hơn', N'Đổi Vitamin D3 sang Probiotic, có bù thêm tiền', 'NV003', NULL, 'HD005'),
-('PD003', '2025-09-16', N'Sản phẩm không phù hợp', N'Đổi Amoxicillin lấy Paracetamol', 'NV001', 'KH001', 'HD001');
-
-INSERT INTO ChiTietPhieuDoiHang (MaLH, MaPD, MaThuoc, MaDVT, SoLuong, DonGia, GiamGia)
-VALUES
--- PD001: Đổi Ibuprofen (LH00003/TS005) lấy Aspirin (LH00004/TS006)
-('LH00003', 'PD001', 'TS005', 'DVT03', -1, 2500, 0),  -- Ibuprofen - Hộp
-('LH00004', 'PD001', 'TS006', 'DVT03',  2, 3000, 0),  -- Aspirin - Hộp
-
--- PD002: Đổi Vitamin D3 (LH00011/TS336) lấy Probiotic (LH00012/TS340)
-('LH00011', 'PD002', 'TS336', 'DVT03', -1, 150000, 0), -- Vitamin D3 - Hộp
-('LH00012', 'PD002', 'TS340', 'DVT03',  1, 320000, 0), -- Probiotic - Hộp
-
--- PD003: Đổi Amoxicillin (LH00002/TS002) lấy Paracetamol (LH00001/TS001)
-('LH00002', 'PD003', 'TS002', 'DVT02', -10, 1900, 0),  -- Amoxicillin - Vỉ
-('LH00001', 'PD003', 'TS001', 'DVT01', 10, 1500, 0);   -- Paracetamol - Viên
+('LH00003', 'PD001', 'TS005', 'DVT03',  1, N'Hộp bị móp'),
+('LH00001', 'PD002', 'TS001', 'DVT01',  5, N'Viên cũ bị gãy'),
+('LH00011', 'PD003', 'TS336', 'DVT03',  1, N'Hộp bị ướt')
 
 -- Dữ liệu mẫu cho PhieuTraHang (Sửa định dạng ngày tháng)
-INSERT INTO PhieuTraHang (MaPT, NgayLap, LyDoTra, GhiChu, MaNV, MaHD, MaKH)
+INSERT INTO PhieuTraHang (MaPT, NgayLap, GhiChu, MaNV, MaHD, MaKH)
 VALUES
-('PT001', '2025-09-13', N'Dư thừa', N'Trả lại Hoạt huyết dưỡng não và Cao ích mẫu', 'NV001', 'HD004', 'KH003'),
-('PT002', '2025-09-15', N'Không phù hợp', N'Trả lại Kem chống nắng', 'NV002', 'HD008', 'KH005'),
-('PT003', '2025-09-16', N'Mua nhầm', N'Trả lại Găng tay y tế', 'NV003', 'HD006', 'KH004');
+('PT001', '2025-09-13', N'Trả lại Hoạt huyết dưỡng não và Cao ích mẫu', 'NV001', 'HD004', 'KH003'),
+('PT002', '2025-09-15', N'Trả lại Kem chống nắng', 'NV002', 'HD008', 'KH005'),
+('PT003', '2025-09-16', N'Trả lại Găng tay y tế', 'NV003', 'HD006', 'KH004');
 
-INSERT INTO ChiTietPhieuTraHang (MaLH, MaPT, MaThuoc, MaDVT, SoLuong, DonGia, GiamGia)
+INSERT INTO ChiTietPhieuTraHang (MaLH, MaPT, MaThuoc, MaDVT, SoLuong, DonGia, GiamGia, LyDoTra)
 VALUES
 -- PT001: Trả Hoạt huyết dưỡng não (LH00007/TS226) và Cao ích mẫu (LH00009/TS231) từ HD004
-('LH00007', 'PT001', 'TS226', 'DVT03', 1, 9500, 0),   -- Hộp
-('LH00009', 'PT001', 'TS231', 'DVT03', 1, 15000, 0),  -- Hộp
+('LH00007', 'PT001', 'TS226', 'DVT03', 1, 9500, 0, N'Dư thừa'),   -- Hộp
+('LH00009', 'PT001', 'TS231', 'DVT03', 1, 15000, 0, N'Dư thừa'),  -- Hộp
 
 -- PT002: Trả Kem chống nắng (LH00015/TS556) từ HD008
-('LH00015', 'PT002', 'TS556', 'DVT06', 1, 250000, 0), -- Tuýp
+('LH00015', 'PT002', 'TS556', 'DVT06', 1, 250000, 0, N'Không phù hợp'), -- Tuýp
 
 -- PT003: Trả Găng tay y tế (LH00014/TS451) từ HD006
-('LH00014', 'PT003', 'TS451', 'DVT03', 1, 1800, 0);   -- Hộp
+('LH00014', 'PT003', 'TS451', 'DVT03', 1, 1800, 0, N'Mua nhầm');   -- Hộp
 
 
 -- ====================================================
@@ -1606,6 +1598,7 @@ BEGIN
                ISNULL(SUM(CTHD.SoLuong * CTHD.DonGia), 0) AS TongGiaTri,
                ISNULL(SUM(CTHD.SoLuong * CTHD.GiamGia), 0) AS GiamGia
         FROM HoaDon HD JOIN ChiTietHoaDon CTHD ON HD.MaHD = CTHD.MaHD
+        -- Lọc theo khoảng ngày đã tính
         WHERE CONVERT(date, HD.NgayLap) BETWEEN @StartOfWeek AND @EndOfWeek
         GROUP BY CONVERT(date, HD.NgayLap)
     ),
@@ -1614,6 +1607,7 @@ BEGIN
                COUNT(DISTINCT PT.MaPT) AS SoLuongDonTra,
                ISNULL(SUM(CTPT.SoLuong * (CTPT.DonGia - CTPT.GiamGia)), 0) AS GiaTriDonTra
         FROM PhieuTraHang PT JOIN ChiTietPhieuTraHang CTPT ON PT.MaPT = CTPT.MaPT
+        -- Lọc theo khoảng ngày đã tính
         WHERE CONVERT(date, PT.NgayLap) BETWEEN @StartOfWeek AND @EndOfWeek
         GROUP BY CONVERT(date, PT.NgayLap)
     )
@@ -2134,7 +2128,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT 
+    SELECT
         MaThuoc,
         MaLH,
         HSD
@@ -2149,7 +2143,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT 
+    SELECT
         MaThuoc,
         MaLH,
         HSD
@@ -2363,34 +2357,34 @@ GO
 
 
 
---Trigger + Job – Trả hàng tự động sau 7 ngày
-CREATE OR ALTER TRIGGER trg_TuDongTraHangSau7Ngay
-ON PhieuDatHang
-AFTER UPDATE
-AS
-BEGIN
-    SET NOCOUNT ON;
+----Trigger + Job – Trả hàng tự động sau 7 ngày
+--CREATE OR ALTER TRIGGER trg_TuDongTraHangSau7Ngay
+--ON PhieuDatHang
+--AFTER UPDATE
+--AS
+--BEGIN
+--    SET NOCOUNT ON;
 
-    -- Trả hàng về kho nếu phiếu quá 7 ngày mà chưa hoàn thành
-    UPDATE tsl
-    SET SoLuongTon = SoLuongTon + tsl.SoLuongGiu,
-        SoLuongGiu = 0
-    FROM Thuoc_SP_TheoLo tsl
-    WHERE EXISTS (
-        SELECT 1
-        FROM ChiTietPhieuDatHang ct
-        JOIN PhieuDatHang pd ON ct.MaPDat = pd.MaPDat
-        WHERE pd.TrangThai <> 2
-          AND DATEDIFF(DAY, pd.NgayLap, GETDATE()) > 7
-          AND ct.MaThuoc = tsl.MaThuoc
-    );
+--    -- Trả hàng về kho nếu phiếu quá 7 ngày mà chưa hoàn thành
+--    UPDATE tsl
+--    SET SoLuongTon = SoLuongTon + tsl.SoLuongGiu,
+--        SoLuongGiu = 0
+--    FROM Thuoc_SP_TheoLo tsl
+--    WHERE EXISTS (
+--        SELECT 1
+--        FROM ChiTietPhieuDatHang ct
+--        JOIN PhieuDatHang pd ON ct.MaPDat = pd.MaPDat
+--        WHERE pd.TrangThai <> 2
+--          AND DATEDIFF(DAY, pd.NgayLap, GETDATE()) > 7
+--          AND ct.MaThuoc = tsl.MaThuoc
+--    );
 
-    UPDATE PhieuDatHang
-    SET TrangThai = 3 -- đã hủy
-    WHERE TrangThai <> 2
-      AND DATEDIFF(DAY, NgayLap, GETDATE()) > 7;
-END;
-GO
+--    UPDATE PhieuDatHang
+--    SET TrangThai = 3 -- đã hủy
+--    WHERE TrangThai <> 2
+--      AND DATEDIFF(DAY, NgayLap, GETDATE()) > 7;
+--END;
+--GO
 
 
 --TRIGGER CẬP NHẬT TRẠNG THÁI ĐẶT HÀNG KHI CÓ THAY ĐỔI TRÊN BẢNG THUỐC_SP_THEOLO

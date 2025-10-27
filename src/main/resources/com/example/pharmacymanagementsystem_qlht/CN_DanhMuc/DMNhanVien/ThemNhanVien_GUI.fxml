@@ -44,13 +44,13 @@
                                     </font>
                                 </Label>
                                 <TextField fx:id="txtEmail" layoutX="206.0" layoutY="95.0" prefHeight="25.0" prefWidth="223.0" style="-fx-max-height: 30;" />
-                                <Label layoutX="304.0" layoutY="129.0" prefHeight="20.0" prefWidth="80.0" text="Giới tính:">
+                                <Label layoutX="278.0" layoutY="129.0" prefHeight="20.0" prefWidth="80.0" text="Giới tính:">
                                     <font>
                                         <Font size="14.0" />
                                     </font>
                                 </Label>
-                                <ComboBox fx:id="cbxGioiTinh" layoutX="304.0" layoutY="152.0" prefHeight="25.0" prefWidth="124.0" />
-                                <TextField fx:id="txtDiaChi" layoutX="4.0" layoutY="152.0" prefHeight="25.0" prefWidth="290.0" style="-fx-max-height: 30;" />
+                                <ComboBox fx:id="cbxGioiTinh" layoutX="278.0" layoutY="152.0" prefHeight="30.0" prefWidth="150.0" />
+                                <TextField fx:id="txtDiaChi" layoutX="4.0" layoutY="152.0" prefHeight="30.0" prefWidth="267.0" style="-fx-max-height: 30;" />
                                 <Label layoutX="4.0" layoutY="129.0" prefHeight="20.0" prefWidth="55.0" text="Địa chỉ">
                                     <font>
                                         <Font size="14.0" />
@@ -71,7 +71,7 @@
         <Button id="btnLuu" layoutX="368.0" layoutY="229.0" mnemonicParsing="false" onAction="#btnThem" prefHeight="25.0" prefWidth="73.0" text="Thêm" />
         <Separator layoutY="38.0" prefHeight="3.0" prefWidth="455.0" />
         <Label layoutX="202.0" layoutY="8.0" prefHeight="20.0" prefWidth="40.0" />
-        <Button id="btnThemtk" layoutX="193.0" layoutY="229.0" mnemonicParsing="false" onAction="#btnThemTaiKhoan" prefHeight="25.0" prefWidth="106.0" text="Thêm tài khoản" />
+        <Button id="btnThemtk" layoutX="168.0" layoutY="229.0" mnemonicParsing="false" onAction="#btnThemTaiKhoan" prefHeight="30.0" prefWidth="131.0" text="Thêm tài khoản" />
         <ImageView fitHeight="49.0" fitWidth="41.0" layoutX="200.0" layoutY="-2.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../../img/free-icon-person-and-gear-9847.png" />

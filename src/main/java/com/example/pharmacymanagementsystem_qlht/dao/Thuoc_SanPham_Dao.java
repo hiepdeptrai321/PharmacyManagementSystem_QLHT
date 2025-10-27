@@ -23,6 +23,11 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
             "SELECT DISTINCT ts.* FROM Thuoc_SanPham ts " +
                     "JOIN ChiTietDonViTinh ctdvt ON ts.MaThuoc = ctdvt.MaThuoc " +
                     "WHERE ctdvt.DonViCoBan = 1";
+    private final String SELECT_THUOC_SANPHAM_DONVICOBAN_SQL_VER2 =
+            "SELECT DISTINCT * FROM Thuoc_SanPham ts " +
+                    "JOIN ChiTietDonViTinh ctdvt ON ts.MaThuoc = ctdvt.MaThuoc " +
+                    "JOIN DonViTinh dvt ON ctdvt.MaDVT = dvt.MaDVT " +
+                    "WHERE ctdvt.DonViCoBan = 1";
 
     private final String SELECT_THUOC_SANPHAM_DONVICOBAN_BYTUKHOA_SQL =
             "SELECT * FROM Thuoc_SanPham ts " +
@@ -133,6 +138,36 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
         for (Thuoc_SanPham sp : list) {
             List<ChiTietDonViTinh> dsCTDVT = ctdvtDao.selectByMaThuoc(sp.getMaThuoc());
             sp.setDsCTDVT(dsCTDVT);
+        }
+        return list;
+    }
+    // Only join ChiTietDonViTinh (unit info)
+    public List<Thuoc_SanPham> selectAllSLTheoDonViCoBan_ChiTietDVT_Ver2() {
+        List<Thuoc_SanPham> list = new ArrayList<>();
+        try {
+            ResultSet rs = ConnectDB.query(SELECT_THUOC_SANPHAM_DONVICOBAN_SQL_VER2);
+            while (rs.next()) {
+                Thuoc_SanPham sp = new Thuoc_SanPham();
+                String maThuoc = rs.getString("MaThuoc");
+                sp.setMaThuoc(maThuoc);
+                sp.setTenThuoc(rs.getString("TenThuoc"));
+                sp.setHamLuong(rs.getInt("HamLuong"));
+                sp.setDonViHamLuong(rs.getString("DonViHL"));
+                sp.setDuongDung(rs.getString("DuongDung"));
+                sp.setQuyCachDongGoi(rs.getString("QuyCachDongGoi"));
+                sp.setSDK_GPNK(rs.getString("SDK_GPNK"));
+                sp.setHangSX(rs.getString("HangSX"));
+                sp.setNuocSX(rs.getString("NuocSX"));
+                sp.setNhomDuocLy(new NhomDuocLy_Dao().selectById(rs.getString("MaNDL")));
+                sp.setLoaiHang(new LoaiHang_Dao().selectById(rs.getString("MaLoaiHang")));
+                sp.setHinhAnh(rs.getBytes("HinhAnh"));
+                sp.setVitri(new KeHang_Dao().selectById(rs.getString("ViTri")));
+                sp.setDvcb(new ChiTietDonViTinh_Dao().selectById(maThuoc,rs.getString("MaDVT")));
+                list.add(sp);
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         return list;
     }

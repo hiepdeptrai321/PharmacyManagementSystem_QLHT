@@ -48,6 +48,8 @@ public class TKPhieuDatHang_Ctrl extends Application {
     @FXML
     private TableColumn<PhieuDatHang, String> colSoTienCoc;
     @FXML
+    private TableColumn<PhieuDatHang, String> colTT;
+    @FXML
     private TableColumn<PhieuDatHang, String> colChiTiet;
     @FXML
     private ComboBox<String> cboTimKiem; //
@@ -153,6 +155,11 @@ public class TKPhieuDatHang_Ctrl extends Application {
                 setGraphic(empty ? null : btn);
             }
         });
+        colTT.setCellValueFactory(cellData ->{
+            String trangThai = cellData.getValue().isTrangthai() ? "Sẵn hàng" : "Chưa có hàng";
+            return new SimpleStringProperty(trangThai);
+        });
+
         tblPD.setItems(data);
     }
 

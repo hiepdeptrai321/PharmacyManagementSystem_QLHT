@@ -55,7 +55,7 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
 
     public void loadTable() {
         Thuoc_SanPham_Dao thuocDao = new Thuoc_SanPham_Dao();
-        List<Thuoc_SanPham> list = thuocDao.selectAllSLTheoDonViCoBan_ChiTietDVT();
+        List<Thuoc_SanPham> list = thuocDao.selectAllSLTheoDonViCoBan_ChiTietDVT_Ver2();
         ObservableList<Thuoc_SanPham> data = FXCollections.observableArrayList(list);
 
         colSTT.setCellValueFactory(cellData ->
@@ -68,7 +68,7 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
         vnFormat.setMaximumFractionDigits(0);
 
         colGiaNhap.setCellValueFactory(cd -> {
-            Object val = cd.getValue().getGiaNhapCoBan();
+            Object val = cd.getValue().getDvcb().getGiaNhap();
             if (val == null) return new SimpleStringProperty("");
             Number num;
             if (val instanceof Number) num = (Number) val;
@@ -80,7 +80,7 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
         });
 
         colGiaBan.setCellValueFactory(cd -> {
-            Object val = cd.getValue().getGiaBanCoBan();
+            Object val = cd.getValue().getDvcb().getGiaBan();
             if (val == null) return new SimpleStringProperty("");
             Number num;
             if (val instanceof Number) num = (Number) val;
@@ -90,7 +90,10 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
             }
             return new SimpleStringProperty(vnFormat.format(num));
         });
-        colDVT.setCellValueFactory(new PropertyValueFactory<>("tenDVTCoBan"));
+        colDVT.setCellValueFactory(cd->{
+            String tenDVT = cd.getValue().getDvcb().getDvt().getTenDonViTinh();
+            return new SimpleStringProperty(tenDVT != null ? tenDVT : "");
+        });
         colChiTiet.setCellFactory(col -> new TableCell<Thuoc_SanPham, String>() {
             private final Button btn = new Button("Chi tiết");
             {

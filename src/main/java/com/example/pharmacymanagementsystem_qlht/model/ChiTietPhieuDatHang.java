@@ -9,6 +9,7 @@ public class ChiTietPhieuDatHang {
     private double donGia;
     private double giamGia;
     private String dvt;
+    private boolean trangThai;
 
     public ChiTietPhieuDatHang() {
     }
@@ -58,6 +59,14 @@ public class ChiTietPhieuDatHang {
 
     public void setGiamGia(double giamGia) {
         this.giamGia = giamGia;
+    }
+
+    public boolean isTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(boolean trangThai) {
+        this.trangThai = trangThai;
     }
 
     public String getDvt() {

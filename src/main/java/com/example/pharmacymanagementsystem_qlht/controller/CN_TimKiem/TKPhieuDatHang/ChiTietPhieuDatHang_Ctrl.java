@@ -3,6 +3,7 @@ package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuD
 import com.example.pharmacymanagementsystem_qlht.dao.ChiTietPhieuDatHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.dao.DonViTinh_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.*;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
@@ -14,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -49,6 +51,8 @@ public class ChiTietPhieuDatHang_Ctrl  {
 
     @FXML
     private TableColumn<ChiTietPhieuDatHang, String> colThanhTien;
+    @FXML
+    private TableColumn<ChiTietPhieuDatHang, String> colTT;
 
     @FXML
     private TableView<ChiTietPhieuDatHang> tblChiTietPhieuDat;
@@ -91,6 +95,8 @@ public class ChiTietPhieuDatHang_Ctrl  {
 
     @FXML
     private Label lblTienConLaiValue;
+    @FXML
+    private Label lbTT;
 
     @FXML
     private Button btnInPhieuDat;
@@ -144,12 +150,27 @@ public class ChiTietPhieuDatHang_Ctrl  {
         }
 
         lblGhiChuValue.setText(phieuDatHang.getGhiChu() != null ? phieuDatHang.getGhiChu() : "");
+        if (phieuDatHang != null && lbTT != null) {
+            final String STATUS_AV = "status-available";
+            final String STATUS_UNAV = "status-unavailable";
 
+            Platform.runLater(() -> {
+                lbTT.getStyleClass().removeAll(STATUS_AV, STATUS_UNAV);
+                if (phieuDatHang.isTrangthai()) {
+                    lbTT.setText("Sẵn hàng");
+                    lbTT.getStyleClass().add(STATUS_AV);
+                } else {
+                    lbTT.setText("Chưa có hàng");
+                    lbTT.getStyleClass().add(STATUS_UNAV);
+                }
+            });
+        }
         // Load detail rows
         List<ChiTietPhieuDatHang> list = new ChiTietPhieuDatHang_Dao().selectBySql("SELECT * FROM ChiTietPhieuDatHang WHERE MaPDat = ?", phieuDatHang.getMaPDat());
 
         tblChiTietPhieuDat.getItems().clear();
         tblChiTietPhieuDat.getItems().addAll(list);
+
 
         // STT
         colSTT.setCellValueFactory(cellData ->
@@ -187,6 +208,10 @@ public class ChiTietPhieuDatHang_Ctrl  {
                 thanh = thanh * (1 - item.getGiamGia() / 100.0);
             }
             return new SimpleStringProperty(String.format("%.2f", thanh));
+        });
+
+        colTT.setCellValueFactory(cellData ->{
+            return new SimpleStringProperty(cellData.getValue().isTrangThai() ? "Sẵn hàng" : "Hết hàng");
         });
 
         // Compute summary totals

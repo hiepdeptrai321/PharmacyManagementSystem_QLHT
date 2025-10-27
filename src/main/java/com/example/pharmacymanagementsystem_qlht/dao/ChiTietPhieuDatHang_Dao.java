@@ -48,6 +48,7 @@ public class ChiTietPhieuDatHang_Dao implements DaoInterface<ChiTietPhieuDatHang
                 ct.setDonGia(rs.getDouble("DonGia"));
                 ct.setGiamGia(rs.getDouble("GiamGia"));
                 ct.setDvt(rs.getString("MaDVT"));
+                ct.setTrangThai(rs.getBoolean("TrangThai"));
                 list.add(ct);
             }
             rs.getStatement().close();

@@ -87,6 +87,7 @@ public class CuaSoChinh_QuanLy_Ctrl{
             e.printStackTrace();
             System.err.println("Không thể tải FXML: " + fxmlPath);
         }
+        pnlChung.requestFocus();
     }
 
     public void loadTableThuocHetHan(){

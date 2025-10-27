@@ -10,6 +10,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -82,20 +83,26 @@ public class CuaSoChinh_NhanVien_Ctrl{
         ObservableList<Thuoc_SP_TheoLo> data = tblThuocHetHan.getItems();
         data.clear();
         data.addAll(listThuocHetHan);
-        lbl_SoLuongHangHetHan.setText("Số lượng hàng hết hạn: " +listThuocHetHan.size());
-        colMaThuocHetHan.setCellValueFactory(new PropertyValueFactory<>("maThuoc"));
+        lbl_SoLuongHangHetHan.setText("Số lượng lô hàng hết hạn: " +listThuocHetHan.size());
+        colMaThuocHetHan.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getThuoc().getMaThuoc())
+        );
         colLoHangHetHan.setCellValueFactory(new PropertyValueFactory<>("maLH"));
         colHSDSapHetHan.setCellValueFactory(new PropertyValueFactory<>("hsd"));
+        tblThuocHetHan.setItems(data);
     }
 
     public void loadTableThuocSapHetHan(){
         ObservableList<Thuoc_SP_TheoLo> data = tblThuocSapHetHan.getItems();
         data.clear();
         data.addAll(listThuocSapHetHan);
-        lbl_SoLuongHangSapHetHan.setText("Số lượng hàng sắp hết hạn: " +listThuocSapHetHan.size());
-        colLoHangSapHetHan.setCellValueFactory(new PropertyValueFactory<>("maThuoc"));
+        lbl_SoLuongHangSapHetHan.setText("Số lượng lô hàng sắp hết hạn: " +listThuocSapHetHan.size());
+        colMaThuocSapHetHan.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getThuoc().getMaThuoc())
+        );
         colLoHangSapHetHan.setCellValueFactory(new PropertyValueFactory<>("maLH"));
-        colLoHangSapHetHan.setCellValueFactory(new PropertyValueFactory<>("hsd"));
+        colHSDSapHetHan.setCellValueFactory(new PropertyValueFactory<>("hsd"));
+        tblThuocSapHetHan.setItems(data);
     }
 
     private void setNgayGio(Label lblNgayGio) {

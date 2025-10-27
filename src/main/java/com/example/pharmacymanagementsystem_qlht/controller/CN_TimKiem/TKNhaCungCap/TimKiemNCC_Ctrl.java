@@ -174,9 +174,13 @@ public class TimKiemNCC_Ctrl extends Application {
             Parent root = loader.load();
             ChiTietNhaCungCap_Ctrl ctrl = loader.getController();
             ctrl.hienThiThongTin(ncc);
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            Stage dialog = new Stage();
+            dialog.initOwner(btnLamMoi.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Chi tiết nhà cung cấp");
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+            dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }

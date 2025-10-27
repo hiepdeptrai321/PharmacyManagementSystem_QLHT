@@ -2,6 +2,7 @@ package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoatDo
 
 import com.example.pharmacymanagementsystem_qlht.model.HoatDong;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -43,6 +44,10 @@ public class ChiTietHoatDong_Ctrl implements Initializable {
                 if (w != null) w.hide();
             });
         }
+        Platform.runLater(()->{
+            Stage dialog = (Stage) tfMaHD.getScene().getWindow();
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+        });
     }
 
     // Allows external code to pass HoatDong; stores it and applies when UI is ready

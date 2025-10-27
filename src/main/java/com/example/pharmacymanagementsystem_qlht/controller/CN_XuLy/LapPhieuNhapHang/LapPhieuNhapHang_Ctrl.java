@@ -68,6 +68,7 @@ public class LapPhieuNhapHang_Ctrl extends Application {
     private ObservableList<ChiTietDonViTinh> allChiTietDonViTinh;
     private ObservableList<NhaCungCap> listNCC;
     private NhaCungCap ncc = new NhaCungCap();
+    private NhaCungCap ncc2 = new NhaCungCap();
     private int maLoHienTai = 0;
     private ChiTietPhieuNhap_Dao ctpn_dao = new ChiTietPhieuNhap_Dao();
     private ObservableList<CTPN_TSPTL_CHTDVT> listNhapThuoc = FXCollections.observableArrayList();
@@ -779,7 +780,7 @@ public class LapPhieuNhapHang_Ctrl extends Application {
             return;
         }
 
-        if (ncc == null) {
+        if (cbxNCC.getValue()== null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Cảnh báo");
             alert.setHeaderText(null);

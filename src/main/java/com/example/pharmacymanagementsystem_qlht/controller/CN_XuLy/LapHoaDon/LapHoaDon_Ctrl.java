@@ -404,7 +404,7 @@ public class LapHoaDon_Ctrl extends Application {
 
         task.setOnFailed(e -> {
             tamDungGoiY = false;
-            System.err.println("Fetch medicine failed: " + task.getException());
+            System.err.println("Tải thuốc thất bại " + task.getException());
         });
 
         Thread th = new Thread(task);

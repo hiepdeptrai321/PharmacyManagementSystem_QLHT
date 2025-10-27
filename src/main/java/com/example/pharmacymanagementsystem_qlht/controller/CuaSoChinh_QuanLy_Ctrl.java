@@ -75,6 +75,7 @@ public class CuaSoChinh_QuanLy_Ctrl{
         loadTableThuocSapHetHan();
         setThongKeLabelsAndData();
         setupGlobalShortcuts();
+        pnlThongTin.setVisible(false);
     }
 
     private void loadView(int menuIndex, String fxmlPath) {

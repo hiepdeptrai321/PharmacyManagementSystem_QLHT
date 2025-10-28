@@ -92,3 +92,19 @@
     -fx-border-color: transparent;
     -fx-table-cell-border-color: transparent;
 }
+#btnExcel{
+    -fx-background-color: transparent;
+        -fx-border-color: #027816; /* Màu xanh lá của Excel */
+        -fx-border-width: 1.5;
+        -fx-border-radius: 5;
+
+
+
+
+        -fx-padding: 6 12 6 12;
+        -fx-content-display: LEFT;
+        -fx-graphic-text-gap: 8;
+}
+#lblExcel{
+    -fx-text-fill: #217346; /* Màu xanh lá của Excel */
+}

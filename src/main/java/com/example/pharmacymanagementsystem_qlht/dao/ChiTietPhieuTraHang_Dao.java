@@ -9,31 +9,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChiTietPhieuTraHang_Dao implements DaoInterface<ChiTietPhieuTraHang> {
-    private final String INSERT_SQL = "INSERT INTO ChiTietPhieuTraHang (MaLH, MaPT, MaThuoc, SoLuong, DonGia, GiamGia) VALUES (?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE ChiTietPhieuTraHang SET SoLuong=?, DonGia=?, GiamGia=? WHERE MaLH=? AND MaPT=? AND MaThuoc=?";
-    private final String DELETE_BY_ID_SQL = "DELETE FROM ChiTietPhieuTraHang WHERE MaLH=? AND MaPT=? AND MaThuoc=?";
-    private final String SELECT_BY_ID_SQL = "SELECT * FROM ChiTietPhieuTraHang WHERE MaLH=? AND MaPT=? AND MaThuoc=?";
+    private final String INSERT_SQL = "INSERT INTO ChiTietPhieuTraHang (MaLH, MaPT, MaThuoc, MaDVT, SoLuong, DonGia, GiamGia, LyDoTra) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE ChiTietPhieuTraHang SET SoLuong=?, DonGia=?, GiamGia=?, LyDoDoi=? WHERE MaLH=? AND MaPT=? AND MaThuoc=? AND MaDVT=?";
+    private final String DELETE_BY_ID_SQL = "DELETE FROM ChiTietPhieuTraHang WHERE MaLH=? AND MaPT=? AND MaThuoc=? AND MaDVT=?";
+    private final String SELECT_BY_ID_SQL = "SELECT * FROM ChiTietPhieuTraHang WHERE MaLH=? AND MaPT=? AND MaThuoc=? AND MaDVT=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM ChiTietPhieuTraHang";
     private final String SELECT_BY_MAPT_SQL = "SELECT * FROM ChiTietPhieuTraHang WHERE MaPT = ?";
 
     @Override
     public boolean insert(ChiTietPhieuTraHang e) {
-        return ConnectDB.update(INSERT_SQL, e.getLoHang().getMaLH(), e.getPhieuTraHang().getMaPT(), e.getThuoc().getMaThuoc(), e.getSoLuong(), e.getDonGia(), e.getGiamGia())>0;
+        return ConnectDB.update(INSERT_SQL,
+                e.getLoHang().getMaLH(),
+                e.getPhieuTraHang().getMaPT(),
+                e.getThuoc().getMaThuoc(),
+                e.getSoLuong(),
+                e.getDvt() != null ? e.getDvt().getMaDVT() : null,
+                e.getDonGia(),
+                e.getGiamGia(),
+                e.getLyDoTra()
+        ) > 0;
     }
 
     @Override
     public boolean update(ChiTietPhieuTraHang e) {
-        return ConnectDB.update(UPDATE_SQL, e.getSoLuong(), e.getDonGia(), e.getGiamGia(), e.getLoHang().getMaLH(), e.getPhieuTraHang().getMaPT(), e.getThuoc().getMaThuoc())>0;
+        return ConnectDB.update(UPDATE_SQL,
+                e.getSoLuong(),
+                e.getDvt() != null ? e.getDvt().getMaDVT() : null,
+                e.getDonGia(),
+                e.getGiamGia(),
+                e.getLyDoTra(),
+                e.getLoHang().getMaLH(),
+                e.getPhieuTraHang().getMaPT(),
+                e.getThuoc().getMaThuoc()
+        ) > 0;
     }
 
     @Override
     public boolean deleteById(Object... keys) {
-        return ConnectDB.update(DELETE_BY_ID_SQL, keys[0], keys[1], keys[2])>0;
+        return ConnectDB.update(DELETE_BY_ID_SQL, keys[0], keys[1], keys[2], keys[3]) > 0;
     }
 
     @Override
     public ChiTietPhieuTraHang selectById(Object... keys) {
-        List<ChiTietPhieuTraHang> list = selectBySql(SELECT_BY_ID_SQL, keys[0], keys[1], keys[2]);
+        List<ChiTietPhieuTraHang> list = selectBySql(SELECT_BY_ID_SQL, keys[0], keys[1], keys[2], keys[3]);
         return list.isEmpty() ? null : list.get(0);
     }
 
@@ -47,9 +65,17 @@ public class ChiTietPhieuTraHang_Dao implements DaoInterface<ChiTietPhieuTraHang
                 ct.setLoHang(new Thuoc_SP_TheoLo_Dao().selectById(rs.getString("MaLH")));
                 ct.setPhieuTraHang(new PhieuTraHang_Dao().selectById(rs.getString("MaPT")));
                 ct.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getString("MaThuoc")));
+                ct.setDvt(new DonViTinh_Dao().selectById(rs.getString("MaDVT")));
                 ct.setSoLuong(rs.getInt("SoLuong"));
                 ct.setDonGia(rs.getDouble("DonGia"));
                 ct.setGiamGia(rs.getDouble("GiamGia"));
+                try {
+                    String ly = rs.getString("LyDoTra");
+                    ct.setLyDoTra(ly == null ? "" : ly);
+                } catch (Exception ignore) {
+                    ct.setLyDoTra("");
+                }
+
                 list.add(ct);
             }
             rs.getStatement().close();

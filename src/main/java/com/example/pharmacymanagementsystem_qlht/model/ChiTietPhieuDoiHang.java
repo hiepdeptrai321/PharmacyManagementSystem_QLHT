@@ -7,19 +7,20 @@ public class ChiTietPhieuDoiHang {
     private PhieuDoiHang phieuDoiHang;
     private Thuoc_SanPham thuoc;
     private int soLuong;
-    private double donGia;
-    private double giamGia;
+    private DonViTinh dvt;
+    private String lyDoDoi ;
+
 
     public ChiTietPhieuDoiHang() {
     }
 
-    public ChiTietPhieuDoiHang(Thuoc_SP_TheoLo loHang, PhieuDoiHang phieuDoiHang, Thuoc_SanPham thuoc, int soLuong, double donGia, double giamGia) {
+    public ChiTietPhieuDoiHang(Thuoc_SP_TheoLo loHang, PhieuDoiHang phieuDoiHang, Thuoc_SanPham thuoc, int soLuong, DonViTinh dvt, String lyDoDoi) {
         this.loHang = loHang;
         this.phieuDoiHang = phieuDoiHang;
         this.thuoc = thuoc;
         this.soLuong = soLuong;
-        this.donGia = donGia;
-        this.giamGia = giamGia;
+        this.dvt = dvt;
+        this.lyDoDoi = lyDoDoi;
     }
 
     public Thuoc_SP_TheoLo getLoHang() {
@@ -53,33 +54,32 @@ public class ChiTietPhieuDoiHang {
     public void setSoLuong(int soLuong) {
         this.soLuong = soLuong;
     }
-
-    public double getDonGia() {
-        return donGia;
+    public DonViTinh getDvt() {
+        return dvt;
     }
 
-    public void setDonGia(double donGia) {
-        this.donGia = donGia;
+    public void setDvt(DonViTinh dvt) {
+        this.dvt = dvt;
+    }
+    public String getLyDoDoi() {
+        return lyDoDoi;
     }
 
-    public double getGiamGia() {
-        return giamGia;
+    public void setLyDoDoi(String lyDoDoi) {
+        this.lyDoDoi = lyDoDoi;
     }
 
-    public void setGiamGia(double giamGia) {
-        this.giamGia = giamGia;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         ChiTietPhieuDoiHang that = (ChiTietPhieuDoiHang) o;
-        return Objects.equals(loHang, that.loHang) && Objects.equals(phieuDoiHang, that.phieuDoiHang);
+        return Objects.equals(loHang, that.loHang) && Objects.equals(phieuDoiHang, that.phieuDoiHang) && Objects.equals(dvt, that.dvt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(loHang, phieuDoiHang);
+        return Objects.hash(loHang, phieuDoiHang,dvt);
     }
 
     @Override
@@ -87,10 +87,10 @@ public class ChiTietPhieuDoiHang {
         return "ChiTietPhieuDoiHang{" +
                 "loHang=" + loHang +
                 ", phieuDoiHang=" + phieuDoiHang +
+                ", dvt=" + dvt +
                 ", thuoc=" + thuoc +
                 ", soLuong=" + soLuong +
-                ", donGia=" + donGia +
-                ", giamGia=" + giamGia +
+                " lyDoDoi='" + lyDoDoi +
                 '}';
     }
 }

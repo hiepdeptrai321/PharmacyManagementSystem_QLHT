@@ -432,6 +432,8 @@ public class LapPhieuNhapHang_Ctrl {
                     getTableView().getItems().remove(item);
                     suKienThemMotDongMoiVaoBang();
                 });
+                btn.setStyle("-fx-background-color:#de2c2c ; -fx-text-fill: white;");
+                btn.getStyleClass().add("btn");
 
             }
 

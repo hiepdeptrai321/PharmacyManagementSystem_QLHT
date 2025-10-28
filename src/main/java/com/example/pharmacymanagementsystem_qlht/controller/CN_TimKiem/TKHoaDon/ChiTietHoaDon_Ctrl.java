@@ -1,9 +1,6 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoaDon;
 
-import com.example.pharmacymanagementsystem_qlht.dao.ChiTietDonViTinh_Dao;
-import com.example.pharmacymanagementsystem_qlht.dao.ChiTietHoaDon_Dao;
-import com.example.pharmacymanagementsystem_qlht.dao.HoaDon_Dao;
-import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SanPham_Dao;
+import com.example.pharmacymanagementsystem_qlht.dao.*;
 import com.example.pharmacymanagementsystem_qlht.model.*;
 import com.example.pharmacymanagementsystem_qlht.service.ApDungKhuyenMai;
 import com.example.pharmacymanagementsystem_qlht.service.DichVuKhuyenMai;
@@ -77,7 +74,9 @@ public class ChiTietHoaDon_Ctrl {
     private final HoaDon_Dao hdDao = new HoaDon_Dao();
     private final ChiTietHoaDon_Dao cthdDao = new ChiTietHoaDon_Dao();
     private final ChiTietDonViTinh_Dao ctdvtDao = new ChiTietDonViTinh_Dao();
-    private final Map<String, String> baseUnitCache = new HashMap<>();
+    //private final Map<String, String> baseUnitCache = new HashMap<>();
+    private final Map<String, String> dvtCache = new HashMap<>(); // Dùng cache này để tra cứu DVT
+    private final DonViTinh_Dao dvtDao = new DonViTinh_Dao();
     private final DichVuKhuyenMai kmService = new DichVuKhuyenMai();
     private final Thuoc_SanPham_Dao spDao = new Thuoc_SanPham_Dao();
     private final Map<String, String> tenSpCache = new HashMap<>();
@@ -169,8 +168,10 @@ public class ChiTietHoaDon_Ctrl {
         }
 
         if (colNDonVi != null) {
-            colNDonVi.setCellValueFactory(cel ->
-                    new SimpleStringProperty(tenDonViCoBan(cel.getValue().getLoHang())));
+            colNDonVi.setCellValueFactory(cel -> {
+                String tenDVT = tenDonViGiaoDich(cel.getValue());
+                return new SimpleStringProperty(tenDVT);
+            });
         }
 
         if (colNDonGia != null) {
@@ -229,8 +230,46 @@ public class ChiTietHoaDon_Ctrl {
         if (lblGiamTheoHD != null)      lblGiamTheoHD.setText(formatVNDLabel(giamTheoHoaDon));
         if (lblVAT != null)             lblVAT.setText(formatVNDLabel(vat));
         if (lblTongThanhToan != null)   lblTongThanhToan.setText(formatVNDLabel(tongThanhToan));
+    }
+    private String tenDonViGiaoDich(ChiTietHoaDon cthd) {
+        if (cthd == null || cthd.getDvt() == null) {
+            return "";
+        }
 
+        DonViTinh dvt = cthd.getDvt();
 
+        // 1. Ưu tiên lấy tên đã được DAO load sẵn (nếu có)
+        if (dvt.getTenDonViTinh() != null && !dvt.getTenDonViTinh().isBlank()) {
+            return dvt.getTenDonViTinh();
+        }
+
+        // 2. Nếu DAO chỉ load MaDVT, chúng ta dùng cache/DAO để tra cứu
+        String maDVT = dvt.getMaDVT();
+        if (maDVT == null || maDVT.isBlank()) {
+            return ""; // Không có mã DVT
+        }
+
+        // 3. Kiểm tra cache
+        if (dvtCache.containsKey(maDVT)) {
+            return dvtCache.get(maDVT);
+        }
+
+        // 4. Tra cứu DAO (fallback nếu DAO ở Bước 2 chưa load hết)
+        try {
+            DonViTinh fullDVT = dvtDao.selectById(maDVT);
+            if (fullDVT != null && fullDVT.getTenDonViTinh() != null) {
+                String ten = fullDVT.getTenDonViTinh();
+                dvtCache.put(maDVT, ten); // Lưu vào cache
+                return ten;
+            }
+        } catch (Exception e) {
+            // Lỗi tra cứu
+            e.printStackTrace();
+        }
+
+        // 5. Nếu thất bại, trả về chính cái mã
+        dvtCache.put(maDVT, maDVT);
+        return maDVT;
     }
     private String giftSuffix(ChiTietHoaDon row) {
         if (row == null || row.getLoHang() == null || row.getLoHang().getThuoc() == null) return "";
@@ -266,13 +305,13 @@ public class ChiTietHoaDon_Ctrl {
         tenSpCache.put(ma, ten);
         return ten;
     }
-    private static String formatVNDTable(double v) {
+    public static String formatVNDTable(double v) {
         DecimalFormat df = new DecimalFormat("#,##0");
         df.setGroupingUsed(true);
         return df.format(Math.max(0, Math.round(v))) + " đ";
     }
 
-    private static String formatVNDLabel(BigDecimal v) {
+    public static String formatVNDLabel(BigDecimal v) {
         DecimalFormat df = new DecimalFormat("#,##0");
         df.setGroupingUsed(true);
         return df.format(v.max(BigDecimal.ZERO)) + " VND";
@@ -284,58 +323,7 @@ public class ChiTietHoaDon_Ctrl {
 
     private static String safeStr(String s) { return s == null ? "" : s; }
 
-    private String tenDonViCoBan(Thuoc_SP_TheoLo lo) {
-        if (lo == null || lo.getThuoc() == null) return "";
-        var sp = lo.getThuoc();
-        String maThuoc = sp.getMaThuoc();
-        if (maThuoc == null || maThuoc.isBlank()) return "";
 
-        // 1
-        if (baseUnitCache.containsKey(maThuoc)) return baseUnitCache.get(maThuoc);
-        //2
-        List<ChiTietDonViTinh> ds = (sp.getDsCTDVT() != null && !sp.getDsCTDVT().isEmpty())
-                ? sp.getDsCTDVT()
-                : ctdvtDao.selectByMaThuoc(maThuoc); // DAO fallback
-
-        ChiTietDonViTinh base = null;
-        if (ds != null && !ds.isEmpty()) {
-            //3
-            for (ChiTietDonViTinh ct : ds) {
-                if (ct != null && ct.isDonViCoBan()) { base = ct; break; }
-            }
-            //4
-            if (base == null) {
-                ChiTietDonViTinh min = null;
-                for (ChiTietDonViTinh ct : ds) {
-                    if (ct == null) continue;
-                    if (min == null) min = ct;
-                    else if (ct.getHeSoQuyDoi() > 0 && ct.getHeSoQuyDoi() < min.getHeSoQuyDoi()) min = ct;
-                }
-                base = min;
-            }
-            //5
-            if (base != null && base.getDvt() != null && base.getDvt().getTenDonViTinh() != null) {
-                String ten = base.getDvt().getTenDonViTinh();
-                baseUnitCache.put(maThuoc, ten);
-                return ten;
-            }
-        }
-
-        try {
-            String ten = sp.getTenDVTCoBan();
-            if (ten != null) {
-                baseUnitCache.put(maThuoc, ten);
-                return ten;
-            }
-        } catch (Exception ignore) {}
-
-        baseUnitCache.put(maThuoc, "");
-        return "";
-    }
-    /**
-     * Phương thức này được gọi bởi btnInHoaDon.
-     * Nó mở hộp thoại lưu file và gọi hàm xuatHoaDonPDF.
-     */
     @FXML
     private void xuLyXuatPDF(ActionEvent event) {
         // 1. Kiểm tra dữ liệu
@@ -466,7 +454,7 @@ public class ChiTietHoaDon_Ctrl {
                 tenSP = safeStr(cthd.getLoHang().getThuoc().getTenThuoc()) + giftSuffix(cthd);
             }
             int soLuong = cthd.getSoLuong();
-            String donVi = tenDonViCoBan(cthd.getLoHang());
+            String donVi = tenDonViGiaoDich(cthd);
             double donGia = cthd.getDonGia();
             double chietKhau = cthd.getGiamGia();
             double thanhTien = Math.max(0, (soLuong * donGia) - chietKhau);

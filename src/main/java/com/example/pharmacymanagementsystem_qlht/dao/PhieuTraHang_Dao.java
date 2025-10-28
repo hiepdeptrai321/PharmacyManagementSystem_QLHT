@@ -8,20 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PhieuTraHang_Dao implements DaoInterface<PhieuTraHang> {
-    private final String INSERT_SQL = "INSERT INTO PhieuTraHang (MaPT, MaNV, MaKH, NgayLap, LyDoTra, GhiChu, MaHD) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE PhieuTraHang SET MaNV=?, MaKH=?, NgayLap=?, LyDoTra=?, GhiChu=?, MaHD=? WHERE MaPT=?";
+    private final String INSERT_SQL = "INSERT INTO PhieuTraHang (MaPT, MaNV, MaKH, NgayLap, GhiChu, MaHD) VALUES ( ?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL = "UPDATE PhieuTraHang SET MaNV=?, MaKH=?, NgayLap=?, GhiChu=?, MaHD=? WHERE MaPT=?";
     private final String DELETE_BY_ID_SQL = "DELETE FROM PhieuTraHang WHERE MaPT=?";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM PhieuTraHang WHERE MaPT=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM PhieuTraHang";
 
     @Override
     public boolean insert(PhieuTraHang e) {
-        return ConnectDB.update(INSERT_SQL, e.getMaPT(), e.getNhanVien().getMaNV(), e.getKhachHang().getMaKH(), e.getNgayLap(), e.getLyDoTra(), e.getGhiChu(), e.getHoaDon().getMaHD())>0;
+        return ConnectDB.update(INSERT_SQL, e.getMaPT(), e.getNhanVien().getMaNV(), e.getKhachHang().getMaKH(), e.getNgayLap(), e.getGhiChu(), e.getHoaDon().getMaHD())>0;
     }
 
     @Override
     public boolean update(PhieuTraHang e) {
-        return ConnectDB.update(UPDATE_SQL, e.getNhanVien().getMaNV(), e.getKhachHang().getMaKH(), e.getNgayLap(), e.getLyDoTra(), e.getGhiChu(), e.getHoaDon().getMaHD(), e.getMaPT())>0;
+        return ConnectDB.update(UPDATE_SQL, e.getNhanVien().getMaNV(), e.getKhachHang().getMaKH(), e.getNgayLap(), e.getGhiChu(), e.getHoaDon().getMaHD(), e.getMaPT())>0;
     }
 
     @Override
@@ -46,7 +46,6 @@ public class PhieuTraHang_Dao implements DaoInterface<PhieuTraHang> {
                 pt.setNhanVien(new NhanVien_Dao().selectById(rs.getString("MaNV")));
                 pt.setKhachHang(new KhachHang_Dao().selectById(rs.getString("MaKH")));
                 pt.setNgayLap(rs.getTimestamp("NgayLap"));
-                pt.setLyDoTra(rs.getString("LyDoTra"));
                 pt.setGhiChu(rs.getString("GhiChu"));
                 pt.setHoaDon(new HoaDon_Dao().selectById(rs.getString("MaHD")));
                 list.add(pt);
@@ -56,6 +55,24 @@ public class PhieuTraHang_Dao implements DaoInterface<PhieuTraHang> {
             throw new RuntimeException(e);
         }
         return list;
+    }
+    public String generateNewMaPT() {
+        String newMaPT = "PT001";
+        String sql = "SELECT TOP 1 MaPT FROM PhieuTraHang ORDER BY MaPT DESC";
+
+        try {
+            ResultSet rs = ConnectDB.query(sql);
+            if (rs.next()) {
+                String lastMaPT = rs.getString("MaPT");
+                int stt = Integer.parseInt(lastMaPT.substring(2)); // Cắt bỏ 'PT'
+                stt++;
+                newMaPT = String.format("PT%03d", stt);
+            }
+            rs.getStatement().close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return newMaPT;
     }
     public int countByHoaDon(String maHD) {
         String sql = "SELECT COUNT(*) FROM PhieuTraHang WHERE MaHD=?";

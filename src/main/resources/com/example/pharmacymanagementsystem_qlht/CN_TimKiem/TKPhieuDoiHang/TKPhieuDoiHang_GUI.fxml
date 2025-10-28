@@ -25,13 +25,10 @@
             <children>
                 <HBox prefHeight="46.0" prefWidth="782.0">
                     <children>
-                        <Label id="lbTimKiem" ellipsisString="" prefHeight="53.0" prefWidth="449.0" styleClass="title" text="Tìm kiếm phiếu đổi hàng">
+                        <Label  id="lbTimKiem" ellipsisString="" prefHeight="53.0" prefWidth="449.0" styleClass="title" text="Tìm kiếm phiếu đổi hàng">
                             <font>
                                 <Font size="36.0" />
                             </font>
-                            <cursor>
-                                <Cursor fx:constant="NONE" />
-                            </cursor>
                         </Label>
                         <Label />
                         <ImageView fitHeight="46.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">

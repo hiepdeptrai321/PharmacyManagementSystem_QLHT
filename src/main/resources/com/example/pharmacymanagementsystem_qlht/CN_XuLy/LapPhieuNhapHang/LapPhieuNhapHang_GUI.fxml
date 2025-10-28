@@ -37,21 +37,21 @@
          <children>
             <Pane layoutY="81.0" prefHeight="757.0" prefWidth="1324.0">
                <children>
-                  <TableView fx:id="tblNhapThuoc" layoutX="28.0" layoutY="21.0" prefHeight="728.0" prefWidth="1283.0" styleClass="main-table" stylesheets="@../../css/LapHoaDon.css">
+                  <TableView fx:id="tblNhapThuoc" layoutX="28.0" layoutY="1.0" prefHeight="748.0" prefWidth="1283.0" styleClass="main-table" stylesheets="@../../css/LapHoaDon.css">
                     <columns>
                       <TableColumn fx:id="colSTT" prefWidth="44.33333206176758" style="-fx-alignment: CENTER;" text="STT" />
                       <TableColumn fx:id="colMaThuoc" prefWidth="128.66666412353516" style="-fx-alignment: CENTER;" text="Mã thuốc" />
-                        <TableColumn fx:id="colTenThuoc" prefWidth="222.28565979003906" style="-fx-alignment: CENTER_LEFT;" text="Tên thuốc" />
-                        <TableColumn fx:id="colNSX" prefWidth="114.28579711914062" style="-fx-alignment: CENTER_LEFT;" text="NSX" />
-                        <TableColumn fx:id="colHanSuDung" minWidth="0.666656494140625" prefWidth="105.142822265625" style="-fx-alignment: CENTER;" text="HSD" />
-                        <TableColumn fx:id="colLoHang" minWidth="0.0" prefWidth="107.4285888671875" style="-fx-alignment: CENTER;" text="Lô Hàng" />
+                        <TableColumn fx:id="colTenThuoc" prefWidth="202.0" style="-fx-alignment: CENTER_LEFT;" text="Tên thuốc" />
+                        <TableColumn fx:id="colNSX" prefWidth="125.0" style="-fx-alignment: CENTER;" text="NSX" />
+                        <TableColumn fx:id="colHanSuDung" minWidth="0.666656494140625" prefWidth="114.0" style="-fx-alignment: CENTER;" text="HSD" />
+                        <TableColumn fx:id="colLoHang" minWidth="0.0" prefWidth="111.0" style="-fx-alignment: CENTER;" text="Lô Hàng" />
                         <TableColumn fx:id="colDonViNhap" prefWidth="75.99993896484375" style="-fx-alignment: CENTER_LEFT;" text="Đơn vị nhập" />
-                        <TableColumn fx:id="colSoLuong" prefWidth="59.4285888671875" style="-fx-alignment: CENTER;" text="Số lượng" />
-                        <TableColumn fx:id="colDonGiaNhap" prefWidth="114.28582763671875" style="-fx-alignment: CENTER;" text="Đơn giá nhập" />
-                        <TableColumn fx:id="colChietKhau" prefWidth="70.2857666015625" style="-fx-alignment: CENTER;" text="Chiết khấu" />
-                        <TableColumn fx:id="colThue" prefWidth="39.4287109375" style="-fx-alignment: CENTER;" text="Thuế" />
-                        <TableColumn fx:id="colThanhTien" prefWidth="117.714111328125" style="-fx-alignment: CENTER;" text="Thành tiền" />
-                        <TableColumn fx:id="colXoa" prefWidth="84.0" style="-fx-alignment: CENTER;" />
+                        <TableColumn fx:id="colSoLuong" prefWidth="59.4285888671875" style="-fx-alignment: CENTER;" text="SL" />
+                        <TableColumn fx:id="colDonGiaNhap" prefWidth="104.0" style="-fx-alignment: CENTER;" text="Đơn giá nhập" />
+                        <TableColumn fx:id="colChietKhau" prefWidth="66.0" style="-fx-alignment: CENTER;" text="CK" />
+                        <TableColumn fx:id="colThue" prefWidth="56.0" style="-fx-alignment: CENTER;" text="Thuế" />
+                        <TableColumn fx:id="colThanhTien" prefWidth="136.0" style="-fx-alignment: CENTER;" text="Thành tiền" />
+                        <TableColumn fx:id="colXoa" prefWidth="66.0" style="-fx-alignment: CENTER;" />
                     </columns>
                   </TableView>
                </children>
@@ -61,7 +61,7 @@
                   <ComboBox fx:id="cbxNCC" editable="true" layoutX="29.0" layoutY="42.0" prefHeight="30.0" prefWidth="257.0" promptText="Chọn nhà cung cấp" />
                   <Pane layoutX="286.0" layoutY="42.0" onMouseClicked="#btnThemNCCClick" prefHeight="30.0" prefWidth="30.0" styleClass="btnThem">
                      <children>
-                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="30.0" text="╋">
+                        <Label id="btnThem" alignment="CENTER" prefHeight="30.0" prefWidth="30.0" stylesheets="@../../css/ThemDonViTinh.css" text="✚">
                            <font>
                               <Font size="13.0" />
                            </font>
@@ -70,7 +70,7 @@
                   </Pane>
                   <Pane layoutX="1004.0" layoutY="42.0" prefHeight="30.0" prefWidth="30.0" styleClass="btnThem">
                      <children>
-                        <Label alignment="CENTER" onMouseClicked="#btnThemThuocClick" prefHeight="30.0" prefWidth="30.0" text="╋">
+                        <Label id="btnThem" alignment="CENTER" onMouseClicked="#btnThemThuocClick" prefHeight="30.0" prefWidth="30.0" stylesheets="@../../css/ThemDonViTinh.css" text="✚">
                            <font>
                               <Font size="13.0" />
                            </font>
@@ -96,7 +96,7 @@
                   </Label>
                   <Pane id="btnExcel" layoutX="1063.0" layoutY="42.0" prefHeight="30.0" prefWidth="247.0">
                      <children>
-                        <Label layoutX="41.0" layoutY="7.0" text="Thêm phiếu nhập hàng bằng excel">
+                        <Label id="lblExcel" layoutX="35.0" layoutY="6.0" text="Thêm phiếu nhập hàng bằng excel">
                            <font>
                               <Font size="13.0" />
                            </font>
@@ -122,25 +122,25 @@
                <children>
                   <Pane layoutX="43.0" layoutY="20.0" prefHeight="803.0" prefWidth="280.0" styleClass="info-pane" stylesheets="@../../css/LapHoaDon.css">
                      <children>
-                        <Label layoutX="66.0" layoutY="6.0" prefHeight="45.0" prefWidth="149.0" text="Tổng tiền">
+                        <Label layoutX="48.0" prefHeight="45.0" prefWidth="186.0" text="Thông tin phiếu">
                            <font>
-                              <Font name="System Bold" size="30.0" />
+                              <Font name="System Bold" size="24.0" />
                            </font>
                         </Label>
-                        <Pane id="btnHuy" layoutX="15.0" layoutY="722.0" onMouseClicked="#btnHuy" prefHeight="65.0" prefWidth="250.0" styleClass="btnXacNhan">
+                        <Pane id="btnHuy" layoutX="15.0" layoutY="730.0" onMouseClicked="#btnHuy" prefHeight="57.0" prefWidth="250.0" styleClass="btnXacNhan">
                            <children>
-                              <Label id="lblTrang" layoutX="101.5" layoutY="15.0" text="Hủy">
+                              <Label id="lblTrang" layoutX="102.0" layoutY="12.0" text="Hủy">
                                  <font>
-                                    <Font name="System Bold" size="25.0" />
+                                    <Font name="System Bold" size="21.0" />
                                  </font>
                               </Label>
                            </children>
                         </Pane>
-                        <Pane id="btnXacNhan" layoutX="15.0" layoutY="645.0" onMouseClicked="#btnLuu" prefHeight="65.0" prefWidth="250.0" styleClass="btnXacNhan">
+                        <Pane id="btnXacNhan" layoutX="15.0" layoutY="653.0" onMouseClicked="#btnLuu" prefHeight="57.0" prefWidth="250.0" styleClass="btnXacNhan">
                            <children>
-                              <Label id="lblTrang" layoutX="68.0" layoutY="13.0" text="Lập phiếu">
+                              <Label id="lblTrang" layoutX="71.0" layoutY="12.0" text="Lập phiếu">
                                  <font>
-                                    <Font name="System Bold" size="25.0" />
+                                    <Font name="System Bold" size="21.0" />
                                  </font>
                               </Label>
                            </children>
@@ -169,7 +169,7 @@
                               <Font size="17.0" />
                            </font>
                         </Label>
-                        <TextArea fx:id="txtGhiChu" layoutX="16.0" layoutY="364.0" prefHeight="125.0" prefWidth="250.0" wrapText="true" />
+                        <TextArea fx:id="txtGhiChu" layoutX="14.0" layoutY="364.0" prefHeight="125.0" prefWidth="250.0" wrapText="true" />
                         <Label layoutX="23.0" layoutY="335.0" text="Ghi chú:">
                            <font>
                               <Font size="17.0" />

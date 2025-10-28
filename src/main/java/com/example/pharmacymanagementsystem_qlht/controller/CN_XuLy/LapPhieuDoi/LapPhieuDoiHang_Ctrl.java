@@ -348,9 +348,6 @@ public class LapPhieuDoiHang_Ctrl extends Application {
         try { tv.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); } catch (Exception ignored) {}
     }
 
-    private void alert(Alert.AlertType type, String msg) {
-        new Alert(type, msg, ButtonType.OK).showAndWait();
-    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -374,7 +371,6 @@ public class LapPhieuDoiHang_Ctrl extends Application {
                 return;
             }
 
-            // ✅ KIỂM TRA NGÀY LẬP SO VỚI NGÀY HIỆN TẠI
             LocalDate ngayHD = hd.getNgayLap().toLocalDateTime().toLocalDate();
             LocalDate today = LocalDate.now();
 

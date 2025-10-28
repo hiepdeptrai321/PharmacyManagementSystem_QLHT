@@ -42,6 +42,10 @@ import java.util.List;
 import java.util.Map;
 import com.example.pharmacymanagementsystem_qlht.controller.DangNhap_Ctrl;
 
+import static com.example.pharmacymanagementsystem_qlht.TienIch.TuyChinhAlert.hien;
+import static javafx.scene.control.Alert.AlertType.ERROR;
+import static javafx.scene.control.Alert.AlertType.INFORMATION;
+
 public class ChiTietHoaDon_Ctrl {
     @FXML private TableView<ChiTietHoaDon> tblChiTietHoaDon;
     @FXML private TableColumn<ChiTietHoaDon, Number> colNSTT;
@@ -328,7 +332,7 @@ public class ChiTietHoaDon_Ctrl {
     private void xuLyXuatPDF(ActionEvent event) {
         // 1. Kiểm tra dữ liệu
         if (hoaDon == null || tblChiTietHoaDon.getItems() == null || tblChiTietHoaDon.getItems().isEmpty()) {
-            showAlert(Alert.AlertType.INFORMATION, "Không có dữ liệu", "Không có chi tiết hóa đơn để in.");
+            hien(INFORMATION, "Không có dữ liệu", "Không có hóa đơn hoặc chi tiết hóa đơn để in.");
             return;
         }
 
@@ -345,18 +349,14 @@ public class ChiTietHoaDon_Ctrl {
         if (file != null) {
             try {
                 xuatHoaDonPDF(file);
-                showAlert(Alert.AlertType.INFORMATION, "Thành công", "Xuất file PDF hóa đơn thành công!");
+                hien(INFORMATION, "Thành công", "Xuất file PDF hóa đơn thành công!");
             } catch (IOException e) {
                 e.printStackTrace();
-                showAlert(Alert.AlertType.ERROR, "Lỗi", "Có lỗi xảy ra khi xuất file PDF: " + e.getMessage());
+                hien(ERROR, "Lỗi", "Có lỗi xảy ra khi xuất file PDF: " + e.getMessage());
             }
         }
     }
 
-    /**
-     * Phương thức chính tạo nội dung file PDF.
-     * (CẬP NHẬT: Thêm thông tin nhân viên đang hoạt động)
-     */
     private void xuatHoaDonPDF(File file) throws IOException {
         PdfWriter writer = new PdfWriter(file);
         PdfDocument pdf = new PdfDocument(writer);
@@ -485,15 +485,6 @@ public class ChiTietHoaDon_Ctrl {
         document.close();
     }
 
-    /**
-     * Phương thức trợ giúp để hiển thị Alert
-     */
-    private void showAlert(Alert.AlertType alertType, String title, String content) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
+
 
 }

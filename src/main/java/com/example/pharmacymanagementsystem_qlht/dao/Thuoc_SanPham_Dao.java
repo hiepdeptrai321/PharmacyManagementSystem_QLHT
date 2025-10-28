@@ -37,6 +37,12 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
             "SELECT * FROM Thuoc_SanPham ts " +
             "JOIN ChiTietDonViTinh ctdvt ON ts.MaThuoc = ctdvt.MaThuoc " +
             "WHERE ctdvt.DonViCoBan = 1 AND (ts.TenThuoc LIKE ? OR ts.MaThuoc LIKE ?)";
+    private final String SELECT_THUOC_SANPHAM_DONVICOBAN_BYTUKHOA_SQL_VER2 =
+            "SELECT DISTINCT * FROM Thuoc_SanPham ts " +
+                    "JOIN ChiTietDonViTinh ctdvt ON ts.MaThuoc = ctdvt.MaThuoc " +
+                    "JOIN DonViTinh dvt ON ctdvt.MaDVT = dvt.MaDVT " +
+                    "WHERE ctdvt.DonViCoBan = 1 AND (ts.TenThuoc LIKE ? OR ts.MaThuoc LIKE ?)";
+
 
     private final String SELECT_TENDVT_BYMA_SQL = "SELECT TenDonViTinh FROM ChiTietDonViTinh ctdvt JOIN DonViTinh dvt ON ctdvt.MaDVT = dvt.MaDVT WHERE MaThuoc = ? AND DonViCoBan = 1";
     private final String SELECT_TOP1_MATHUOC = "SELECT TOP 1 MaThuoc FROM Thuoc_SanPham ORDER BY MaThuoc DESC";
@@ -199,6 +205,37 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
         for (Thuoc_SanPham sp : list) {
             List<ChiTietDonViTinh> dsCTDVT = ctdvtDao.selectByMaThuoc(sp.getMaThuoc());
             sp.setDsCTDVT(dsCTDVT);
+        }
+        return list;
+    }
+
+    // By keyword, only join ChiTietDonViTinh
+    public List<Thuoc_SanPham> selectSLTheoDonViCoBanByTuKhoa_ChiTietDVT_Ver2(String tuKhoa) {
+        List<Thuoc_SanPham> list = new ArrayList<>();
+        try {
+            ResultSet rs = ConnectDB.query(SELECT_THUOC_SANPHAM_DONVICOBAN_BYTUKHOA_SQL_VER2,  "%" + tuKhoa + "%", "%" + tuKhoa + "%");
+            while (rs.next()) {
+                Thuoc_SanPham sp = new Thuoc_SanPham();
+                String maThuoc = rs.getString("MaThuoc");
+                sp.setMaThuoc(maThuoc);
+                sp.setTenThuoc(rs.getString("TenThuoc"));
+                sp.setHamLuong(rs.getInt("HamLuong"));
+                sp.setDonViHamLuong(rs.getString("DonViHL"));
+                sp.setDuongDung(rs.getString("DuongDung"));
+                sp.setQuyCachDongGoi(rs.getString("QuyCachDongGoi"));
+                sp.setSDK_GPNK(rs.getString("SDK_GPNK"));
+                sp.setHangSX(rs.getString("HangSX"));
+                sp.setNuocSX(rs.getString("NuocSX"));
+                sp.setNhomDuocLy(new NhomDuocLy_Dao().selectById(rs.getString("MaNDL")));
+                sp.setLoaiHang(new LoaiHang_Dao().selectById(rs.getString("MaLoaiHang")));
+                sp.setHinhAnh(rs.getBytes("HinhAnh"));
+                sp.setVitri(new KeHang_Dao().selectById(rs.getString("ViTri")));
+                sp.setDvcb(new ChiTietDonViTinh_Dao().selectById(maThuoc,rs.getString("MaDVT")));
+                list.add(sp);
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         return list;
     }

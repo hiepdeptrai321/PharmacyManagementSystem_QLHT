@@ -127,7 +127,7 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
         if (keyword.isEmpty()) {
             dsTSLoc = ts_dao.selectAllSLTheoDonViCoBan_ChiTietDVT_Ver2();
         } else {
-            dsTSLoc = ts_dao.selectSLTheoDonViCoBanByTuKhoa_ChiTietDVT(keyword);
+            dsTSLoc = ts_dao.selectSLTheoDonViCoBanByTuKhoa_ChiTietDVT_Ver2(keyword);
         }
         ObservableList<Thuoc_SanPham> data = FXCollections.observableArrayList(dsTSLoc);
         tbThuoc.setItems(data);

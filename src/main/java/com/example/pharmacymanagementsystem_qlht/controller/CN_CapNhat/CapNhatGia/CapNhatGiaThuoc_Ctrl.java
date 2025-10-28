@@ -145,7 +145,6 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
             stage.setScene(new Scene(root));
             stage.showAndWait();
             stage.setOnHidden(e-> loadTable());
-
         } catch (Exception e) {
             e.printStackTrace();
         }

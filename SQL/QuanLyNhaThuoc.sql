@@ -2122,15 +2122,15 @@ BEGIN
             VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuong, @GiaNhap, @ChietKhau, @Thue);
         ---------------------------------------------------------
         -- 5️⃣ Cập nhật kho
-DECLARE @SoLuongTonQuyDoi INT = @SoLuong * @HeSoQuyDoi / @HeSoCoBan;
+        DECLARE @SoLuongTonQuyDoi INT = @SoLuong * @HeSoQuyDoi / @HeSoCoBan;
 
-IF EXISTS (SELECT 1 FROM Thuoc_SP_TheoLo WHERE MaLH = @MaLH)
-    UPDATE Thuoc_SP_TheoLo
-    SET SoLuongTon = SoLuongTon + @SoLuongTonQuyDoi
-    WHERE MaLH = @MaLH;
-ELSE
-    INSERT INTO Thuoc_SP_TheoLo (MaPN, MaThuoc, MaLH, SoLuongTon, NSX, HSD)
-    VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuongTonQuyDoi, @NSX, @HSD);
+        IF EXISTS (SELECT 1 FROM Thuoc_SP_TheoLo WHERE MaLH = @MaLH)
+        UPDATE Thuoc_SP_TheoLo
+        SET SoLuongTon = SoLuongTon + @SoLuongTonQuyDoi
+        WHERE MaLH = @MaLH;
+        ELSE
+        INSERT INTO Thuoc_SP_TheoLo (MaPN, MaThuoc, MaLH, SoLuongTon, NSX, HSD)
+        VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuongTonQuyDoi, @NSX, @HSD);
 
 
         ---------------------------------------------------------

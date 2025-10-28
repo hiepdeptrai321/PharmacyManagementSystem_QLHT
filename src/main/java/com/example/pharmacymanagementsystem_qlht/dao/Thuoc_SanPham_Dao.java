@@ -13,8 +13,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
-    private final String INSERT_SQL = "INSERT INTO Thuoc_SanPham (MaThuoc,TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaNDL, MaLoaiHang, HinhAnh, ViTri) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE Thuoc_SanPham SET TenThuoc=?, HamLuong=?, DonViHL=?, DuongDung=?, QuyCachDongGoi=?, SDK_GPNK=?, HangSX=?, NuocSX=?, MaNDL=?, MaLoaiHang=?, HinhAnh=?, ViTri=? WHERE MaThuoc=?";
+    private final String INSERT_SQL = "INSERT INTO Thuoc_SanPham (MaThuoc,TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaNDL, MaLoaiHang, HinhAnh, ViTri, TrangThaiXoa) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL =
+            "UPDATE Thuoc_SanPham SET " +
+                    "TenThuoc=?, HamLuong=?, DonViHL=?, DuongDung=?, QuyCachDongGoi=?, SDK_GPNK=?, HangSX=?, NuocSX=?, " +
+                    "HinhAnh=?, MaLoaiHang=?, MaNDL=?, ViTri=? " +
+                    "WHERE MaThuoc=?";
     private final String DELETE_SQL = "DELETE FROM Thuoc_SanPham WHERE MaThuoc=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM Thuoc_SanPham WHERE TrangThaiXoa = 0";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM Thuoc_SanPham WHERE MaThuoc=?";
@@ -47,13 +51,29 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
                     "ORDER BY ts.TenThuoc";
     @Override
     public boolean insert(Thuoc_SanPham e) {
-        return ConnectDB.update(INSERT_SQL,e.getMaThuoc(), e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(),e.getNhomDuocLy()!=null?e.getNhomDuocLy().getMaNDL():null, e.getLoaiHang()!=null?e.getLoaiHang().getMaLoaiHang():null, e.getHinhAnh(),e.getVitri()!=null?e.getVitri().getMaKe():null)>0;
+        return ConnectDB.update(INSERT_SQL,e.getMaThuoc(), e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(),e.getNhomDuocLy()!=null?e.getNhomDuocLy().getMaNDL():null, e.getLoaiHang()!=null?e.getLoaiHang().getMaLoaiHang():null, e.getHinhAnh(),e.getVitri()!=null?e.getVitri().getMaKe():null,0)>0;
     }
 
     @Override
     public boolean update(Thuoc_SanPham thuoc) {
-        return ConnectDB.update(UPDATE_SQL, thuoc.getTenThuoc(), thuoc.getHamLuong(), thuoc.getDonViHamLuong(), thuoc.getDuongDung(), thuoc.getQuyCachDongGoi(), thuoc.getSDK_GPNK(), thuoc.getHangSX(), thuoc.getNuocSX(), thuoc.getNhomDuocLy()!=null?thuoc.getNhomDuocLy().getMaNDL():null,thuoc.getLoaiHang()!=null? thuoc.getLoaiHang().getMaLoaiHang():null, thuoc.getHinhAnh(), thuoc.getVitri()!=null?thuoc.getVitri().getMaKe():null, thuoc.getMaThuoc()) > 0;
+        return ConnectDB.update(
+                UPDATE_SQL,
+                thuoc.getTenThuoc(),
+                thuoc.getHamLuong(),
+                thuoc.getDonViHamLuong(),
+                thuoc.getDuongDung(),
+                thuoc.getQuyCachDongGoi(),
+                thuoc.getSDK_GPNK(),
+                thuoc.getHangSX(),
+                thuoc.getNuocSX(),
+                thuoc.getHinhAnh(), // ⚡ Đặt đúng chỗ thứ 9
+                thuoc.getLoaiHang() != null ? thuoc.getLoaiHang().getMaLoaiHang() : null,
+                thuoc.getNhomDuocLy() != null ? thuoc.getNhomDuocLy().getMaNDL() : null,
+                thuoc.getVitri() != null ? thuoc.getVitri().getMaKe() : null,
+                thuoc.getMaThuoc()
+        ) > 0;
     }
+
 
     @Override
     public boolean deleteById(Object... keys) {

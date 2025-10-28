@@ -270,6 +270,10 @@ public class SuaXoaThuoc_Ctrl {
         // Thêm overlay vào AnchorPane
         root.getChildren().add(overlay);
 
+        if(!kiemTraHopLe()){
+            root.getChildren().remove(overlay);
+            return;
+        }
         // Tạo luồng riêng để xử lý cập nhật (tránh lag UI)
         new Thread(() -> {
             try {
@@ -409,40 +413,12 @@ public class SuaXoaThuoc_Ctrl {
         }
     }
 
-    public boolean kiemTraHopLe(Thuoc_SanPham thuoc) {
-        if(thuoc.getTenThuoc().isEmpty()){
+    public boolean kiemTraHopLe() {
+        if(txtTenThuoc.getText().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Lỗi");
             alert.setHeaderText(null);
             alert.setContentText("Tên thuốc không được để trống!");
-            alert.showAndWait();
-            return false;
-        }else if(cbxLoaiHang.getSelectionModel().getSelectedIndex() == 0){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi");
-            alert.setHeaderText(null);
-            alert.setContentText("Vui lòng chọn loại hàng!");
-            alert.showAndWait();
-            return false;
-        }else if(cbxViTri.getSelectionModel().getSelectedIndex() == 0) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi");
-            alert.setHeaderText(null);
-            alert.setContentText("Vui lòng chọn vị trí!");
-            alert.showAndWait();
-            return false;
-        }else if(listChiTietHoatChat.isEmpty()){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi");
-            alert.setHeaderText(null);
-            alert.setContentText("Vui lòng thêm ít nhất một hoạt chất cho thuốc!");
-            alert.showAndWait();
-            return false;
-        }else if(cbxNhomDuocLy.getSelectionModel().getSelectedIndex() == 0){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi");
-            alert.setHeaderText(null);
-            alert.setContentText("Vui lòng chọn nhóm dược lý!");
             alert.showAndWait();
             return false;
         }else if(txtHamLuong.getText().isEmpty()){
@@ -479,6 +455,14 @@ public class SuaXoaThuoc_Ctrl {
             alert.setHeaderText(null);
             alert.setContentText("SĐK/GPNK không được để trống!");
             alert.showAndWait();
+            return false;
+        } else if (txtHamLuong.getText().equals("/d+")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Hàm lượng không hợp lệ! Vui lòng nhập số.");
+            alert.showAndWait();
+            return false;
         }
         return true;
     }

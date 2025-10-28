@@ -2118,7 +2118,7 @@ BEGIN
             VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuong, @GiaNhap, @ChietKhau, @Thue);
         ---------------------------------------------------------
         -- 5️⃣ Cập nhật kho
-           DECLARE @SoLuongTonQuyDoi INT = @SoLuong * @HeSoQuyDoi / @HeSoCoBan;
+           DECLARE @SoLuongTonQuyDoi INT = @SoLuong / @HeSoQuyDoi / @HeSoCoBan;
 
         IF EXISTS (SELECT 1 FROM Thuoc_SP_TheoLo WHERE MaLH = @MaLH)
         UPDATE Thuoc_SP_TheoLo

@@ -4,6 +4,7 @@ import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SanPham_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SP_TheoLo;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -46,9 +47,12 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
 
     }
     public void initialize() {
-        loadTable();
         tfTimThuoc.setOnAction(e-> timThuoc());
         btnReset.setOnAction(e-> LamMoi());
+
+        Platform.runLater(()->{
+            loadTable();
+        });
     }
 
     // 3. XỬ LÝ SỰ KIỆN GIAO DIỆN
@@ -141,6 +145,7 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
             stage.setScene(new Scene(root));
             stage.showAndWait();
             stage.setOnHidden(e-> loadTable());
+
         } catch (Exception e) {
             e.printStackTrace();
         }

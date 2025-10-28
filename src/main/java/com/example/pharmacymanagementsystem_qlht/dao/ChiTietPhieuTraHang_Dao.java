@@ -18,12 +18,13 @@ public class ChiTietPhieuTraHang_Dao implements DaoInterface<ChiTietPhieuTraHang
 
     @Override
     public boolean insert(ChiTietPhieuTraHang e) {
-        return ConnectDB.update(INSERT_SQL,
+        return ConnectDB.update(
+                INSERT_SQL,
                 e.getLoHang().getMaLH(),
                 e.getPhieuTraHang().getMaPT(),
                 e.getThuoc().getMaThuoc(),
-                e.getSoLuong(),
                 e.getDvt() != null ? e.getDvt().getMaDVT() : null,
+                e.getSoLuong(),
                 e.getDonGia(),
                 e.getGiamGia(),
                 e.getLyDoTra()
@@ -32,15 +33,16 @@ public class ChiTietPhieuTraHang_Dao implements DaoInterface<ChiTietPhieuTraHang
 
     @Override
     public boolean update(ChiTietPhieuTraHang e) {
-        return ConnectDB.update(UPDATE_SQL,
+        return ConnectDB.update(
+                UPDATE_SQL,
                 e.getSoLuong(),
-                e.getDvt() != null ? e.getDvt().getMaDVT() : null,
                 e.getDonGia(),
                 e.getGiamGia(),
                 e.getLyDoTra(),
                 e.getLoHang().getMaLH(),
                 e.getPhieuTraHang().getMaPT(),
-                e.getThuoc().getMaThuoc()
+                e.getThuoc().getMaThuoc(),
+                e.getDvt() != null ? e.getDvt().getMaDVT() : null
         ) > 0;
     }
 
@@ -84,6 +86,7 @@ public class ChiTietPhieuTraHang_Dao implements DaoInterface<ChiTietPhieuTraHang
         }
         return list;
     }
+
 
     @Override
     public List<ChiTietPhieuTraHang> selectAll() {

@@ -26,4 +26,16 @@ public class TraHangItem {
     public String getLyDo() { return lyDo.get(); }
     public void setLyDo(String v) { this.lyDo.set(v == null ? "" : v.trim()); }
     public StringProperty lyDoProperty() { return lyDo; }
+    public double getDonGiaUnit() {
+        if (goc == null) return 0;
+        return goc.getDonGia();
+    }
+
+    public double getThanhTienTra() {
+        if (goc == null) return 0;
+        int slTra = getSoLuongTra();
+        double perUnitDiscount = (goc.getSoLuong() > 0) ? Math.max(0, goc.getGiamGia() / (double) goc.getSoLuong()) : 0;
+        double giamGiaTra = perUnitDiscount * slTra;
+        return Math.max(0, slTra * goc.getDonGia() - giamGiaTra);
+    }
 }

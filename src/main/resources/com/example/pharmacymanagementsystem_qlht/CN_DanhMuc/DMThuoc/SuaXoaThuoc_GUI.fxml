@@ -91,7 +91,7 @@
                                 <Font size="13.0" />
                             </font>
                         </Label>
-                        <ComboBox fx:id="cbxNhomDuocLy" layoutX="4.0" layoutY="142.0" prefHeight="25.0" prefWidth="380.0" style="-fx-max-height: 30;" />
+                        <ComboBox fx:id="cbxNhomDuocLy" layoutX="4.0" layoutY="142.0" prefHeight="30.0" prefWidth="388.0" style="-fx-max-height: 30;" />
                         <Label layoutX="4.0" layoutY="125.0" prefHeight="16.0" prefWidth="102.0" text="Nhóm dược lý">
                             <font>
                                 <Font size="13.0" />

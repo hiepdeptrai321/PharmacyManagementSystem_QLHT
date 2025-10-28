@@ -2075,7 +2075,7 @@ BEGIN
         ---------------------------------------------------------
         -- 2️⃣ Xác định hệ số quy đổi dựa trên đơn vị nhập
         ---------------------------------------------------------
-        DECLARE @HeSoQuyDoi INT;
+        DECLARE @HeSoQuyDoi FLOAT;
 
         -- 🔹 Lấy hệ số quy đổi của đơn vị hiện tại
         SELECT @HeSoQuyDoi = HeSoQuyDoi
@@ -2083,7 +2083,7 @@ BEGIN
         WHERE MaThuoc = @MaThuoc AND MaDVT = @MaDVT;
 
         -- 🔹 Lấy hệ số của đơn vị cơ bản
-        DECLARE @HeSoCoBan INT;
+        DECLARE @HeSoCoBan FLOAT;
         SELECT @HeSoCoBan = HeSoQuyDoi
         FROM ChiTietDonViTinh
         WHERE MaThuoc = @MaThuoc AND DonViCoBan = 1;
@@ -2118,7 +2118,7 @@ BEGIN
             VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuong, @GiaNhap, @ChietKhau, @Thue);
         ---------------------------------------------------------
         -- 5️⃣ Cập nhật kho
-           DECLARE @SoLuongTonQuyDoi INT = @SoLuong / @HeSoQuyDoi / @HeSoCoBan;
+           DECLARE @SoLuongTonQuyDoi INT = @SoLuong * @HeSoQuyDoi / @HeSoCoBan;
 
         IF EXISTS (SELECT 1 FROM Thuoc_SP_TheoLo WHERE MaLH = @MaLH)
         UPDATE Thuoc_SP_TheoLo
@@ -2420,7 +2420,6 @@ GO
 
 
 --TRIGGER CẬP NHẬT TRẠNG THÁI ĐẶT HÀNG KHI CÓ THAY ĐỔI TRÊN BẢNG THUỐC_SP_THEOLO
-qwe
 
 
 --================================================================================================================================================================================================

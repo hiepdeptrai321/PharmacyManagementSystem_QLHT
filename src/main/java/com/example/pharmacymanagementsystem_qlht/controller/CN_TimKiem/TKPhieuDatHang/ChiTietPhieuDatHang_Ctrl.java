@@ -118,6 +118,11 @@ public class ChiTietPhieuDatHang_Ctrl  {
             btnDong.setOnAction(e -> ((Stage) btnDong.getScene().getWindow()).close());
         }
         btnLapHoaDon.setOnAction(e -> onLapHoaDon());
+
+        Platform.runLater(()->{
+            Stage dialog = (Stage) btnDong.getScene().getWindow();
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+        });
     }
 
     public void setPhieuDatHang(PhieuDatHang pDat) {

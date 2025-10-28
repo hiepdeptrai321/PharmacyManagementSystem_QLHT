@@ -115,12 +115,11 @@ public class PhieuNhap_Dao implements DaoInterface<PhieuNhap>{
     }
 
     public boolean luuPhieuNhap(PhieuNhap phieu, ChiTietPhieuNhap ctpn, Thuoc_SP_TheoLo lo, String maDVT) {
-        String sql = "{CALL sp_LuuPhieuNhap(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL sp_LuuPhieuNhap(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
         try (PreparedStatement stmt = ConnectDB.getStmt(sql,
                 phieu.getMaPN(),
                 phieu.getNgayNhap(),
-                phieu.getTrangThai(),
                 phieu.getGhiChu(),
                 phieu.getNhaCungCap().getMaNCC(),
                 phieu.getNhanVien().getMaNV(),

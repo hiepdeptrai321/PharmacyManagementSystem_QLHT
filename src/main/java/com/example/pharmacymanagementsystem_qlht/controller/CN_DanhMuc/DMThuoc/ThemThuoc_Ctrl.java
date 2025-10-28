@@ -361,6 +361,13 @@ public class ThemThuoc_Ctrl {
             alert.setContentText("SĐK/GPNK không được để trống!");
             alert.showAndWait();
             return false;
+        } else if (txtHamLuong.getText().equals("/d+")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Hàm lượng không hợp lệ! Vui lòng nhập số.");
+            alert.showAndWait();
+            return false;
         }
         return true;
     }

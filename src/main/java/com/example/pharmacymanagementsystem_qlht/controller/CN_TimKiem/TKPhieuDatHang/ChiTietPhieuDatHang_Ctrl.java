@@ -256,6 +256,12 @@ public class ChiTietPhieuDatHang_Ctrl  {
     }
     // java
     public void onLapHoaDon() {
+        if(lbTT.getText().compareTo("Chưa có hàng")==0){
+            Alert a = new Alert(Alert.AlertType.WARNING, "Phiếu đặt hàng chưa có hàng, không thể lập hóa đơn!", ButtonType.OK);
+            a.initOwner(btnLapHoaDon.getScene().getWindow());
+            a.showAndWait();
+            return;
+        }
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapHoaDon/LapHoaDon_GUI.fxml"));

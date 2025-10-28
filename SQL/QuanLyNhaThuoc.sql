@@ -5,7 +5,7 @@ GO
 USE QuanLyNhaThuoc;
 GO
 
---Link thư mục hình ảnh thuốc 
+--Link thư mục hình ảnh thuốc
 DECLARE @path NVARCHAR(255) = N'C:\Users\Nhut Hao\Desktop\New folder (2)\PharmacyManagementSystem_QLHT\SQL\imgThuoc\';
 
 -- =========================
@@ -159,6 +159,27 @@ CREATE TABLE Thuoc_SP_TheoLo (
     PRIMARY KEY (MaLH),
     FOREIGN KEY (MaPN, MaThuoc,MaLH) REFERENCES ChiTietPhieuNhap(MaPN, MaThuoc,MaLH)
 );
+-- =========================
+-- Bảng DonViTinh
+-- =========================
+CREATE TABLE DonViTinh (
+    MaDVT      VARCHAR(10) PRIMARY KEY,
+    TenDonViTinh NVARCHAR(50) NOT NULL,
+    KiHieu     NVARCHAR(10) NOT NULL
+);
+
+-- =========================
+-- Bảng ChiTietDonViTinh
+-- =========================
+CREATE TABLE ChiTietDonViTinh (
+     MaThuoc       VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
+     MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT),
+     HeSoQuyDoi INT NOT NULL,
+     GiaNhap    FLOAT NOT NULL,
+     GiaBan     FLOAT NOT NULL,
+     DonViCoBan BIT NOT NULL DEFAULT 0,
+     PRIMARY KEY(MaThuoc, MaDVT)
+);
 
 -- =========================
 -- Bảng HoaDon
@@ -247,10 +268,10 @@ CREATE TABLE PhieuDoiHang (
 CREATE TABLE ChiTietPhieuDoiHang (
     MaLH       VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SP_TheoLo(MaLH),
     MaPD       VARCHAR(10) FOREIGN KEY REFERENCES PhieuDoiHang(MaPD),
-	MaThuoc    VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
+    MaThuoc    VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
     SoLuong    INT NOT NULL,
-	MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT),
-	LyDoDoi    NVARCHAR(255) NOT NULL,
+    MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT),
+    LyDoDoi    NVARCHAR(255) NOT NULL,
     PRIMARY KEY (MaLH, MaPD,MaThuoc, MaDVT)
 );
 
@@ -272,14 +293,15 @@ CREATE TABLE PhieuTraHang (
 CREATE TABLE ChiTietPhieuTraHang (
     MaLH       VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SP_TheoLo(MaLH),
     MaPT       VARCHAR(10) NOT NULL FOREIGN KEY REFERENCES PhieuTraHang(MaPT),
-	MaThuoc    VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
+    MaThuoc    VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
     SoLuong    INT NOT NULL,
-	MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT),
+    MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT),
     DonGia     FLOAT NOT NULL,
     GiamGia    FLOAT NOT NULL,
-	LyDoTra    NVARCHAR(255) NOT NULL,
+    LyDoTra    NVARCHAR(20) NOT NULL,
     PRIMARY KEY (MaLH, MaPT,MaThuoc, MaDVT)
 );
+
 
 -- =========================
 -- Bảng HoatChat
@@ -299,27 +321,6 @@ CREATE TABLE ChiTietHoatChat (
     PRIMARY KEY (MaHoatChat, MaThuoc)
 );
 
--- =========================
--- Bảng DonViTinh
--- =========================
-CREATE TABLE DonViTinh (
-    MaDVT      VARCHAR(10) PRIMARY KEY,
-    TenDonViTinh NVARCHAR(50) NOT NULL,
-    KiHieu     NVARCHAR(10) NOT NULL
-);
-
--- =========================
--- Bảng ChiTietDonViTinh
--- =========================
-CREATE TABLE ChiTietDonViTinh (
-    MaThuoc       VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
-    MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT),
-    HeSoQuyDoi INT NOT NULL,
-    GiaNhap    FLOAT NOT NULL,
-    GiaBan     FLOAT NOT NULL,
-	DonViCoBan BIT NOT NULL DEFAULT 0,
-	PRIMARY KEY(MaThuoc, MaDVT)
-);
 -- =========================
 -- Bảng LoaiKhuyenMai
 -- =========================
@@ -1031,7 +1032,7 @@ VALUES
 
 -- Dữ liệu mẫu cho PhieuDoiHang (Không thay đổi)
 INSERT INTO PhieuDoiHang (MaPD, NgayLap, GhiChu, MaNV, MaKH, MaHD)
-VALUES 
+VALUES
 ('PD001', '2025-10-15',  N'Đổi 1 hộp Ibuprofen cùng loại', 'NV002', NULL, 'HD003'),
 ('PD002', '2025-10-16',  N'Đổi 5 viên Paracetamol', 'NV001', 'KH001', 'HD001'),
 ('PD003', '2025-10-17',  N'Đổi 1 hộp Vitamin D3', 'NV003', NULL, 'HD005')
@@ -1552,7 +1553,6 @@ GO
 -- ==========================================================
 
 -- 1. DOANH THU: Hôm nay (Theo giờ)
-
 CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_HomNay
 AS
 BEGIN

@@ -52,7 +52,6 @@ public class PhieuDoiHang_Dao implements DaoInterface<PhieuDoiHang> {
                 pdh.setNhanVien(new NhanVien_Dao().selectById(rs.getString("MaNV")));
                 pdh.setKhachHang(new KhachHang_Dao().selectById(rs.getString("MaKH")));
                 pdh.setNgayLap(rs.getTimestamp("NgayLap"));
-                pdh.setLyDoDoi(rs.getString("LyDoDoi"));
                 pdh.setGhiChu(rs.getString("GhiChu"));
                 pdh.setHoaDon(new HoaDon_Dao().selectById(rs.getString("MaHD")));
                 list.add(pdh);

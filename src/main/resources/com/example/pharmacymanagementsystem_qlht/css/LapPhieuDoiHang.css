@@ -127,3 +127,26 @@
     -fx-background-radius: 6;
     -fx-effect: dropshadow(gaussian, #bdbdbd, 2, 0.1, 0, 1);
 }
+.btn-doi {
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 4 10;
+}
+.btn-doi:hover {
+    -fx-background-color: #218838;
+}
+
+.btn-bo {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 4 10;
+}
+.btn-bo:hover {
+    -fx-background-color: #bd2130;
+}

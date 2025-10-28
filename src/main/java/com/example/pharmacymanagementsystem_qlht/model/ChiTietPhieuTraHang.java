@@ -10,11 +10,12 @@ public class ChiTietPhieuTraHang {
     private int soLuong;
     private double donGia;
     private double giamGia;
+    private String lyDo;
     public ChiTietPhieuTraHang() {
 
     }
 
-    public ChiTietPhieuTraHang(Thuoc_SP_TheoLo loHang, PhieuTraHang phieuTraHang, Thuoc_SanPham thuoc, DonViTinh dvt, int soLuong, double donGia, double giamGia) {
+    public ChiTietPhieuTraHang(Thuoc_SP_TheoLo loHang, PhieuTraHang phieuTraHang, Thuoc_SanPham thuoc, DonViTinh dvt, int soLuong, double donGia, double giamGia, String lyDo) {
         this.loHang = loHang;
         this.phieuTraHang = phieuTraHang;
         this.thuoc = thuoc;
@@ -22,6 +23,7 @@ public class ChiTietPhieuTraHang {
         this.soLuong = soLuong;
         this.donGia = donGia;
         this.giamGia = giamGia;
+        this.lyDo = lyDo;
     }
 
 
@@ -73,6 +75,19 @@ public class ChiTietPhieuTraHang {
     public void setGiamGia(double giamGia) {
         this.giamGia = giamGia;
     }
+    public DonViTinh getDvt() {
+        return dvt;
+    }
+    public void setDvt(DonViTinh dvt) {
+        this.dvt = dvt;
+    }
+    public String getLyDoTra() {
+        return lyDo;
+    }
+    public void setLyDoTra(String lyDo) {
+        this.lyDo = lyDo;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -100,6 +115,7 @@ public class ChiTietPhieuTraHang {
                 ", soLuong=" + soLuong +
                 ", donGia=" + donGia +
                 ", giamGia=" + giamGia +
+                ", lyDo='" + lyDo + '\'' +
                 '}';
     }
 }

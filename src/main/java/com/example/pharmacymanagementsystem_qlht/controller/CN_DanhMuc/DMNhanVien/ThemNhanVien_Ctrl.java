@@ -41,15 +41,12 @@ public class ThemNhanVien_Ctrl{
 
     public void btnThemTaiKhoan(ActionEvent actionEvent) {
         try {
-            Stage stage = new Stage();
+            Stage dialog = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNhanVien/SuataiKhoan_GUI.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
 
             SuaTaiKhoan_Ctrl ctrl = loader.getController();
             ctrl.initialize(nhanVien);
-
-            stage.setScene(scene);
 
             if(ctrl.isSaved){
                 NhanVien updatedNV = ctrl.getUpdatedNhanVien();
@@ -58,7 +55,12 @@ public class ThemNhanVien_Ctrl{
                 nhanVien.setMatKhau(updatedNV.getMatKhau());
             }
 
-            stage.show();
+            dialog.initOwner(txtDiaChi.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Thêm tài khoản nhân viên");
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+            dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }

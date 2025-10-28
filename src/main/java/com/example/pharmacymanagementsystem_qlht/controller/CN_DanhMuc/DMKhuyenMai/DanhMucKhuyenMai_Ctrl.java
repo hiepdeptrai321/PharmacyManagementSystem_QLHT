@@ -6,6 +6,7 @@ import com.example.pharmacymanagementsystem_qlht.dao.KhuyenMai_Dao;
 import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SP_TangKem_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.KhuyenMai;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -42,9 +43,11 @@ public class DanhMucKhuyenMai_Ctrl extends Application {
     private KhuyenMai_Dao khuyenMaiDao = new KhuyenMai_Dao();
 
     public void initialize() {
-        loadTable();
         tfTimKM.setOnAction(e -> timKhuyenMai());
         btnLamMoi.setOnAction(e-> LamMoi());
+        Platform.runLater(()->{
+            loadTable();
+        });
     }
 
     @Override
@@ -126,12 +129,18 @@ public class DanhMucKhuyenMai_Ctrl extends Application {
 
     public void btnThemKMClick() {
         try {
-            Stage stage = new Stage();
+            Stage dialog = new Stage();
             Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhuyenMai/ThemKhuyenMai_GUI.fxml"));
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setOnHidden(e -> loadTable());
-            stage.show();
+
+            dialog.setOnHidden(e -> loadTable());
+
+            dialog.initOwner(btnLamMoi.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Thêm khuyến mãi");
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+            dialog.showAndWait();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

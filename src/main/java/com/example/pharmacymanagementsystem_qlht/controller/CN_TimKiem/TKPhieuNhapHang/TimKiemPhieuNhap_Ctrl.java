@@ -184,7 +184,7 @@ public class TimKiemPhieuNhap_Ctrl extends Application {
             dialog.initOwner(txtTimKiem.getScene().getWindow());
             dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
             dialog.setScene(new Scene(root));
-            dialog.setTitle("Chi tiết hoạt động");
+            dialog.setTitle("Chi tiết phiếu nhập hàng");
             dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
             dialog.showAndWait();
         } catch (Exception e) {

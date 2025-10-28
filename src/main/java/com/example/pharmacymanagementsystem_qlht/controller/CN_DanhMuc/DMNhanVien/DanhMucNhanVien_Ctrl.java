@@ -5,6 +5,7 @@ import com.example.pharmacymanagementsystem_qlht.dao.NhanVien_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.NhanVien;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -53,10 +54,12 @@ public class DanhMucNhanVien_Ctrl extends Application {
     }
 
     public void initialize() {
-        loadData();
         txtTim.setOnAction(e->TimKiem());
         btnTim.setOnAction(e->TimKiem());
         btnLamMoi.setOnAction(e-> LamMoi());
+        Platform.runLater(()->{
+            loadData();
+        });
     }
 
     public void loadData() {
@@ -176,18 +179,21 @@ public class DanhMucNhanVien_Ctrl extends Application {
 
     public void btnCapNhat(NhanVien nhanVien) {
         try {
-            Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNhanVien/SuaXoaNhanVien_GUI.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
 
             SuaXoaNhanVien_Ctrl ctrl = loader.getController();
             NhanVien copy = new NhanVien(nhanVien);
             ctrl.initialize(copy);
             ctrl.setParent(this);
 
-            stage.setScene(scene);
-            stage.show();
+            Stage dialog = new Stage();
+            dialog.initOwner(txtTim.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Cập nhật nhân viên");
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+            dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -196,17 +202,19 @@ public class DanhMucNhanVien_Ctrl extends Application {
 
     public void btnThemNhanVien(ActionEvent actionEvent) {
         try{
-            Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNhanVien/ThemNhanVien_GUI.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
 
             ThemNhanVien_Ctrl ctrl = loader.getController();
             ctrl.setParent(this);
 
-
-            stage.setScene(scene);
-            stage.show();
+            Stage dialog = new Stage();
+            dialog.initOwner(txtTim.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Thêm nhân viên");
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+            dialog.showAndWait();
         }catch (Exception e){
             e.printStackTrace();
         }

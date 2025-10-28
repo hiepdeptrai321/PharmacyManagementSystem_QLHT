@@ -6,7 +6,7 @@ USE QuanLyNhaThuoc;
 GO
 
 --Link thư mục hình ảnh thuốc
-DECLARE @path NVARCHAR(255) = N'C:\Users\hiepdeptrai\Desktop\hk1_2025-2026\QLHT2\SQL\imgThuoc\';
+DECLARE @path NVARCHAR(255) = N'C:\Users\Nhut Hao\Desktop\New folder (2)\PharmacyManagementSystem_QLHT\SQL\imgThuoc\';
 
 -- =========================
 -- Bảng KhachHang
@@ -1878,8 +1878,21 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- CTE 1: Lấy đơn vị tính cơ bản (base unit) cho mỗi sản phẩm
-    WITH BaseUnits AS (
+    -- CTE 0: Lấy hệ số quy đổi CƠ BẢN cho mỗi thuốc
+    -- Thêm ISNULL để tránh lỗi chia cho 0 nếu chưa set ĐVTCB
+    WITH DonViCoBan AS (
+        SELECT
+            MaThuoc,
+            MaDVT,
+            ISNULL(HeSoQuyDoi, 1) AS HeSoQuyDoi
+        FROM
+            ChiTietDonViTinh
+        WHERE
+            DonViCoBan = 1
+    ),
+
+    -- CTE 1: Lấy đơn vị tính cơ bản (base unit) để hiển thị
+    BaseUnits AS (
         SELECT
             CT.MaThuoc,
             DVT.KiHieu AS DVT
@@ -1903,18 +1916,27 @@ BEGIN
             BaseUnits AS BU ON T.MaThuoc = BU.MaThuoc
     ),
 
-    -- CTE 3: Tổng hợp tất cả các giao dịch (Nhập và Xuất)
+    -- CTE 3: Tổng hợp tất cả các giao dịch (ĐÃ SỬA LỖI QUY ĐỔI)
     Transactions AS (
         -- 1. Nhập hàng từ Nhà cung cấp
         SELECT
             CTPN.MaThuoc,
             PN.NgayNhap AS NgayGiaoDich,
-            CTPN.SoLuong AS SoLuongNhap,
+            -- [SỬA] Công thức quy đổi: SoLuong_Goc * (HeSo_Goc / HeSo_CoBan)
+            CEILING(
+                CTPN.SoLuong * ISNULL(DVT.HeSoQuyDoi, 1) / DVTCB.HeSoQuyDoi
+            ) AS SoLuongNhap,
             0 AS SoLuongXuat
         FROM
             ChiTietPhieuNhap AS CTPN
         JOIN
             PhieuNhap AS PN ON CTPN.MaPN = PN.MaPN
+        -- Join để lấy hệ số của đơn vị GIAO DỊCH
+        LEFT JOIN
+            ChiTietDonViTinh AS DVT ON CTPN.MaThuoc = DVT.MaThuoc AND CTPN.MaDVT = DVT.MaDVT
+        -- Join để lấy hệ số của đơn vị CƠ BẢN
+        JOIN
+            DonViCoBan AS DVTCB ON CTPN.MaThuoc = DVTCB.MaThuoc
 
         UNION ALL
 
@@ -1922,7 +1944,10 @@ BEGIN
         SELECT
             L.MaThuoc,
             PT.NgayLap AS NgayGiaoDich,
-            CTPT.SoLuong AS SoLuongNhap,
+            -- [SỬA] Áp dụng quy đổi
+            CEILING(
+                CTPT.SoLuong * ISNULL(DVT.HeSoQuyDoi, 1) / DVTCB.HeSoQuyDoi
+            ) AS SoLuongNhap,
             0 AS SoLuongXuat
         FROM
             ChiTietPhieuTraHang AS CTPT
@@ -1930,21 +1955,30 @@ BEGIN
             PhieuTraHang AS PT ON CTPT.MaPT = PT.MaPT
         JOIN
             Thuoc_SP_TheoLo AS L ON CTPT.MaLH = L.MaLH
+        LEFT JOIN
+            ChiTietDonViTinh AS DVT ON L.MaThuoc = DVT.MaThuoc AND CTPT.MaDVT = DVT.MaDVT
+        JOIN
+            DonViCoBan AS DVTCB ON L.MaThuoc = DVTCB.MaThuoc
 
         UNION ALL
 
         -- 3. Nhập hàng từ Đổi hàng (Khách trả lại, SoLuong < 0)
         SELECT
-            L.MaThuoc,
+            CTPD.MaThuoc,
             PD.NgayLap AS NgayGiaoDich,
-            ABS(CTPD.SoLuong) AS SoLuongNhap, -- Lấy giá trị tuyệt đối
+            -- [SỬA] Áp dụng quy đổi
+            CEILING(
+                ABS(CTPD.SoLuong) * ISNULL(DVT.HeSoQuyDoi, 1) / DVTCB.HeSoQuyDoi
+            ) AS SoLuongNhap,
             0 AS SoLuongXuat
         FROM
             ChiTietPhieuDoiHang AS CTPD
         JOIN
             PhieuDoiHang AS PD ON CTPD.MaPD = PD.MaPD
+        LEFT JOIN
+            ChiTietDonViTinh AS DVT ON CTPD.MaThuoc = DVT.MaThuoc AND CTPD.MaDVT = DVT.MaDVT
         JOIN
-            Thuoc_SP_TheoLo AS L ON CTPD.MaLH = L.MaLH
+            DonViCoBan AS DVTCB ON CTPD.MaThuoc = DVTCB.MaThuoc
         WHERE
             CTPD.SoLuong < 0
 
@@ -1955,28 +1989,40 @@ BEGIN
             L.MaThuoc,
             HD.NgayLap AS NgayGiaoDich,
             0 AS SoLuongNhap,
-            CTHD.SoLuong AS SoLuongXuat
+            -- [SỬA] Áp dụng quy đổi
+            CEILING(
+                CTHD.SoLuong * ISNULL(DVT.HeSoQuyDoi, 1) / DVTCB.HeSoQuyDoi
+            ) AS SoLuongXuat
         FROM
             ChiTietHoaDon AS CTHD
         JOIN
             HoaDon AS HD ON CTHD.MaHD = HD.MaHD
         JOIN
             Thuoc_SP_TheoLo AS L ON CTHD.MaLH = L.MaLH
+        LEFT JOIN
+            ChiTietDonViTinh AS DVT ON L.MaThuoc = DVT.MaThuoc AND CTHD.MaDVT = DVT.MaDVT
+        JOIN
+            DonViCoBan AS DVTCB ON L.MaThuoc = DVTCB.MaThuoc
 
         UNION ALL
 
         -- 5. Xuất hàng do Đổi hàng (Khách lấy hàng mới, SoLuong > 0)
         SELECT
-            L.MaThuoc,
+            CTPD.MaThuoc,
             PD.NgayLap AS NgayGiaoDich,
             0 AS SoLuongNhap,
-            CTPD.SoLuong AS SoLuongXuat
+            -- [SỬA] Áp dụng quy đổi
+            CEILING(
+                CTPD.SoLuong * ISNULL(DVT.HeSoQuyDoi, 1) / DVTCB.HeSoQuyDoi
+            ) AS SoLuongXuat
         FROM
             ChiTietPhieuDoiHang AS CTPD
         JOIN
             PhieuDoiHang AS PD ON CTPD.MaPD = PD.MaPD
+        LEFT JOIN
+            ChiTietDonViTinh AS DVT ON CTPD.MaThuoc = DVT.MaThuoc AND CTPD.MaDVT = DVT.MaDVT
         JOIN
-            Thuoc_SP_TheoLo AS L ON CTPD.MaLH = L.MaLH
+            DonViCoBan AS DVTCB ON CTPD.MaThuoc = DVTCB.MaThuoc
         WHERE
             CTPD.SoLuong > 0
     ),
@@ -1994,7 +2040,7 @@ BEGIN
             MaThuoc, CONVERT(date, NgayGiaoDich)
     )
 
-    -- Tính toán cuối cùng
+    -- Tính toán cuối cùng (Không thay đổi)
     SELECT
         P.MaThuoc,
         P.TenThuoc,
@@ -2092,9 +2138,6 @@ BEGIN
         SET @HeSoQuyDoi = ISNULL(@HeSoQuyDoi, 1);
         SET @HeSoCoBan = ISNULL(@HeSoCoBan, 1);
 
-        -- 🔹 Tính quy đổi: về đơn vị cơ bản
-        SET @SoLuongTon = ISNULL(@SoLuongTon, @SoLuong * @HeSoQuyDoi / @HeSoCoBan);
-
         ---------------------------------------------------------
         -- 3️⃣ Phiếu nhập
         ---------------------------------------------------------
@@ -2111,14 +2154,19 @@ BEGIN
         ---------------------------------------------------------
         IF EXISTS (SELECT 1 FROM ChiTietPhieuNhap WHERE MaPN = @MaPN AND MaThuoc = @MaThuoc AND MaLH = @MaLH)
             UPDATE ChiTietPhieuNhap
-            SET SoLuong = @SoLuong, GiaNhap = @GiaNhap, ChietKhau = @ChietKhau, Thue = @Thue
+            SET SoLuong = @SoLuong, 
+                GiaNhap = @GiaNhap, 
+                ChietKhau = @ChietKhau, 
+                Thue = @Thue,
+                MaDVT = @MaDVT  -- [ĐÃ SỬA] Thêm MaDVT vào UPDATE
             WHERE MaPN = @MaPN AND MaThuoc = @MaThuoc AND MaLH = @MaLH;
         ELSE
-            INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
-            VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuong, @GiaNhap, @ChietKhau, @Thue);
+            INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue, MaDVT) -- [ĐÃ SỬA] Thêm MaDVT
+            VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuong, @GiaNhap, @ChietKhau, @Thue, @MaDVT); -- [ĐÃ SỬA] Thêm @MaDVT
+
         ---------------------------------------------------------
         -- 5️⃣ Cập nhật kho
-           DECLARE @SoLuongTonQuyDoi INT = @SoLuong * @HeSoQuyDoi / @HeSoCoBan;
+           DECLARE @SoLuongTonQuyDoi INT = CEILING(@SoLuong * @HeSoQuyDoi / @HeSoCoBan); -- Dùng CEILING
 
         IF EXISTS (SELECT 1 FROM Thuoc_SP_TheoLo WHERE MaLH = @MaLH)
         UPDATE Thuoc_SP_TheoLo

@@ -123,7 +123,7 @@ public class ThongKeBanHang_Ctrl extends Application implements Initializable {
         chartDoanhThu.managedProperty().bind(chartDoanhThu.visibleProperty());
         tableDoanhThu.managedProperty().bind(tableDoanhThu.visibleProperty());
         DecimalFormat formatter = new DecimalFormat("#,##0");
-        cboThoiGian.getItems().addAll("Hôm nay", "Tuần này", "Tháng này", "Quý này", "Tùy chọn");
+        cboThoiGian.getItems().addAll("Hôm nay", "Tuần này", "Tháng này", "Năm Nay", "Tùy chọn");
         cboXuatfile.getItems().addAll("Excel", "PDF");
 
 

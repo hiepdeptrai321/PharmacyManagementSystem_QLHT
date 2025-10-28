@@ -45,7 +45,7 @@
         <ComboBox fx:id="cbxTimKiem" layoutX="21.0" layoutY="79.0" prefHeight="40.0" prefWidth="179.0" promptText="Tìm theo" styleClass="btntim" />
         <TextField fx:id="txtTimKiem" layoutX="210.0" layoutY="79.0" prefHeight="40.0" prefWidth="379.0" promptText="Tìm kiếm" styleClass="tftim" />
 
-        <Button id="btnReset" layoutX="601.0" layoutY="81.0" mnemonicParsing="false" onAction="#btnXoaRong" prefHeight="21.0" prefWidth="52.0" styleClass="btntim" stylesheets="@../../css/QuanLyThuoc.css">
+        <Button id="btnReset" layoutX="601.0" layoutY="79.0" mnemonicParsing="false" onAction="#btnXoaRong" prefHeight="40.0" prefWidth="52.0" styleClass="btntim" stylesheets="@../../css/QuanLyThuoc.css">
             <graphic>
                 <ImageView fitHeight="20.0" fitWidth="34.0" preserveRatio="true">
                     <image>

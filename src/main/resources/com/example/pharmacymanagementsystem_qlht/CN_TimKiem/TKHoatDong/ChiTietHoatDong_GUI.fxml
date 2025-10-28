@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="344.0" prefWidth="583.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoatDong.ChiTietHoatDong_Ctrl">
+<Pane prefHeight="344.0" prefWidth="583.0" style="-fx-font-size: 13 px;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoatDong.ChiTietHoatDong_Ctrl">
     <children>
         <Label layoutX="13.5" layoutY="8.0" prefHeight="31.0" prefWidth="555.0" styleClass="lbtitle" text="Thông tin chi tiết hoạt động">
             <font>

@@ -1,7 +1,9 @@
 package com.example.pharmacymanagementsystem_qlht.dao;
 
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
+import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuNhap;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SP_TheoLo;
+import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -189,10 +191,51 @@ public class Thuoc_SP_TheoLo_Dao implements DaoInterface<Thuoc_SP_TheoLo> {
     }
 
     public List<Thuoc_SP_TheoLo> selectHangSapHetHan() {
-        return this.selectBySql("{call sp_HangSapHetHan}");
+        List<Thuoc_SP_TheoLo> list = new ArrayList<>();
+        String sql = "{call sp_HangSapHetHan}";
+
+        try (Connection con = ConnectDB.getInstance(); // 🔹 Tạo connection mới
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Thuoc_SP_TheoLo lo = new Thuoc_SP_TheoLo();
+                lo.setMaLH(rs.getString("MaLH"));
+                lo.setHsd(rs.getDate("HSD"));
+                lo.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getString("MaThuoc")));
+
+                list.add(lo);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
     }
 
+
     public List<Thuoc_SP_TheoLo> selectHangDaHetHan() {
-        return this.selectBySql("{call sp_HangHetHan}");
+        List<Thuoc_SP_TheoLo> list = new ArrayList<>();
+        String sql = "{call sp_HangHetHan}";
+
+        try (Connection con = ConnectDB.getInstance();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Thuoc_SP_TheoLo lo = new Thuoc_SP_TheoLo();
+                lo.setMaLH(rs.getString("MaLH"));
+                lo.setHsd(rs.getDate("HSD"));
+                lo.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getString("MaThuoc")));
+
+                list.add(lo);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
     }
 }

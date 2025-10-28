@@ -28,36 +28,36 @@
                         <font>
                            <Font size="13.0" />
                         </font></Label>
-                      <Label fx:id="lblNgayLapValue" layoutX="346.0" layoutY="1.0" prefHeight="20.0" prefWidth="99.0" styleClass="value-label" text="01/10/2025">
+                      <Label fx:id="lblNgayLapValue" layoutX="353.0" layoutY="2.0" prefHeight="20.0" prefWidth="174.0" styleClass="value-label" text="01/10/2025">
                         <font>
                            <Font size="13.0" />
                         </font></Label>
                       <Label layoutX="282.0" layoutY="2.0" styleClass="bold-label label-padding" text="Ngày lập: ">
                         <font>
-                           <Font size="13.0" />
+                           <Font name="System Bold" size="14.0" />
                         </font></Label>
-                     <Label fx:id="lblMaDonThuocValue" layoutX="690.0" prefHeight="20.0" prefWidth="99.0" styleClass="value-label" text="0">
+                     <Label fx:id="lblMaDonThuocValue" layoutX="759.0" layoutY="3.0" prefHeight="20.0" prefWidth="99.0" styleClass="value-label" text="0">
                         <font>
                            <Font size="13.0" />
                         </font>
                      </Label>
-                     <Label fx:id="lblLoaiHoaDon" layoutX="491.0" layoutY="1.0" prefHeight="19.0" prefWidth="188.0" styleClass="bold-label label-padding" text="Hóa đơn cho thuốc kê đơn(OTC)">
+                     <Label fx:id="lblLoaiHoaDon" layoutX="537.0" layoutY="2.0" prefHeight="20.0" prefWidth="219.0" styleClass="bold-label label-padding" text="Hóa đơn cho thuốc kê đơn(OTC):">
                         <font>
-                           <Font size="13.0" />
+                           <Font name="System Bold" size="14.0" />
                         </font>
                      </Label>
                   </children>
                </Pane>
                   <Label layoutX="5.0" layoutY="69.0" styleClass="section-label" text="DANH SÁCH SẢN PHẨM" />
-               <TableView fx:id="tblChiTietHoaDon" layoutX="9.0" layoutY="103.0" prefHeight="765.0" prefWidth="1130.0" styleClass="main-table">
+               <TableView fx:id="tblChiTietHoaDon" layoutX="9.0" layoutY="103.0" prefHeight="765.0" prefWidth="1130.0" style="-fx-font-size: 14;" styleClass="main-table">
                    <columns>
-                       <TableColumn fx:id="colNSTT" prefWidth="50.0" text="STT" />
-                       <TableColumn fx:id="colNTen" prefWidth="374.0" text="Tên sản phẩm/Hoạt chất" />
-                       <TableColumn fx:id="colNSL" prefWidth="170.0" text="Số lượng" />
-                       <TableColumn fx:id="colNDonVi" prefWidth="111.66668701171875" text="Đơn vị" />
-                       <TableColumn fx:id="colNDonGia" prefWidth="100.0" text="Đơn giá" />
-                       <TableColumn fx:id="colNChietKhau" prefWidth="100.0" text="Giảm giá" />
-                       <TableColumn fx:id="colNThanhTien" prefWidth="100.0" text="Thành tiền" />
+                       <TableColumn fx:id="colNSTT" prefWidth="50.0" style="-fx-alignment: CENTER;" text="STT" />
+                       <TableColumn fx:id="colNTen" prefWidth="345.0" style="-fx-alignment: CENTER_LEFT;" text="Tên sản phẩm/Hoạt chất" />
+                       <TableColumn fx:id="colNSL" prefWidth="130.0" style="-fx-alignment: CENTER;" text="Số lượng" />
+                       <TableColumn fx:id="colNDonVi" prefWidth="103.0" style="-fx-alignment: CENTER;" text="Đơn vị" />
+                       <TableColumn fx:id="colNDonGia" prefWidth="170.0" style="-fx-alignment: CENTER;" text="Đơn giá" />
+                       <TableColumn fx:id="colNChietKhau" prefWidth="148.0" style="-fx-alignment: CENTER;" text="Giảm giá" />
+                       <TableColumn fx:id="colNThanhTien" prefWidth="149.0" style="-fx-alignment: CENTER;" text="Thành tiền" />
                    </columns>
                    <columnResizePolicy>
                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -73,7 +73,10 @@
                <Pane layoutX="-3.0" layoutY="334.0" prefHeight="522.0" prefWidth="457.0" styleClass="info-pane">
 
                </Pane>
-                  <Label styleClass="section-label" text="THÔNG TIN GIAO DỊCH" />
+                  <Label text="THÔNG TIN GIAO DỊCH">
+                  <font>
+                     <Font name="Arial Bold" size="24.0" />
+                  </font></Label>
                <Pane layoutY="41.0" prefHeight="213.0" prefWidth="453.0" styleClass="info-pane">
                    <Label layoutX="5.0" layoutY="5.0" styleClass="bold-label" text="Tên nhân viên:" />
                    <Label fx:id="lblTenNhanVienValue" layoutX="140.0" layoutY="5.0" styleClass="value-label" />
@@ -86,11 +89,14 @@
                </Pane>
 
                   <Separator layoutY="216.0" />
-                  <Label layoutY="297.3999938964844" styleClass="section-label" text="TÓM TẮT THANH TOÁN" />
+                  <Label layoutY="297.3999938964844" style="-fx-font-weight: bold; -fx-font-size: 24;" text="TÓM TẮT THANH TOÁN">
+                  <font>
+                     <Font size="24.0" />
+                  </font></Label>
                <Pane layoutY="297.0" prefHeight="361.0" prefWidth="452.0" styleClass="summary-pane">
                    <Label layoutX="5.0" layoutY="130.0" styleClass="label-normal" text="Tổng tiền hàng (trước VAT):">
                      <font>
-                        <Font size="13.0" />
+                        <Font name="System Bold" size="14.0" />
                      </font></Label>
                    <Label fx:id="lblGiamTheoSP" layoutX="240.0" layoutY="78.0" styleClass="bold-label value-label" text="0 VNĐ">
                      <font>
@@ -98,7 +104,7 @@
                      </font></Label>
                    <Label layoutX="5.0" layoutY="76.0" styleClass="label-normal" text="Giảm theo sản phẩm::">
                      <font>
-                        <Font size="13.0" />
+                        <Font name="System Bold" size="14.0" />
                      </font></Label>
                    <Label fx:id="lblTongTienHang" layoutX="240.0" layoutY="130.0" styleClass="label-discount bold-label value-label" text="0 VNĐ">
                      <font>
@@ -106,7 +112,7 @@
                      </font></Label>
                    <Label layoutX="5.0" layoutY="184.0" styleClass="label-normal" text="Thuế (VAT):">
                      <font>
-                        <Font size="13.0" />
+                        <Font name="Arial Bold" size="14.0" />
                      </font></Label>
                    <Label fx:id="lblVAT" layoutX="240.0" layoutY="184.0" styleClass="bold-label value-label" text="0 VNĐ">
                      <font>
@@ -124,7 +130,7 @@
                    <Separator layoutY="311.0" prefHeight="2.0" prefWidth="553.0" />
                   <Label layoutX="6.0" layoutY="230.0" styleClass="label-normal" text="Giảm theo hóa đơn:">
                      <font>
-                        <Font size="13.0" />
+                        <Font name="System Bold" size="14.0" />
                      </font></Label>
                   <Label fx:id="lblGiamTheoHD" layoutX="241.0" layoutY="230.0" styleClass="bold-label value-label" text="0 VNĐ">
                      <font>
@@ -133,7 +139,7 @@
                </Pane>
                <Pane layoutY="619.0" prefHeight="220.0" prefWidth="452.0">
                   <children>
-                       <Button fx:id="btnInHoaDon" layoutX="33.0" layoutY="88.0" prefHeight="70.0" prefWidth="132.0" styleClass="print-btn" text="In Hóa Đơn">
+                       <Button fx:id="btnInHoaDon" layoutX="9.0" layoutY="40.0" prefHeight="70.0" prefWidth="435.0" styleClass="print-btn" text="In Hóa Đơn">
                         <font>
                            <Font name="System Bold" size="14.0" />
                         </font>
@@ -145,7 +151,7 @@
                            </DropShadow>
                         </effect>
                      </Button>
-                       <Button fx:id="btnDong" layoutX="284.0" layoutY="89.0" prefHeight="70.0" prefWidth="132.0" styleClass="danger-btn" text="Hoàn Tất">
+                       <Button fx:id="btnDong" layoutX="11.0" layoutY="136.0" prefHeight="70.0" prefWidth="429.0" styleClass="danger-btn" text="Hoàn Tất">
                         <font>
                            <Font name="System Bold" size="14.0" />
                         </font>

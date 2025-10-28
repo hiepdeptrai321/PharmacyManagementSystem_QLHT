@@ -39,9 +39,6 @@ public class ThemKe_Ctrl extends Application {
         btnHuy.setOnAction(e -> btnHuyClick());
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
     @Override
     public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKeHang/ThemKe.fxml"));

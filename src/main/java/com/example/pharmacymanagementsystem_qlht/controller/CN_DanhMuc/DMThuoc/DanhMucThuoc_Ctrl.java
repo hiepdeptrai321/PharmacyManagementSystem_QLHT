@@ -19,6 +19,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class DanhMucThuoc_Ctrl extends Application {
@@ -33,8 +35,6 @@ public class DanhMucThuoc_Ctrl extends Application {
     public TableColumn<Thuoc_SanPham,String> colLoaiHang;
     public TableColumn<Thuoc_SanPham,String> colViTri;
     public TableView<Thuoc_SanPham> tbl_Thuoc;
-    public Button btnImport;
-    public Button btnExport;
     public TextField tfTimThuoc;
     public Button btnTimThuoc;
     public Button btnThemThuoc;
@@ -54,6 +54,7 @@ public class DanhMucThuoc_Ctrl extends Application {
 
     public void initialize() {
         Platform.runLater(() -> {
+            list = thuocDao.selectAll();
             loadTable();
         });
         btnLamMoi.setOnAction(e-> LamMoi());
@@ -63,7 +64,6 @@ public class DanhMucThuoc_Ctrl extends Application {
 
 //  3. Tải bảng
     public void loadTable() {
-        list = thuocDao.selectAll();
         ObservableList<Thuoc_SanPham> data = FXCollections.observableArrayList(list);
         colSTT.setCellValueFactory(cellData ->
                 new SimpleStringProperty(String.valueOf(tbl_Thuoc.getItems().indexOf(cellData.getValue()) + 1))
@@ -194,6 +194,8 @@ public class DanhMucThuoc_Ctrl extends Application {
     }
 
     public void refestTable(){
+        list.clear();
+        list = thuocDao.selectAll();
         loadTable();
     }
 

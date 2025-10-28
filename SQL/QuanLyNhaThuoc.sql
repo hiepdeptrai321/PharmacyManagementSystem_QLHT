@@ -6,7 +6,7 @@ USE QuanLyNhaThuoc;
 GO
 
 --Link thư mục hình ảnh thuốc
-DECLARE @path NVARCHAR(255) = N'C:\Users\Nhut Hao\Desktop\New folder (2)\PharmacyManagementSystem_QLHT\SQL\imgThuoc\';
+DECLARE @path NVARCHAR(255) = N'C:\Users\hiepdeptrai\Desktop\hk1_2025-2026\QLHT2\SQL\imgThuoc\';
 
 -- =========================
 -- Bảng KhachHang
@@ -112,7 +112,8 @@ CREATE TABLE Thuoc_SanPham (
     HinhAnh    VARBINARY(MAX) NULL,
 	MaLoaiHang VARCHAR(10) FOREIGN KEY REFERENCES LoaiHang(MaLoaiHang),
     MaNDL      VARCHAR(10) FOREIGN KEY REFERENCES NhomDuocLy(MaNDL),
-	ViTri	   VARCHAR(10) FOREIGN KEY REFERENCES KeHang(MaKe)
+	ViTri	   VARCHAR(10) FOREIGN KEY REFERENCES KeHang(MaKe),
+    TrangThaiXoa BIT NOT NULL
 );
 
 
@@ -151,6 +152,8 @@ CREATE TABLE Thuoc_SP_TheoLo (
     MaThuoc VARCHAR(10),
     MaLH    VARCHAR(10),
     SoLuongTon INT,
+	SoLuongDat INT DEFAULT 0,
+	SoLuongGiu INT DEFAULT 0,
     NSX DATE,
     HSD DATE,
     PRIMARY KEY (MaLH),
@@ -171,7 +174,7 @@ CREATE TABLE DonViTinh (
 CREATE TABLE ChiTietDonViTinh (
      MaThuoc       VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
      MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT),
-     HeSoQuyDoi INT NOT NULL,
+     HeSoQuyDoi FLOAT NOT NULL,
      GiaNhap    FLOAT NOT NULL,
      GiaBan     FLOAT NOT NULL,
      DonViCoBan BIT NOT NULL DEFAULT 0,
@@ -225,7 +228,8 @@ CREATE TABLE PhieuDatHang (
     SoTienCoc  FLOAT,
     GhiChu     NVARCHAR(255),
     MaKH       VARCHAR(10) FOREIGN KEY REFERENCES KhachHang(MaKH),
-    MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV)
+    MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV),
+	TrangThai INT DEFAULT 0
 );
 
 -- =========================
@@ -238,10 +242,14 @@ CREATE TABLE ChiTietPhieuDatHang (
 	MaDVT	   VARCHAR(10),
     DonGia     FLOAT NOT NULL,
     GiamGia    FLOAT NOT NULL DEFAULT 0,
-    PRIMARY KEY (MaPDat, MaThuoc)
+	TrangThai BIT DEFAULT 0,
+    PRIMARY KEY (MaPDat, MaThuoc, MaDVT)
 );
 
 
+-- =========================
+-- Bảng PhieuDoiHang
+-- =========================
 -- =========================
 -- Bảng PhieuDoiHang
 -- =========================
@@ -593,32 +601,32 @@ DECLARE @sql NVARCHAR(MAX);
 SET @sql = N'
 INSERT INTO Thuoc_SanPham
 (MaThuoc, TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi,
- SDK_GPNK, HangSX, NuocSX, HinhAnh, MaLoaiHang, MaNDL, ViTri)
+ SDK_GPNK, HangSX, NuocSX, HinhAnh, MaLoaiHang, MaNDL, ViTri, TrangThaiXoa)
 VALUES
 (''TS001'', N''Paracetamol 500mg'', 500, ''mg'', N''Uống'', N''Hộp 10 vỉ x 10 viên'',
  ''VN-2345-19'', N''DHG Pharma'', N''Việt Nam'',
  (SELECT * FROM OPENROWSET(BULK N''' + @path + N'TS001.jpg'', SINGLE_BLOB) AS img),
- ''LH01'', ''NDL016'', ''KE001''),
+ ''LH01'', ''NDL016'', ''KE001'',0),
 
 (''TS002'', N''Amoxicillin 500mg'', 500, ''mg'', N''Uống'', N''Hộp 2 vỉ x 10 viên'',
  ''VN-2134-19'', N''Traphaco'', N''Việt Nam'',
  (SELECT * FROM OPENROWSET(BULK N''' + @path + N'TS002.jpg'', SINGLE_BLOB) AS img),
- ''LH01'', ''NDL017'', ''KE001''),
+ ''LH01'', ''NDL017'', ''KE001'',0),
 
 (''TS003'', N''Cefuroxime 250mg'', 250, ''mg'', N''Uống'', N''Hộp 2 vỉ x 10 viên'',
  ''VN-3241-19'', N''GSK'', N''Anh'',
  (SELECT * FROM OPENROWSET(BULK N''' + @path + N'TS003.jpg'', SINGLE_BLOB) AS img),
- ''LH01'', ''NDL017'', ''KE001''),
+ ''LH01'', ''NDL017'', ''KE001'',0),
 
 (''TS004'', N''Vitamin C 1000mg'', 1000, ''mg'', N''Uống'', N''Hộp 10 ống'',
  ''VN-1232-19'', N''Bayer'', N''Đức'',
  (SELECT * FROM OPENROWSET(BULK N''' + @path + N'TS004.jpg'', SINGLE_BLOB) AS img),
- ''LH01'', ''NDL030'', ''KE001''),
+ ''LH01'', ''NDL030'', ''KE001'',0),
 
 (''TS005'', N''Ibuprofen 400mg'', 400, ''mg'', N''Uống'', N''Hộp 1 vỉ x 10 viên'',
  ''VN-5675-19'', N''Mekophar'', N''Việt Nam'',
  (SELECT * FROM OPENROWSET(BULK N''' + @path + N'TS005.jpg'', SINGLE_BLOB) AS img),
- ''LH01'', ''NDL014'', ''KE001'');
+ ''LH01'', ''NDL014'', ''KE001'',0);
 ';
 
 
@@ -626,68 +634,68 @@ VALUES
 EXEC sp_executesql @sql;
 
 INSERT INTO Thuoc_SanPham
-(MaThuoc, TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaLoaiHang, MaNDL,ViTri)
+(MaThuoc, TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaLoaiHang, MaNDL,ViTri,TrangThaiXoa)
 VALUES
 -- Thuốc tân dược
-('TS006',N'Aspirin 81mg',81,'mg',N'Uống',N'Hộp 3 vỉ x 10 viên','VN-8678-19','Sanofi',N'Pháp','LH01','NDL014','KE001'),
-('TS007',N'Loratadine 10mg',10,'mg',N'Uống',N'Hộp 1 vỉ x 10 viên','VN-4564-21','DHG Pharma',N'Việt Nam','LH01','NDL009','KE001'),
-('TS008',N'Omeprazole 20mg',20,'mg',N'Uống',N'Hộp 2 vỉ x 7 viên','VN-2344-21','Traphaco',N'Việt Nam','LH01','NDL027','KE001'),
-('TS009',N'Metformin 500mg',500,'mg',N'Uống',N'Hộp 3 vỉ x 10 viên','VN-4569-21','Mekophar',N'Việt Nam','LH01','NDL022','KE001'),
-('TS010',N'Atorvastatin 20mg',20,'mg',N'Uống',N'Hộp 2 vỉ x 10 viên','VN-8254-21','Bayer',N'Đức','LH01','NDL010','KE001'),
-('TS011',N'Paracetamol 650mg',650,'mg',N'Uống',N'Hộp 10 vỉ x 10 viên','VN-8542-21','GSK','Anh','LH01','NDL016','KE001'),
-('TS012',N'Amoxicillin 250mg',250,'mg',N'Uống',N'Hộp 1 vỉ x 10 viên','VN-6258-21','Sanofi',N'Pháp','LH01','NDL017','KE001'),
-('TS013',N'Cefuroxime 500mg',500,'mg',N'Uống',N'Hộp 2 vỉ x 10 viên','VN-8345-21','DHG Pharma',N'Việt Nam','LH01','NDL017','KE001'),
-('TS014',N'Vitamin C 500mg',500,'mg',N'Uống',N'Hộp 10 ống','VN-8351-21','Traphaco',N'Việt Nam','LH01','NDL030','KE001'),
-('TS015',N'Ibuprofen 200mg',200,'mg',N'Uống',N'Hộp 1 vỉ x 10 viên','VN-7242-21','Mekophar',N'Việt Nam','LH01','NDL014','KE001'),
-('TS016',N'Aspirin 500mg',500,'mg',N'Uống',N'Hộp 3 vỉ x 10 viên','VN-8462-22','Bayer',N'Đức','LH01','NDL014','KE001'),
-('TS017',N'Loratadine 5mg',5,'mg',N'Uống',N'Hộp 1 vỉ x 10 viên','VN-7834-22','GSK',N'Anh','LH01','NDL009','KE001'),
-('TS018',N'Omeprazole 40mg',40,'mg',N'Uống',N'Hộp 2 vỉ x 7 viên','VN-4264-22','Sanofi',N'Pháp','LH01','NDL027','KE001'),
-('TS019',N'Metformin 850mg',850,'mg',N'Uống',N'Hộp 3 vỉ x 10 viên','VN-7834-22','DHG Pharma',N'Việt Nam','LH01','NDL022','KE001'),
-('TS020',N'Atorvastatin 40mg',40,'mg',N'Uống',N'Hộp 2 vỉ x 10 viên','VN-6354-22','Traphaco',N'Việt Nam','LH01','NDL010','KE001'),
+('TS006',N'Aspirin 81mg',81,'mg',N'Uống',N'Hộp 3 vỉ x 10 viên','VN-8678-19','Sanofi',N'Pháp','LH01','NDL014','KE001',1),
+('TS007',N'Loratadine 10mg',10,'mg',N'Uống',N'Hộp 1 vỉ x 10 viên','VN-4564-21','DHG Pharma',N'Việt Nam','LH01','NDL009','KE001',0),
+('TS008',N'Omeprazole 20mg',20,'mg',N'Uống',N'Hộp 2 vỉ x 7 viên','VN-2344-21','Traphaco',N'Việt Nam','LH01','NDL027','KE001',0),
+('TS009',N'Metformin 500mg',500,'mg',N'Uống',N'Hộp 3 vỉ x 10 viên','VN-4569-21','Mekophar',N'Việt Nam','LH01','NDL022','KE001',0),
+('TS010',N'Atorvastatin 20mg',20,'mg',N'Uống',N'Hộp 2 vỉ x 10 viên','VN-8254-21','Bayer',N'Đức','LH01','NDL010','KE001',0),
+('TS011',N'Paracetamol 650mg',650,'mg',N'Uống',N'Hộp 10 vỉ x 10 viên','VN-8542-21','GSK','Anh','LH01','NDL016','KE001',0),
+('TS012',N'Amoxicillin 250mg',250,'mg',N'Uống',N'Hộp 1 vỉ x 10 viên','VN-6258-21','Sanofi',N'Pháp','LH01','NDL017','KE001',0),
+('TS013',N'Cefuroxime 500mg',500,'mg',N'Uống',N'Hộp 2 vỉ x 10 viên','VN-8345-21','DHG Pharma',N'Việt Nam','LH01','NDL017','KE001',0),
+('TS014',N'Vitamin C 500mg',500,'mg',N'Uống',N'Hộp 10 ống','VN-8351-21','Traphaco',N'Việt Nam','LH01','NDL030','KE001',0),
+('TS015',N'Ibuprofen 200mg',200,'mg',N'Uống',N'Hộp 1 vỉ x 10 viên','VN-7242-21','Mekophar',N'Việt Nam','LH01','NDL014','KE001',0),
+('TS016',N'Aspirin 500mg',500,'mg',N'Uống',N'Hộp 3 vỉ x 10 viên','VN-8462-22','Bayer',N'Đức','LH01','NDL014','KE001',0),
+('TS017',N'Loratadine 5mg',5,'mg',N'Uống',N'Hộp 1 vỉ x 10 viên','VN-7834-22','GSK',N'Anh','LH01','NDL009','KE001',0),
+('TS018',N'Omeprazole 40mg',40,'mg',N'Uống',N'Hộp 2 vỉ x 7 viên','VN-4264-22','Sanofi',N'Pháp','LH01','NDL027','KE001',0),
+('TS019',N'Metformin 850mg',850,'mg',N'Uống',N'Hộp 3 vỉ x 10 viên','VN-7834-22','DHG Pharma',N'Việt Nam','LH01','NDL022','KE001',0),
+('TS020',N'Atorvastatin 40mg',40,'mg',N'Uống',N'Hộp 2 vỉ x 10 viên','VN-6354-22','Traphaco',N'Việt Nam','LH01','NDL010','KE001',1),
 -- Đông y
-('TS226',N'Hoạt huyết dưỡng não',250,'mg',N'Uống',N'Hộp 3 vỉ x 10 viên','VD-0001-23','Traphaco',N'Việt Nam','LH03',null,'KE001'),
-('TS227',N'Boganic',null,null,N'Uống',N'Hộp 3 vỉ x 10 viên','VD-0002-23','Traphaco',N'Việt Nam','LH03',null,'KE001'),
-('TS228',N'Ích mẫu',250,'mg',N'Uống',N'Hộp 2 vỉ x 10 viên','VD-0003-23','DHG Pharma',N'Việt Nam','LH03',null,'KE001'),
-('TS229',N'Siro ho Bảo Thanh',10,'ml',N'Uống',N'Chai 125 ml','VD-0004-23',N'Nam Dược',N'Việt Nam','LH03',null,'KE001'),
-('TS230',N'Viên ngậm Strepsils thảo dược',null,null,N'Ngậm',N'Hộp 2 vỉ x 12 viên','VD-0005-23','Reckitt',N'Anh','LH03',null,'KE001'),
-('TS231',N'Cao ích mẫu',250,'mg',N'Uống',N'Lọ 100 viên','VD-0006-23','Traphaco',N'Việt Nam','LH03',null,'KE001'),
-('TS232',N'Sâm bổ chính khí',null,null,N'Uống',N'Lọ 30 viên','VD-0007-23',N'Công ty Dược OPC',N'Việt Nam','LH03',null,'KE001'),
-('TS233',N'Kim tiền thảo',null,null,N'Uống',N'Hộp 3 vỉ x 10 viên','VD-0008-23',N'Mekophar',N'Việt Nam','LH03',null,'KE001'),
-('TS234',N'Nhất nhất thống phong',null,null,N'Uống',N'Hộp 3 vỉ x 10 viên','VD-0009-23',N'Dược Nhất Nhất',N'Việt Nam','LH03',null,'KE001'),
-('TS235',N'Hoàng liên giải độc hoàn',null,null,N'Uống',N'Lọ 60 viên','VD-0010-23',N'Trung Quốc Dược',N'Trung Quốc','LH03',null,'KE001'),
+('TS226',N'Hoạt huyết dưỡng não',250,'mg',N'Uống',N'Hộp 3 vỉ x 10 viên','VD-0001-23','Traphaco',N'Việt Nam','LH03',null,'KE001',1),
+('TS227',N'Boganic',null,null,N'Uống',N'Hộp 3 vỉ x 10 viên','VD-0002-23','Traphaco',N'Việt Nam','LH03',null,'KE001',0),
+('TS228',N'Ích mẫu',250,'mg',N'Uống',N'Hộp 2 vỉ x 10 viên','VD-0003-23','DHG Pharma',N'Việt Nam','LH03',null,'KE001',0),
+('TS229',N'Siro ho Bảo Thanh',10,'ml',N'Uống',N'Chai 125 ml','VD-0004-23',N'Nam Dược',N'Việt Nam','LH03',null,'KE001',0),
+('TS230',N'Viên ngậm Strepsils thảo dược',null,null,N'Ngậm',N'Hộp 2 vỉ x 12 viên','VD-0005-23','Reckitt',N'Anh','LH03',null,'KE001',0),
+('TS231',N'Cao ích mẫu',250,'mg',N'Uống',N'Lọ 100 viên','VD-0006-23','Traphaco',N'Việt Nam','LH03',null,'KE001',0),
+('TS232',N'Sâm bổ chính khí',null,null,N'Uống',N'Lọ 30 viên','VD-0007-23',N'Công ty Dược OPC',N'Việt Nam','LH03',null,'KE001',0),
+('TS233',N'Kim tiền thảo',null,null,N'Uống',N'Hộp 3 vỉ x 10 viên','VD-0008-23',N'Mekophar',N'Việt Nam','LH03',null,'KE001',0),
+('TS234',N'Nhất nhất thống phong',null,null,N'Uống',N'Hộp 3 vỉ x 10 viên','VD-0009-23',N'Dược Nhất Nhất',N'Việt Nam','LH03',null,'KE001',0),
+('TS235',N'Hoàng liên giải độc hoàn',null,null,N'Uống',N'Lọ 60 viên','VD-0010-23',N'Trung Quốc Dược',N'Trung Quốc','LH03',null,'KE001',0),
 -- Thực phẩm chức năng
-('TS336',N'Vitamin D3 1000IU',1000,'IU',N'Uống',N'Lọ 100 viên','TPCN-0001-23','Nature Made',N'Mỹ','LH04',null,'KE001'),
-('TS337',N'Omega-3 Fish Oil 1000mg',1000,'mg',N'Uống',N'Lọ 120 viên','TPCN-0002-23','Blackmores',N'Úc','LH04',null,'KE001'),
-('TS338',N'Calcium + Vitamin D',500,'mg',N'Uống',N'Lọ 60 viên','TPCN-0003-23','Traphaco',N'Việt Nam','LH04',null,'KE001'),
-('TS339',N'Collagen Type II',40,'mg',N'Uống',N'Lọ 30 viên','TPCN-0004-23','Neocell',N'Mỹ','LH04',null,'KE001'),
-('TS340',N'Probiotic 10 strains',10,'tỷ CFU',N'Uống',N'Hộp 30 gói','TPCN-0005-23','Yakult',N'Nhật Bản','LH04',null,'KE001'),
-('TS341',N'Multivitamin Daily',1,'viên',N'Uống',N'Lọ 100 viên','TPCN-0006-23','Centrum',N'Mỹ','LH04',null,'KE001'),
-('TS342',N'Sâm Ngọc Linh Extract',500,'mg',N'Uống',N'Lọ 30 viên','TPCN-0007-23',N'Sâm Ngọc Linh Quảng Nam',N'Việt Nam','LH04',null,'KE001'),
-('TS343',N'Ginkgo Biloba 120mg',120,'mg',N'Uống',N'Lọ 60 viên','TPCN-0008-23','Pharmaton',N'Thụy Sĩ','LH04',null,'KE001'),
-('TS344',N'Vitamin C + Zinc',1000,'mg',N'Uống',N'Lọ 20 viên sủi','TPCN-0009-23','DHG Pharma',N'Việt Nam','LH04',null,'KE001'),
-('TS345',N'Glucosamine 1500mg',1500,'mg',N'Uống',N'Lọ 60 viên','TPCN-0010-23','Puritan''s Pride',N'Mỹ','LH04',null,'KE001'),
+('TS336',N'Vitamin D3 1000IU',1000,'IU',N'Uống',N'Lọ 100 viên','TPCN-0001-23','Nature Made',N'Mỹ','LH04',null,'KE001',0),
+('TS337',N'Omega-3 Fish Oil 1000mg',1000,'mg',N'Uống',N'Lọ 120 viên','TPCN-0002-23','Blackmores',N'Úc','LH04',null,'KE001',0),
+('TS338',N'Calcium + Vitamin D',500,'mg',N'Uống',N'Lọ 60 viên','TPCN-0003-23','Traphaco',N'Việt Nam','LH04',null,'KE001',0),
+('TS339',N'Collagen Type II',40,'mg',N'Uống',N'Lọ 30 viên','TPCN-0004-23','Neocell',N'Mỹ','LH04',null,'KE001',0),
+('TS340',N'Probiotic 10 strains',10,'tỷ CFU',N'Uống',N'Hộp 30 gói','TPCN-0005-23','Yakult',N'Nhật Bản','LH04',null,'KE001',0),
+('TS341',N'Multivitamin Daily',1,'viên',N'Uống',N'Lọ 100 viên','TPCN-0006-23','Centrum',N'Mỹ','LH04',null,'KE001',0),
+('TS342',N'Sâm Ngọc Linh Extract',500,'mg',N'Uống',N'Lọ 30 viên','TPCN-0007-23',N'Sâm Ngọc Linh Quảng Nam',N'Việt Nam','LH04',null,'KE001',0),
+('TS343',N'Ginkgo Biloba 120mg',120,'mg',N'Uống',N'Lọ 60 viên','TPCN-0008-23','Pharmaton',N'Thụy Sĩ','LH04',null,'KE001',0),
+('TS344',N'Vitamin C + Zinc',1000,'mg',N'Uống',N'Lọ 20 viên sủi','TPCN-0009-23','DHG Pharma',N'Việt Nam','LH04',null,'KE001',0),
+('TS345',N'Glucosamine 1500mg',1500,'mg',N'Uống',N'Lọ 60 viên','TPCN-0010-23','Puritan''s Pride',N'Mỹ','LH04',null,'KE001',0),
 -- Dụng cụ y tế
-('TS446',N'Nhiệt kế điện tử',null,null,N'Đo',N'Hộp 1 cái','DM-0001-23','Omron',N'Nhật Bản','LH05',null,'KE001'),
-('TS447',N'Máy đo huyết áp bắp tay',null,null,N'Đo',N'Hộp 1 cái','DM-0002-23','Microlife',N'Thụy Sĩ','LH05',null,'KE001'),
-('TS448',N'Máy đo đường huyết',null,null,N'Đo',N'Hộp 1 cái + que thử','DM-0003-23','Accu-Chek',N'Đức','LH05',null,'KE001'),
-('TS449',N'Ống nghe y tế',null,null,N'Khám',N'Hộp 1 cái','DM-0004-23','3M Littmann',N'Mỹ','LH05',null,'KE001'),
-('TS450',N'Khẩu trang y tế 3 lớp',null,null,N'Đeo',N'Hộp 50 cái','DM-0005-23',N'Bảo Thạch',N'Việt Nam','LH05',null,'KE001'),
-('TS451',N'Găng tay y tế',null,null,N'Đeo',N'Hộp 100 cái','DM-0006-23','Top Glove','Malaysia','LH05',null,'KE001'),
-('TS452',N'Bơm tiêm dùng một lần 5ml',null,null,N'Tiêm',N'Hộp 100 cái','DM-0007-23','Vinahankook',N'Việt Nam','LH05',null,'KE001'),
-('TS453',N'Kháng khuẩn rửa tay nhanh',null,null,N'Sát khuẩn',N'Chai 500ml','DM-0008-23','Lifebuoy',N'Việt Nam','LH05',null,'KE001'),
-('TS454',N'Máy xông khí dung',null,null,N'Hít',N'Hộp 1 cái','DM-0009-23','Omron',N'Nhật Bản','LH05',null,'KE001'),
-('TS455',N'Miếng dán nhiệt',null,null,N'Dán',N'Hộp 10 miếng','DM-0010-23','Kobayashi',N'Nhật Bản','LH05',null,'KE001'),
+('TS446',N'Nhiệt kế điện tử',null,null,N'Đo',N'Hộp 1 cái','DM-0001-23','Omron',N'Nhật Bản','LH05',null,'KE001',0),
+('TS447',N'Máy đo huyết áp bắp tay',null,null,N'Đo',N'Hộp 1 cái','DM-0002-23','Microlife',N'Thụy Sĩ','LH05',null,'KE001',0),
+('TS448',N'Máy đo đường huyết',null,null,N'Đo',N'Hộp 1 cái + que thử','DM-0003-23','Accu-Chek',N'Đức','LH05',null,'KE001',0),
+('TS449',N'Ống nghe y tế',null,null,N'Khám',N'Hộp 1 cái','DM-0004-23','3M Littmann',N'Mỹ','LH05',null,'KE001',0),
+('TS450',N'Khẩu trang y tế 3 lớp',null,null,N'Đeo',N'Hộp 50 cái','DM-0005-23',N'Bảo Thạch',N'Việt Nam','LH05',null,'KE001',0),
+('TS451',N'Găng tay y tế',null,null,N'Đeo',N'Hộp 100 cái','DM-0006-23','Top Glove','Malaysia','LH05',null,'KE001',0),
+('TS452',N'Bơm tiêm dùng một lần 5ml',null,null,N'Tiêm',N'Hộp 100 cái','DM-0007-23','Vinahankook',N'Việt Nam','LH05',null,'KE001',0),
+('TS453',N'Kháng khuẩn rửa tay nhanh',null,null,N'Sát khuẩn',N'Chai 500ml','DM-0008-23','Lifebuoy',N'Việt Nam','LH05',null,'KE001',0),
+('TS454',N'Máy xông khí dung',null,null,N'Hít',N'Hộp 1 cái','DM-0009-23','Omron',N'Nhật Bản','LH05',null,'KE001',0),
+('TS455',N'Miếng dán nhiệt',null,null,N'Dán',N'Hộp 10 miếng','DM-0010-23','Kobayashi',N'Nhật Bản','LH05',null,'KE001',0),
 -- Mỹ phẩm
-('TS556',N'Kem chống nắng SPF50',50,'ml',N'Bôi',N'Tuýp 50ml','MP-0001-23','Anessa',N'Nhật Bản','LH05',null,'KE001'),
-('TS557',N'Sữa rửa mặt tạo bọt',100,'ml',N'Rửa mặt',N'Tuýp 100ml','MP-0002-23','Hada Labo',N'Nhật Bản','LH05',null,'KE001'),
-('TS558',N'Nước hoa hồng cân bằng da',150,'ml',N'Bôi',N'Chai 150ml','MP-0003-23','Innisfree',N'Hàn Quốc','LH05',null,'KE001'),
-('TS559',N'Serum Vitamin C 15%',30,'ml',N'Bôi',N'Lọ 30ml','MP-0004-23','Vichy',N'Pháp','LH05',null,'KE001'),
-('TS560',N'Kem dưỡng ẩm ban đêm',50,'ml',N'Bôi',N'Hũ 50ml','MP-0005-23','Laneige',N'Hàn Quốc','LH05',null,'KE001'),
-('TS561',N'Son dưỡng môi có màu',null,null,N'Bôi',N'Thỏi 3g','MP-0006-23','Maybelline',N'Mỹ','LH05',null,'KE001'),
-('TS562',N'Dầu gội thảo dược',300,'ml',N'Gội đầu',N'Chai 300ml','MP-0007-23',N'Thái Dương',N'Việt Nam','LH05',null,'KE001'),
-('TS563',N'Kem trị mụn',20,'g',N'Bôi',N'Tuýp 20g','MP-0008-23','La Roche-Posay',N'Pháp','LH05',null,'KE001'),
-('TS564',N'Mặt nạ dưỡng da Green Tea',25,'ml',N'Đắp mặt',N'Hộp 10 miếng','MP-0009-23','The Face Shop',N'Hàn Quốc','LH05',null,'KE001'),
-('TS565',N'Nước hoa nữ Eau de Parfum',50,'ml',N'Xịt',N'Chai 50ml','MP-0010-23','Chanel',N'Pháp','LH05',null,'KE001');
+('TS556',N'Kem chống nắng SPF50',50,'ml',N'Bôi',N'Tuýp 50ml','MP-0001-23','Anessa',N'Nhật Bản','LH05',null,'KE001',0),
+('TS557',N'Sữa rửa mặt tạo bọt',100,'ml',N'Rửa mặt',N'Tuýp 100ml','MP-0002-23','Hada Labo',N'Nhật Bản','LH05',null,'KE001',0),
+('TS558',N'Nước hoa hồng cân bằng da',150,'ml',N'Bôi',N'Chai 150ml','MP-0003-23','Innisfree',N'Hàn Quốc','LH05',null,'KE001',0),
+('TS559',N'Serum Vitamin C 15%',30,'ml',N'Bôi',N'Lọ 30ml','MP-0004-23','Vichy',N'Pháp','LH05',null,'KE001',0),
+('TS560',N'Kem dưỡng ẩm ban đêm',50,'ml',N'Bôi',N'Hũ 50ml','MP-0005-23','Laneige',N'Hàn Quốc','LH05',null,'KE001',0),
+('TS561',N'Son dưỡng môi có màu',null,null,N'Bôi',N'Thỏi 3g','MP-0006-23','Maybelline',N'Mỹ','LH05',null,'KE001',0),
+('TS562',N'Dầu gội thảo dược',300,'ml',N'Gội đầu',N'Chai 300ml','MP-0007-23',N'Thái Dương',N'Việt Nam','LH05',null,'KE001',0),
+('TS563',N'Kem trị mụn',20,'g',N'Bôi',N'Tuýp 20g','MP-0008-23','La Roche-Posay',N'Pháp','LH05',null,'KE001',0),
+('TS564',N'Mặt nạ dưỡng da Green Tea',25,'ml',N'Đắp mặt',N'Hộp 10 miếng','MP-0009-23','The Face Shop',N'Hàn Quốc','LH05',null,'KE001',0),
+('TS565',N'Nước hoa nữ Eau de Parfum',50,'ml',N'Xịt',N'Chai 50ml','MP-0010-23','Chanel',N'Pháp','LH05',null,'KE001',0);
 
 
 INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
@@ -1006,26 +1014,42 @@ VALUES
 ('HD010', 'LH00006', 'DVT03', 4, 3500, 0);      -- Hộp
 
 
+-- Dữ liệu mẫu cho PhieuDatHang
+INSERT INTO PhieuDatHang (MaPDat, NgayLap, SoTienCoc, GhiChu, MaKH, MaNV, TrangThai)
+VALUES
+('PDH001', '2025-10-01', 50000, N'Khách đặt hàng mới', 'KH001', 'NV001', 0),
+('PDH002', '2025-10-02', 100000, N'Đặt hàng lại lô thuốc cũ', 'KH002', 'NV002', 0),
+('PDH003', '2025-10-03', 0, N'Khách đặt hàng gấp', 'KH003', 'NV003', 0);
+GO
+
+-- Dữ liệu mẫu cho ChiTietPhieuDatHang
+INSERT INTO ChiTietPhieuDatHang (MaPDat, MaThuoc, SoLuong, DonGia, GiamGia, MaDVT, TrangThai)
+VALUES
+('PDH001', 'TS001', 5, 12000, 0.05, 'DVT01', 0),  -- Paracetamol - Viên
+('PDH001', 'TS002', 10, 8000, 0,    'DVT02', 0),  -- Amoxicillin - Vỉ
+('PDH002', 'TS003', 3, 15000, 0.1,  'DVT03', 1);  -- Ibuprofen - Hộp
+
+
 -- Dữ liệu mẫu cho PhieuDoiHang (Không thay đổi)
 INSERT INTO PhieuDoiHang (MaPD, NgayLap, GhiChu, MaNV, MaKH, MaHD)
 VALUES
-    ('PD001', '2025-10-15',  N'Đổi 1 hộp Ibuprofen cùng loại', 'NV002', NULL, 'HD003'),
-    ('PD002', '2025-10-16',  N'Đổi 5 viên Paracetamol', 'NV001', 'KH001', 'HD001'),
-    ('PD003', '2025-10-17',  N'Đổi 1 hộp Vitamin D3', 'NV003', NULL, 'HD005')
+('PD001', '2025-10-15',  N'Đổi 1 hộp Ibuprofen cùng loại', 'NV002', NULL, 'HD003'),
+('PD002', '2025-10-16',  N'Đổi 5 viên Paracetamol', 'NV001', 'KH001', 'HD001'),
+('PD003', '2025-10-17',  N'Đổi 1 hộp Vitamin D3', 'NV003', NULL, 'HD005')
 
 
-    INSERT INTO ChiTietPhieuDoiHang (MaLH, MaPD, MaThuoc, MaDVT, SoLuong, LyDoDoi)
+INSERT INTO ChiTietPhieuDoiHang (MaLH, MaPD, MaThuoc, MaDVT, SoLuong, LyDoDoi)
 VALUES
-    ('LH00003', 'PD001', 'TS005', 'DVT03',  1, N'Hộp bị móp'),
-    ('LH00001', 'PD002', 'TS001', 'DVT01',  5, N'Viên cũ bị gãy'),
-    ('LH00011', 'PD003', 'TS336', 'DVT03',  1, N'Hộp bị ướt')
+('LH00003', 'PD001', 'TS005', 'DVT03',  1, N'Hộp bị móp'),
+('LH00001', 'PD002', 'TS001', 'DVT01',  5, N'Viên cũ bị gãy'),
+('LH00011', 'PD003', 'TS336', 'DVT03',  1, N'Hộp bị ướt')
 
 -- Dữ liệu mẫu cho PhieuTraHang (Sửa định dạng ngày tháng)
 INSERT INTO PhieuTraHang (MaPT, NgayLap, GhiChu, MaNV, MaHD, MaKH)
 VALUES
-    ('PT001', '2025-09-13', N'Trả lại Hoạt huyết dưỡng não và Cao ích mẫu', 'NV001', 'HD004', 'KH003'),
-    ('PT002', '2025-09-15', N'Trả lại Kem chống nắng', 'NV002', 'HD008', 'KH005'),
-    ('PT003', '2025-09-16', N'Trả lại Găng tay y tế', 'NV003', 'HD006', 'KH004');
+('PT001', '2025-09-13', N'Trả lại Hoạt huyết dưỡng não và Cao ích mẫu', 'NV001', 'HD004', 'KH003'),
+('PT002', '2025-09-15', N'Trả lại Kem chống nắng', 'NV002', 'HD008', 'KH005'),
+('PT003', '2025-09-16', N'Trả lại Găng tay y tế', 'NV003', 'HD006', 'KH004');
 
 INSERT INTO ChiTietPhieuTraHang (MaLH, MaPT, MaThuoc, MaDVT, SoLuong, DonGia, GiamGia, LyDoTra)
 VALUES
@@ -1078,13 +1102,13 @@ INSERT INTO NhanVien VALUES
 ('NV043', N'Nguyễn Tấn Lộc', '0904000003', 'loc43@qlnt.vn', '1997-10-02', 1, N'Đà Nẵng', N'Bán hàng', 1, 'loc43', '123', '2024-03-01', NULL, 0);
 
 -- SẢN PHẨM
-INSERT INTO Thuoc_SanPham (MaThuoc, TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaLoaiHang, MaNDL, ViTri)
+INSERT INTO Thuoc_SanPham (MaThuoc, TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaLoaiHang, MaNDL, ViTri,TrangThaiXoa)
 VALUES
-('SP041', N'Paracetamol 500mg', 500, 'mg', N'Uống', N'Hộp 10 vỉ x 10 viên', 'SDK041', N'DHG Pharma', N'VN', 'LH001', 'ND001', 'KE001'),
-('SP042', N'Amoxicillin 500mg', 500, 'mg', N'Uống', N'Hộp 10 vỉ x 10 viên', 'SDK042', N'Mekophar', N'VN', 'LH001', 'ND001', 'KE001'),
-('SP043', N'Loratadin 10mg', 10, 'mg', N'Uống', N'Hộp 5 vỉ x 10 viên', 'SDK043', N'OPV', N'VN', 'LH001', 'ND001', 'KE003'),
-('SP044', N'Cefalexin 250mg', 250, 'mg', N'Uống', N'Hộp 10 vỉ x 10 viên', 'SDK044', N'Imexpharm', N'VN', 'LH001', 'ND001', 'KE002'),
-('SP045', N'Vitamin C 500mg', 500, 'mg', N'Uống', N'Hộp 10 vỉ x 10 viên', 'SDK045', N'Truong Tho', N'VN', 'LH001', 'ND001', 'KE002');
+('SP041', N'Paracetamol 500mg', 500, 'mg', N'Uống', N'Hộp 10 vỉ x 10 viên', 'SDK041', N'DHG Pharma', N'VN', 'LH001', 'ND001', 'KE001',0),
+('SP042', N'Amoxicillin 500mg', 500, 'mg', N'Uống', N'Hộp 10 vỉ x 10 viên', 'SDK042', N'Mekophar', N'VN', 'LH001', 'ND001', 'KE001',0),
+('SP043', N'Loratadin 10mg', 10, 'mg', N'Uống', N'Hộp 5 vỉ x 10 viên', 'SDK043', N'OPV', N'VN', 'LH001', 'ND001', 'KE003',0),
+('SP044', N'Cefalexin 250mg', 250, 'mg', N'Uống', N'Hộp 10 vỉ x 10 viên', 'SDK044', N'Imexpharm', N'VN', 'LH001', 'ND001', 'KE002',0),
+('SP045', N'Vitamin C 500mg', 500, 'mg', N'Uống', N'Hộp 10 vỉ x 10 viên', 'SDK045', N'Truong Tho', N'VN', 'LH001', 'ND001', 'KE002',0);
 
 -- PHIẾU NHẬP
 INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV) VALUES
@@ -1175,75 +1199,55 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    DECLARE @LoaiHD NVARCHAR(20);
-    DECLARE @BangDL NVARCHAR(50) = N'Thuốc_Sản_Phẩm';
+    DECLARE @LoaiHD NVARCHAR(50);
+    DECLARE @MaThuoc VARCHAR(10);
     DECLARE @NoiDung NVARCHAR(MAX) = N'';
-	-- 👇 Lấy thông tin nhân viên từ CONTEXT_INFO()
-	DECLARE @context VARBINARY(128) = CONTEXT_INFO();
-	DECLARE @MaNV VARCHAR(10) = RTRIM(REPLACE(CAST(@context AS VARCHAR(128)), CHAR(0), ''));
+    DECLARE @context VARBINARY(128) = CONTEXT_INFO();
+    DECLARE @MaNV VARCHAR(10) = RTRIM(REPLACE(CAST(@context AS VARCHAR(128)), CHAR(0), ''));
 
-    -- 🔹 1. Xác định loại hoạt động
     IF EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
-        SET @LoaiHD = N'Cập nhật';
+        SET @LoaiHD = N'Cập nhật thuốc';
     ELSE IF EXISTS (SELECT 1 FROM inserted)
-        SET @LoaiHD = N'Thêm mới';
+        SET @LoaiHD = N'Thêm thuốc';
     ELSE
-        SET @LoaiHD = N'Xóa';
+        SET @LoaiHD = N'Xóa thuốc';
 
-    -- 🔹 2. Tạo nội dung mô tả chi tiết thay đổi
-    IF @LoaiHD = N'Thêm mới'
+    SELECT TOP 1 @MaThuoc = COALESCE(i.MaThuoc, d.MaThuoc)
+    FROM inserted i FULL JOIN deleted d ON i.MaThuoc = d.MaThuoc;
+
+    IF @LoaiHD = N'Cập nhật thuốc'
     BEGIN
-        SELECT @NoiDung = STRING_AGG(
-            CONCAT(
-                N'Thêm thuốc mới: [',
-                N'Mã thuốc = ', MaThuoc,
-                N', Tên thuốc = ', TenThuoc,
-                N', Hàm lượng = ', HamLuong,
-                N', Đơn vị hàm lượng = ', DonViHL,
-                N', Hãng sản xuất = ', HangSX,
-                N', Nước sản xuất = ', NuocSX,
-                N']'
-            ), N'; '
-        )
-        FROM inserted;
-    END
-    ELSE IF @LoaiHD = N'Cập nhật'
-    BEGIN
-        SELECT @NoiDung = STRING_AGG(
-            CONCAT(
-                N'Cập nhật thuốc [', i.MaThuoc, N']: ',
-                N'Tên thuốc: "', d.TenThuoc, N'" → "', i.TenThuoc, N'", ',
-                N'Hàm lượng: ', d.HamLuong, N' → ', i.HamLuong, N', ',
-                N'Đơn vị hàm lượng: "', d.DonViHL, N'" → "', i.DonViHL, N'", ',
-                N'Hãng SX: "', d.HangSX, N'" → "', i.HangSX, N'", ',
-                N'Nước SX: "', d.NuocSX, N'" → "', i.NuocSX, N'"'
-            ), N'; '
+        SELECT @NoiDung = CONCAT(
+            N'Cập nhật thuốc [', i.MaThuoc, N']', CHAR(13) + CHAR(10),
+            N'Tên thuốc: "', d.TenThuoc, N'" → "', i.TenThuoc, N'"', CHAR(13) + CHAR(10),
+            N'Hàm lượng: "', d.HamLuong, N'" → "', i.HamLuong, N'"', CHAR(13) + CHAR(10),
+            N'Đơn vị HL: "', d.DonViHL, N'" → "', i.DonViHL, N'"', CHAR(13) + CHAR(10),
+            N'Hãng SX: "', d.HangSX, N'" → "', i.HangSX, N'"', CHAR(13) + CHAR(10),
+            N'Nước SX: "', d.NuocSX, N'" → "', i.NuocSX, N'"'
         )
         FROM inserted i
         JOIN deleted d ON i.MaThuoc = d.MaThuoc;
     END
-    ELSE IF @LoaiHD = N'Xóa'
+    ELSE IF @LoaiHD = N'Thêm thuốc'
     BEGIN
-        SELECT @NoiDung = STRING_AGG(
-            CONCAT(
-                N'Xóa thuốc: [',
-                N'Mã thuốc = ', MaThuoc,
-                N', Tên thuốc = ', TenThuoc,
-                N', Hàm lượng = ', HamLuong,
-                N', Đơn vị hàm lượng = ', DonViHL,
-                N', Hãng SX = ', HangSX,
-                N', Nước SX = ', NuocSX,
-                N']'
-            ), N'; '
+        SELECT @NoiDung = CONCAT(
+            N'Thêm thuốc [', i.MaThuoc, N']: "', i.TenThuoc, N'"'
         )
-        FROM deleted;
+        FROM inserted i;
+    END
+    ELSE
+    BEGIN
+        SELECT @NoiDung = CONCAT(
+            N'Xóa thuốc [', d.MaThuoc, N']: "', d.TenThuoc, N'"'
+        )
+        FROM deleted d;
     END
 
-    -- 🔹 3. Ghi log vào bảng HoatDong
     INSERT INTO HoatDong (LoaiHD, BangDL, NoiDung, MaNV)
-    VALUES (@LoaiHD, @BangDL, @NoiDung, @MaNV);
+    VALUES (@LoaiHD, 'Thuoc_SanPham', @NoiDung, @MaNV);
 END;
 GO
+
 
 -- TRIGGER GHI LOG CHỈNH SỬA HOẠT CHẤT TRONG DANH MỤC THUỐC
 GO
@@ -1257,14 +1261,15 @@ BEGIN
     DECLARE @MaThuoc VARCHAR(10);
     DECLARE @NoiDung NVARCHAR(MAX) = N'';
     DECLARE @LoaiHD NVARCHAR(50);
-    -- 👇 Lấy thông tin nhân viên từ CONTEXT_INFO()
-	DECLARE @context VARBINARY(128) = CONTEXT_INFO();
-	DECLARE @MaNV VARCHAR(10) = RTRIM(REPLACE(CAST(@context AS VARCHAR(128)), CHAR(0), ''));
+    DECLARE @context VARBINARY(128) = CONTEXT_INFO();
+    DECLARE @MaNV VARCHAR(10) = RTRIM(REPLACE(CAST(@context AS VARCHAR(128)), CHAR(0), ''));
 
+    -- Lấy mã thuốc thay đổi
     SELECT TOP 1 @MaThuoc = MaThuoc FROM inserted;
     IF @MaThuoc IS NULL
         SELECT TOP 1 @MaThuoc = MaThuoc FROM deleted;
 
+    -- Xác định loại hành động
     IF EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
         SET @LoaiHD = N'Cập nhật hoạt chất';
     ELSE IF EXISTS (SELECT 1 FROM inserted)
@@ -1272,7 +1277,8 @@ BEGIN
     ELSE
         SET @LoaiHD = N'Xóa hoạt chất';
 
-    SELECT @NoiDung = STRING_AGG(CONCAT(hc.TenHoatChat, ' (', ct.HamLuong, ')'), ', ')
+    -- Lấy danh sách hoạt chất hiện có
+    SELECT @NoiDung = STRING_AGG(CONCAT(N'- ', hc.TenHoatChat, N' (', ct.HamLuong, N')'), CHAR(13) + CHAR(10))
     FROM ChiTietHoatChat ct
     JOIN HoatChat hc ON ct.MaHoatChat = hc.MaHoatChat
     WHERE ct.MaThuoc = @MaThuoc;
@@ -1280,61 +1286,38 @@ BEGIN
     IF @NoiDung IS NULL OR @NoiDung = ''
         SET @NoiDung = N'(Không còn hoạt chất)';
 
+    -- Tìm log gần nhất của Thuoc_SanPham
     DECLARE @ID INT;
     SELECT TOP 1 @ID = ID
     FROM HoatDong
     WHERE BangDL = 'Thuoc_SanPham'
-      AND NoiDung LIKE '%MaThuoc=' + @MaThuoc + '%'
+      AND NoiDung LIKE N'%[' + @MaThuoc + N']%'
     ORDER BY ID DESC;
 
     IF @ID IS NOT NULL
     BEGIN
-        DECLARE @NoiDungCu NVARCHAR(MAX);
-        SELECT @NoiDungCu = NoiDung FROM HoatDong WHERE ID = @ID;
-
-        IF @NoiDungCu LIKE N'%hoạt chất=['
-        BEGIN
-            UPDATE HoatDong
-            SET NoiDung =
-                STUFF(NoiDung,
-                      CHARINDEX(N'hoạt chất=[', NoiDung),
-                      LEN(NoiDung),
-                      N'hoạt chất=[' + @NoiDung + N']')
-            WHERE ID = @ID;
-        END
-        ELSE
-        BEGIN
-            UPDATE HoatDong
-            SET NoiDung = NoiDung +
-                N'; ' +
-                CASE
-                    WHEN @LoaiHD = N'Cập nhật hoạt chất' THEN N'Cập nhật hoạt chất=[' + @NoiDung + N']'
-                    WHEN @LoaiHD = N'Thêm hoạt chất' THEN N'Thêm hoạt chất=[' + @NoiDung + N']'
-                    WHEN @LoaiHD = N'Xóa hoạt chất' THEN N'Xóa hoạt chất=[' + @NoiDung + N']'
-                    ELSE N'Hoạt động không xác định'
-                END
-            WHERE ID = @ID;
-        END
+        -- ✅ Nối vào log thuốc gần nhất
+        UPDATE HoatDong
+        SET NoiDung = NoiDung
+            + CHAR(13) + CHAR(10)
+            + N'Cập nhật hoạt chất:' + CHAR(13) + CHAR(10)
+            + @NoiDung
+        WHERE ID = @ID;
     END
     ELSE
     BEGIN
+        -- ⚠️ Nếu không có log thuốc (vd: thêm trực tiếp hoạt chất)
         INSERT INTO HoatDong (LoaiHD, BangDL, NoiDung, MaNV)
         VALUES (
             @LoaiHD,
             'Thuoc_SanPham',
-            N'[MaThuoc=' + @MaThuoc + N'] ' +
-            CASE
-                WHEN @LoaiHD = N'Cập nhật hoạt chất' THEN N'Cập nhật hoạt chất=[' + @NoiDung + N']'
-                WHEN @LoaiHD = N'Thêm hoạt chất' THEN N'Thêm hoạt chất=[' + @NoiDung + N']'
-                WHEN @LoaiHD = N'Xóa hoạt chất' THEN N'Xóa hoạt chất=[' + @NoiDung + N']'
-                ELSE N'Hoạt động không xác định'
-            END,
+            N'Cập nhật hoạt chất cho thuốc [' + @MaThuoc + N']:'
+            + CHAR(13) + CHAR(10) + @NoiDung,
             @MaNV
         );
     END
 END;
 GO
-
 
 
 --TRIGGER GHI LOG CHỈNH SỬA SỐ LƯỢNG TRONG CẬP NHẬT SỐ LƯỢNG---------------------------------------------------------------------------------------------------------------
@@ -1349,10 +1332,8 @@ BEGIN
     DECLARE @LoaiHD NVARCHAR(20);
     DECLARE @BangDL NVARCHAR(50) = N'Thuoc_SP_TheoLo';
     DECLARE @NoiDung NVARCHAR(MAX) = N'';
-
-    -- 👇 Lấy thông tin nhân viên từ CONTEXT_INFO()
-	DECLARE @context VARBINARY(128) = CONTEXT_INFO();
-	DECLARE @MaNV VARCHAR(10) = RTRIM(REPLACE(CAST(@context AS VARCHAR(128)), CHAR(0), ''));
+    DECLARE @context VARBINARY(128) = CONTEXT_INFO();
+    DECLARE @MaNV VARCHAR(10) = RTRIM(REPLACE(CAST(@context AS VARCHAR(128)), CHAR(0), ''));
 
     IF EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
         SET @LoaiHD = N'Cập nhật';
@@ -1361,7 +1342,6 @@ BEGIN
     ELSE
         SET @LoaiHD = N'Xóa';
 
-    -- 🔹 2. Ghi nội dung mô tả (tập trung vào SoLuongTon)
     IF @LoaiHD = N'Thêm mới'
     BEGIN
         SELECT @NoiDung = STRING_AGG(
@@ -1370,9 +1350,9 @@ BEGIN
                 N', Mã thuốc=', MaThuoc,
                 N', Mã phiếu nhập=', MaPN,
                 N', Số lượng tồn=', SoLuongTon,
-                N', Ngày sản xuất=', FORMAT(NSX, 'dd/MM/yyyy'),
-                N', Hạn sử dụng=', FORMAT(HSD, 'dd/MM/yyyy'), N']'
-            ), N'; '
+                N', NSX=', FORMAT(NSX, 'dd/MM/yyyy'),
+                N', HSD=', FORMAT(HSD, 'dd/MM/yyyy'), N']'
+            ), CHAR(13) + CHAR(10)
         )
         FROM inserted;
     END
@@ -1380,10 +1360,10 @@ BEGIN
     BEGIN
         SELECT @NoiDung = STRING_AGG(
             CONCAT(
-                N'Cập nhật lô: [Mã lô hàng=', i.MaLH,
-                N', Mã thuốc=', i.MaThuoc,
-                N'] (Số lượng tồn: ', d.SoLuongTon, N' → ', i.SoLuongTon, N')'
-            ), N'; '
+                N'Cập nhật lô [', i.MaLH, N']:',
+                CHAR(13) + CHAR(10),
+                N'   • Số lượng tồn: ', d.SoLuongTon, N' → ', i.SoLuongTon
+            ), CHAR(13) + CHAR(10)
         )
         FROM inserted i
         JOIN deleted d ON i.MaLH = d.MaLH
@@ -1396,13 +1376,13 @@ BEGIN
                 N'Xóa lô: [Mã lô hàng=', MaLH,
                 N', Mã thuốc=', MaThuoc,
                 N', Số lượng tồn=', SoLuongTon, N']'
-            ), N'; '
+            ), CHAR(13) + CHAR(10)
         )
         FROM deleted;
     END
 
-    -- 🔹 3. Ghi vào bảng HoatDong (chỉ ghi khi có nội dung thực sự)
-    IF (@NoiDung IS NOT NULL AND @NoiDung <> N'')
+    IF (@NoiDung IS NOT NULL AND @NoiDung <> N''
+    AND EXISTS (SELECT 1 FROM NhanVien WHERE MaNV = @MaNV))
     BEGIN
         INSERT INTO HoatDong (LoaiHD, BangDL, NoiDung, MaNV)
         VALUES (@LoaiHD, @BangDL, @NoiDung, @MaNV);
@@ -1412,7 +1392,7 @@ GO
 
 
 
--- TRIGGER GHI LOG CHỈNH SỬA GÍA TRONG CẬP NHẬT GIÁ
+--TRIGGER GHI LOG CHỈNH SỬA GÍA BÁN TRONG CẬP NHẬT GIÁ---------------------------------------------------------------------------------------------------------------
 CREATE OR ALTER TRIGGER trg_ChiTietDonViTinh_Audit
 ON ChiTietDonViTinh
 AFTER INSERT, UPDATE, DELETE
@@ -1423,14 +1403,13 @@ BEGIN
     DECLARE @MaThuoc VARCHAR(10);
     DECLARE @NoiDung NVARCHAR(MAX) = N'';
     DECLARE @LoaiHD NVARCHAR(50);
-	-- 👇 Lấy thông tin nhân viên từ CONTEXT_INFO()
-	DECLARE @context VARBINARY(128) = CONTEXT_INFO();
-	DECLARE @MaNV VARCHAR(10) = RTRIM(REPLACE(CAST(@context AS VARCHAR(128)), CHAR(0), ''));
+    DECLARE @context VARBINARY(128) = CONTEXT_INFO();
+    DECLARE @MaNV VARCHAR(10) = RTRIM(REPLACE(CAST(@context AS VARCHAR(128)), CHAR(0), ''));
 
     -- 🔹 Xác định thuốc bị thay đổi
-    SELECT TOP 1 @MaThuoc = MaThuoc FROM inserted;
-    IF @MaThuoc IS NULL
-        SELECT TOP 1 @MaThuoc = MaThuoc FROM deleted;
+    SELECT TOP 1 @MaThuoc = COALESCE(i.MaThuoc, d.MaThuoc)
+    FROM inserted i
+    FULL JOIN deleted d ON i.MaThuoc = d.MaThuoc;
 
     -- 🔹 Xác định loại hành động
     IF EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
@@ -1440,25 +1419,51 @@ BEGIN
     ELSE
         SET @LoaiHD = N'Xóa đơn vị tính';
 
-    -- 🔹 Tạo mô tả chi tiết
+    ----------------------------------------------------------
+    -- 🧠 Tạo mô tả chi tiết thay đổi
+    ----------------------------------------------------------
+    ;WITH ThayDoi AS (
+        SELECT
+            COALESCE(i.MaDVT, d.MaDVT) AS MaDVT,
+            dvt.TenDonViTinh,
+            ISNULL(d.GiaBan, 0) AS GiaBanCu,
+            ISNULL(i.GiaBan, 0) AS GiaBanMoi,
+            ISNULL(d.HeSoQuyDoi, 0) AS HeSoCu,
+            ISNULL(i.HeSoQuyDoi, 0) AS HeSoMoi,
+            CASE
+                WHEN d.MaDVT IS NULL THEN N'Thêm mới'
+                WHEN i.MaDVT IS NULL THEN N'Xóa'
+                WHEN (ISNULL(d.GiaBan,0) <> ISNULL(i.GiaBan,0)
+                   OR ISNULL(d.HeSoQuyDoi,0) <> ISNULL(i.HeSoQuyDoi,0)) THEN N'Cập nhật'
+                ELSE N'Không đổi'
+            END AS TrangThai
+        FROM inserted i
+        FULL JOIN deleted d ON i.MaDVT = d.MaDVT AND i.MaThuoc = d.MaThuoc
+        LEFT JOIN DonViTinh dvt ON dvt.MaDVT = COALESCE(i.MaDVT, d.MaDVT)
+    )
     SELECT @NoiDung = STRING_AGG(
         CONCAT(
-            dvt.TenDonViTinh,
-            N' (Hệ số quy đổi: ', c.HeSoQuyDoi,
-            N', Giá nhập: ', FORMAT(c.GiaNhap, 'N0'),
-            N', Giá bán: ', FORMAT(c.GiaBan, 'N0'),
-            CASE WHEN c.DonViCoBan = 1 THEN N', *Đơn vị cơ bản*' ELSE N'' END,
-            N')'
-        ), N'; '
+            CHAR(13)+CHAR(10), N' - ', TenDonViTinh, N': ',
+            CASE
+                WHEN TrangThai = N'Thêm mới' THEN N'Thêm mới (Giá bán: ' + FORMAT(GiaBanMoi, 'N0') + N', Hệ số: ' + CAST(HeSoMoi AS NVARCHAR(10)) + N')'
+                WHEN TrangThai = N'Xóa' THEN N'Xóa (Giá bán cũ: ' + FORMAT(GiaBanCu, 'N0') + N', Hệ số: ' + CAST(HeSoCu AS NVARCHAR(10)) + N')'
+                WHEN TrangThai = N'Cập nhật' THEN
+                    N'Cập nhật: Giá bán ' + FORMAT(GiaBanCu, 'N0') + N' → ' + FORMAT(GiaBanMoi, 'N0') +
+                    N'; Hệ số ' + CAST(HeSoCu AS NVARCHAR(10)) + N' → ' + CAST(HeSoMoi AS NVARCHAR(10))
+                ELSE N'Không thay đổi'
+            END
+        ), N''
     )
-    FROM ChiTietDonViTinh c
-    JOIN DonViTinh dvt ON c.MaDVT = dvt.MaDVT
-    WHERE c.MaThuoc = @MaThuoc;
+    FROM ThayDoi;
 
     IF @NoiDung IS NULL OR @NoiDung = ''
         SET @NoiDung = N'(Không còn đơn vị tính)';
 
-    -- 🔹 Tìm hoạt động gần nhất của thuốc này
+----------------------------------------------------------
+-- 🧾 Ghi vào bảng HoatDong (chỉ khi MaNV tồn tại)
+----------------------------------------------------------
+IF EXISTS (SELECT 1 FROM NhanVien WHERE MaNV = @MaNV)
+BEGIN
     DECLARE @ID INT;
     SELECT TOP 1 @ID = ID
     FROM HoatDong
@@ -1467,52 +1472,39 @@ BEGIN
     ORDER BY ID DESC;
 
     IF @ID IS NOT NULL
-    BEGIN
-        DECLARE @NoiDungCu NVARCHAR(MAX);
-        SELECT @NoiDungCu = NoiDung FROM HoatDong WHERE ID = @ID;
-
-        IF @NoiDungCu LIKE N'%đơn vị tính = %'
-        BEGIN
-            UPDATE HoatDong
-            SET NoiDung =
-                STUFF(NoiDung,
-                      CHARINDEX(N'đơn vị tính = ', NoiDung),
-                      LEN(NoiDung),
-                      N'đơn vị tính = [' + @NoiDung + N']')
-            WHERE ID = @ID;
-        END
-        ELSE
-        BEGIN
-            UPDATE HoatDong
-            SET NoiDung = NoiDung +
-                N'; ' +
-                CASE
-                    WHEN @LoaiHD = N'Cập nhật đơn vị tính' THEN N'Cập nhật đơn vị tính = [' + @NoiDung + N']'
-                    WHEN @LoaiHD = N'Thêm đơn vị tính' THEN N'Thêm đơn vị tính = [' + @NoiDung + N']'
-                    WHEN @LoaiHD = N'Xóa đơn vị tính' THEN N'Xóa đơn vị tính = [' + @NoiDung + N']'
-                    ELSE N'Hoạt động không xác định'
-                END
-            WHERE ID = @ID;
-        END
-    END
+        UPDATE HoatDong
+        SET NoiDung = NoiDung + CHAR(13)+CHAR(10) +
+                      CASE
+                          WHEN @LoaiHD = N'Cập nhật đơn vị tính' THEN N'Cập nhật đơn vị tính:' + @NoiDung
+                          WHEN @LoaiHD = N'Thêm đơn vị tính' THEN N'Thêm đơn vị tính:' + @NoiDung
+                          WHEN @LoaiHD = N'Xóa đơn vị tính' THEN N'Xóa đơn vị tính:' + @NoiDung
+                          ELSE N'Hoạt động không xác định'
+                      END
+        WHERE ID = @ID;
     ELSE
-    BEGIN
         INSERT INTO HoatDong (LoaiHD, BangDL, NoiDung, MaNV)
         VALUES (
             @LoaiHD,
             'Thuoc_SanPham',
             N'[MaThuoc=' + @MaThuoc + N'] ' +
             CASE
-                WHEN @LoaiHD = N'Cập nhật đơn vị tính' THEN N'Cập nhật đơn vị tính = [' + @NoiDung + N']'
-                WHEN @LoaiHD = N'Thêm đơn vị tính' THEN N'Thêm đơn vị tính = [' + @NoiDung + N']'
-                WHEN @LoaiHD = N'Xóa đơn vị tính' THEN N'Xóa đơn vị tính = [' + @NoiDung + N']'
+                WHEN @LoaiHD = N'Cập nhật đơn vị tính' THEN N'Cập nhật đơn vị tính:' + @NoiDung
+                WHEN @LoaiHD = N'Thêm đơn vị tính' THEN N'Thêm đơn vị tính:' + @NoiDung
+                WHEN @LoaiHD = N'Xóa đơn vị tính' THEN N'Xóa đơn vị tính:' + @NoiDung
                 ELSE N'Hoạt động không xác định'
             END,
             @MaNV
         );
     END
-END;
+END
 GO
+
+
+
+
+
+
+
 
 CREATE PROCEDURE sp_InsertNhanVien
     @HoTen NVARCHAR(50),
@@ -1566,6 +1558,7 @@ GO
 -- ==========================================================
 
 -- 1. DOANH THU: Hôm nay (Theo giờ)
+
 CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_HomNay
 AS
 BEGIN
@@ -1584,27 +1577,26 @@ BEGIN
     )
     SELECT
         ISNULL(DS.ThoiGian, TH.ThoiGian) AS ThoiGian,
-        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon, ISNULL(DS.TongGiaTri, 0) AS TongGiaTri, ISNULL(DS.GiamGia, 0) AS GiamGia,
-        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra, ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
-        (ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0) - ISNULL(TH.GiaTriDonTra, 0)) AS DoanhThu
+        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon,
+        ISNULL(DS.TongGiaTri, 0) AS TongGiaTri,
+        ISNULL(DS.GiamGia, 0) AS GiamGia,
+        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra,
+        ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
+        -- [ĐÃ CẬP NHẬT] Doanh thu ròng * 1.05
+        ((ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0)) - ISNULL(TH.GiaTriDonTra, 0)) * 1.05 AS DoanhThu
     FROM DoanhSoTheoGio DS FULL OUTER JOIN TraHangTheoGio TH ON DS.ThoiGian = TH.ThoiGian
     ORDER BY ThoiGian;
 END;
 GO
 
--- 2. DOANH THU: Tuần này (Theo ngày, nhãn 'dd')
 CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_TuanNay
 AS
 BEGIN
     SET NOCOUNT ON;
-
-    -- Đặt ngày đầu tuần là Thứ Hai (an toàn, không ảnh hưởng session khác)
     SET DATEFIRST 1;
-
-    -- Tính toán ngày đầu tuần (Thứ Hai) và cuối tuần (Chủ Nhật)
     DECLARE @Today DATE = GETDATE();
     DECLARE @StartOfWeek DATE = DATEADD(dd, 1 - DATEPART(dw, @Today), @Today);
-    DECLARE @EndOfWeek DATE = DATEADD(dd, 6, @StartOfWeek); -- Thêm 6 ngày vào Thứ Hai
+    DECLARE @EndOfWeek DATE = DATEADD(dd, 6, @StartOfWeek);
 
     WITH DoanhSoTheoNgay AS (
         SELECT CONVERT(date, HD.NgayLap) AS Ngay,
@@ -1632,13 +1624,13 @@ BEGIN
         ISNULL(DS.GiamGia, 0) AS GiamGia,
         ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra,
         ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
-        (ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0) - ISNULL(TH.GiaTriDonTra, 0)) AS DoanhThu
+        -- [ĐÃ CẬP NHẬT] Doanh thu ròng * 1.05
+        ((ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0)) - ISNULL(TH.GiaTriDonTra, 0)) * 1.05 AS DoanhThu
     FROM DoanhSoTheoNgay DS FULL OUTER JOIN TraHangTheoNgay TH ON DS.Ngay = TH.Ngay
     ORDER BY ISNULL(DS.Ngay, TH.Ngay);
 END;
 GO
 
--- 3. CẬP NHẬT SP "THÁNG NÀY"
 CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_ThangNay
 AS
 BEGIN
@@ -1656,44 +1648,54 @@ BEGIN
         GROUP BY CONVERT(date, PT.NgayLap)
     )
     SELECT
-        -- SỬA Ở ĐÂY: từ 'dd' thành 'dd/MM'
         FORMAT(ISNULL(DS.Ngay, TH.Ngay), 'dd/MM') AS ThoiGian,
-        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon, ISNULL(DS.TongGiaTri, 0) AS TongGiaTri, ISNULL(DS.GiamGia, 0) AS GiamGia,
-        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra, ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
-        (ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0) - ISNULL(TH.GiaTriDonTra, 0)) AS DoanhThu
+        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon,
+        ISNULL(DS.TongGiaTri, 0) AS TongGiaTri,
+        ISNULL(DS.GiamGia, 0) AS GiamGia,
+        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra,
+        ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
+        -- [ĐÃ CẬP NHẬT] Doanh thu ròng * 1.05
+        ((ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0)) - ISNULL(TH.GiaTriDonTra, 0)) * 1.05 AS DoanhThu
     FROM DoanhSoTheoNgay DS FULL OUTER JOIN TraHangTheoNgay TH ON DS.Ngay = TH.Ngay
     ORDER BY ISNULL(DS.Ngay, TH.Ngay);
 END;
 GO
 
--- 4. DOANH THU: Quý này (Lấy tất cả các quý trong năm)
-CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_QuyNay
+CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_NamNay
 AS
 BEGIN
     SET NOCOUNT ON;
-    WITH DoanhSoTheoQuy AS (
-        SELECT DATEPART(quarter, HD.NgayLap) AS Quy, COUNT(DISTINCT HD.MaHD) AS SoLuongHoaDon, ISNULL(SUM(CTHD.SoLuong * CTHD.DonGia), 0) AS TongGiaTri, ISNULL(SUM(CTHD.SoLuong * CTHD.GiamGia), 0) AS GiamGia
+    WITH DoanhSoTheoThang AS (
+        SELECT DATEPART(month, HD.NgayLap) AS Thang,
+               COUNT(DISTINCT HD.MaHD) AS SoLuongHoaDon,
+               ISNULL(SUM(CTHD.SoLuong * CTHD.DonGia), 0) AS TongGiaTri,
+               ISNULL(SUM(CTHD.SoLuong * CTHD.GiamGia), 0) AS GiamGia
         FROM HoaDon HD JOIN ChiTietHoaDon CTHD ON HD.MaHD = CTHD.MaHD
         WHERE DATEPART(year, HD.NgayLap) = DATEPART(year, GETDATE())
-        GROUP BY DATEPART(quarter, HD.NgayLap)
+        GROUP BY DATEPART(month, HD.NgayLap)
     ),
-    TraHangTheoQuy AS (
-        SELECT DATEPART(quarter, PT.NgayLap) AS Quy, COUNT(DISTINCT PT.MaPT) AS SoLuongDonTra, ISNULL(SUM(CTPT.SoLuong * (CTPT.DonGia - CTPT.GiamGia)), 0) AS GiaTriDonTra
+    TraHangTheoThang AS (
+        SELECT DATEPART(month, PT.NgayLap) AS Thang,
+               COUNT(DISTINCT PT.MaPT) AS SoLuongDonTra,
+               ISNULL(SUM(CTPT.SoLuong * (CTPT.DonGia - CTPT.GiamGia)), 0) AS GiaTriDonTra
         FROM PhieuTraHang PT JOIN ChiTietPhieuTraHang CTPT ON PT.MaPT = CTPT.MaPT
         WHERE DATEPART(year, PT.NgayLap) = DATEPART(year, GETDATE())
-        GROUP BY DATEPART(quarter, PT.NgayLap)
+        GROUP BY DATEPART(month, PT.NgayLap)
     )
     SELECT
-        CONCAT(N'Quý ', ISNULL(DS.Quy, TH.Quy)) AS ThoiGian, -- Nhãn 'Quý 1', 'Quý 2'...
-        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon, ISNULL(DS.TongGiaTri, 0) AS TongGiaTri, ISNULL(DS.GiamGia, 0) AS GiamGia,
-        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra, ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
-        (ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0) - ISNULL(TH.GiaTriDonTra, 0)) AS DoanhThu
-    FROM DoanhSoTheoQuy DS FULL OUTER JOIN TraHangTheoQuy TH ON DS.Quy = TH.Quy
-    ORDER BY ISNULL(DS.Quy, TH.Quy);
+        FORMAT(DATEFROMPARTS(DATEPART(year, GETDATE()), ISNULL(DS.Thang, TH.Thang), 1), 'MM/yyyy') AS ThoiGian,
+        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon,
+        ISNULL(DS.TongGiaTri, 0) AS TongGiaTri,
+        ISNULL(DS.GiamGia, 0) AS GiamGia,
+        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra,
+        ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
+        -- [ĐÃ CẬP NHẬT] Doanh thu ròng * 1.05
+        ((ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0)) - ISNULL(TH.GiaTriDonTra, 0)) * 1.05 AS DoanhThu
+    FROM DoanhSoTheoThang DS FULL OUTER JOIN TraHangTheoThang TH ON DS.Thang = TH.Thang
+    ORDER BY ISNULL(DS.Thang, TH.Thang);
 END;
 GO
 
--- 5. DOANH THU: Tùy chọn (Theo khoảng ngày)
 CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_TuyChon
     @NgayBatDau DATE,
     @NgayKetThuc DATE
@@ -1714,9 +1716,13 @@ BEGIN
     )
     SELECT
         FORMAT(ISNULL(DS.Ngay, TH.Ngay), 'dd/MM') AS ThoiGian,
-        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon, ISNULL(DS.TongGiaTri, 0) AS TongGiaTri, ISNULL(DS.GiamGia, 0) AS GiamGia,
-        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra, ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
-        (ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0) - ISNULL(TH.GiaTriDonTra, 0)) AS DoanhThu
+        ISNULL(DS.SoLuongHoaDon, 0) AS SoLuongHoaDon,
+        ISNULL(DS.TongGiaTri, 0) AS TongGiaTri,
+        ISNULL(DS.GiamGia, 0) AS GiamGia,
+        ISNULL(TH.SoLuongDonTra, 0) AS SoLuongDonTra,
+        ISNULL(TH.GiaTriDonTra, 0) AS GiaTriDonTra,
+        -- [ĐÃ CẬP NHẬT] Doanh thu ròng * 1.05
+        ((ISNULL(DS.TongGiaTri, 0) - ISNULL(DS.GiamGia, 0)) - ISNULL(TH.GiaTriDonTra, 0)) * 1.05 AS DoanhThu
     FROM DoanhSoTheoNgay DS FULL OUTER JOIN TraHangTheoNgay TH ON DS.Ngay = TH.Ngay
     ORDER BY ISNULL(DS.Ngay, TH.Ngay);
 END;
@@ -1790,7 +1796,7 @@ END;
 GO
 
 -- 9. TOP 5: Quý này
-CREATE OR ALTER PROCEDURE sp_Top5SanPham_QuyNay
+CREATE OR ALTER PROCEDURE sp_Top5SanPham_NamNay
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -1799,7 +1805,8 @@ BEGIN
     JOIN HoaDon HD ON CTHD.MaHD = HD.MaHD
     JOIN Thuoc_SP_TheoLo L ON CTHD.MaLH = L.MaLH
     JOIN Thuoc_SanPham T ON L.MaThuoc = T.MaThuoc
-    WHERE DATEPART(quarter, HD.NgayLap) = DATEPART(quarter, GETDATE()) AND DATEPART(year, HD.NgayLap) = DATEPART(year, GETDATE())
+    -- 👇 [THAY ĐỔI] Lọc theo năm hiện tại (bỏ điều kiện quý)
+    WHERE DATEPART(year, HD.NgayLap) = DATEPART(year, GETDATE())
     GROUP BY T.MaThuoc, T.TenThuoc ORDER BY SoLuong DESC;
 END;
 GO
@@ -1822,9 +1829,6 @@ END;
 GO
 
 --------- THỐNG KÊ XUẤT NHẬP TỒN
-USE QuanLyNhaThuoc;
-GO
-
 GO
 
 -- ==========================================================
@@ -2029,28 +2033,21 @@ PRINT N'=== HOÀN TẤT! Đã tạo 2 SP cho Thống kê XNT. ===';
 
 go
 
-CREATE PROCEDURE sp_LuuPhieuNhap
+CREATE OR ALTER PROCEDURE sp_LuuPhieuNhap
     @MaPN VARCHAR(10),
     @NgayNhap DATE,
-    @TrangThai BIT,
     @GhiChu NVARCHAR(255),
     @MaNCC VARCHAR(10),
     @MaNV VARCHAR(10),
-
-    -- Chi tiết phiếu nhập
     @MaThuoc VARCHAR(10),
     @MaLH VARCHAR(10),
     @SoLuong INT,
     @GiaNhap FLOAT,
     @ChietKhau FLOAT,
     @Thue FLOAT,
-
-    -- Lô thuốc
     @SoLuongTon INT = NULL,
     @NSX DATE = NULL,
     @HSD DATE = NULL,
-
-    -- Đơn vị tính cần cập nhật
     @MaDVT VARCHAR(10) = NULL
 AS
 BEGIN
@@ -2059,64 +2056,95 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        -- 1️⃣ Thêm phiếu nhập nếu chưa có
-        IF NOT EXISTS (SELECT 1 FROM PhieuNhap WHERE MaPN = @MaPN)
-        BEGIN
-            INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
-            VALUES (@MaPN, @NgayNhap, @TrangThai, @GhiChu, @MaNCC, @MaNV);
-        END
-        ELSE
-        BEGIN
-            -- Nếu đã có thì cập nhật lại thông tin chung (nếu cần)
-            UPDATE PhieuNhap
-            SET NgayNhap = @NgayNhap,
-                TrangThai = @TrangThai,
-                GhiChu = @GhiChu,
-                MaNCC = @MaNCC,
-                MaNV = @MaNV
-            WHERE MaPN = @MaPN;
-        END
+        ---------------------------------------------------------
+        -- 1️⃣ Đọc context hiện tại để tạm thời bỏ qua trigger
+        ---------------------------------------------------------
+        DECLARE @oldContextText NVARCHAR(128) =
+            RTRIM(REPLACE(CAST(CONTEXT_INFO() AS NVARCHAR(128)), CHAR(0), ''));
+        DECLARE @MaNVContext NVARCHAR(50) = ISNULL(@oldContextText, @MaNV);
 
-        -- 2️⃣ Thêm hoặc cập nhật chi tiết phiếu nhập
-        IF EXISTS (SELECT 1 FROM ChiTietPhieuNhap WHERE MaPN = @MaPN AND MaThuoc = @MaThuoc AND MaLH = @MaLH)
-        BEGIN
-            UPDATE ChiTietPhieuNhap
-            SET SoLuong = @SoLuong,
-                GiaNhap = @GiaNhap,
-                ChietKhau = @ChietKhau,
-                Thue = @Thue
-            WHERE MaPN = @MaPN AND MaThuoc = @MaThuoc AND MaLH = @MaLH;
-        END
+        DECLARE @newContextText NVARCHAR(128);
+        IF ISNULL(@MaNVContext, '') = ''
+            SET @newContextText = @MaNV + '|IGNORE_TRG';
         ELSE
-        BEGIN
+            SET @newContextText = @MaNVContext + '|IGNORE_TRG';
+
+        DECLARE @newContext VARBINARY(128) = CAST(@newContextText AS VARBINARY(128));
+        SET CONTEXT_INFO @newContext;
+
+        ---------------------------------------------------------
+        -- 2️⃣ Xác định hệ số quy đổi dựa trên đơn vị nhập
+        ---------------------------------------------------------
+        DECLARE @HeSoQuyDoi FLOAT;
+
+        -- 🔹 Lấy hệ số quy đổi của đơn vị hiện tại
+        SELECT @HeSoQuyDoi = HeSoQuyDoi
+        FROM ChiTietDonViTinh
+        WHERE MaThuoc = @MaThuoc AND MaDVT = @MaDVT;
+
+        -- 🔹 Lấy hệ số của đơn vị cơ bản
+        DECLARE @HeSoCoBan FLOAT;
+        SELECT @HeSoCoBan = HeSoQuyDoi
+        FROM ChiTietDonViTinh
+        WHERE MaThuoc = @MaThuoc AND DonViCoBan = 1;
+
+        -- 🔹 Mặc định nếu null
+        SET @HeSoQuyDoi = ISNULL(@HeSoQuyDoi, 1);
+        SET @HeSoCoBan = ISNULL(@HeSoCoBan, 1);
+
+        -- 🔹 Tính quy đổi: về đơn vị cơ bản
+        SET @SoLuongTon = ISNULL(@SoLuongTon, @SoLuong * @HeSoQuyDoi / @HeSoCoBan);
+
+        ---------------------------------------------------------
+        -- 3️⃣ Phiếu nhập
+        ---------------------------------------------------------
+        IF NOT EXISTS (SELECT 1 FROM PhieuNhap WHERE MaPN = @MaPN)
+            INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
+            VALUES (@MaPN, @NgayNhap, 1, @GhiChu, @MaNCC, @MaNV);
+        ELSE
+            UPDATE PhieuNhap
+            SET NgayNhap = @NgayNhap, TrangThai = 1, GhiChu = @GhiChu, MaNCC = @MaNCC, MaNV = @MaNV
+            WHERE MaPN = @MaPN;
+
+        ---------------------------------------------------------
+        -- 4️⃣ Chi tiết phiếu nhập
+        ---------------------------------------------------------
+        IF EXISTS (SELECT 1 FROM ChiTietPhieuNhap WHERE MaPN = @MaPN AND MaThuoc = @MaThuoc AND MaLH = @MaLH)
+            UPDATE ChiTietPhieuNhap
+            SET SoLuong = @SoLuong, GiaNhap = @GiaNhap, ChietKhau = @ChietKhau, Thue = @Thue
+            WHERE MaPN = @MaPN AND MaThuoc = @MaThuoc AND MaLH = @MaLH;
+        ELSE
             INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
             VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuong, @GiaNhap, @ChietKhau, @Thue);
-        END
+        ---------------------------------------------------------
+        -- 5️⃣ Cập nhật kho
+           DECLARE @SoLuongTonQuyDoi INT = @SoLuong * @HeSoQuyDoi / @HeSoCoBan;
 
-        -- 3️⃣ Nếu TrangThai = 1 thì mới cập nhật kho và giá nhập
-        IF @TrangThai = 1
-        BEGIN
-            -- ⚙️ Cập nhật hoặc thêm mới lô thuốc
-            IF EXISTS (SELECT 1 FROM Thuoc_SP_TheoLo WHERE MaLH = @MaLH)
-            BEGIN
-                UPDATE Thuoc_SP_TheoLo
-                SET SoLuongTon = SoLuongTon + @SoLuongTon
-                WHERE MaLH = @MaLH;
-            END
-            ELSE
-            BEGIN
-                INSERT INTO Thuoc_SP_TheoLo (MaPN, MaThuoc, MaLH, SoLuongTon, NSX, HSD)
-                VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuongTon, @NSX, @HSD);
-            END
+        IF EXISTS (SELECT 1 FROM Thuoc_SP_TheoLo WHERE MaLH = @MaLH)
+        UPDATE Thuoc_SP_TheoLo
+        SET SoLuongTon = SoLuongTon + @SoLuongTonQuyDoi
+        WHERE MaLH = @MaLH;
+        ELSE
+        INSERT INTO Thuoc_SP_TheoLo (MaPN, MaThuoc, MaLH, SoLuongTon, NSX, HSD)
+        VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuongTonQuyDoi, @NSX, @HSD);
 
-            -- 🔁 Cập nhật giá nhập và giá bán trong ChiTietDonViTinh
-            UPDATE ChiTietDonViTinh
-            SET GiaNhap = @GiaNhap,
-                GiaBan = CASE WHEN @GiaNhap > GiaBan THEN @GiaNhap ELSE GiaBan END
-            WHERE MaThuoc = @MaThuoc AND MaDVT = @MaDVT;
-        END
+
+        ---------------------------------------------------------
+        -- 6️⃣ Cập nhật giá nhập/bán
+        ---------------------------------------------------------
+        UPDATE ChiTietDonViTinh
+        SET GiaNhap = @GiaNhap,
+            GiaBan = CASE WHEN @GiaNhap > GiaBan THEN @GiaNhap ELSE GiaBan END
+        WHERE MaThuoc = @MaThuoc AND MaDVT = @MaDVT;
 
         COMMIT TRANSACTION;
+
+        ---------------------------------------------------------
+        -- 7️⃣ Khôi phục lại context cũ
+        ---------------------------------------------------------
+        DECLARE @restoreContext VARBINARY(128) = CAST(@MaNVContext AS VARBINARY(128));
+        SET CONTEXT_INFO @restoreContext;
+
     END TRY
     BEGIN CATCH
         ROLLBACK TRANSACTION;
@@ -2124,6 +2152,8 @@ BEGIN
     END CATCH
 END
 GO
+
+
 
 CREATE PROCEDURE sp_HangHetHan
 AS
@@ -2213,3 +2243,233 @@ go
 ALTER TABLE HoaDon
     ADD MaDonThuoc VARCHAR(20) NULL;
 go
+
+
+
+--================================================================================================================================================================================================
+--================================================================================================================================================================================================
+--================================================================================================================================================================================================
+--XỬ LÝ ĐƠN ĐẶT HÀNG
+
+--Trigger – Cập nhật trạng thái Phiếu Đặt Hàng khi thay đổi tồn
+
+CREATE OR ALTER TRIGGER trg_CapNhatTrangThaiDatHang
+ON Thuoc_SP_TheoLo
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @MaThuoc VARCHAR(10);
+
+    DECLARE cur CURSOR FOR
+        SELECT DISTINCT MaThuoc FROM inserted;
+    OPEN cur;
+    FETCH NEXT FROM cur INTO @MaThuoc;
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        DECLARE @TongTon INT = (
+            SELECT SUM(SoLuongTon)
+            FROM Thuoc_SP_TheoLo
+            WHERE MaThuoc = @MaThuoc
+        );
+
+        -- Cập nhật trạng thái từng chi tiết phiếu đặt có liên quan
+        UPDATE ctpd
+        SET TrangThai =
+            CASE
+                WHEN @TongTon >= CEILING(ctpd.SoLuong *
+                    ISNULL(
+                        (SELECT HeSoQuyDoi FROM ChiTietDonViTinh dvt
+                         WHERE dvt.MaThuoc = ctpd.MaThuoc AND dvt.MaDVT = ctpd.MaDVT),
+                        1
+                    )
+                )
+                THEN 1
+                ELSE 0
+            END
+        FROM ChiTietPhieuDatHang ctpd
+        WHERE ctpd.MaThuoc = @MaThuoc;
+
+        -- Nếu tất cả chi tiết đủ hàng thì cập nhật phiếu
+        UPDATE pd
+        SET TrangThai =
+            CASE
+                WHEN NOT EXISTS (
+                    SELECT 1 FROM ChiTietPhieuDatHang
+                    WHERE MaPDat = pd.MaPDat AND TrangThai = 0
+                ) THEN 1
+                ELSE 0
+            END
+        FROM PhieuDatHang pd
+        WHERE EXISTS (
+            SELECT 1 FROM ChiTietPhieuDatHang ctpd
+            WHERE ctpd.MaPDat = pd.MaPDat AND ctpd.MaThuoc = @MaThuoc
+        );
+
+        FETCH NEXT FROM cur INTO @MaThuoc;
+    END
+    CLOSE cur;
+    DEALLOCATE cur;
+END;
+GO
+
+--Procedure – Duyệt Phiếu Đặt (Giữ hàng theo lô FEFO)
+CREATE OR ALTER PROCEDURE sp_DuyetPhieuDatHang
+    @MaPDat VARCHAR(10)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE
+        @MaThuoc VARCHAR(10),
+        @MaDVT VARCHAR(10),
+        @SoLuong INT,
+        @HeSo FLOAT,
+        @SoLuongCoBan INT;
+
+    DECLARE cur CURSOR FOR
+        SELECT MaThuoc, MaDVT, SoLuong
+        FROM ChiTietPhieuDatHang
+        WHERE MaPDat = @MaPDat;
+
+    OPEN cur;
+    FETCH NEXT FROM cur INTO @MaThuoc, @MaDVT, @SoLuong;
+
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        -- Lấy hệ số quy đổi sang đơn vị cơ bản
+        SELECT @HeSo = ISNULL(HeSoQuyDoi, 1)
+        FROM ChiTietDonViTinh
+        WHERE MaThuoc = @MaThuoc AND MaDVT = @MaDVT;
+
+        SET @SoLuongCoBan = CEILING(@SoLuong * @HeSo);
+        DECLARE @CanTru INT = @SoLuongCoBan;
+
+        DECLARE @MaLH VARCHAR(10), @Ton INT;
+
+        -- Duyệt theo thứ tự hạn sử dụng gần nhất (FEFO)
+        DECLARE curLo CURSOR FOR
+            SELECT MaLH, SoLuongTon
+            FROM Thuoc_SP_TheoLo
+            WHERE MaThuoc = @MaThuoc
+              AND HSD > GETDATE()
+            ORDER BY HSD ASC;  -- FEFO: gần hết hạn trước
+        OPEN curLo;
+        FETCH NEXT FROM curLo INTO @MaLH, @Ton;
+
+        WHILE @@FETCH_STATUS = 0 AND @CanTru > 0
+        BEGIN
+            DECLARE @Tru INT = CASE WHEN @Ton >= @CanTru THEN @CanTru ELSE @Ton END;
+
+            UPDATE Thuoc_SP_TheoLo
+            SET SoLuongTon = SoLuongTon - @Tru,
+                SoLuongGiu = SoLuongGiu + @Tru
+            WHERE MaLH = @MaLH;
+
+            SET @CanTru = @CanTru - @Tru;
+            FETCH NEXT FROM curLo INTO @MaLH, @Ton;
+        END
+
+        CLOSE curLo;
+        DEALLOCATE curLo;
+
+        FETCH NEXT FROM cur INTO @MaThuoc, @MaDVT, @SoLuong;
+    END
+
+    CLOSE cur;
+    DEALLOCATE cur;
+
+    -- Sau khi duyệt xong phiếu
+    UPDATE PhieuDatHang
+    SET TrangThai = 2 -- đã duyệt, đang giữ hàng
+    WHERE MaPDat = @MaPDat;
+END;
+GO
+
+
+
+----Trigger + Job – Trả hàng tự động sau 7 ngày
+--CREATE OR ALTER TRIGGER trg_TuDongTraHangSau7Ngay
+--ON PhieuDatHang
+--AFTER UPDATE
+--AS
+--BEGIN
+--    SET NOCOUNT ON;
+
+--    -- Trả hàng về kho nếu phiếu quá 7 ngày mà chưa hoàn thành
+--    UPDATE tsl
+--    SET SoLuongTon = SoLuongTon + tsl.SoLuongGiu,
+--        SoLuongGiu = 0
+--    FROM Thuoc_SP_TheoLo tsl
+--    WHERE EXISTS (
+--        SELECT 1
+--        FROM ChiTietPhieuDatHang ct
+--        JOIN PhieuDatHang pd ON ct.MaPDat = pd.MaPDat
+--        WHERE pd.TrangThai <> 2
+--          AND DATEDIFF(DAY, pd.NgayLap, GETDATE()) > 7
+--          AND ct.MaThuoc = tsl.MaThuoc
+--    );
+
+--    UPDATE PhieuDatHang
+--    SET TrangThai = 3 -- đã hủy
+--    WHERE TrangThai <> 2
+--      AND DATEDIFF(DAY, NgayLap, GETDATE()) > 7;
+--END;
+--GO
+
+
+--TRIGGER CẬP NHẬT TRẠNG THÁI ĐẶT HÀNG KHI CÓ THAY ĐỔI TRÊN BẢNG THUỐC_SP_THEOLO
+
+
+--================================================================================================================================================================================================
+--================================================================================================================================================================================================
+--================================================================================================================================================================================================
+
+
+
+--🔹 SQL Job – Tự động chạy mỗi ngày 0h00
+-- Tạo job SQL Agent tự động
+
+--USE msdb;
+--GO
+--EXEC sp_add_job
+--    @job_name = N'Job_TuDongTraHangHetHan';
+
+--EXEC sp_add_jobstep
+--    @job_name = N'Job_TuDongTraHangHetHan',
+--    @step_name = N'TraHangSau7Ngay',
+--    @subsystem = N'TSQL',
+--    @command = N'
+--        UPDATE tsl
+--        SET SoLuongTon = SoLuongTon + tsl.SoLuongGiu,
+--            SoLuongGiu = 0
+--        FROM Thuoc_SP_TheoLo tsl
+--        WHERE EXISTS (
+--            SELECT 1
+--            FROM ChiTietPhieuDatHang ct
+--            JOIN PhieuDatHang pd ON ct.MaPDat = pd.MaPDat
+--            WHERE pd.TrangThai <> 2
+--              AND DATEDIFF(DAY, pd.NgayLap, GETDATE()) > 7
+--              AND ct.MaThuoc = tsl.MaThuoc
+--        );
+
+--        UPDATE PhieuDatHang
+--        SET TrangThai = 3
+--        WHERE TrangThai <> 2
+--          AND DATEDIFF(DAY, NgayLap, GETDATE()) > 7;
+--    ';
+
+--EXEC sp_add_schedule
+--    @schedule_name = N'HangNgayLuc0h',
+--    @freq_type = 4,            -- daily
+--    @freq_interval = 1,
+--    @active_start_time = 000000;  -- 00:00:00
+
+--EXEC sp_attach_schedule
+--    @job_name = N'Job_TuDongTraHangHetHan',
+--    @schedule_name = N'HangNgayLuc0h';
+
+--EXEC sp_add_jobserver
+--    @job_name = N'Job_TuDongTraHangHetHan';
+--GO

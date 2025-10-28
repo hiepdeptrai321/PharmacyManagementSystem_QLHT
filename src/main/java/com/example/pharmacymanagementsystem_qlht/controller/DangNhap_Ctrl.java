@@ -29,6 +29,8 @@ public class DangNhap_Ctrl extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/DangNhap_GUI.fxml"));
         Scene scene = new Scene(root, 488, 649);
         scene.getStylesheets().add(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/css/DangNhap.css").toExternalForm());
+        stage.setTitle("Đăng nhập");
+        stage.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();

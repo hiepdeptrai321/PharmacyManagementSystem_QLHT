@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.ByteArrayInputStream;
@@ -41,7 +42,8 @@ public class ChiTietThuoc_Ctrl {
     public TextField txtNhomDuocLy;
     public ImageView imgThuoc;
 
-    public void initialize() {
+    public void initialize( Thuoc_SanPham thuoc) {
+        load(thuoc);
 
     }
 
@@ -57,12 +59,29 @@ public class ChiTietThuoc_Ctrl {
         txtViTri.setText(thuoc.getVitri().getTenKe());
         txtNhomDuocLy.setText(thuoc.getNhomDuocLy().getTenNDL());
         txtDuongDung.setText(thuoc.getDuongDung());
-        imgThuoc.setImage(new Image(new ByteArrayInputStream(thuoc.getHinhAnh())));
+        try {
+            if (thuoc.getHinhAnh() == null) {
+                imgThuoc.setImage(
+                        new Image(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/img/noimage.jpg").toExternalForm())
+                );
+            } else {
+                imgThuoc.setImage(new Image(new ByteArrayInputStream(thuoc.getHinhAnh())));
+            }
+        } catch (Exception e) {
+            imgThuoc.setImage(
+                    new Image(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/img/noimage.jpg").toExternalForm())
+            );
+        }
         List<ChiTietHoatChat> list = new ChiTietHoatChat_Dao().selectByMaThuoc(thuoc.getMaThuoc());
         ObservableList<ChiTietHoatChat> oblist = FXCollections.observableArrayList(list);
         colMaHoatChat.setCellValueFactory(cel -> new SimpleStringProperty(cel.getValue().getHoatChat().getMaHoatChat()));
         colTenHoatChat.setCellValueFactory(cel -> new SimpleStringProperty(cel.getValue().getHoatChat().getTenHoatChat()));
         colHamLuong.setCellValueFactory(cel -> new SimpleStringProperty(String.valueOf(cel.getValue().getHamLuong())));
         tblHoatChat.setItems(oblist);
+    }
+
+    public void btnThoatClick(MouseEvent mouseEvent) {
+        Stage stage = (Stage) txtMaThuoc.getScene().getWindow();
+        stage.close();
     }
 }

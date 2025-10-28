@@ -1,6 +1,7 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDatHang;
 
 import com.example.pharmacymanagementsystem_qlht.TienIch.VNDFormatter;
+import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang.TimKiemKhachHangTrongHD_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang.TimKiemKhachHang_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.controller.DangNhap_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.dao.ChiTietPhieuDatHang_Dao;
@@ -376,6 +377,12 @@ public class LapPhieuDatHang_Ctrl extends Application {
     private void ganThuocVaoCTHD(ChiTietPhieuDatHang cthd, Thuoc_SanPham sp) {
         // assign product directly (no LoHang)
         cthd.setThuoc(sp);
+        ChiTietDonViTinh defaultCt = chonDonViTheoTen(sp, null);
+        if (defaultCt != null && defaultCt.getDvt() != null) {
+            cthd.setDvt(defaultCt.getDvt().getMaDVT());
+        } else {
+            cthd.setDvt(null);
+        }
     }
 
     private String layTenSP(ChiTietPhieuDatHang row) {
@@ -578,7 +585,7 @@ public class LapPhieuDatHang_Ctrl extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKKhachHang/TKKhachHang_GUI.fxml"));
             Parent root = loader.load();
-            Object ctrl = loader.getController();
+            TimKiemKhachHangTrongHD_Ctrl ctrl = loader.getController();
 
             Stage dlg = new Stage();
             dlg.initModality(Modality.APPLICATION_MODAL);
@@ -587,7 +594,7 @@ public class LapPhieuDatHang_Ctrl extends Application {
             }
 
             // If controller is the typed search controller, set the callback like LapHoaDon_Ctrl
-            if (ctrl instanceof TimKiemKhachHang_Ctrl tkCtrl) {
+            if (ctrl instanceof TimKiemKhachHangTrongHD_Ctrl tkCtrl) {
                 tkCtrl.setOnSelected((KhachHang kh) -> {
                     if (tfTenKH != null) tfTenKH.setText(kh.getTenKH());
                     if (tfSDT != null) tfSDT.setText(kh.getSdt());
@@ -919,6 +926,10 @@ public class LapPhieuDatHang_Ctrl extends Application {
                 ct.setSoLuong(row.getSoLuong());
                 ct.setDonGia(row.getDonGia());
                 ct.setGiamGia(row.getGiamGia());
+                ChiTietDonViTinh chosenDvt = dvtTheoDong.get(row);
+                if (chosenDvt != null && chosenDvt.getDvt() != null) {
+                    ct.setDvt(chosenDvt.getDvt().getMaDVT());
+                }
                 ctDao.insert(ct);
             }
 
@@ -949,7 +960,7 @@ public class LapPhieuDatHang_Ctrl extends Application {
                         st.showAndWait();
 
                         // after the detail window is closed, clear/reset the form
-                        onHuy();
+                        resetForm();
                     } catch (Exception ex) {
                         ex.printStackTrace();
                         // still reset UI if error occurs (optional)
@@ -978,6 +989,9 @@ public class LapPhieuDatHang_Ctrl extends Application {
         if (result.isEmpty() || result.get() != ButtonType.OK) {
             return;
         }
+        resetForm();
+    }
+    public void resetForm() {
         if (tfMa != null) tfMa.setText(new PhieuDatHang_Dao().generateNewMaPDat());
         if (tfTenKH != null) tfTenKH.clear();
         if (tfSDT != null) tfSDT.clear();

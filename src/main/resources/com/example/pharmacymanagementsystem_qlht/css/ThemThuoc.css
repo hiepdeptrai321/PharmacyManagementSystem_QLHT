@@ -38,7 +38,11 @@
     -fx-background-color: red;
 }
 #btnhuy{
-    -fx-text-fill: black;
+    -fx-background-color: #de2c2c;
+        -fx-text-fill: white;
+        -fx-font-size: 14px;
+        -fx-border-radius: 4px;
+
 }
 
 .btn:hover{
@@ -51,3 +55,8 @@
     -fx-font-size: 14px;
     -fx-border-radius: 4px;
 }
+#btngiaban{
+-fx-background-color: #1EB4D9;
+-fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-border-radius: 6px;}

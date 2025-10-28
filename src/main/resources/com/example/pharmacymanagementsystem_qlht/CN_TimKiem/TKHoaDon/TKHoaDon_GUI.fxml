@@ -28,9 +28,6 @@
                             <font>
                                 <Font size="36.0" />
                             </font>
-                            <cursor>
-                                <Cursor fx:constant="NONE" />
-                            </cursor>
                         </Label>
                         <Label />
                   <ImageView fitHeight="46.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
@@ -104,7 +101,7 @@
                                 </ImageView>
                             </graphic>
                         </Button>
-                        <Button fx:id="btnHuyBo" mnemonicParsing="false" prefHeight="40.0" prefWidth="52.0" styleClass="btntim">
+                        <Button id="btnReset" fx:id="btnHuyBo" mnemonicParsing="false" prefHeight="40.0" prefWidth="52.0" styleClass="btntim" stylesheets="@../../css/QuanLyThuoc.css">
                             <HBox.margin>
                                 <Insets left="8.0" top="10.0" />
                             </HBox.margin>

@@ -109,7 +109,18 @@ public class SuaGiaThuoc_Ctrl {
         this.thuoc = thuoc;
         tfMaThuoc.setText(thuoc.getMaThuoc());
         tfTenThuoc.setText(thuoc.getTenThuoc());
-        tfLoaiHang.setText(thuoc.getLoaiHang().getTenLoaiHang());
+        try {
+            if (thuoc.getLoaiHang() == null) {
+                tfLoaiHang.setText("");
+            }
+            else{
+                tfLoaiHang.setText(thuoc.getLoaiHang().getTenLoaiHang());
+            }
+        } catch (Exception e) {
+            tfLoaiHang.setText("");
+        }
+
+
         loadListGia(this.thuoc.getMaThuoc());
     }
 

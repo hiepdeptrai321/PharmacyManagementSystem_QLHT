@@ -6,7 +6,7 @@ USE QuanLyNhaThuoc;
 GO
 
 --Link thư mục hình ảnh thuốc
-DECLARE @path NVARCHAR(255) = N'C:\Users\Nhut Hao\Desktop\New folder (2)\PharmacyManagementSystem_QLHT\SQL\imgThuoc\';
+DECLARE @path NVARCHAR(255) = N'D:\IUH\hk5\PTUD_Java\Project\PharmacyManagementSystem_QLHT\SQL\imgThuoc\';
 
 -- =========================
 -- Bảng KhachHang
@@ -2075,7 +2075,7 @@ BEGIN
         ---------------------------------------------------------
         -- 2️⃣ Xác định hệ số quy đổi dựa trên đơn vị nhập
         ---------------------------------------------------------
-        DECLARE @HeSoQuyDoi INT;
+        DECLARE @HeSoQuyDoi FLOAT;
 
         -- 🔹 Lấy hệ số quy đổi của đơn vị hiện tại
         SELECT @HeSoQuyDoi = HeSoQuyDoi
@@ -2083,7 +2083,7 @@ BEGIN
         WHERE MaThuoc = @MaThuoc AND MaDVT = @MaDVT;
 
         -- 🔹 Lấy hệ số của đơn vị cơ bản
-        DECLARE @HeSoCoBan INT;
+        DECLARE @HeSoCoBan FLOAT;
         SELECT @HeSoCoBan = HeSoQuyDoi
         FROM ChiTietDonViTinh
         WHERE MaThuoc = @MaThuoc AND DonViCoBan = 1;
@@ -2420,7 +2420,6 @@ GO
 
 
 --TRIGGER CẬP NHẬT TRẠNG THÁI ĐẶT HÀNG KHI CÓ THAY ĐỔI TRÊN BẢNG THUỐC_SP_THEOLO
-
 
 
 --================================================================================================================================================================================================

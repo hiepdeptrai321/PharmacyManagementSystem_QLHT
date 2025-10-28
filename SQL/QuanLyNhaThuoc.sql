@@ -174,7 +174,7 @@ CREATE TABLE DonViTinh (
 CREATE TABLE ChiTietDonViTinh (
      MaThuoc       VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
      MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT),
-     HeSoQuyDoi INT NOT NULL,
+     HeSoQuyDoi FLOAT NOT NULL,
      GiaNhap    FLOAT NOT NULL,
      GiaBan     FLOAT NOT NULL,
      DonViCoBan BIT NOT NULL DEFAULT 0,
@@ -2056,7 +2056,48 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        -- 1️⃣ Thêm phiếu nhập nếu chưa có
+        ---------------------------------------------------------
+        -- 1️⃣ Đọc context hiện tại để tạm thời bỏ qua trigger
+        ---------------------------------------------------------
+        DECLARE @oldContextText NVARCHAR(128) =
+            RTRIM(REPLACE(CAST(CONTEXT_INFO() AS NVARCHAR(128)), CHAR(0), ''));
+        DECLARE @MaNVContext NVARCHAR(50) = ISNULL(@oldContextText, @MaNV);
+
+        DECLARE @newContextText NVARCHAR(128);
+        IF ISNULL(@MaNVContext, '') = ''
+            SET @newContextText = @MaNV + '|IGNORE_TRG';
+        ELSE
+            SET @newContextText = @MaNVContext + '|IGNORE_TRG';
+
+        DECLARE @newContext VARBINARY(128) = CAST(@newContextText AS VARBINARY(128));
+        SET CONTEXT_INFO @newContext;
+
+        ---------------------------------------------------------
+        -- 2️⃣ Xác định hệ số quy đổi dựa trên đơn vị nhập
+        ---------------------------------------------------------
+        DECLARE @HeSoQuyDoi INT;
+
+        -- 🔹 Lấy hệ số quy đổi của đơn vị hiện tại
+        SELECT @HeSoQuyDoi = HeSoQuyDoi
+        FROM ChiTietDonViTinh
+        WHERE MaThuoc = @MaThuoc AND MaDVT = @MaDVT;
+
+        -- 🔹 Lấy hệ số của đơn vị cơ bản
+        DECLARE @HeSoCoBan INT;
+        SELECT @HeSoCoBan = HeSoQuyDoi
+        FROM ChiTietDonViTinh
+        WHERE MaThuoc = @MaThuoc AND DonViCoBan = 1;
+
+        -- 🔹 Mặc định nếu null
+        SET @HeSoQuyDoi = ISNULL(@HeSoQuyDoi, 1);
+        SET @HeSoCoBan = ISNULL(@HeSoCoBan, 1);
+
+        -- 🔹 Tính quy đổi: về đơn vị cơ bản
+        SET @SoLuongTon = ISNULL(@SoLuongTon, @SoLuong * @HeSoQuyDoi / @HeSoCoBan);
+
+        ---------------------------------------------------------
+        -- 3️⃣ Phiếu nhập
+        ---------------------------------------------------------
         IF NOT EXISTS (SELECT 1 FROM PhieuNhap WHERE MaPN = @MaPN)
             INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
             VALUES (@MaPN, @NgayNhap, 1, @GhiChu, @MaNCC, @MaNV);
@@ -2077,15 +2118,15 @@ BEGIN
             VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuong, @GiaNhap, @ChietKhau, @Thue);
         ---------------------------------------------------------
         -- 5️⃣ Cập nhật kho
-DECLARE @SoLuongTonQuyDoi INT = @SoLuong * @HeSoQuyDoi / @HeSoCoBan;
+        DECLARE @SoLuongTonQuyDoi INT = @SoLuong * @HeSoQuyDoi / @HeSoCoBan;
 
-IF EXISTS (SELECT 1 FROM Thuoc_SP_TheoLo WHERE MaLH = @MaLH)
-    UPDATE Thuoc_SP_TheoLo
-    SET SoLuongTon = SoLuongTon + @SoLuongTonQuyDoi
-    WHERE MaLH = @MaLH;
-ELSE
-    INSERT INTO Thuoc_SP_TheoLo (MaPN, MaThuoc, MaLH, SoLuongTon, NSX, HSD)
-    VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuongTonQuyDoi, @NSX, @HSD);
+        IF EXISTS (SELECT 1 FROM Thuoc_SP_TheoLo WHERE MaLH = @MaLH)
+        UPDATE Thuoc_SP_TheoLo
+        SET SoLuongTon = SoLuongTon + @SoLuongTonQuyDoi
+        WHERE MaLH = @MaLH;
+        ELSE
+        INSERT INTO Thuoc_SP_TheoLo (MaPN, MaThuoc, MaLH, SoLuongTon, NSX, HSD)
+        VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuongTonQuyDoi, @NSX, @HSD);
 
 
         ---------------------------------------------------------
@@ -2379,53 +2420,7 @@ GO
 
 
 --TRIGGER CẬP NHẬT TRẠNG THÁI ĐẶT HÀNG KHI CÓ THAY ĐỔI TRÊN BẢNG THUỐC_SP_THEOLO
-CREATE OR ALTER TRIGGER trg_UpdateTrangThaiDatHang_WhenTonChange
-ON Thuoc_SP_TheoLo
-AFTER INSERT, UPDATE
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    -- 🔹 Lấy danh sách thuốc bị ảnh hưởng
-    DECLARE @Thuoc TABLE (MaThuoc VARCHAR(10));
-    INSERT INTO @Thuoc (MaThuoc)
-    SELECT DISTINCT MaThuoc FROM inserted;
-
-    -- 🔹 Cập nhật trạng thái cho các chi tiết phiếu đặt
-    UPDATE ctpd
-    SET ctpd.TrangThai =
-        CASE
-            WHEN tong.TongTon >= ctpd.SoLuong THEN 1
-            ELSE 0
-        END
-    FROM ChiTietPhieuDatHang ctpd
-    JOIN @Thuoc t ON ctpd.MaThuoc = t.MaThuoc
-    CROSS APPLY (
-        SELECT SUM(SoLuongTon) AS TongTon
-        FROM Thuoc_SP_TheoLo
-        WHERE MaThuoc = ctpd.MaThuoc
-    ) tong;
-
-    -- 🔹 Cập nhật trạng thái tổng cho phiếu đặt
-    UPDATE p
-    SET p.TrangThai =
-        CASE
-            WHEN NOT EXISTS (
-                SELECT 1
-                FROM ChiTietPhieuDatHang c
-                WHERE c.MaPDat = p.MaPDat AND c.TrangThai = 0
-            )
-            THEN 1 ELSE 0
-        END
-    FROM PhieuDatHang p
-    WHERE EXISTS (
-        SELECT 1
-        FROM ChiTietPhieuDatHang c
-        JOIN @Thuoc t ON c.MaThuoc = t.MaThuoc
-        WHERE c.MaPDat = p.MaPDat
-    );
-END;
-GO
+qwe
 
 
 --================================================================================================================================================================================================

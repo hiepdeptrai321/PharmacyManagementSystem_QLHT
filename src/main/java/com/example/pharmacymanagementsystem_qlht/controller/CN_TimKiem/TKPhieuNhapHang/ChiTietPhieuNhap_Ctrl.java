@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.util.List;
@@ -58,5 +59,9 @@ public class ChiTietPhieuNhap_Ctrl {
         colMaLoHang.setCellValueFactory(new PropertyValueFactory<>("maLH"));
         Double tongGiaNhap = temp.getTongTien();
         lblTongGiaNhap.setText("Tổng giá nhập: " + String.format("%.2f", tongGiaNhap) +" VND");
+    }
+
+    public void btnThoat(MouseEvent mouseEvent) {
+        ((Stage) txtGhiChu.getScene().getWindow()).close();
     }
 }

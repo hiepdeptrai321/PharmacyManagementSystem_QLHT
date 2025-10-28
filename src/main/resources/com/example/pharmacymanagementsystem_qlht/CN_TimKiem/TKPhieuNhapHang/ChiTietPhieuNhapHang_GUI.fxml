@@ -47,7 +47,7 @@
                 <Font name="System Bold" size="15.0" />
             </font>
         </Label>
-        <Pane id="buttonThoat" layoutX="769.0" layoutY="355.0" prefHeight="26.0" prefWidth="74.0">
+        <Pane id="buttonThoat" layoutX="769.0" layoutY="355.0" onMouseClicked="#btnThoat" prefHeight="26.0" prefWidth="74.0">
             <children>
                 <Label id="labelTrang" layoutX="18.0" layoutY="3.0" text="Thoát" />
             </children>

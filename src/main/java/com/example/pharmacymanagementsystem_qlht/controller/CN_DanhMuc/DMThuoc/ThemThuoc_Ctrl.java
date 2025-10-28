@@ -99,6 +99,14 @@ public class ThemThuoc_Ctrl {
                     dialog.setHeaderText("Vui lòng nhập hàm lượng cho hoạt chất: " + hoatChat.getTenHoatChat());
                     dialog.setContentText("Hàm lượng:");
                     dialog.showAndWait().ifPresent(hamLuong -> {
+                        if(!hamLuong.matches("\\d+(\\.\\d+)?")) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Lỗi");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Hàm lượng không hợp lệ! Vui lòng nhập số.");
+                            alert.showAndWait();
+                            return;
+                        }
                         chtc.setHamLuong(Float.parseFloat(hamLuong));
 //                      Thêm chiTietHoatChat vào list để lưu lại khi thêm thuốc sẽ được thêm vào chi tiết hoạt chất
                         listChiTietHoatChat.add(chtc);

@@ -16,7 +16,7 @@ public class ChiTietPhieuDoiHang_Dao implements DaoInterface<ChiTietPhieuDoiHang
     private final String DELETE_BY_ID_SQL = "DELETE FROM ChiTietPhieuDoiHang WHERE MaLH=? AND MaPD=? AND MaThuoc=? AND MaDVT=?";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM ChiTietPhieuDoiHang WHERE MaLH=? AND MaPD=? AND MaThuoc=? AND MaDVT=?";
     private final String SELECT_ALL_SQL = "SELECT * FROM ChiTietPhieuDoiHang";
-    private final String SELECT_BY_MAPD_SQL = "SELECT * FROM ChiTietPhieuDoiHang WHERE MaPD = ?";
+    private final String SELECT_BY_MAPD_SQL = "SELECT MaLH, MaPD, MaThuoc, MaDVT, SoLuong, LyDoDoi FROM ChiTietPhieuDoiHang WHERE MaPD=?";
 
     @Override
     public boolean insert(ChiTietPhieuDoiHang e) {
@@ -63,26 +63,19 @@ public class ChiTietPhieuDoiHang_Dao implements DaoInterface<ChiTietPhieuDoiHang
             ResultSet rs = ConnectDB.query(sql, args);
             while (rs.next()) {
                 ChiTietPhieuDoiHang ct = new ChiTietPhieuDoiHang();
+
                 ct.setLoHang(new Thuoc_SP_TheoLo_Dao().selectById(rs.getString("MaLH")));
                 ct.setPhieuDoiHang(new PhieuDoiHang_Dao().selectById(rs.getString("MaPD")));
                 ct.setThuoc(new Thuoc_SanPham_Dao().selectById(rs.getString("MaThuoc")));
-                try {
-                    String maDVT = rs.getString("MaDVT");
-                    DonViTinh dvt = null;
-
-                    if (maDVT != null && !maDVT.isBlank()) {
-                        try {
-                            DonViTinh_Dao dvtDao = new DonViTinh_Dao();
-                            dvt = dvtDao.selectById(maDVT);
-                        } catch (Exception ignored) {}
-                    }
-
-                    ct.setDvt(dvt);
-                } catch (Exception ignore) {
-                    // Optional: log the exception for debugging
-                }
                 ct.setSoLuong(rs.getInt("SoLuong"));
                 ct.setLyDoDoi(safeGetString(rs, "LyDoDoi"));
+
+                String maDVT = rs.getString("MaDVT");
+                if (maDVT != null && !maDVT.isBlank()) {
+                    ct.setDvt(new DonViTinh_Dao().selectById(maDVT));
+                } else {
+                    ct.setDvt(null);
+                }
 
                 list.add(ct);
             }

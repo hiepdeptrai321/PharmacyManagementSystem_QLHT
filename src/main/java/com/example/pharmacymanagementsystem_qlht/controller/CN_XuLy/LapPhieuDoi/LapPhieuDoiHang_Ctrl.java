@@ -13,14 +13,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-import java.net.URL;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.*;
+
+import static javafx.scene.control.Alert.AlertType.*;
 
 public class LapPhieuDoiHang_Ctrl extends Application {
     @FXML private TextField txtTimHoaDonGoc;
@@ -47,7 +49,6 @@ public class LapPhieuDoiHang_Ctrl extends Application {
     @FXML private TextField lblTenKH;
     @FXML private TextField lblSDT;
     @FXML private DatePicker dpNgayLapPhieu;
-    @FXML private TextField txtLyDoDoi;
     @FXML private TextArea txtGhiChu;
 
     // State
@@ -154,12 +155,15 @@ public class LapPhieuDoiHang_Ctrl extends Application {
             colDoi.setCellFactory(tc -> new TableCell<>() {
                 private final Button btn = new Button("↓");
                 {
+                    btn.getStyleClass().add("btn-doi");
                     btn.setTooltip(new Tooltip("Chuyển xuống danh sách đổi"));
                     btn.setOnAction(e -> {
                         int idx = getIndex();
                         if (idx < 0 || idx >= tblSanPhamGoc.getItems().size()) return;
+
                         ChiTietHoaDon goc = tblSanPhamGoc.getItems().get(idx);
-                        if (goc == null || goc.getLoHang() == null) return;
+                        if (goc == null) return;
+
                         xuLyChuyenSangDoi(goc);
                     });
                     setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
@@ -273,17 +277,20 @@ public class LapPhieuDoiHang_Ctrl extends Application {
             colBo.setCellFactory(tc -> new TableCell<>() {
                 private final Button btn = new Button("✕");
                 {
+                    btn.getStyleClass().add("btn-bo");
                     btn.setTooltip(new Tooltip("Bỏ khỏi danh sách đổi"));
                     btn.setOnAction(e -> {
                         int idx = getIndex();
                         if (idx < 0 || idx >= tblSanPhamDoi.getItems().size()) return;
+
                         DoiHangItem vm = tblSanPhamDoi.getItems().get(idx);
                         if (vm != null && vm.getGoc() != null && vm.getGoc().getLoHang() != null) {
-                            String key = vm.getGoc().getLoHang().getMaLH();
+                            String key = vm.getGoc().getLoHang().getMaLH() + "_" +
+                                    (vm.getGoc().getDvt() != null ? vm.getGoc().getDvt().getMaDVT() : "null");
                             doiByMaLH.remove(key);
                         }
                         dsDoi.remove(vm);
-                        if (tblSanPhamDoi != null) tblSanPhamDoi.refresh();
+                        tblSanPhamDoi.refresh();
                     });
                     setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                     setStyle("-fx-alignment: center;");
@@ -356,13 +363,23 @@ public class LapPhieuDoiHang_Ctrl extends Application {
     public void xuLyTimHoaDonGoc(ActionEvent actionEvent) {
         String ma = txtTimHoaDonGoc == null ? null : txtTimHoaDonGoc.getText();
         if (ma == null || ma.isBlank()) {
-            alert(Alert.AlertType.WARNING, "Vui lòng nhập mã hóa đơn gốc.");
+            thongBaoTuyChinh(WARNING, "Mã hóa đơn gốc không thể trống", "Vui lòng nhập mã hóa đơn gốc.");
             return;
         }
         try {
             HoaDon hd = hoaDonDao.selectById(ma);
             if (hd == null) {
-                alert(Alert.AlertType.WARNING, "Không tìm thấy hóa đơn gốc.");
+                thongBaoTuyChinh(WARNING, "Không thể tìm thấy hóa đơn gốc", "Vui lòng kiểm tra lại mã hóa đơn.");
+
+                return;
+            }
+
+            // ✅ KIỂM TRA NGÀY LẬP SO VỚI NGÀY HIỆN TẠI
+            LocalDate ngayHD = hd.getNgayLap().toLocalDateTime().toLocalDate();
+            LocalDate today = LocalDate.now();
+
+            if (ngayHD.isBefore(today.minusDays(7))) {
+                thongBaoTuyChinh(WARNING, "Hóa đơn đã quá hạn 7 ngày", "Vui lòng kiểm tra lại!");
                 return;
             }
 
@@ -388,7 +405,8 @@ public class LapPhieuDoiHang_Ctrl extends Application {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            alert(Alert.AlertType.ERROR, "Lỗi tải hóa đơn gốc: " + ex.getMessage());
+            thongBaoTuyChinh(ERROR, "Lỗi tải hóa đơn gốc", "Không thể tải hóa đơn gốc. Vui lòng thử lại.");
+
         }
     }
 
@@ -397,8 +415,18 @@ public class LapPhieuDoiHang_Ctrl extends Application {
     }
     public void xuLyDoiHang(ActionEvent actionEvent) {
         if (dsDoi.isEmpty()) {
-            alert(Alert.AlertType.WARNING, "Không có sản phẩm nào để đổi.");
+            thongBaoTuyChinh(WARNING, "Danh sách đổi hàng trống", "Vui lòng thêm sản phẩm để đổi.");
             return;
+        }
+        for (DoiHangItem item : dsDoi) {
+            if (item.getLyDo() == null || item.getLyDo().trim().isEmpty()) {
+                thongBaoTuyChinh(WARNING, "Thiếu lý do đổi hàng",
+                         "Vui lòng nhập lý do đổi cho sản phẩm: " + tenSP(item.getGoc()));
+
+                tblSanPhamDoi.getSelectionModel().select(item);
+                tblSanPhamDoi.scrollTo(item);
+                return;
+            }
         }
 
         try {
@@ -420,8 +448,6 @@ public class LapPhieuDoiHang_Ctrl extends Application {
             }
 
             phieu.setNhanVien(DangNhap_Ctrl.user);
-            String lyDo = txtLyDoDoi != null ? txtLyDoDoi.getText() : "";
-            phieu.setLyDoDoi(lyDo.trim().isEmpty() ? "Khách trả đổi sản phẩm" : lyDo);
             phieu.setGhiChu(txtGhiChu == null ? "" : txtGhiChu.getText());
 
             new PhieuDoiHang_Dao().insert(phieu);
@@ -447,7 +473,7 @@ public class LapPhieuDoiHang_Ctrl extends Application {
                         loDao.selectLoHangFEFO_Multi(loCu.getThuoc().getMaThuoc(), soLuongCan);
 
                 if (loMoiList == null || loMoiList.isEmpty()) {
-                    alert(Alert.AlertType.WARNING, "Không đủ tồn để đổi: " + tenSP(goc));
+                    thongBaoTuyChinh(WARNING, "Không tìm thấy lô hàng để đổi", "Sản phẩm: " + tenSP(goc) + " không đủ tồn để đổi. Vui lòng kiểm tra lại.");
                     continue;
                 }
 
@@ -465,7 +491,7 @@ public class LapPhieuDoiHang_Ctrl extends Application {
                     loDao.update(loMoi);
 
                     soLuongCan -= soXuat;
-                    String lyDoItem = item.getLyDo() == null ? "Hàng lỗi" : item.getLyDo();
+                    String lyDoItem = item.getLyDo().trim();
                     ChiTietPhieuDoiHang ctpd = new ChiTietPhieuDoiHang(
                             loMoi,
                             phieu,
@@ -480,7 +506,8 @@ public class LapPhieuDoiHang_Ctrl extends Application {
 
                 // Nếu vẫn còn thiếu hàng => rollback riêng sản phẩm này
                 if (soLuongCan > 0) {
-                    alert(Alert.AlertType.WARNING, "Không đủ tồn để đổi: " + tenSP(goc));
+                    thongBaoTuyChinh(WARNING, "Không đủ tồn để đổi",
+                            "Sản phẩm: " + tenSP(goc) + " không đủ tồn để đổi. Vui lòng kiểm tra lại.");
                     continue;
                 }
 
@@ -488,15 +515,84 @@ public class LapPhieuDoiHang_Ctrl extends Application {
                     ctpdDao.insert(ctSave);
                 }
             }
-
-            alert(Alert.AlertType.INFORMATION, "Đổi hàng thành công!");
+            thongBaoTuyChinh(INFORMATION, "Đổi hàng thành công!", "Phiếu đổi hàng đã được tạo với mã: " + phieu.getMaPD());
             dsDoi.clear();
+            dsGoc.clear();
             doiByMaLH.clear();
-            tblSanPhamDoi.refresh();
+            txtTimHoaDonGoc.clear();
+            lblTenKH.clear();
+            lblSDT.clear();
+            lblMaHDGoc.clear();
+            lblMaHDGoc.setText("");
+            txtGhiChu.clear();
+            tblSanPhamGoc.getItems().clear();
+            tblSanPhamDoi.getItems().clear();
+            txtTimHoaDonGoc.requestFocus();
 
         } catch (Exception e) {
             e.printStackTrace();
-            alert(Alert.AlertType.ERROR, "Lỗi khi đổi hàng: " + e.getMessage());
+            thongBaoTuyChinh(ERROR," Lỗi khi đổi hàng", "Đã xảy ra lỗi trong quá trình đổi hàng: " + e.getMessage());
         }
+    }
+    private void canhBaoTuyChinh( String message) {
+        Alert alert = new Alert(WARNING);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/iconcanhbao.jpg")));
+        alert.setTitle(" Cảnh báo đổi hàng");
+        alert.setHeaderText("Không thể tạo phiếu đổi hàng");
+        alert.setContentText(message);
+
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().add(
+                getClass().getResource("/com/example/pharmacymanagementsystem_qlht/css/ThongBaoAlert.css").toExternalForm()
+        );
+        dialogPane.getStyleClass().add("modern-alert");
+
+        stage.setWidth(520);
+        stage.setHeight(250);
+        alert.showAndWait();
+    }
+    private void thongBaoTuyChinh(Alert.AlertType type, String header, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(header);
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        DialogPane pane = alert.getDialogPane();
+        pane.getStylesheets().add(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/css/ThongBaoAlert.css"
+        ).toExternalForm());
+        Stage stage = (Stage) pane.getScene().getWindow();
+        switch (type) {
+            case WARNING:
+                pane.getStyleClass().add("warning-alert");
+                stage.getIcons().add(new Image(
+                        getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/iconcanhbao.jpg")));
+                break;
+            case INFORMATION:
+                pane.getStyleClass().add("info-alert");
+                break;
+            case ERROR:
+                pane.getStyleClass().add("error-alert");
+                break;
+        }
+
+        stage.setWidth(550);
+        stage.setHeight(260);
+
+        alert.showAndWait();
+    }
+
+    public void xuLyHuy(ActionEvent actionEvent) {
+        dsDoi.clear();
+        dsGoc.clear();
+        doiByMaLH.clear();
+        lblTenKH.clear();
+        lblSDT.clear();
+        lblMaHDGoc.clear();
+        lblMaHDGoc.setText("");
+        txtGhiChu.clear();
+        tblSanPhamGoc.getItems().clear();
+        tblSanPhamDoi.getItems().clear();
+        txtTimHoaDonGoc.clear();
+        txtTimHoaDonGoc.requestFocus();
     }
 }

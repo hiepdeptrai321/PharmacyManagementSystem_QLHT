@@ -8,19 +8,17 @@ public class PhieuTraHang {
     private NhanVien nhanVien;
     private KhachHang khachHang;
     private Timestamp ngayLap;
-    private String lyDoTra;
     private String ghiChu;
     private HoaDon hoaDon;
 
     public PhieuTraHang() {
     }
 
-    public PhieuTraHang(String maPT, NhanVien nhanVien, KhachHang khachHang, Timestamp ngayLap, String lyDoTra, String ghiChu, HoaDon hoaDon) {
+    public PhieuTraHang(String maPT, NhanVien nhanVien, KhachHang khachHang, Timestamp ngayLap, String ghiChu, HoaDon hoaDon) {
         this.maPT = maPT;
         this.nhanVien = nhanVien;
         this.khachHang = khachHang;
         this.ngayLap = ngayLap;
-        this.lyDoTra = lyDoTra;
         this.ghiChu = ghiChu;
         this.hoaDon = hoaDon;
     }
@@ -55,14 +53,6 @@ public class PhieuTraHang {
 
     public void setNgayLap(Timestamp ngayLap) {
         this.ngayLap = ngayLap;
-    }
-
-    public String getLyDoTra() {
-        return lyDoTra;
-    }
-
-    public void setLyDoTra(String lyDoTra) {
-        this.lyDoTra = lyDoTra;
     }
 
     public String getGhiChu() {
@@ -100,7 +90,6 @@ public class PhieuTraHang {
                 ", nhanVien=" + nhanVien +
                 ", khachHang=" + khachHang +
                 ", ngayLap=" + ngayLap +
-                ", lyDoTra='" + lyDoTra + '\'' +
                 ", ghiChu='" + ghiChu + '\'' +
                 ", hoaDon=" + hoaDon +
                 '}';

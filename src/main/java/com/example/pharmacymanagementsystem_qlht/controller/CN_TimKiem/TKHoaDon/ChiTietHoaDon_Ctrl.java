@@ -228,7 +228,7 @@ public class ChiTietHoaDon_Ctrl {
     }
     private String tenDonViGiaoDich(ChiTietHoaDon cthd) {
         if (cthd == null || cthd.getDvt() == null) {
-            return ""; // Không có dữ liệu
+            return "";
         }
 
         DonViTinh dvt = cthd.getDvt();
@@ -300,13 +300,13 @@ public class ChiTietHoaDon_Ctrl {
         tenSpCache.put(ma, ten);
         return ten;
     }
-    private static String formatVNDTable(double v) {
+    public static String formatVNDTable(double v) {
         DecimalFormat df = new DecimalFormat("#,##0");
         df.setGroupingUsed(true);
         return df.format(Math.max(0, Math.round(v))) + " đ";
     }
 
-    private static String formatVNDLabel(BigDecimal v) {
+    public static String formatVNDLabel(BigDecimal v) {
         DecimalFormat df = new DecimalFormat("#,##0");
         df.setGroupingUsed(true);
         return df.format(v.max(BigDecimal.ZERO)) + " VND";
@@ -318,54 +318,6 @@ public class ChiTietHoaDon_Ctrl {
 
     private static String safeStr(String s) { return s == null ? "" : s; }
 
-//    private String tenDonViCoBan(Thuoc_SP_TheoLo lo) {
-//        if (lo == null || lo.getThuoc() == null) return "";
-//        var sp = lo.getThuoc();
-//        String maThuoc = sp.getMaThuoc();
-//        if (maThuoc == null || maThuoc.isBlank()) return "";
-//
-//        // 1
-//        if (baseUnitCache.containsKey(maThuoc)) return baseUnitCache.get(maThuoc);
-//        //2
-//        List<ChiTietDonViTinh> ds = (sp.getDsCTDVT() != null && !sp.getDsCTDVT().isEmpty())
-//                ? sp.getDsCTDVT()
-//                : ctdvtDao.selectByMaThuoc(maThuoc); // DAO fallback
-//
-//        ChiTietDonViTinh base = null;
-//        if (ds != null && !ds.isEmpty()) {
-//            //3
-//            for (ChiTietDonViTinh ct : ds) {
-//                if (ct != null && ct.isDonViCoBan()) { base = ct; break; }
-//            }
-//            //4
-//            if (base == null) {
-//                ChiTietDonViTinh min = null;
-//                for (ChiTietDonViTinh ct : ds) {
-//                    if (ct == null) continue;
-//                    if (min == null) min = ct;
-//                    else if (ct.getHeSoQuyDoi() > 0 && ct.getHeSoQuyDoi() < min.getHeSoQuyDoi()) min = ct;
-//                }
-//                base = min;
-//            }
-//            //5
-//            if (base != null && base.getDvt() != null && base.getDvt().getTenDonViTinh() != null) {
-//                String ten = base.getDvt().getTenDonViTinh();
-//                baseUnitCache.put(maThuoc, ten);
-//                return ten;
-//            }
-//        }
-//
-//        try {
-//            String ten = sp.getTenDVTCoBan();
-//            if (ten != null) {
-//                baseUnitCache.put(maThuoc, ten);
-//                return ten;
-//            }
-//        } catch (Exception ignore) {}
-//
-//        baseUnitCache.put(maThuoc, "");
-//        return "";
-//    }
 
     @FXML
     private void xuLyXuatPDF(ActionEvent event) {

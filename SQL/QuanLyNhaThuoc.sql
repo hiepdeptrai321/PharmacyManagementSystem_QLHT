@@ -156,6 +156,27 @@ CREATE TABLE Thuoc_SP_TheoLo (
     PRIMARY KEY (MaLH),
     FOREIGN KEY (MaPN, MaThuoc,MaLH) REFERENCES ChiTietPhieuNhap(MaPN, MaThuoc,MaLH)
 );
+-- =========================
+-- Bảng DonViTinh
+-- =========================
+CREATE TABLE DonViTinh (
+    MaDVT      VARCHAR(10) PRIMARY KEY,
+    TenDonViTinh NVARCHAR(50) NOT NULL,
+    KiHieu     NVARCHAR(10) NOT NULL
+);
+
+-- =========================
+-- Bảng ChiTietDonViTinh
+-- =========================
+CREATE TABLE ChiTietDonViTinh (
+     MaThuoc       VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
+     MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT),
+     HeSoQuyDoi INT NOT NULL,
+     GiaNhap    FLOAT NOT NULL,
+     GiaBan     FLOAT NOT NULL,
+     DonViCoBan BIT NOT NULL DEFAULT 0,
+     PRIMARY KEY(MaThuoc, MaDVT)
+);
 
 -- =========================
 -- Bảng HoaDon
@@ -227,7 +248,6 @@ CREATE TABLE ChiTietPhieuDatHang (
 CREATE TABLE PhieuDoiHang (
     MaPD       VARCHAR(10) PRIMARY KEY,
     NgayLap    DATE NOT NULL,
-    LyDoDoi    NVARCHAR(255) NOT NULL,
     GhiChu     NVARCHAR(255),
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV),
     MaKH       VARCHAR(10) FOREIGN KEY REFERENCES KhachHang(MaKH),
@@ -240,12 +260,11 @@ CREATE TABLE PhieuDoiHang (
 CREATE TABLE ChiTietPhieuDoiHang (
     MaLH       VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SP_TheoLo(MaLH),
     MaPD       VARCHAR(10) FOREIGN KEY REFERENCES PhieuDoiHang(MaPD),
-	MaThuoc    VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
+    MaThuoc    VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
     SoLuong    INT NOT NULL,
-	MaDVT      VARCHAR(10),
-    DonGia     FLOAT NOT NULL,
-    GiamGia    FLOAT NOT NULL,
-    PRIMARY KEY (MaLH, MaPD,MaThuoc)
+    MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT),
+    LyDoDoi    NVARCHAR(255) NOT NULL,
+    PRIMARY KEY (MaLH, MaPD,MaThuoc, MaDVT)
 );
 
 -- =========================
@@ -254,7 +273,6 @@ CREATE TABLE ChiTietPhieuDoiHang (
 CREATE TABLE PhieuTraHang (
     MaPT       VARCHAR(10) PRIMARY KEY,
     NgayLap    DATE NOT NULL,
-    LyDoTra    NVARCHAR(20) NOT NULL,
     GhiChu     NVARCHAR(255),
     MaNV       VARCHAR(10) FOREIGN KEY REFERENCES NhanVien(MaNV),
     MaHD       VARCHAR(10) FOREIGN KEY REFERENCES HoaDon(MaHD),
@@ -267,13 +285,15 @@ CREATE TABLE PhieuTraHang (
 CREATE TABLE ChiTietPhieuTraHang (
     MaLH       VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SP_TheoLo(MaLH),
     MaPT       VARCHAR(10) NOT NULL FOREIGN KEY REFERENCES PhieuTraHang(MaPT),
-	MaThuoc    VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
+    MaThuoc    VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
     SoLuong    INT NOT NULL,
-	MaDVT      VARCHAR(10),
+    MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT),
     DonGia     FLOAT NOT NULL,
     GiamGia    FLOAT NOT NULL,
-    PRIMARY KEY (MaLH, MaPT,MaThuoc)
+    LyDoTra    NVARCHAR(20) NOT NULL,
+    PRIMARY KEY (MaLH, MaPT,MaThuoc, MaDVT)
 );
+
 
 -- =========================
 -- Bảng HoatChat
@@ -293,27 +313,6 @@ CREATE TABLE ChiTietHoatChat (
     PRIMARY KEY (MaHoatChat, MaThuoc)
 );
 
--- =========================
--- Bảng DonViTinh
--- =========================
-CREATE TABLE DonViTinh (
-    MaDVT      VARCHAR(10) PRIMARY KEY,
-    TenDonViTinh NVARCHAR(50) NOT NULL,
-    KiHieu     NVARCHAR(10) NOT NULL
-);
-
--- =========================
--- Bảng ChiTietDonViTinh
--- =========================
-CREATE TABLE ChiTietDonViTinh (
-    MaThuoc       VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
-    MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT),
-    HeSoQuyDoi INT NOT NULL,
-    GiaNhap    FLOAT NOT NULL,
-    GiaBan     FLOAT NOT NULL,
-	DonViCoBan BIT NOT NULL DEFAULT 0,
-	PRIMARY KEY(MaThuoc, MaDVT)
-);
 -- =========================
 -- Bảng LoaiKhuyenMai
 -- =========================
@@ -1005,22 +1004,6 @@ VALUES
 
 -- HD010: Atorvastatin 20mg (4 hộp)
 ('HD010', 'LH00006', 'DVT03', 4, 3500, 0);      -- Hộp
-
-
--- Dữ liệu mẫu cho PhieuDatHang
-INSERT INTO PhieuDatHang (MaPDat, NgayLap, SoTienCoc, GhiChu, MaKH, MaNV)
-VALUES
-('PDH001', '2025-10-01', 50000, N'Khách đặt hàng mới', 'KH001', 'NV001'),
-('PDH002', '2025-10-02', 100000, N'Đặt hàng lại lô thuốc cũ', 'KH002', 'NV002'),
-('PDH003', '2025-10-03', 0, N'Khách đặt hàng gấp', 'KH003', 'NV003');
-GO
-
--- Dữ liệu mẫu cho ChiTietPhieuDatHang
-INSERT INTO ChiTietPhieuDatHang (MaPDat, MaThuoc, SoLuong, DonGia, GiamGia, MaDVT)
-VALUES
-('PDH001', 'TS001', 5, 12000, 0.05, 'DVT01'),  -- Paracetamol - Viên
-('PDH001', 'TS002', 10, 8000, 0,    'DVT02'),  -- Amoxicillin - Vỉ
-('PDH002', 'TS003', 3, 15000, 0.1,  'DVT03');  -- Ibuprofen - Hộp
 
 
 -- Dữ liệu mẫu cho PhieuDoiHang (Không thay đổi)

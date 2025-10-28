@@ -134,11 +134,11 @@
 }
 
 #btnTimKH {
-
    // -fx-graphic: url("../img/free-search-icon-2911-thumb.png");
     -fx-background-size: 16px 16px;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center center;
+    -fx-background-color: #74f6f1;
 }
 
 #btnThemKH {
@@ -147,6 +147,7 @@
     -fx-background-size: 16px 16px;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center center;
+    -fx-background-color: #aefa9a;
 }
 
 /* ----- Hiệu ứng khi rê chuột vào ----- */

@@ -984,57 +984,69 @@ public class LapHoaDon_Ctrl extends Application {
                 .findFirst()
                 .orElse(null);
     }
-    private void autoConvertUnitsAfterChange(ChiTietHoaDon row) {
-        if (row == null || row.getLoHang() == null) return;
-        Thuoc_SanPham sp = spOf(row);
-        if (sp == null) return;
+    private void autoConvertUnitsAfterChange(ChiTietHoaDon changedRow) {
+        if (changedRow == null || changedRow.getLoHang() == null) return;
+        Thuoc_SanPham sp = spOf(changedRow);
 
-        ChiTietDonViTinh cur = dvtOf(row);
-        if (cur == null) return;
-
-        int qty = Math.max(0, row.getSoLuong());
-
-        // loop to permit cascading conversions (e.g., viên -> vỉ -> hộp)
-        while (true) {
-            ChiTietDonViTinh next = findNextLargerUnit(sp, cur);
-            if (next == null) break;
-
-            double ratio = next.getHeSoQuyDoi() / cur.getHeSoQuyDoi();
-            if (ratio <= 1) break;
-
-            if (qty < (int)Math.ceil(ratio)) break; // not enough to convert
-
-            int newQty = (int)(qty / ratio);
-            int remainder = qty - (int)(newQty * ratio);
-
-            // update current row to the next unit
-            dvtTheoDong.put(row, next);
-            row.setSoLuong(newQty);
-            row.setDonGia(next.getGiaBan());
-            apDungKMChoRow(row);
-
-            // handle remainder: create a new row with the original (smaller) unit
-            if (remainder > 0) {
-                ChiTietHoaDon rem = new ChiTietHoaDon();
-                ganThuocVaoCTHD(rem, sp);
-                rem.setSoLuong(remainder);
-                // price per small unit = original unit price (approx); use cur.getGiaBan()
-                rem.setDonGia(cur.getGiaBan());
-                // set mapping for remainder row to the smaller unit
-                dvtTheoDong.put(rem, cur);
-                apDungKMChoRow(rem);
-
-                // insert remainder just after the converted row
-                int idx = dsChiTietHD.indexOf(row);
-                if (idx >= 0 && idx < dsChiTietHD.size()) dsChiTietHD.add(idx + 1, rem);
-                else dsChiTietHD.add(rem);
-            }
-
-            // continue in case newQty is large enough to convert further
-            qty = row.getSoLuong();
-            cur = dvtOf(row);
+        if (sp == null || sp.getDsCTDVT() == null || sp.getDsCTDVT().size() < 2) {
+            apDungKMChoRow(changedRow); // Vẫn áp dụng KM cho dòng vừa thay đổi
+            tinhTongTien(); // Tính lại tổng tiền
+            return;
         }
 
+        String maThuoc = sp.getMaThuoc();
+
+        // 1 Lấy danh sách DVT của sản phẩm, to toi nho
+        List<ChiTietDonViTinh> dvtsSorted = sp.getDsCTDVT().stream()
+                .sorted(Comparator.comparingDouble(ChiTietDonViTinh::getHeSoQuyDoi).reversed())
+                .toList(); 
+
+        if (dvtsSorted.isEmpty()) return; 
+
+        // 2 Tính tổng số lượng cơ bản (vd: tổng số 'viên') từ all dòng
+        int tongSLCoBan = 0;
+        for (ChiTietHoaDon row : List.copyOf(dsChiTietHD)) {
+            Thuoc_SanPham spRow = spOf(row);
+            if (spRow != null && spRow.getMaThuoc().equals(maThuoc)) {
+                tongSLCoBan += toBaseQty(row.getSoLuong(), dvtOf(row));
+            }
+        }
+
+        // 3 Xóa all dòng của sản phẩm này
+        dsChiTietHD.removeIf(row -> {
+            Thuoc_SanPham spRow = spOf(row);
+            if (spRow != null && spRow.getMaThuoc().equals(maThuoc)) {
+                dvtTheoDong.remove(row);
+                kmTheoDong.remove(row);
+                return true; 
+            }
+            return false; // neu sp khac thi giu lai
+        });
+
+        // 4 Phân bổ lại `tongSLCoBan` vào các dòng mới (từ lớn đến nhỏ)
+        int remainingBaseQty = tongSLCoBan;
+
+        for (ChiTietDonViTinh dvt : dvtsSorted) { // Vòng lặp từ Hộp -> Vỉ -> Viên
+            if (remainingBaseQty == 0) break; // Hết số lượng để chia
+
+            int heSo = (int)Math.round(heSo(dvt));
+            if (heSo <= 0) continue; // Bỏ qua DVT lỗi nếu có
+
+            int newQty = remainingBaseQty / heSo; // Số lượng ở đơn vị DVT này
+
+            if (newQty > 0) {
+                ChiTietHoaDon newRow = new ChiTietHoaDon();
+                ganThuocVaoCTHD(newRow, sp);
+                newRow.setSoLuong(newQty);
+                newRow.setDonGia(dvt.getGiaBan());
+
+                dvtTheoDong.put(newRow, dvt); //  map DVT cho dòng mới
+                dsChiTietHD.add(newRow);     // Thêm dòng mới vào danh sách
+
+                // CapNhat
+                remainingBaseQty = remainingBaseQty % heSo;
+            }
+        }
         if (tblChiTietHD != null) tblChiTietHD.refresh();
         tinhTongTien();
     }
@@ -1388,13 +1400,13 @@ public class LapHoaDon_Ctrl extends Application {
             // 1. Lấy dvt co ban cua dòng gốc
             ChiTietDonViTinh dvtGoc = dvtOf(original);
             if (dvtGoc == null) dvtGoc = layDVTCoBan(sp);
-            double heSoGoc = heSo(dvtGoc); // vd 1 Hộp = 20 Viên
+            double heSoGoc = heSo(dvtGoc);
             original.setDvt(dvtGoc.getDvt());
 
             // 2. Tính tổng số lượng cơ bản cần thiết
-            int neededBaseQty = (int) Math.round(requestedDisplayQty * heSoGoc); // Vd: 1 * 20 = 20 (Viên)
+            int neededBaseQty = (int) Math.round(requestedDisplayQty * heSoGoc);
 
-            // 3. Lấy ds lô
+
             List<Thuoc_SP_TheoLo> danhSachLo = lotCache.get(maThuoc);
             if (danhSachLo == null) {
                 danhSachLo = loDao.selectAllAvailableLots(con, maThuoc);
@@ -1480,7 +1492,7 @@ public class LapHoaDon_Ctrl extends Application {
         }
         document.setFont(font);
 
-        // 2. Header (Logo + Thông tin nhà thuốc)
+        // 2. Header có logo
         try {
             String logoPath = "/com/example/pharmacymanagementsystem_qlht/img/logo.png";
             InputStream is = getClass().getResourceAsStream(logoPath);
@@ -1510,7 +1522,7 @@ public class LapHoaDon_Ctrl extends Application {
         document.add(new Paragraph("Ngày lập: " + (dpNgayLap.getValue() != null ? dpNgayLap.getValue().toString() : LocalDate.now().toString()))
                 .setTextAlignment(TextAlignment.CENTER));
 
-        // 4. Mã đơn thuốc (NẾU CÓ)
+        // 4. Mã đơn thuốc (
         if (rbOTC != null && rbOTC.isSelected()) {
             String maDonThuoc = (txtMaDonThuoc != null) ? txtMaDonThuoc.getText() : "";
             if (maDonThuoc != null && !maDonThuoc.isBlank()) {

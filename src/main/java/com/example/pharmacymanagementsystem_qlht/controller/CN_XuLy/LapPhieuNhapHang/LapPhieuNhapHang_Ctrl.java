@@ -67,19 +67,19 @@ public class LapPhieuNhapHang_Ctrl {
 
 //  3. PHƯƠNG THỨC KHỞI TẠO
     public void initialize() {
-        taiDanhSachNCC();
+        Platform.runLater(()->{
+            loadTable();
+            taiDanhSachNCC();
+//          Khởi tạo mã lô hàng hiện tại từ DB
+            String lastMaLH = ctpn_dao.generateMaLH();
+            if (lastMaLH != null && lastMaLH.startsWith("LH")) {
+                maLoHienTai = Integer.parseInt(lastMaLH.substring(2)) - 1;
+            } else {
+                maLoHienTai = 0;
+            }
+        });
         timKiemNhaCungCap();
         timKiemDonViTinh();
-        loadTable();
-
-//      Khởi tạo mã lô hàng hiện tại từ DB
-        String lastMaLH = ctpn_dao.generateMaLH();
-        if (lastMaLH != null && lastMaLH.startsWith("LH")) {
-            maLoHienTai = Integer.parseInt(lastMaLH.substring(2)) - 1;
-        } else {
-            maLoHienTai = 0;
-        }
-
         suKienThemChiTietDonViTinhVaoBang();
         suKienThemMotDongMoiVaoBang();
 

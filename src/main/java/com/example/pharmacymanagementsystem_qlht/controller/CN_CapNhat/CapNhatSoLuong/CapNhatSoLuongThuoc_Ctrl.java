@@ -5,6 +5,7 @@ import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SanPham_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SP_TheoLo;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -42,9 +43,11 @@ public class CapNhatSoLuongThuoc_Ctrl extends Application {
     }
 
     public void initialize() {
-        loadTable();
         tfTimThuoc.setOnAction(e-> timThuoc());
         btnLamMoi.setOnAction(e-> LamMoi());
+        Platform.runLater(()->{
+            loadTable();
+        });
     }
     // 3. XỬ LÝ SỰ KIỆN GIAO DIỆN
     public void loadTable() {
@@ -108,10 +111,13 @@ public class CapNhatSoLuongThuoc_Ctrl extends Application {
             Parent root = loader.load();
             SuaSoLuongThuoc_Ctrl controller = loader.getController();
             controller.setThuoc(thuocLo);
-            Stage stage = new Stage();
-            stage.setTitle("Cập nhật số lượng thuốc");
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
+            Stage dialog = new Stage();
+            dialog.initOwner(btnTimThuoc.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Sửa số lượng thuốc");
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+            dialog.showAndWait();
 
             tbThuoc.refresh();
         } catch (Exception e) {

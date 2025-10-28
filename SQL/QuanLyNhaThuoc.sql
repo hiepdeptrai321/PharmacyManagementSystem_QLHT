@@ -1381,7 +1381,8 @@ BEGIN
         FROM deleted;
     END
 
-    IF (@NoiDung IS NOT NULL AND @NoiDung <> N'')
+    IF (@NoiDung IS NOT NULL AND @NoiDung <> N''
+    AND EXISTS (SELECT 1 FROM NhanVien WHERE MaNV = @MaNV))
     BEGIN
         INSERT INTO HoatDong (LoaiHD, BangDL, NoiDung, MaNV)
         VALUES (@LoaiHD, @BangDL, @NoiDung, @MaNV);
@@ -1458,9 +1459,11 @@ BEGIN
     IF @NoiDung IS NULL OR @NoiDung = ''
         SET @NoiDung = N'(Không còn đơn vị tính)';
 
-    ----------------------------------------------------------
-    -- 🧾 Ghi vào bảng HoatDong
-    ----------------------------------------------------------
+----------------------------------------------------------
+-- 🧾 Ghi vào bảng HoatDong (chỉ khi MaNV tồn tại)
+----------------------------------------------------------
+IF EXISTS (SELECT 1 FROM NhanVien WHERE MaNV = @MaNV)
+BEGIN
     DECLARE @ID INT;
     SELECT TOP 1 @ID = ID
     FROM HoatDong
@@ -1492,8 +1495,10 @@ BEGIN
             END,
             @MaNV
         );
-END;
+    END
+END
 GO
+
 
 
 
@@ -1553,6 +1558,7 @@ GO
 -- ==========================================================
 
 -- 1. DOANH THU: Hôm nay (Theo giờ)
+
 CREATE OR ALTER PROCEDURE sp_ThongKeBanHang_HomNay
 AS
 BEGIN
@@ -2027,28 +2033,21 @@ PRINT N'=== HOÀN TẤT! Đã tạo 2 SP cho Thống kê XNT. ===';
 
 go
 
-CREATE PROCEDURE sp_LuuPhieuNhap
+CREATE OR ALTER PROCEDURE sp_LuuPhieuNhap
     @MaPN VARCHAR(10),
     @NgayNhap DATE,
-    @TrangThai BIT,
     @GhiChu NVARCHAR(255),
     @MaNCC VARCHAR(10),
     @MaNV VARCHAR(10),
-
-    -- Chi tiết phiếu nhập
     @MaThuoc VARCHAR(10),
     @MaLH VARCHAR(10),
     @SoLuong INT,
     @GiaNhap FLOAT,
     @ChietKhau FLOAT,
     @Thue FLOAT,
-
-    -- Lô thuốc
     @SoLuongTon INT = NULL,
     @NSX DATE = NULL,
     @HSD DATE = NULL,
-
-    -- Đơn vị tính cần cập nhật
     @MaDVT VARCHAR(10) = NULL
 AS
 BEGIN
@@ -2059,62 +2058,52 @@ BEGIN
 
         -- 1️⃣ Thêm phiếu nhập nếu chưa có
         IF NOT EXISTS (SELECT 1 FROM PhieuNhap WHERE MaPN = @MaPN)
-        BEGIN
             INSERT INTO PhieuNhap (MaPN, NgayNhap, TrangThai, GhiChu, MaNCC, MaNV)
-            VALUES (@MaPN, @NgayNhap, @TrangThai, @GhiChu, @MaNCC, @MaNV);
-        END
+            VALUES (@MaPN, @NgayNhap, 1, @GhiChu, @MaNCC, @MaNV);
         ELSE
-        BEGIN
-            -- Nếu đã có thì cập nhật lại thông tin chung (nếu cần)
             UPDATE PhieuNhap
-            SET NgayNhap = @NgayNhap,
-                TrangThai = @TrangThai,
-                GhiChu = @GhiChu,
-                MaNCC = @MaNCC,
-                MaNV = @MaNV
+            SET NgayNhap = @NgayNhap, TrangThai = 1, GhiChu = @GhiChu, MaNCC = @MaNCC, MaNV = @MaNV
             WHERE MaPN = @MaPN;
-        END
 
-        -- 2️⃣ Thêm hoặc cập nhật chi tiết phiếu nhập
+        ---------------------------------------------------------
+        -- 4️⃣ Chi tiết phiếu nhập
+        ---------------------------------------------------------
         IF EXISTS (SELECT 1 FROM ChiTietPhieuNhap WHERE MaPN = @MaPN AND MaThuoc = @MaThuoc AND MaLH = @MaLH)
-        BEGIN
             UPDATE ChiTietPhieuNhap
-            SET SoLuong = @SoLuong,
-                GiaNhap = @GiaNhap,
-                ChietKhau = @ChietKhau,
-                Thue = @Thue
+            SET SoLuong = @SoLuong, GiaNhap = @GiaNhap, ChietKhau = @ChietKhau, Thue = @Thue
             WHERE MaPN = @MaPN AND MaThuoc = @MaThuoc AND MaLH = @MaLH;
-        END
         ELSE
-        BEGIN
             INSERT INTO ChiTietPhieuNhap (MaPN, MaThuoc, MaLH, SoLuong, GiaNhap, ChietKhau, Thue)
             VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuong, @GiaNhap, @ChietKhau, @Thue);
-        END
+        ---------------------------------------------------------
+        -- 5️⃣ Cập nhật kho
+DECLARE @SoLuongTonQuyDoi INT = @SoLuong * @HeSoQuyDoi / @HeSoCoBan;
 
-        -- 3️⃣ Nếu TrangThai = 1 thì mới cập nhật kho và giá nhập
-        IF @TrangThai = 1
-        BEGIN
-            -- ⚙️ Cập nhật hoặc thêm mới lô thuốc
-            IF EXISTS (SELECT 1 FROM Thuoc_SP_TheoLo WHERE MaLH = @MaLH)
-            BEGIN
-                UPDATE Thuoc_SP_TheoLo
-                SET SoLuongTon = SoLuongTon + @SoLuongTon
-                WHERE MaLH = @MaLH;
-            END
-            ELSE
-            BEGIN
-                INSERT INTO Thuoc_SP_TheoLo (MaPN, MaThuoc, MaLH, SoLuongTon, NSX, HSD)
-                VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuongTon, @NSX, @HSD);
-            END
+IF EXISTS (SELECT 1 FROM Thuoc_SP_TheoLo WHERE MaLH = @MaLH)
+    UPDATE Thuoc_SP_TheoLo
+    SET SoLuongTon = SoLuongTon + @SoLuongTonQuyDoi
+    WHERE MaLH = @MaLH;
+ELSE
+    INSERT INTO Thuoc_SP_TheoLo (MaPN, MaThuoc, MaLH, SoLuongTon, NSX, HSD)
+    VALUES (@MaPN, @MaThuoc, @MaLH, @SoLuongTonQuyDoi, @NSX, @HSD);
 
-            -- 🔁 Cập nhật giá nhập và giá bán trong ChiTietDonViTinh
-            UPDATE ChiTietDonViTinh
-            SET GiaNhap = @GiaNhap,
-                GiaBan = CASE WHEN @GiaNhap > GiaBan THEN @GiaNhap ELSE GiaBan END
-            WHERE MaThuoc = @MaThuoc AND MaDVT = @MaDVT;
-        END
+
+        ---------------------------------------------------------
+        -- 6️⃣ Cập nhật giá nhập/bán
+        ---------------------------------------------------------
+        UPDATE ChiTietDonViTinh
+        SET GiaNhap = @GiaNhap,
+            GiaBan = CASE WHEN @GiaNhap > GiaBan THEN @GiaNhap ELSE GiaBan END
+        WHERE MaThuoc = @MaThuoc AND MaDVT = @MaDVT;
 
         COMMIT TRANSACTION;
+
+        ---------------------------------------------------------
+        -- 7️⃣ Khôi phục lại context cũ
+        ---------------------------------------------------------
+        DECLARE @restoreContext VARBINARY(128) = CAST(@MaNVContext AS VARBINARY(128));
+        SET CONTEXT_INFO @restoreContext;
+
     END TRY
     BEGIN CATCH
         ROLLBACK TRANSACTION;
@@ -2122,6 +2111,8 @@ BEGIN
     END CATCH
 END
 GO
+
+
 
 CREATE PROCEDURE sp_HangHetHan
 AS

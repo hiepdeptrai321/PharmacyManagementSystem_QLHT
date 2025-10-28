@@ -42,6 +42,7 @@ public class ThemThuoc_Ctrl {
     public TextField txtQuyCachDongGoi;
     public TextField txtSDK_GPNK;
     public TextField txtDuongDung;
+    public ComboBox cbDVTCB;
     public TableColumn<ChiTietHoatChat,String> colMaHoatChat;
     public TableColumn<ChiTietHoatChat,String> colTenHoatChat;
     public TableColumn<ChiTietHoatChat,String> colHamLuong;
@@ -67,6 +68,10 @@ public class ThemThuoc_Ctrl {
         cbxViTri.getSelectionModel().selectFirst();
         cbxNhomDuocLy.getItems().addAll( new NhomDuocLy_Dao().getAllTenNhomDuocLy());
         cbxNhomDuocLy.getSelectionModel().selectFirst();
+        List<DonViTinh> list = new DonViTinh_Dao().selectAll();
+        for(DonViTinh donViTinh : list){
+            cbDVTCB.getItems().add(donViTinh.getTenDonViTinh());
+        }
 
 //      Load bảng thuốc để khai báo bảng
         loadBangThuoc();
@@ -214,6 +219,7 @@ public class ThemThuoc_Ctrl {
                 thuocThem.setVitri(null);
             }
 
+
 //          Get image
             Image image = imgThuoc_SanPham.getImage();
             if (image != null) {
@@ -267,6 +273,21 @@ public class ThemThuoc_Ctrl {
                         new ChiTietHoatChat_Dao().insert(chtc);
                     }
                 }
+                //Thêm một dòng của thuốc mới vào bảng Chi tiết đơn vị tính với đơn vị cơ bản
+                if(cbDVTCB.getSelectionModel().getSelectedItem() != null){
+                    DonViTinh dvt = new DonViTinh_Dao().selectByTenDVT(cbDVTCB.getSelectionModel().getSelectedItem().toString());
+                    ChiTietDonViTinh ctdvt = new ChiTietDonViTinh();
+                    ctdvt.setThuoc(thuocThem);
+                    ctdvt.setDvt(dvt);
+                    ctdvt.setHeSoQuyDoi(1.0);
+                    ctdvt.setGiaNhap(0.0);
+                    ctdvt.setGiaBan(0.0);
+                    ctdvt.setDonViCoBan(true);
+                    List<ChiTietDonViTinh> listCTDVT = new ArrayList<>();
+                    listCTDVT.add(ctdvt);
+                    new ChiTietDonViTinh_Dao().insert(ctdvt);
+                }
+
                 if(parentController != null) {
                     Platform.runLater(() -> parentController.refestTable());
                 }
@@ -374,6 +395,13 @@ public class ThemThuoc_Ctrl {
             alert.setTitle("Lỗi");
             alert.setHeaderText(null);
             alert.setContentText("Hàm lượng không hợp lệ! Vui lòng nhập số.");
+            alert.showAndWait();
+            return false;
+        } else if (cbDVTCB.getSelectionModel().getSelectedItem() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng chọn đơn vị tính cơ bản!");
             alert.showAndWait();
             return false;
         }

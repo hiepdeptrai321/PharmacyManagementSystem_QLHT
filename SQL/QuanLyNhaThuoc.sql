@@ -174,7 +174,7 @@ CREATE TABLE DonViTinh (
 CREATE TABLE ChiTietDonViTinh (
      MaThuoc       VARCHAR(10) FOREIGN KEY REFERENCES Thuoc_SanPham(MaThuoc),
      MaDVT      VARCHAR(10) FOREIGN KEY REFERENCES DonViTinh(MaDVT),
-     HeSoQuyDoi INT NOT NULL,
+     HeSoQuyDoi FLOAT NOT NULL,
      GiaNhap    FLOAT NOT NULL,
      GiaBan     FLOAT NOT NULL,
      DonViCoBan BIT NOT NULL DEFAULT 0,
@@ -2420,53 +2420,7 @@ GO
 
 
 --TRIGGER CẬP NHẬT TRẠNG THÁI ĐẶT HÀNG KHI CÓ THAY ĐỔI TRÊN BẢNG THUỐC_SP_THEOLO
-CREATE OR ALTER TRIGGER trg_UpdateTrangThaiDatHang_WhenTonChange
-ON Thuoc_SP_TheoLo
-AFTER INSERT, UPDATE
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    -- 🔹 Lấy danh sách thuốc bị ảnh hưởng
-    DECLARE @Thuoc TABLE (MaThuoc VARCHAR(10));
-    INSERT INTO @Thuoc (MaThuoc)
-    SELECT DISTINCT MaThuoc FROM inserted;
-
-    -- 🔹 Cập nhật trạng thái cho các chi tiết phiếu đặt
-    UPDATE ctpd
-    SET ctpd.TrangThai =
-        CASE
-            WHEN tong.TongTon >= ctpd.SoLuong THEN 1
-            ELSE 0
-        END
-    FROM ChiTietPhieuDatHang ctpd
-    JOIN @Thuoc t ON ctpd.MaThuoc = t.MaThuoc
-    CROSS APPLY (
-        SELECT SUM(SoLuongTon) AS TongTon
-        FROM Thuoc_SP_TheoLo
-        WHERE MaThuoc = ctpd.MaThuoc
-    ) tong;
-
-    -- 🔹 Cập nhật trạng thái tổng cho phiếu đặt
-    UPDATE p
-    SET p.TrangThai =
-        CASE
-            WHEN NOT EXISTS (
-                SELECT 1
-                FROM ChiTietPhieuDatHang c
-                WHERE c.MaPDat = p.MaPDat AND c.TrangThai = 0
-            )
-            THEN 1 ELSE 0
-        END
-    FROM PhieuDatHang p
-    WHERE EXISTS (
-        SELECT 1
-        FROM ChiTietPhieuDatHang c
-        JOIN @Thuoc t ON c.MaThuoc = t.MaThuoc
-        WHERE c.MaPDat = p.MaPDat
-    );
-END;
-GO
+qwe
 
 
 --================================================================================================================================================================================================

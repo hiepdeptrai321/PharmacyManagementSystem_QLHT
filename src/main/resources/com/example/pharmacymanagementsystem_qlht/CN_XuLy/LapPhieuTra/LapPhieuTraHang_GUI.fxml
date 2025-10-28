@@ -16,7 +16,7 @@
 <AnchorPane prefHeight="895.0" prefWidth="1646.0" stylesheets="@../../css/LapPhieuTraHang.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuTra.LapPhieuTraHang_Ctrl">
     <children>
         <!-- Decorative header background (spans across content) -->
-        <Pane layoutX="28.0" prefHeight="54.0" prefWidth="1598.0" styleClass="header-pane" AnchorPane.leftAnchor="28.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="8.0">
+        <Pane layoutX="28.0" prefHeight="54.0" prefWidth="1587.0" styleClass="header-pane" AnchorPane.leftAnchor="28.0" AnchorPane.rightAnchor="31.0" AnchorPane.topAnchor="8.0">
          <children>
             <ImageView fitHeight="53.0" fitWidth="67.0" layoutX="297.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -45,31 +45,30 @@
 
         <!-- Bảng sản phẩm hóa đơn gốc -->
         <Label layoutX="40.0" layoutY="180.0" styleClass="section-label" text="Sản phẩm trong hóa đơn gốc" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="180.0" />
-        <TableView fx:id="tblSanPhamHoaDon" maxWidth="1156.0" prefHeight="200.0" prefWidth="1156.0" styleClass="main-table" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="450.0" AnchorPane.topAnchor="210.0">
+        <TableView fx:id="tblSanPhamHoaDon" maxWidth="1156.0" prefHeight="304.0" prefWidth="1156.0" styleClass="main-table" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="450.0" AnchorPane.topAnchor="210.0">
             <columns>
-                <TableColumn fx:id="colSTT" prefWidth="40.0" text="STT" />
-                <TableColumn fx:id="colTenSP" prefWidth="418.0000305175781" text="Tên sản phẩm" />
-                <TableColumn fx:id="colSL" prefWidth="111.0" text="Số lượng" />
-                <TableColumn fx:id="colDonVi" prefWidth="134.0" text="Đơn vị" />
-                <TableColumn fx:id="colDonGia" prefWidth="134.0" text="Đơn giá" />
-                <TableColumn fx:id="colGiamGia" prefWidth="116.33331298828125" text="Giảm giá" />
-                <TableColumn fx:id="colThanhTien" prefWidth="111.6666259765625" text="Thành tiền" />
-                <TableColumn fx:id="colTra" prefWidth="86.3333740234375" text="Trả" />
+                <TableColumn fx:id="colSTTGoc" prefWidth="40.0" text="STT" />
+                <TableColumn fx:id="colTenSPGoc" prefWidth="481.6666564941406" text="Tên sản phẩm" />
+                <TableColumn fx:id="colSLGoc" prefWidth="148.33334350585938" text="Số lượng" />
+                <TableColumn fx:id="colDonViGoc" prefWidth="124.0" text="Đơn vị" />
+                <TableColumn fx:id="colDonGiaGoc" prefWidth="146.66668701171875" text="Đơn giá" />
+                <TableColumn fx:id="colThanhTienGoc" prefWidth="144.6666259765625" text="Thành tiền" />
+                <TableColumn fx:id="colTraGoc" prefWidth="61.66668701171875" text="Trả" />
             </columns>
         </TableView>
 
         <!-- Bảng chi tiết trả hàng -->
-        <Label layoutX="40.0" layoutY="437.0" styleClass="section-label" text="Chi tiết trả hàng" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="437.0" />
-        <TableView fx:id="tblChiTietTraHang" maxWidth="1160.0" prefHeight="387.0" prefWidth="1160.0" styleClass="main-table" AnchorPane.bottomAnchor="41.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="446.0" AnchorPane.topAnchor="467.0">
+        <Label layoutX="40.0" layoutY="528.0" styleClass="section-label" text="Chi tiết trả hàng" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="528.0" />
+        <TableView fx:id="tblChiTietTraHang" layoutY="559.0" maxWidth="1160.0" prefHeight="295.0" prefWidth="1160.0" styleClass="main-table" AnchorPane.bottomAnchor="41.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="446.0" AnchorPane.topAnchor="559.0">
             <columns>
-                <TableColumn prefWidth="40.0" text="STT" />
-                <TableColumn prefWidth="401.6666564941406" text="Tên sản phẩm" />
-                <TableColumn prefWidth="108.33334350585938" text="Số lượng " />
-                <TableColumn prefWidth="93.66668701171875" text="Đơn vị" />
-                <TableColumn prefWidth="115.6666259765625" text="Đơn giá" />
-                <TableColumn prefWidth="122.33331298828125" text="Thành tiền" />
-                <TableColumn prefWidth="212.66668701171875" text="Lý do trả" />
-                <TableColumn prefWidth="61.20009765624991" text="Bỏ" />
+                <TableColumn fx:id="colSTTTra" prefWidth="40.0" text="STT" />
+                <TableColumn fx:id="colTenSPTra" prefWidth="401.6666564941406" text="Tên sản phẩm" />
+                <TableColumn fx:id="colSLTra" prefWidth="108.33334350585938" text="Số lượng " />
+                <TableColumn fx:id="colDonViTra" prefWidth="93.66668701171875" text="Đơn vị" />
+                <TableColumn fx:id="colDonGiaTra" prefWidth="115.6666259765625" text="Đơn giá" />
+                <TableColumn fx:id="colThanhTienTra" prefWidth="122.33331298828125" text="Thành tiền" />
+                <TableColumn fx:id="colLyDo" prefWidth="212.66668701171875" text="Lý do trả" />
+                <TableColumn fx:id="colBo" prefWidth="61.20009765624991" text="Bỏ" />
             </columns>
         </TableView>
 
@@ -81,7 +80,7 @@
 
                 <Label layoutX="36.0" layoutY="194.0" text="Ngày lập phiếu:" />
 
-                <Label layoutX="28.0" layoutY="270.0" text="Tổng tiền gốc:" />
+                <Label layoutX="28.0" layoutY="270.0" text="Thành tiền gốc::" />
                 <Label fx:id="lblTongTienGoc" layoutX="207.0" layoutY="269.0" styleClass="value-label" text="0 VNĐ" />
 
                 <Label layoutX="28.0" layoutY="310.0" text="Tổng tiền hàng trả lại:" />
@@ -111,9 +110,9 @@
                </font>
             </Button>
             <Label layoutX="34.0" layoutY="100.0" text="Tên khách hàng:" />
-            <TextField fx:id="lblTenKH" editable="false" layoutX="213.0" layoutY="94.0" prefWidth="120.0" />
+            <Label fx:id="lblTenKH" layoutX="213.0" layoutY="94.0" prefWidth="120.0" />
             <Label layoutX="35.0" layoutY="145.0" text="Số điện thoại:" />
-            <TextField fx:id="lblSDT" editable="false" layoutX="214.0" layoutY="139.0" prefWidth="120.0" />
+            <Label fx:id="lblSDT" layoutX="214.0" layoutY="139.0" prefWidth="120.0" />
             <DatePicker fx:id="dpNgayLapPhieu" layoutX="215.0" layoutY="193.0" prefHeight="27.0" prefWidth="119.0" />
             </children>
         </Pane>

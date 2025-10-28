@@ -1,6 +1,7 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapHoaDon;
 
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
+import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoaDon.ChiTietHoaDon_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang.TimKiemKhachHangTrongHD_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.controller.DangNhap_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.dao.*;
@@ -21,6 +22,7 @@ import javafx.fxml.FXML;
 import com.example.pharmacymanagementsystem_qlht.controller.DangNhap_Ctrl;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Side;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -36,6 +38,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Date;
 import java.sql.Timestamp;
 import javafx.stage.FileChooser;
 import java.io.File;
@@ -53,11 +56,16 @@ import java.sql.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.example.pharmacymanagementsystem_qlht.TienIch.TuyChinhAlert.hien;
+import static com.example.pharmacymanagementsystem_qlht.TienIch.TuyChinhAlert.hienOpt;
+import static javafx.scene.control.Alert.AlertType.*;
 
 public class LapHoaDon_Ctrl extends Application {
     public static final String FONT_PATH = "C:/Windows/Fonts/arial.ttf";
@@ -133,9 +141,6 @@ public class LapHoaDon_Ctrl extends Application {
         tinhTongTien();
         initTienMatEvents();
         chuyenHoaDon();
-        if (btnThanhToanVaIn != null) {
-            btnThanhToanVaIn.setOnAction(this::xuLyXuatPDF);
-        }
     }
 
     private void chuyenHoaDon() {
@@ -367,7 +372,7 @@ public class LapHoaDon_Ctrl extends Application {
             goiYMenu.hide();
             System.err.println("Không thể tải gợi ý: " + newTask.getException());
             Alert alert = new Alert(
-                    Alert.AlertType.ERROR,
+                    ERROR,
                     "Không thể tải gợi ý thuốc.\nVui lòng thử lại.",
                     ButtonType.OK
             );
@@ -763,21 +768,6 @@ public class LapHoaDon_Ctrl extends Application {
         return String.format("%,.0f đ", v);
     }
 
-//
-//
-//    private int tonToiDaTheoSP(Thuoc_SanPham sp, ChiTietDonViTinh dvt) {
-//        if (sp == null || sp.getMaThuoc() == null || dvt == null) return Integer.MAX_VALUE;
-//        int tongTonCoBan = thuocDao.getTongTonCoBan(sp.getMaThuoc());
-//        double heSo = dvt.getHeSoQuyDoi() > 0 ? dvt.getHeSoQuyDoi() : 1.0;
-//        return (int) Math.floor(tongTonCoBan / heSo);
-//    }
-//
-//    private int tonToiDaTheoDong(ChiTietHoaDon row) {
-//        if (row == null || row.getLoHang() == null) return Integer.MAX_VALUE;
-//        Thuoc_SanPham sp = row.getLoHang().getThuoc();
-//        ChiTietDonViTinh dvt = dvtTheoDong.get(row);
-//        return tonToiDaTheoSP(sp, dvt);
-//    }
 
 
 
@@ -862,7 +852,6 @@ public class LapHoaDon_Ctrl extends Application {
     private ChiTietDonViTinh layDVTCoBan(Thuoc_SanPham sp) {
         if (sp == null || sp.getDsCTDVT() == null || sp.getDsCTDVT().isEmpty()) return null;
         for (ChiTietDonViTinh ct : sp.getDsCTDVT()) if (ct.isDonViCoBan()) return ct;
-        // fallback: unit with smallest conversion factor
         ChiTietDonViTinh min = sp.getDsCTDVT().get(0);
         for (ChiTietDonViTinh ct : sp.getDsCTDVT()) {
             if (ct.getHeSoQuyDoi() < min.getHeSoQuyDoi()) min = ct;
@@ -921,6 +910,7 @@ public class LapHoaDon_Ctrl extends Application {
         return (int)Math.floor(baseRemain / heSo(dvt));
     }
     private void canhBaoTonKhongDu() {
+
         Alert a = new Alert(Alert.AlertType.WARNING, "Số lượng tồn không đủ", ButtonType.OK);
         if (tblChiTietHD != null && tblChiTietHD.getScene() != null) {
             a.initOwner(tblChiTietHD.getScene().getWindow());
@@ -994,57 +984,69 @@ public class LapHoaDon_Ctrl extends Application {
                 .findFirst()
                 .orElse(null);
     }
-    private void autoConvertUnitsAfterChange(ChiTietHoaDon row) {
-        if (row == null || row.getLoHang() == null) return;
-        Thuoc_SanPham sp = spOf(row);
-        if (sp == null) return;
+    private void autoConvertUnitsAfterChange(ChiTietHoaDon changedRow) {
+        if (changedRow == null || changedRow.getLoHang() == null) return;
+        Thuoc_SanPham sp = spOf(changedRow);
 
-        ChiTietDonViTinh cur = dvtOf(row);
-        if (cur == null) return;
-
-        int qty = Math.max(0, row.getSoLuong());
-
-        // loop to permit cascading conversions (e.g., viên -> vỉ -> hộp)
-        while (true) {
-            ChiTietDonViTinh next = findNextLargerUnit(sp, cur);
-            if (next == null) break;
-
-            double ratio = next.getHeSoQuyDoi() / cur.getHeSoQuyDoi();
-            if (ratio <= 1) break;
-
-            if (qty < (int)Math.ceil(ratio)) break; // not enough to convert
-
-            int newQty = (int)(qty / ratio);
-            int remainder = qty - (int)(newQty * ratio);
-
-            // update current row to the next unit
-            dvtTheoDong.put(row, next);
-            row.setSoLuong(newQty);
-            row.setDonGia(next.getGiaBan());
-            apDungKMChoRow(row);
-
-            // handle remainder: create a new row with the original (smaller) unit
-            if (remainder > 0) {
-                ChiTietHoaDon rem = new ChiTietHoaDon();
-                ganThuocVaoCTHD(rem, sp);
-                rem.setSoLuong(remainder);
-                // price per small unit = original unit price (approx); use cur.getGiaBan()
-                rem.setDonGia(cur.getGiaBan());
-                // set mapping for remainder row to the smaller unit
-                dvtTheoDong.put(rem, cur);
-                apDungKMChoRow(rem);
-
-                // insert remainder just after the converted row
-                int idx = dsChiTietHD.indexOf(row);
-                if (idx >= 0 && idx < dsChiTietHD.size()) dsChiTietHD.add(idx + 1, rem);
-                else dsChiTietHD.add(rem);
-            }
-
-            // continue in case newQty is large enough to convert further
-            qty = row.getSoLuong();
-            cur = dvtOf(row);
+        if (sp == null || sp.getDsCTDVT() == null || sp.getDsCTDVT().size() < 2) {
+            apDungKMChoRow(changedRow); // Vẫn áp dụng KM cho dòng vừa thay đổi
+            tinhTongTien(); // Tính lại tổng tiền
+            return;
         }
 
+        String maThuoc = sp.getMaThuoc();
+
+        // 1 Lấy danh sách DVT của sản phẩm, to toi nho
+        List<ChiTietDonViTinh> dvtsSorted = sp.getDsCTDVT().stream()
+                .sorted(Comparator.comparingDouble(ChiTietDonViTinh::getHeSoQuyDoi).reversed())
+                .toList(); 
+
+        if (dvtsSorted.isEmpty()) return; 
+
+        // 2 Tính tổng số lượng cơ bản (vd: tổng số 'viên') từ all dòng
+        int tongSLCoBan = 0;
+        for (ChiTietHoaDon row : List.copyOf(dsChiTietHD)) {
+            Thuoc_SanPham spRow = spOf(row);
+            if (spRow != null && spRow.getMaThuoc().equals(maThuoc)) {
+                tongSLCoBan += toBaseQty(row.getSoLuong(), dvtOf(row));
+            }
+        }
+
+        // 3 Xóa all dòng của sản phẩm này
+        dsChiTietHD.removeIf(row -> {
+            Thuoc_SanPham spRow = spOf(row);
+            if (spRow != null && spRow.getMaThuoc().equals(maThuoc)) {
+                dvtTheoDong.remove(row);
+                kmTheoDong.remove(row);
+                return true; 
+            }
+            return false; // neu sp khac thi giu lai
+        });
+
+        // 4 Phân bổ lại `tongSLCoBan` vào các dòng mới (từ lớn đến nhỏ)
+        int remainingBaseQty = tongSLCoBan;
+
+        for (ChiTietDonViTinh dvt : dvtsSorted) { // Vòng lặp từ Hộp -> Vỉ -> Viên
+            if (remainingBaseQty == 0) break; // Hết số lượng để chia
+
+            int heSo = (int)Math.round(heSo(dvt));
+            if (heSo <= 0) continue; // Bỏ qua DVT lỗi nếu có
+
+            int newQty = remainingBaseQty / heSo; // Số lượng ở đơn vị DVT này
+
+            if (newQty > 0) {
+                ChiTietHoaDon newRow = new ChiTietHoaDon();
+                ganThuocVaoCTHD(newRow, sp);
+                newRow.setSoLuong(newQty);
+                newRow.setDonGia(dvt.getGiaBan());
+
+                dvtTheoDong.put(newRow, dvt); //  map DVT cho dòng mới
+                dsChiTietHD.add(newRow);     // Thêm dòng mới vào danh sách
+
+                // CapNhat
+                remainingBaseQty = remainingBaseQty % heSo;
+            }
+        }
         if (tblChiTietHD != null) tblChiTietHD.refresh();
         tinhTongTien();
     }
@@ -1143,12 +1145,12 @@ public class LapHoaDon_Ctrl extends Application {
     @FXML
     private void xuLyThanhToan(ActionEvent actionEvent) {
         if (tblChiTietHD.getItems() == null || tblChiTietHD.getItems().isEmpty()) {
-            new Alert(Alert.AlertType.WARNING, "Không có sản phẩm nào để thanh toán.").showAndWait();
+            hien(WARNING, "Lỗi thanh toán", "Chưa có sản phẩm nào trong hóa đơn.");
             return;
         }
         NhanVien nv = DangNhap_Ctrl.user;
         if (nv == null) {
-            new Alert(Alert.AlertType.ERROR, "Chưa có nhân viên nào đăng nhập.").showAndWait();
+            hien(ERROR, "Lỗi đăng nhập", "Chưa có nhân viên nào đăng nhập.");
             return;
         }
         final String SQL_NEXT_MAHD     = "SELECT TOP 1 MaHD FROM HoaDon ORDER BY MaHD DESC";
@@ -1156,6 +1158,26 @@ public class LapHoaDon_Ctrl extends Application {
         final String SQL_INSERT_CTHD   = "INSERT INTO ChiTietHoaDon (MaHD, MaLH, MaDVT, SoLuong, DonGia, GiamGia) VALUES (?, ?, ?, ?, ?, ?)";
         final String SQL_NEXT_MAKH     = "SELECT TOP 1 MaKH FROM KhachHang ORDER BY MaKH DESC";
         final String SQL_INSERT_KH     = "INSERT INTO KhachHang (MaKH, TenKH, SDT) VALUES (?, ?, ?)";
+        String thanhTienStr = lblThanhTien.getText().replaceAll("[^0-9]", "");
+        if (thanhTienStr.isEmpty()) {
+            hien(ERROR, "Lỗi dữ liệu", "Không thể đọc tổng tiền từ giao diện.");
+            return;
+        }
+
+        double thanhTien = Double.parseDouble(thanhTienStr);
+        double thanhTienLamTron = Math.ceil(thanhTien / 1000) * 1000;
+        String soTienKhachDuaStr = txtSoTienKhachDua.getText().replaceAll("[^0-9]", "");
+        if (soTienKhachDuaStr.isEmpty()) {
+            hien(WARNING, "Thiếu thông tin", "Vui lòng nhập số tiền khách đưa trước khi thanh toán.");
+            return;
+        }
+        double soTienKhachDua = Double.parseDouble(soTienKhachDuaStr);
+        if (soTienKhachDua < thanhTienLamTron) {
+            hien(ERROR, "Thiếu tiền",
+                    "Số tiền khách đưa không đủ để thanh toán.\n" +
+                            "Cần ít nhất: " + String.format("%,.0f đ", thanhTienLamTron));
+            return;
+        }
 
         Connection con = null;
         try {
@@ -1295,8 +1317,43 @@ public class LapHoaDon_Ctrl extends Application {
             dsChiTietHD.clear();
             dsChiTietHD.addAll(tblChiTietHD.getItems());
             con.commit();
+            Optional<ButtonType> result = hienOpt(
+                    INFORMATION,
+                    "Thanh toán thành công",
+                    "Hóa đơn " + maHD + " đã được lập thành công."
+            );
+            HoaDon hdMoi = new HoaDon();
+            hdMoi.setMaHD(maHD);
+            hdMoi.setMaNV(nv);
+            hdMoi.setMaKH(kh);
+            hdMoi.setNgayLap(Timestamp.valueOf(LocalDateTime.now()));
+            hdMoi.setLoaiHoaDon(loaiHoaDon);
+            hdMoi.setTrangThai(true);
+            hdMoi.setMaDonThuoc(maDonThuoc);
 
-            new Alert(Alert.AlertType.INFORMATION, "Lập hóa đơn thành công.").showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                            "/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKHoaDon/ChiTietHoaDon_GUI.fxml"));
+                    Parent root = loader.load();
+
+                    // Lấy controller để truyền dữ liệu hóa đơn
+                    ChiTietHoaDon_Ctrl ctrl = loader.getController();
+                    ctrl.setHoaDon(hdMoi);
+
+                    Stage stage = new Stage();
+                    stage.setTitle("Chi tiết hóa đơn " + maHD);
+                    stage.setScene(new Scene(root));
+                    stage.setResizable(false);
+                    stage.show();
+                   // ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
+
+                } catch (IOException e) {
+                    hien(ERROR, "Lỗi",
+                            "Không thể mở giao diện chi tiết hóa đơn:\n" + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
 
             tblChiTietHD.getItems().clear();
             lblTongTien.setText("0 VNĐ");
@@ -1313,7 +1370,7 @@ public class LapHoaDon_Ctrl extends Application {
                     if (!con.getAutoCommit()) con.rollback();
                 } catch (Exception ignore) { }
             }
-            new Alert(Alert.AlertType.ERROR, "Lập hóa đơn thất bại: " + ex.getMessage()).showAndWait();
+            hien(ERROR, "Lỗi", "Lập hóa đơn thất bại:\n" + ex.getMessage());
         } finally {
             if (con != null) {
                 try {
@@ -1343,13 +1400,13 @@ public class LapHoaDon_Ctrl extends Application {
             // 1. Lấy dvt co ban cua dòng gốc
             ChiTietDonViTinh dvtGoc = dvtOf(original);
             if (dvtGoc == null) dvtGoc = layDVTCoBan(sp);
-            double heSoGoc = heSo(dvtGoc); // vd 1 Hộp = 20 Viên
+            double heSoGoc = heSo(dvtGoc);
             original.setDvt(dvtGoc.getDvt());
 
             // 2. Tính tổng số lượng cơ bản cần thiết
-            int neededBaseQty = (int) Math.round(requestedDisplayQty * heSoGoc); // Vd: 1 * 20 = 20 (Viên)
+            int neededBaseQty = (int) Math.round(requestedDisplayQty * heSoGoc);
 
-            // 3. Lấy ds lô
+
             List<Thuoc_SP_TheoLo> danhSachLo = lotCache.get(maThuoc);
             if (danhSachLo == null) {
                 danhSachLo = loDao.selectAllAvailableLots(con, maThuoc);
@@ -1386,38 +1443,38 @@ public class LapHoaDon_Ctrl extends Application {
 
     }
 
-    @FXML
-    private void xuLyXuatPDF(ActionEvent event) {
-        // 1. Kiểm tra dữ liệu
-        if (dsChiTietHD == null || dsChiTietHD.isEmpty()) {
-            showAlert(Alert.AlertType.INFORMATION, "Không có dữ liệu", "Chưa có chi tiết hóa đơn nào để xuất.");
-            return;
-        }
-
-        // 2. Mở FileChooser
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Lưu Hóa Đơn PDF");
-        fileChooser.setInitialFileName("HoaDon_" + LocalDate.now());
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files (*.pdf)", "*.pdf"));
-
-        Stage stage = null;
-        if (btnThanhToanVaIn != null && btnThanhToanVaIn.getScene() != null) {
-            stage = (Stage) btnThanhToanVaIn.getScene().getWindow();
-        }
-
-        File file = fileChooser.showSaveDialog(stage);
-
-        // 3. Gọi hàm xuất PDF
-        if (file != null) {
-            try {
-                xuatHoaDonPDF(file);
-                showAlert(Alert.AlertType.INFORMATION, "Thành công", "Xuất file PDF hóa đơn thành công!");
-            } catch (IOException e) {
-                e.printStackTrace();
-                showAlert(Alert.AlertType.ERROR, "Lỗi", "Có lỗi xảy ra khi xuất file PDF: " + e.getMessage());
-            }
-        }
-    }
+//    @FXML
+//    private void xuLyXuatPDF(ActionEvent event) {
+//        // 1. Kiểm tra dữ liệu
+//        if (dsChiTietHD == null || dsChiTietHD.isEmpty()) {
+//            hien(WARNING, "Không có dữ liệu", "Chưa có chi tiết hóa đơn nào để xuất.");
+//            return;
+//        }
+//
+//        // 2. Mở FileChooser
+//        FileChooser fileChooser = new FileChooser();
+//        fileChooser.setTitle("Lưu Hóa Đơn PDF");
+//        fileChooser.setInitialFileName("HoaDon_" + LocalDate.now());
+//        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files (*.pdf)", "*.pdf"));
+//
+//        Stage stage = null;
+//        if (btnThanhToanVaIn != null && btnThanhToanVaIn.getScene() != null) {
+//            stage = (Stage) btnThanhToanVaIn.getScene().getWindow();
+//        }
+//
+//        File file = fileChooser.showSaveDialog(stage);
+//
+//        // 3. Gọi hàm xuất PDF
+//        if (file != null) {
+//            try {
+//                xuatHoaDonPDF(file);
+//                hien(INFORMATION, "Thành công", "Hóa đơn đã được xuất ra file PDF:\n" + file.getAbsolutePath());
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                hien(ERROR, "Lỗi", "Có lỗi xảy ra khi xuất file PDF:\n" + e.getMessage());
+//            }
+//        }
+//    }
 
 
     private void xuatHoaDonPDF(File file) throws IOException {
@@ -1435,7 +1492,7 @@ public class LapHoaDon_Ctrl extends Application {
         }
         document.setFont(font);
 
-        // 2. Header (Logo + Thông tin nhà thuốc)
+        // 2. Header có logo
         try {
             String logoPath = "/com/example/pharmacymanagementsystem_qlht/img/logo.png";
             InputStream is = getClass().getResourceAsStream(logoPath);
@@ -1465,7 +1522,7 @@ public class LapHoaDon_Ctrl extends Application {
         document.add(new Paragraph("Ngày lập: " + (dpNgayLap.getValue() != null ? dpNgayLap.getValue().toString() : LocalDate.now().toString()))
                 .setTextAlignment(TextAlignment.CENTER));
 
-        // 4. Mã đơn thuốc (NẾU CÓ)
+        // 4. Mã đơn thuốc (
         if (rbOTC != null && rbOTC.isSelected()) {
             String maDonThuoc = (txtMaDonThuoc != null) ? txtMaDonThuoc.getText() : "";
             if (maDonThuoc != null && !maDonThuoc.isBlank()) {
@@ -1567,9 +1624,6 @@ public class LapHoaDon_Ctrl extends Application {
         document.close();
     }
 
-    /**
-     * Phương thức trợ giúp để hiển thị Alert
-     */
     private void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -1578,20 +1632,9 @@ public class LapHoaDon_Ctrl extends Application {
         alert.showAndWait();
     }
 
-    public void xuLyThanhToanVaIn(ActionEvent actionEvent) {
-        try {
-            xuLyThanhToan( actionEvent);
-            if (tblChiTietHD != null && !tblChiTietHD.getItems().isEmpty()) {
-                xuLyXuatPDF(actionEvent);
-            }
-            lamMoiGiaoDienSauThanhToan();
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể thanh toán và in hóa đơn: " + e.getMessage());
-        }
-    }
     private void lamMoiGiaoDienSauThanhToan() {
         tblChiTietHD.getItems().clear();
+        txtTimThuoc.clear();
         lblTongTien.setText("0 VNĐ");
         lblVAT.setText("0 VNĐ");
         lblThanhTien.setText("0 VNĐ");
@@ -1599,9 +1642,13 @@ public class LapHoaDon_Ctrl extends Application {
         lblGiamTheoHD.setText("0 VNĐ");
         txtSoTienKhachDua.clear();
         lblTienThua.setText("0 VNĐ");
+        txtTenKH.clear();
+        txtSDT.clear();
+        rbOTC.setSelected(false);
+        txtMaDonThuoc.clear();
     }
 
-    public void xuLyLamMoi(ActionEvent actionEvent) {
+    public void xuLyHuy(ActionEvent actionEvent) {
         lamMoiGiaoDienSauThanhToan();
     }
 }

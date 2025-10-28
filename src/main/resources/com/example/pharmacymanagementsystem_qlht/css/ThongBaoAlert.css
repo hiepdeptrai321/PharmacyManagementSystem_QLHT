@@ -2,7 +2,6 @@
     -fx-background-radius: 20;
     -fx-border-radius: 20;
     -fx-border-width: 2;
-    -fx-border-color: #FF8800;
     -fx-background-color: linear-gradient(to bottom right, #FFFFFF, #FFF7E6);
     -fx-padding: 20;
     -fx-font-family: "Segoe UI";
@@ -48,7 +47,6 @@
 }
 .info-alert {
     -fx-background-color: linear-gradient(to bottom right, #E3F3FF, #FFFFFF);
-    -fx-border-color: #0096FF;
     -fx-border-width: 3px;
     -fx-border-radius: 18px;
     -fx-background-radius: 18px;
@@ -68,7 +66,6 @@
 /* Lỗi */
 .error-alert {
     -fx-background-color: linear-gradient(to bottom right, #FFE3E3, #FFFFFF);
-    -fx-border-color: #E60023;
     -fx-border-width: 3px;
     -fx-border-radius: 18px;
     -fx-background-radius: 18px;

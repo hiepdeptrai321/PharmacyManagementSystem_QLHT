@@ -5,6 +5,8 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
@@ -21,19 +23,33 @@
                 <TableColumn fx:id="colTenKM" prefWidth="348.0" text="Tên khuyến mãi" />
                 <TableColumn fx:id="colLoaiKM" minWidth="0.0" prefWidth="253.0" styleClass="a-center" text="Loại khuyến mãi" />
                 <TableColumn fx:id="colNBD" minWidth="0.0" prefWidth="285.0" styleClass="a-center" text="Ngày bắt đầu" />
-                <TableColumn fx:id="colNKT" minWidth="0.0" prefWidth="236.0" styleClass="a-center" text="Ngày kết thúc" />
-                <TableColumn fx:id="colNgayTao" minWidth="0.0" prefWidth="253.0" style="-fx-alignment: CENTER;" text="Ngày tạo khuyến mãi" />
-            <TableColumn fx:id="colChiTiet" prefWidth="82.0" style="-fx-alignment: CENTER;" styleClass="a-center" />
+                <TableColumn fx:id="colNKT" minWidth="0.0" prefWidth="220.0" styleClass="a-center" text="Ngày kết thúc" />
+                <TableColumn fx:id="colNgayTao" minWidth="0.0" prefWidth="227.0" style="-fx-alignment: CENTER;" text="Ngày tạo khuyến mãi" />
+            <TableColumn fx:id="colChiTiet" prefWidth="108.0" style="-fx-alignment: CENTER;" styleClass="a-center" />
             </columns>
         </TableView>
       <Pane id="lblpaneTitle" layoutX="13.0" layoutY="4.0" prefHeight="40.0" prefWidth="1632.0">
          <children>
-            <Label id="lbtitle" layoutY="2.0" prefHeight="26.0" prefWidth="405.0" text="Danh mục khuyến mãi">
+            <Label id="lbtitle" layoutY="2.0" prefHeight="36.0" prefWidth="279.0" text="Danh mục khuyến mãi">
                <font>
                   <Font size="48.0" />
                </font>
             </Label>
+            <ImageView fitHeight="35.0" fitWidth="38.0" layoutX="272.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/discounts.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
+      <Button id="btnReset" fx:id="btnLamMoi" layoutX="882.0" layoutY="49.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="44.0">
+         <graphic>
+            <ImageView id="btnReset" fitHeight="20.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/refresh-3104.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
     </children>
 </AnchorPane>

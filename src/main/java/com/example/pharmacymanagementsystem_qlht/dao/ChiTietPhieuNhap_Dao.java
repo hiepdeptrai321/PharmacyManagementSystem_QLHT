@@ -33,7 +33,11 @@ public class ChiTietPhieuNhap_Dao implements DaoInterface<ChiTietPhieuNhap> {
 
     @Override
     public ChiTietPhieuNhap selectById(Object... keys) {
-        return this.selectBySql(SELECT_BY_ID_SQL, keys[0], keys[1], keys[2]).get(0);
+        if (keys == null || keys.length < 3) {
+            throw new IllegalArgumentException("selectById requires MaPN, MaThuoc, MaLH");
+        }
+        List<ChiTietPhieuNhap> list = this.selectBySql(SELECT_BY_ID_SQL, keys[0], keys[1], keys[2]);
+        return list.isEmpty() ? null : list.get(0);
     }
 
     @Override

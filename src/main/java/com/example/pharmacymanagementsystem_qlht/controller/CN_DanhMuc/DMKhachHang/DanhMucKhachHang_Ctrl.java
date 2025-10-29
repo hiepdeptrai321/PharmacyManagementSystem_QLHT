@@ -5,6 +5,7 @@ import com.example.pharmacymanagementsystem_qlht.dao.KhachHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.KeHang;
 import com.example.pharmacymanagementsystem_qlht.model.KhachHang;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -65,12 +66,14 @@ public class DanhMucKhachHang_Ctrl extends Application {
         stage.show();
     }
     public void initialize() {
-        loadTable();
         btnLamMoi.setOnAction(e -> LamMoi());
         btnTim.setOnAction(e -> TimKiem());
         btnthemKH.setOnAction(e -> btnThemClick(new KhachHang()));
+        txtTim.setOnAction(e -> TimKiem());
 
-
+        Platform.runLater(()->{
+            loadTable();
+        });
     }
     public void loadTable() {
         List<KhachHang> list = khachHangDao.selectAll();
@@ -148,14 +151,17 @@ public class DanhMucKhachHang_Ctrl extends Application {
     }
     public void btnChiTietClick(KhachHang kh) {
         try {
-            Stage stage = new Stage();
+            Stage dialog = new Stage();
             FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhachHang/SuaXoaKhachHang_GUI.fxml"));
             Parent root = loader.load();
             ChiTietKhachHang_Ctrl ctrl = loader.getController();
             ctrl.hienThiThongTin(kh);
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.showAndWait();
+            dialog.initOwner(txtTim.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Chi tiết khách hàng");
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+            dialog.showAndWait();
             loadTable();
         } catch (Exception e) {
             e.printStackTrace();
@@ -164,14 +170,17 @@ public class DanhMucKhachHang_Ctrl extends Application {
 
     public void btnThemClick(KhachHang kh) {
         try {
-            Stage stage = new Stage();
+            Stage dialog = new Stage();
             FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhachHang/ThemKhachHang_GUI.fxml"));
             Parent root = loader.load();
             //ChiTietNhaCungCap_Ctrl ctrl = loader.getController();
             //ctrl.hienThiThongTin(ncc);
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.showAndWait();
+            dialog.initOwner(tbKhachHang.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Thêm khách hàng");
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+            dialog.showAndWait();
             loadTable();
         } catch (Exception e) {
             e.printStackTrace();

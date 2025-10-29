@@ -1,6 +1,11 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuDatHang;
 
+import com.example.pharmacymanagementsystem_qlht.TienIch.VNDFormatter;
+import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang.TimKiemKhachHangTrongHD_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang.TimKiemKhachHang_Ctrl;
+import com.example.pharmacymanagementsystem_qlht.controller.DangNhap_Ctrl;
+import com.example.pharmacymanagementsystem_qlht.dao.ChiTietPhieuDatHang_Dao;
+import com.example.pharmacymanagementsystem_qlht.dao.PhieuDatHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SanPham_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.*;
 import javafx.animation.PauseTransition;
@@ -21,11 +26,11 @@ import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.net.URL;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,14 +41,14 @@ public class LapPhieuDatHang_Ctrl extends Application {
     @FXML private TextField tfTimSanPham;
 
     // Table and its columns (typed)
-    @FXML private TableView<ChiTietHoaDon> tbSanPham;
-    @FXML private TableColumn<ChiTietHoaDon, String> colSTT;
-    @FXML private TableColumn<ChiTietHoaDon, String> colTenSP;
-    @FXML private TableColumn<ChiTietHoaDon, String> colSoLuong;
-    @FXML private TableColumn<ChiTietHoaDon, String> colDonVi;
-    @FXML private TableColumn<ChiTietHoaDon, String> colDonGia;
-    @FXML private TableColumn<ChiTietHoaDon, String> colThanhTien;
-    @FXML private TableColumn<ChiTietHoaDon, String> colXoa;
+    @FXML private TableView<ChiTietPhieuDatHang> tbSanPham;
+    @FXML private TableColumn<ChiTietPhieuDatHang, String> colSTT;
+    @FXML private TableColumn<ChiTietPhieuDatHang, String> colTenSP;
+    @FXML private TableColumn<ChiTietPhieuDatHang, String> colSoLuong;
+    @FXML private TableColumn<ChiTietPhieuDatHang, String> colDonVi;
+    @FXML private TableColumn<ChiTietPhieuDatHang, String> colDonGia;
+    @FXML private TableColumn<ChiTietPhieuDatHang, String> colThanhTien;
+    @FXML private TableColumn<ChiTietPhieuDatHang, String> colXoa;
 
     // Info panel (right)
     @FXML private Pane infoPane;
@@ -57,12 +62,15 @@ public class LapPhieuDatHang_Ctrl extends Application {
     @FXML private Label lbTienThieu;
     @FXML private TextArea tfGhiChu;
     @FXML private Button btnDatHang;
-    @FXML private Button btnDatHangVaIn;
+    @FXML private Button btnHuy;
+
+    public KhachHang khachHang;
+
 
     // Additional fields in info panel
     @FXML private TextField tfSDT;
     @FXML private TextField tfMaDon;
-    @FXML private ComboBox<?> cbLoaiDon;
+    @FXML private ComboBox<String> cbLoaiDon;
     @FXML private Button btnTimKH;
     @FXML private Button btnThemKH;
 
@@ -74,13 +82,15 @@ public class LapPhieuDatHang_Ctrl extends Application {
     private volatile long idTruyVanMoiNhat = 0;
     private volatile Task<List<String>> goiYHienTai;
     private volatile boolean tamDungGoiY = false;
+    private final VNDFormatter vndFmt = new VNDFormatter();
+
 
     private static final String GoiY_css = "/com/example/pharmacymanagementsystem_qlht/css/GoiYThuoc.css";
     private boolean GoiY_cssat = false;
 
     // Table data and unit tracking (behaves like LapHoaDon)
-    private final ObservableList<ChiTietHoaDon> dsChiTietPD = FXCollections.observableArrayList();
-    private final IdentityHashMap<ChiTietHoaDon, ChiTietDonViTinh> dvtTheoDong = new IdentityHashMap<>();
+    private final ObservableList<ChiTietPhieuDatHang> dsChiTietPD = FXCollections.observableArrayList();
+    private final IdentityHashMap<ChiTietPhieuDatHang, ChiTietDonViTinh> dvtTheoDong = new IdentityHashMap<>();
 
     @FXML
     public void initialize() {
@@ -90,8 +100,8 @@ public class LapPhieuDatHang_Ctrl extends Application {
             tbSanPham.setItems(dsChiTietPD);
             cauHinhCotBang();
         }
-        dpNgayLap.setEditable(false);
         if (dpNgayLap != null) dpNgayLap.setValue(LocalDate.now());
+        dpNgayLap.setEditable(false);
 
         if (lbTongTien != null) lbTongTien.setText("0 VNĐ");
         if (lbThue != null) lbThue.setText("0 VNĐ");
@@ -99,12 +109,43 @@ public class LapPhieuDatHang_Ctrl extends Application {
         if (lbTienThieu != null) lbTienThieu.setText("0 VNĐ");
 
         if (btnDatHang != null) btnDatHang.setOnAction(e -> onDatHang());
-        if (btnDatHangVaIn != null) btnDatHangVaIn.setOnAction(e -> onDatHanngVaIn());
+        if (btnHuy != null) btnHuy.setOnAction(e -> onHuy());
 
         btnTimKH.setOnAction(e -> xuLyTimKhachHang());
         btnThemKH.setOnAction(this::xuLyThemKH);
+
+        tfMa.setText(new PhieuDatHang_Dao().generateNewMaPDat());
+        tfMa.setEditable(false);
+
         xuLyGoiYSanPham();
         xuLyCssGoiY();
+        loadCbLoaiDon();
+        kiemTraLoaiDon();
+        initTienCocEvents();
+        tbSanPham.getItems().addListener((javafx.collections.ListChangeListener<ChiTietPhieuDatHang>) c -> capNhatTongTienPhieuDat());
+    }
+
+    public void loadCbLoaiDon(){
+        cbLoaiDon.getItems().clear();
+        cbLoaiDon.getItems().addAll("Kê đơn","Không kê đơn");
+        cbLoaiDon.getSelectionModel().select(1);
+    }
+
+    public void kiemTraLoaiDon(){
+        if(cbLoaiDon.getSelectionModel().getSelectedItem().equals("Không kê đơn")){
+            tfMaDon.setEditable(false);
+        }
+        cbLoaiDon.setOnAction(e->{
+            String loaiDon = cbLoaiDon.getSelectionModel().getSelectedItem();
+            if(loaiDon != null){
+                if(loaiDon.equals("Kê đơn")){
+                    tfMaDon.setEditable(true);
+                } else {
+                    tfMaDon.clear();
+                    tfMaDon.setEditable(false);
+                }
+            }
+        });
     }
 
     // ---------- suggestion wiring already present (unchanged) ----------
@@ -301,9 +342,8 @@ public class LapPhieuDatHang_Ctrl extends Application {
 
         double donGia = selected.getGiaBan();
 
-        for (ChiTietHoaDon row : dsChiTietPD) {
-            Thuoc_SP_TheoLo lo = row.getLoHang();
-            Thuoc_SanPham rowSp = (lo != null) ? lo.getThuoc() : null;
+        for (ChiTietPhieuDatHang row : dsChiTietPD) {
+            Thuoc_SanPham rowSp = row.getThuoc();
             if (rowSp != null && sp.getMaThuoc() != null && sp.getMaThuoc().equals(rowSp.getMaThuoc())) {
                 ChiTietDonViTinh rowDvt = dvtTheoDong.get(row);
                 if (rowDvt != null &&
@@ -316,7 +356,7 @@ public class LapPhieuDatHang_Ctrl extends Application {
                 }
             }
         }
-        ChiTietHoaDon ctpd = new ChiTietHoaDon();
+        ChiTietPhieuDatHang ctpd = new ChiTietPhieuDatHang();
         ganThuocVaoCTHD(ctpd, sp);
         ctpd.setSoLuong(1);
         ctpd.setDonGia(donGia);
@@ -334,39 +374,31 @@ public class LapPhieuDatHang_Ctrl extends Application {
         });
     }
 
-    // Attach Thuoc to ChiTietHoaDon via Thuoc_SP_TheoLo model (same pattern as LapHoaDon)
-    private void ganThuocVaoCTHD(ChiTietHoaDon cthd, Thuoc_SanPham sp) {
-        Thuoc_SP_TheoLo lo = new Thuoc_SP_TheoLo();
-        lo.setThuoc(sp);
-        cthd.setLoHang(lo);
+    private void ganThuocVaoCTHD(ChiTietPhieuDatHang cthd, Thuoc_SanPham sp) {
+        // assign product directly (no LoHang)
+        cthd.setThuoc(sp);
+        ChiTietDonViTinh defaultCt = chonDonViTheoTen(sp, null);
+        if (defaultCt != null && defaultCt.getDvt() != null) {
+            cthd.setDvt(defaultCt.getDvt().getMaDVT());
+        } else {
+            cthd.setDvt(null);
+        }
     }
 
-    private void canPhai(TableColumn<ChiTietHoaDon, String> col) {
-        col.setCellFactory(tc -> new TableCell<>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty ? null : item);
-                setStyle(empty ? "" : "-fx-alignment: CENTER-RIGHT;");
-            }
-        });
-    }
-
-    private String layTenSP(ChiTietHoaDon row) {
-        if (row == null || row.getLoHang() == null) return "";
-        var sp = row.getLoHang().getThuoc();
+    private String layTenSP(ChiTietPhieuDatHang row) {
+        if (row == null) return "";
+        var sp = row.getThuoc();
         String ten = (sp != null && sp.getTenThuoc() != null) ? sp.getTenThuoc() : "";
         return ten;
     }
-    private String layTenDonVi(ChiTietHoaDon row) {
+
+    private String layTenDonVi(ChiTietPhieuDatHang row) {
         if (row == null) return "";
         ChiTietDonViTinh dvtChon = dvtTheoDong.get(row);
         if (dvtChon != null && dvtChon.getDvt() != null && dvtChon.getDvt().getTenDonViTinh() != null) {
             return dvtChon.getDvt().getTenDonViTinh();
         }
-        if (row.getLoHang() == null) return "";
-        // try to get first available unit name
-        Thuoc_SanPham sp = row.getLoHang().getThuoc();
+        Thuoc_SanPham sp = row.getThuoc();
         if (sp == null || sp.getDsCTDVT() == null || sp.getDsCTDVT().isEmpty()) return "";
         ChiTietDonViTinh first = sp.getDsCTDVT().get(0);
         return (first.getDvt() != null) ? String.valueOf(first.getDvt().getTenDonViTinh()) : "";
@@ -459,63 +491,61 @@ public class LapPhieuDatHang_Ctrl extends Application {
                     });
                     tf.setTextFormatter(formatter);
 
-                    btnDec.setOnAction(e -> {
-                        if (tbSanPham != null) tbSanPham.getScene().getWindow(); // keep access to scene
-                        adjust(-1);
-                    });
+                    btnDec.setOnAction(e -> adjust(-1));
                     btnInc.setOnAction(e -> adjust(1));
 
                     tf.setOnAction(e -> commitFromText());
-                    tf.focusedProperty().addListener((o, w, f) -> {
-                        if (!f) commitFromText();
-                    });
+                    tf.focusedProperty().addListener((o, w, f) -> { if (!f) commitFromText(); });
                 }
 
                 private void adjust(int delta) {
-                    int rowIndex = getIndex();
-                    if (rowIndex < 0 || rowIndex >= getTableView().getItems().size()) return;
-                    ChiTietHoaDon item = getTableView().getItems().get(rowIndex);
-                    if (item == null) return;
-                    int cur = item.getSoLuong();
-                    int next = Math.max(1, cur + delta);
-                    if (next != cur) {
-                        item.setSoLuong(next);
-                        tf.setText(String.valueOf(next));
+                    int idx = getIndex();
+                    if (idx < 0 || idx >= getTableView().getItems().size()) return;
+                    ChiTietPhieuDatHang row = getTableView().getItems().get(idx);
+                    if (row == null) return;
+
+                    int cur = row.getSoLuong();
+                    int target = Math.max(1, cur + delta);
+
+                    if (target != cur) {
+                        row.setSoLuong(target);
+                        // refresh view and update totals
                         if (tbSanPham != null) tbSanPham.refresh();
+                        capNhatTongTienPhieuDat();
                     }
+                    tf.setText(String.valueOf(row.getSoLuong()));
                 }
 
                 private void commitFromText() {
-                    int rowIndex = getIndex();
-                    if (rowIndex < 0 || rowIndex >= getTableView().getItems().size()) return;
-                    ChiTietHoaDon item = getTableView().getItems().get(rowIndex);
-                    if (item == null) return;
+                    int idx = getIndex();
+                    if (idx < 0 || idx >= getTableView().getItems().size()) return;
+                    ChiTietPhieuDatHang row = getTableView().getItems().get(idx);
+                    if (row == null) return;
+
                     String s = tf.getText();
-                    if (s == null || s.isBlank()) {
-                        tf.setText(String.valueOf(item.getSoLuong()));
-                        return;
-                    }
+                    if (s == null || s.isBlank()) { tf.setText(String.valueOf(row.getSoLuong())); return; }
+
                     try {
-                        int val = Math.max(1, Integer.parseInt(s));
-                        item.setSoLuong(val);
-                        tf.setText(String.valueOf(val));
-                        if (tbSanPham != null) tbSanPham.refresh();
+                        int entered = Integer.parseInt(s);
+                        if (entered <= 0) entered = 1;
+                        if (entered != row.getSoLuong()) {
+                            row.setSoLuong(entered);
+                            if (tbSanPham != null) tbSanPham.refresh();
+                            capNhatTongTienPhieuDat();
+                        }
+                        tf.setText(String.valueOf(row.getSoLuong()));
                     } catch (NumberFormatException ignore) {
-                        tf.setText(String.valueOf(item.getSoLuong()));
+                        tf.setText(String.valueOf(row.getSoLuong()));
                     }
                 }
 
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
-                    if (empty) {
-                        setGraphic(null);
-                        setText(null);
-                    } else {
-                        int rowIndex = getIndex();
-                        ChiTietHoaDon rowItem = (rowIndex >= 0 && rowIndex < getTableView().getItems().size())
-                                ? getTableView().getItems().get(rowIndex) : null;
-                        tf.setText(rowItem != null ? String.valueOf(rowItem.getSoLuong()) : "1");
+                    if (empty) { setGraphic(null); setText(null); }
+                    else {
+                        ChiTietPhieuDatHang r = getTableView().getItems().get(getIndex());
+                        tf.setText(r != null ? String.valueOf(r.getSoLuong()) : "1");
                         setGraphic(box);
                         setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                     }
@@ -538,7 +568,7 @@ public class LapPhieuDatHang_Ctrl extends Application {
 
         if (colThanhTien != null) {
             colThanhTien.setCellValueFactory(p -> {
-                ChiTietHoaDon r = p.getValue();
+                ChiTietPhieuDatHang r = p.getValue();
                 double tt = Math.max(0, r.getSoLuong() * r.getDonGia() - r.getGiamGia());
                 return new javafx.beans.property.ReadOnlyStringWrapper(formatVND(tt));
             });
@@ -546,26 +576,16 @@ public class LapPhieuDatHang_Ctrl extends Application {
         }
 
         // keep table refreshed when list changes
-        dsChiTietPD.addListener((javafx.collections.ListChangeListener<ChiTietHoaDon>) c -> {
+        dsChiTietPD.addListener((javafx.collections.ListChangeListener<ChiTietPhieuDatHang>) c -> {
             if (tbSanPham != null) tbSanPham.refresh();
         });
     }
-
-
-    private void onDatHang() {
-        System.out.println("Đặt hàng clicked");
-    }
-
-    private void onDatHanngVaIn() {
-        System.out.println("Thanh toán clicked");
-    }
-
 
     private void xuLyTimKhachHang() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKKhachHang/TKKhachHang_GUI.fxml"));
             Parent root = loader.load();
-            Object ctrl = loader.getController();
+            TimKiemKhachHangTrongHD_Ctrl ctrl = loader.getController();
 
             Stage dlg = new Stage();
             dlg.initModality(Modality.APPLICATION_MODAL);
@@ -574,10 +594,11 @@ public class LapPhieuDatHang_Ctrl extends Application {
             }
 
             // If controller is the typed search controller, set the callback like LapHoaDon_Ctrl
-            if (ctrl instanceof TimKiemKhachHang_Ctrl tkCtrl) {
+            if (ctrl instanceof TimKiemKhachHangTrongHD_Ctrl tkCtrl) {
                 tkCtrl.setOnSelected((KhachHang kh) -> {
                     if (tfTenKH != null) tfTenKH.setText(kh.getTenKH());
                     if (tfSDT != null) tfSDT.setText(kh.getSdt());
+                    khachHang = kh;
                     dlg.close();
                 });
                 dlg.setScene(new Scene(root));
@@ -591,8 +612,18 @@ public class LapPhieuDatHang_Ctrl extends Application {
             Object selected = extractSelectedFromController(ctrl);
             populateCustomerFields(selected);
         } catch (Exception ex) {
-            System.err.println("Customer dialog error: " + ex);
+            ex.printStackTrace();
         }
+    }
+    private void canPhai(TableColumn<ChiTietPhieuDatHang, String> col) {
+        col.setCellFactory(tc -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : item);
+                setStyle(empty ? "" : "-fx-alignment: CENTER-RIGHT;");
+            }
+        });
     }
 
     @FXML
@@ -689,6 +720,138 @@ public class LapPhieuDatHang_Ctrl extends Application {
             System.err.println("Populate customer fields error: " + ex);
         }
     }
+    private void showValidationAlert(String title, String message, Control focus) {
+        Alert a = new Alert(Alert.AlertType.WARNING);
+        a.setTitle(title);
+        a.setHeaderText(null);
+        a.setContentText(message);
+        a.initOwner((btnDatHang != null && btnDatHang.getScene() != null) ? btnDatHang.getScene().getWindow() : null);
+        a.showAndWait();
+        if (focus != null) {
+            Platform.runLater(() -> focus.requestFocus());
+        }
+    }
+
+    private Double parseDoubleOrNull(String s) {
+        if (s == null) return null;
+        try {
+            String cleaned = s.replaceAll("[^0-9\\-,\\.]", "").replace(',', '.');
+            if (cleaned.isBlank()) return null;
+            return Double.parseDouble(cleaned);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private boolean validateInputs(boolean requirePrintAfter) {
+        // require at least one product
+        if (dsChiTietPD.isEmpty()) {
+            showValidationAlert("Validation", "Vui lòng thêm ít nhất một sản phẩm.", tfTimSanPham);
+            return false;
+        }
+
+        // validate quantities and prices per row
+        for (int i = 0; i < dsChiTietPD.size(); i++) {
+            ChiTietPhieuDatHang row = dsChiTietPD.get(i);
+            if (row.getSoLuong() <= 0) {
+                showValidationAlert("Validation", "Số lượng phải lớn hơn 0 tại dòng " + (i+1), tbSanPham);
+                return false;
+            }
+            if (row.getDonGia() < 0) {
+                showValidationAlert("Validation", "Đơn giá không hợp lệ tại dòng " + (i+1), tbSanPham);
+                return false;
+            }
+        }
+
+
+        // when "Kê đơn" selected, tfMaDon is required
+        String loai = cbLoaiDon != null ? cbLoaiDon.getSelectionModel().getSelectedItem() : null;
+        if ("Kê đơn".equalsIgnoreCase(loai)) {
+            if (tfMaDon == null || tfMaDon.getText().isBlank()) {
+                showValidationAlert("Validation", "Đã chọn 'Kê đơn' — vui lòng nhập mã đơn.", tfMaDon);
+                return false;
+            }
+        }
+
+        // deposit numeric and non-negative
+        if (tfTienCoc != null && !tfTienCoc.getText().isBlank()) {
+            Double tienCoc = parseDoubleOrNull(tfTienCoc.getText());
+            if (tienCoc == null || tienCoc < 0) {
+                showValidationAlert("Validation", "Tiền cọc không hợp lệ. Nhập số >= 0.", tfTienCoc);
+                return false;
+            }
+            // optional: ensure deposit does not exceed total (if lbTongTT holds parseable number)
+            Double tong = parseDoubleOrNull(lbTongTT != null ? lbTongTT.getText() : null);
+            if (tong != null && tienCoc > tong) {
+                showValidationAlert("Validation", "Tiền cọc không được lớn hơn tổng cộng.", tfTienCoc);
+                return false;
+            }
+        }
+
+        return true;
+    }
+    private BigDecimal parseDecimalOrZero(String text) {
+        if (text == null || text.trim().isEmpty()) return BigDecimal.ZERO;
+
+        try {
+            // Loại bỏ ký tự không phải số
+            String cleaned = text.replaceAll("[^\\d]", ""); // chỉ giữ lại chữ số
+            if (cleaned.isEmpty()) return BigDecimal.ZERO;
+
+            return new BigDecimal(cleaned);
+        } catch (NumberFormatException e) {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    private String formatVND(BigDecimal amount) {
+        java.text.DecimalFormat df = new java.text.DecimalFormat("#,###");
+        df.setGroupingUsed(true);
+        long v = (amount == null) ? 0L : amount.setScale(0, RoundingMode.HALF_UP).longValue();
+        return df.format(Math.max(0L, v)) + " đ";
+    }
+
+    private void updateTienThieuPhieuDat(BigDecimal tongThanhToan) {
+        if (lbTienThieu == null) return;
+        BigDecimal tienCoc = parseDecimalOrZero(tfTienCoc != null ? tfTienCoc.getText() : null);
+        if (tienCoc.compareTo(tongThanhToan) < 0) {
+            BigDecimal conThieu = tongThanhToan.subtract(tienCoc).max(BigDecimal.ZERO);
+            lbTienThieu.setText(formatVND(conThieu));
+            lbTienThieu.setStyle("-fx-text-fill: #d32f2f; -fx-font-weight: bold;");
+        } else {
+            lbTienThieu.setText(formatVND(BigDecimal.ZERO));
+            lbTienThieu.setStyle("");
+        }
+    }
+
+    private void capNhatTongTienPhieuDat() {
+        if (dsChiTietPD == null) return;
+
+        BigDecimal tongHang = BigDecimal.ZERO;
+        BigDecimal tongGiam = BigDecimal.ZERO;
+
+        for (ChiTietPhieuDatHang r : dsChiTietPD) {
+            if (r == null) continue;
+            BigDecimal soLuong = BigDecimal.valueOf(Math.max(0, r.getSoLuong()));
+            BigDecimal donGia = BigDecimal.valueOf(Math.max(0, r.getDonGia()));
+            BigDecimal giam = BigDecimal.valueOf(Math.max(0, r.getGiamGia()));
+
+            BigDecimal lineTotal = soLuong.multiply(donGia);
+            BigDecimal lineAfterDiscount = lineTotal.subtract(giam).max(BigDecimal.ZERO);
+
+            tongHang = tongHang.add(lineAfterDiscount);
+            tongGiam = tongGiam.add(giam);
+        }
+
+        BigDecimal vat = tongHang.multiply(new BigDecimal("0.05")).setScale(0, RoundingMode.HALF_UP);
+        BigDecimal tongThanhToan = tongHang.add(vat).max(BigDecimal.ZERO);
+
+        if (lbTongTien != null) lbTongTien.setText(formatVND(tongHang));
+        if (lbThue != null)     lbThue.setText(formatVND(vat));
+        if (lbTongTT != null)   lbTongTT.setText(formatVND(tongThanhToan));
+
+        updateTienThieuPhieuDat(tongThanhToan);
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -698,5 +861,144 @@ public class LapPhieuDatHang_Ctrl extends Application {
         stage.show();
     }
 
+    private void initTienCocEvents() {
+        if (tfTienCoc == null || lbTienThieu == null || lbTongTT == null) return;
+        vndFmt.applyNumberFormatter(tfTienCoc);
+        tfTienCoc.textProperty().addListener((obs, oldVal, newVal) -> updateTienThieuFromCoc());
+        tfTienCoc.focusedProperty().addListener((obs, was, now) -> {
+            if (!now) Platform.runLater(this::updateTienThieuFromCoc);
+        });
+        Platform.runLater(this::updateTienThieuFromCoc);
+    }
 
+    private void updateTienThieuFromCoc() {
+        if (lbTongTT == null || lbTienThieu == null || tfTienCoc == null) return;
+
+        BigDecimal tong = parseDecimalOrZero(lbTongTT.getText());
+        BigDecimal coc  = parseDecimalOrZero(tfTienCoc.getText());
+
+        BigDecimal thieu = tong.subtract(coc).max(BigDecimal.ZERO);
+
+        if (coc.compareTo(tong) < 0) {
+            lbTienThieu.setText(formatVND(thieu));
+            lbTienThieu.setStyle("-fx-text-fill: #d32f2f; -fx-font-weight: bold;");
+        } else {
+            lbTienThieu.setText(formatVND(BigDecimal.ZERO));
+            lbTienThieu.setStyle("");
+        }
+    }
+    private void onDatHang() {
+        if (!validateInputs(false)) return;
+
+        try {
+            // Build header
+            PhieuDatHang pd = new PhieuDatHang();
+            pd.setMaPDat(tfMa != null ? tfMa.getText() : null);
+            pd.setNgayLap(new java.sql.Timestamp(System.currentTimeMillis()));
+            pd.setSoTienCoc(parseDecimalOrZero(tfTienCoc != null ? tfTienCoc.getText() : null).doubleValue());
+            pd.setGhiChu(tfGhiChu != null ? tfGhiChu.getText() : null);
+            pd.setNhanVien(DangNhap_Ctrl.user);
+
+            // Use existing khachHang field (must be set elsewhere)
+            if (khachHang == null) {
+                showValidationAlert("Validation", "Vui lòng chọn hoặc thêm khách hàng trước khi đặt hàng.", tfTenKH);
+                return;
+            }
+            pd.setKhachHang(khachHang);
+
+            // Persist header
+            PhieuDatHang_Dao pdDao = new PhieuDatHang_Dao();
+            boolean savedHeader = pdDao.insert(pd);
+            if (!savedHeader) {
+                showValidationAlert("Error", "Lưu phiếu đặt hàng thất bại.", null);
+                return;
+            }
+
+            // Persist details
+            ChiTietPhieuDatHang_Dao ctDao = new ChiTietPhieuDatHang_Dao();
+            for (ChiTietPhieuDatHang row : dsChiTietPD) {
+                if (row == null) continue;
+                Thuoc_SanPham thuoc = row.getThuoc();
+                if (thuoc == null || thuoc.getMaThuoc() == null) continue; // skip invalid rows
+                ChiTietPhieuDatHang ct = new ChiTietPhieuDatHang();
+                ct.setPhieuDatHang(pd);
+                ct.setThuoc(thuoc);
+                ct.setSoLuong(row.getSoLuong());
+                ct.setDonGia(row.getDonGia());
+                ct.setGiamGia(row.getGiamGia());
+                ChiTietDonViTinh chosenDvt = dvtTheoDong.get(row);
+                if (chosenDvt != null && chosenDvt.getDvt() != null) {
+                    ct.setDvt(chosenDvt.getDvt().getMaDVT());
+                }
+                ctDao.insert(ct);
+            }
+
+            Platform.runLater(() -> {
+                Alert a = new Alert(Alert.AlertType.INFORMATION);
+                a.setTitle("Success");
+                a.setHeaderText(null);
+                a.setContentText("Đặt hàng đã được lưu thành công.");
+                a.initOwner((btnDatHang != null && btnDatHang.getScene() != null) ? btnDatHang.getScene().getWindow() : null);
+
+                var result = a.showAndWait();
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuDatHang/ChiTietPhieuDatHang_GUI.fxml"));
+                        Parent root = loader.load();
+                        Object ctrl = loader.getController();
+
+                        if (ctrl instanceof com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDatHang.ChiTietPhieuDatHang_Ctrl) {
+                            var detailCtrl = (com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDatHang.ChiTietPhieuDatHang_Ctrl) ctrl;
+                            // pass the saved PhieuDatHang (pd) to the detail controller
+                            detailCtrl.setPhieuDatHang(pd);
+                        }
+
+                        Stage st = new Stage();
+                        st.initModality(Modality.APPLICATION_MODAL);
+                        st.initOwner((btnDatHang != null && btnDatHang.getScene() != null) ? btnDatHang.getScene().getWindow() : null);
+                        st.setScene(new Scene(root));
+                        st.showAndWait();
+
+                        // after the detail window is closed, clear/reset the form
+                        resetForm();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                        // still reset UI if error occurs (optional)
+                        onHuy();
+                    }
+                }
+            });
+
+            // Reset UI
+            if (tfMa != null) tfMa.setText(new PhieuDatHang_Dao().generateNewMaPDat());
+
+
+        } catch (Exception ex) {
+            String msg = ex.getMessage() == null ? ex.toString() : ex.getMessage();
+            showValidationAlert("Error", "Lỗi khi lưu phiếu đặt: " + msg, null);
+        }
+    }
+    public void onHuy(){
+        // Dialog hỏi xác nhận
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmAlert.setTitle("Xác nhận hủy");
+        confirmAlert.setHeaderText(null);
+        confirmAlert.setContentText("Bạn có chắc chắn muốn hủy phiếu đặt hàng không?");
+        confirmAlert.initOwner((btnHuy != null && btnHuy.getScene() != null) ? btnHuy.getScene().getWindow() : null);
+        var result = confirmAlert.showAndWait();
+        if (result.isEmpty() || result.get() != ButtonType.OK) {
+            return;
+        }
+        resetForm();
+    }
+    public void resetForm() {
+        if (tfMa != null) tfMa.setText(new PhieuDatHang_Dao().generateNewMaPDat());
+        if (tfTenKH != null) tfTenKH.clear();
+        if (tfSDT != null) tfSDT.clear();
+        khachHang = null;
+        if (tfGhiChu != null) tfGhiChu.clear();
+        if (tfTienCoc != null) tfTienCoc.clear();
+        dsChiTietPD.clear();
+        capNhatTongTienPhieuDat();
+    }
 }

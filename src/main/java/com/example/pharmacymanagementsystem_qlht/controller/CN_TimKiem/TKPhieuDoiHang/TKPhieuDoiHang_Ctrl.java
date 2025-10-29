@@ -4,6 +4,7 @@ import com.example.pharmacymanagementsystem_qlht.dao.PhieuDoiHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuDoiHang;
 import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuTraHang;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -86,7 +87,9 @@ public class TKPhieuDoiHang_Ctrl extends Application {
         btnTimKiem.setOnAction(e -> timKiem());
         btnHuyBo.setOnAction(e -> lamMoi());
         cbLoc.setOnAction(e -> boLocNhanh());
-        loadTable();
+        Platform.runLater(()->{
+            loadTable();
+        });
     }
 
     public void loadTable() {
@@ -158,16 +161,19 @@ public class TKPhieuDoiHang_Ctrl extends Application {
 
     private void btnChiTietClick(PhieuDoiHang pDoi) {
         try {
-            Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuDoiHang/ChiTietPhieuDoiHang_GUI.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
-
             this.getClass();
             com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuDoiHang.ChiTietPhieuDoiHang_Ctrl ctrl = loader.getController();
             ctrl.setPhieuDoiHang(pDoi);
-            stage.setScene(scene);
-            stage.show();
+
+            Stage dialog = new Stage();
+            dialog.initOwner(btnTimKiem.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Chi tiết phiếu đổi hàng");
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+            dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }

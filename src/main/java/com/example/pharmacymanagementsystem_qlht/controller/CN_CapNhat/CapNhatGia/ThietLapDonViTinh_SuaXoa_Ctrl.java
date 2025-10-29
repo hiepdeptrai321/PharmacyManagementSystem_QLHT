@@ -46,6 +46,7 @@ public class ThietLapDonViTinh_SuaXoa_Ctrl {
     }
 
     public void loadCbDVT(){
+        cbDVT.getItems().clear();
         DonViTinh_Dao donViTinh_dao = new DonViTinh_Dao();
         List<DonViTinh> list = donViTinh_dao.selectAll();
         for(DonViTinh donViTinh : list){
@@ -54,6 +55,19 @@ public class ThietLapDonViTinh_SuaXoa_Ctrl {
     }
 
     public void btnThemDVTClick(MouseEvent mouseEvent) {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatGia/ThemDVT.fxml"));
+            Parent root = loader.load();
+            ThemDVT_Ctrl ctrl = loader.getController();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.showAndWait();
+            loadCbDVT();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public void btnHuyClick(MouseEvent mouseEvent) {
         Stage stage = (Stage) btnHuy.getScene().getWindow();
@@ -66,9 +80,9 @@ public class ThietLapDonViTinh_SuaXoa_Ctrl {
         DonViTinh_Dao donViTinh_dao = new DonViTinh_Dao();
         DonViTinh dvt = donViTinh_dao.selectByTenDVT(cbDVT.getSelectionModel().getSelectedItem().toString());
 
-        Float heSo = parseNumberVN(tfHeSo.getText().trim());
-        Float giaNhap = parseNumberVN(tfGiaNhap.getText().trim());
-        Float giaBan = parseNumberVN(tfGiaBan.getText().trim());
+        double heSo = parseNumberVN(tfHeSo.getText().trim());
+        double giaNhap = parseNumberVN(tfGiaNhap.getText().trim());
+        double giaBan = parseNumberVN(tfGiaBan.getText().trim());
 
         ctdvt.setDvt(dvt);
         ctdvt.setHeSoQuyDoi(heSo);
@@ -76,6 +90,7 @@ public class ThietLapDonViTinh_SuaXoa_Ctrl {
         ctdvt.setGiaBan(giaBan);
         ctdvt.setDonViCoBan(checkDVCB.isSelected());
         ctdvt.setThuoc(new Thuoc_SanPham_Dao().selectById(maThuoc));
+        System.out.println("Đơn vị tính thêm/sửa: " + ctdvt.getHeSoQuyDoi());
 
         //Thông báo cho SuaGiaThuoc để thêm vào bảng
         if (onAdded != null) onAdded.accept(ctdvt);
@@ -140,7 +155,8 @@ public class ThietLapDonViTinh_SuaXoa_Ctrl {
         control.setStyle("");
     }
 
-    // Use Float for validation to keep everything in float domain
+
+
     public boolean kiemTraData() {
         clearErrorStyles();
         StringBuilder sb = new StringBuilder();
@@ -152,7 +168,7 @@ public class ThietLapDonViTinh_SuaXoa_Ctrl {
 
         // Giá nhập
         String giaNhapText = tfGiaNhap.getText() == null ? "" : tfGiaNhap.getText().trim();
-        Float giaNhap = null;
+        Double giaNhap = null;
         if (giaNhapText.isEmpty()) {
             sb.append("Giá nhập không được để trống.\n");
             addErrorStyle(tfGiaNhap);
@@ -161,7 +177,7 @@ public class ThietLapDonViTinh_SuaXoa_Ctrl {
             if (giaNhap == null) {
                 sb.append("Giá nhập phải là số hợp lệ.\n");
                 addErrorStyle(tfGiaNhap);
-            } else if (giaNhap.floatValue() < 0f) {
+            } else if (giaNhap < 0.0) {
                 sb.append("Giá nhập phải >= 0.\n");
                 addErrorStyle(tfGiaNhap);
             }
@@ -169,7 +185,7 @@ public class ThietLapDonViTinh_SuaXoa_Ctrl {
 
         // Giá bán
         String giaBanText = tfGiaBan.getText() == null ? "" : tfGiaBan.getText().trim();
-        Float giaBan = null;
+        Double giaBan = null;
         if (giaBanText.isEmpty()) {
             sb.append("Giá bán không được để trống.\n");
             addErrorStyle(tfGiaBan);
@@ -178,21 +194,21 @@ public class ThietLapDonViTinh_SuaXoa_Ctrl {
             if (giaBan == null) {
                 sb.append("Giá bán phải là số hợp lệ.\n");
                 addErrorStyle(tfGiaBan);
-            } else if (giaBan.floatValue() < 0f) {
+            } else if (giaBan < 0.0) {
                 sb.append("Giá bán phải >= 0.\n");
                 addErrorStyle(tfGiaBan);
             }
         }
 
         // So sánh giá bán với giá nhập
-        if (giaNhap != null && giaBan != null && giaBan.floatValue() < giaNhap.floatValue()) {
+        if (giaNhap != null && giaBan != null && giaBan < giaNhap) {
             sb.append("Giá bán phải lớn hơn hoặc bằng giá nhập.\n");
             addErrorStyle(tfGiaBan);
         }
 
         // Hệ số quy đổi
         String heSoText = tfHeSo.getText() == null ? "" : tfHeSo.getText().trim();
-        Float heSo = null;
+        Double heSo = null;
         if (heSoText.isEmpty()) {
             sb.append("Hệ số quy đổi không được để trống.\n");
             addErrorStyle(tfHeSo);
@@ -201,14 +217,14 @@ public class ThietLapDonViTinh_SuaXoa_Ctrl {
             if (heSo == null) {
                 sb.append("Hệ số quy đổi phải là số hợp lệ.\n");
                 addErrorStyle(tfHeSo);
-            } else if (heSo.floatValue() <= 0f) {
+            } else if (heSo <= 0.0) {
                 sb.append("Hệ số quy đổi phải > 0.\n");
                 addErrorStyle(tfHeSo);
             }
         }
 
         // Nếu là đơn vị cơ bản thì hệ số = 1
-        if (checkDVCB.isSelected() && heSo != null && Math.abs(heSo.floatValue() - 1f) > 1e-6f) {
+        if (checkDVCB.isSelected() && heSo != null && Math.abs(heSo - 1.0) > 1e-9) {
             sb.append("Đơn vị cơ bản phải có hệ số quy đổi = 1.\n");
             addErrorStyle(tfHeSo);
         }
@@ -224,8 +240,8 @@ public class ThietLapDonViTinh_SuaXoa_Ctrl {
         return true;
     }
 
-    // Parse to Float instead of Double
-    private Float parseNumberVN(String raw) {
+    // Parse to Double
+    private Double parseNumberVN(String raw) {
         if (raw == null) return null;
         String s = raw.trim();
         if (s.isEmpty()) return null;
@@ -244,7 +260,7 @@ public class ThietLapDonViTinh_SuaXoa_Ctrl {
                 double num = Double.parseDouble(a);
                 double den = Double.parseDouble(b);
                 if (den == 0.0) return null;
-                return (float) (num / den);
+                return num / den;
             } catch (NumberFormatException ex) {
                 return null;
             }
@@ -257,11 +273,12 @@ public class ThietLapDonViTinh_SuaXoa_Ctrl {
             s = s.replace(",", ".");
         }
         try {
-            return Float.parseFloat(s);
+            return Double.parseDouble(s);
         } catch (NumberFormatException ex) {
             return null;
         }
     }
+
     public void cbDVCBCheck(){
         if(checkDVCB.isSelected()){
             tfHeSo.setText("1");

@@ -2,6 +2,7 @@ package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKNhaCun
 
 import com.example.pharmacymanagementsystem_qlht.model.NhaCungCap;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,7 +12,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class ChiTietNhaCungCap_Ctrl extends Application {
+public class ChiTietNhaCungCap_Ctrl{
     @FXML
     private TextField DiaChi;
 
@@ -42,17 +43,14 @@ public class ChiTietNhaCungCap_Ctrl extends Application {
     @FXML
     private TextField tenNCC;
     private NhaCungCap nhaCungCap;
-    @Override
-    public void start(javafx.stage.Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKNhaCungCap/ChiTietNhaCungCap_GUI.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
+
     public void initialize() {
         btnThoat.setOnAction(e -> anThoat());
+        Platform.runLater(()->{
+            Stage dialog = (Stage) maNCC.getScene().getWindow();
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+        });
     }
-
 
     public void setNhaCungCap(NhaCungCap ncc) {
         this.nhaCungCap = ncc;

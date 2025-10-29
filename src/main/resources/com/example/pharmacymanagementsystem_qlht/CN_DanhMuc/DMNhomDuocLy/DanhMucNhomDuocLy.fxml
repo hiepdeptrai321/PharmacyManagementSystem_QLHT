@@ -20,8 +20,8 @@
             <columns>
                 <TableColumn fx:id="cotSTT" prefWidth="90.33333587646484" style="-fx-alignment: CENTER;" text="STT" />
                 <TableColumn fx:id="cotMaNDL" prefWidth="260.66666412353516" style="-fx-alignment: CENTER;" text="Mã Nhóm Dược Lý" />
-                <TableColumn fx:id="cotTenNDL" minWidth="0.0" prefWidth="1169.0" text="Tên Nhóm Dược Lý" />
-                <TableColumn fx:id="colChiTiet" prefWidth="103.6666259765625" style="-fx-alignment: CENTER;" />
+                <TableColumn fx:id="cotTenNDL" minWidth="0.0" prefWidth="1139.0" text="Tên Nhóm Dược Lý" />
+                <TableColumn fx:id="colChiTiet" prefWidth="117.0" style="-fx-alignment: CENTER;" />
             </columns>
         </TableView>
         <Button id="btnReset" fx:id="btnLamMoi" layoutX="879.0" layoutY="51.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="45.0" />
@@ -37,6 +37,11 @@
                         <Font size="48.0" />
                     </font>
                 </Label>
+            <ImageView fitHeight="34.0" fitWidth="46.0" layoutX="299.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/drugs.png" />
+               </image>
+            </ImageView>
             </children>
         </Pane>
     </children>

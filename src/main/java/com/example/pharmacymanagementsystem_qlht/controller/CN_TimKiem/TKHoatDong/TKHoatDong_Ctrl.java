@@ -5,6 +5,7 @@ import com.example.pharmacymanagementsystem_qlht.dao.HoatDong_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.HoaDon;
 import com.example.pharmacymanagementsystem_qlht.model.HoatDong;
 import com.example.pharmacymanagementsystem_qlht.model.NhanVien;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +28,7 @@ public class TKHoatDong_Ctrl extends javafx.application.Application {
 
     @FXML private TextField tfTim;
     @FXML private Button btnTim;
+    @FXML private Button btnLamMoi;
     @FXML private TableView<HoatDong> tbHoatDong;
     @FXML private TableColumn<HoatDong, String> colSTT;
     @FXML private TableColumn<HoatDong, String> colMa;
@@ -46,9 +48,12 @@ public class TKHoatDong_Ctrl extends javafx.application.Application {
     public void initialize() {
         configureColumns();
         configureFilters();
-        loadTable();
         if (btnTim != null) btnTim.setOnAction(e -> applySearch());
         tfTim.setOnAction(e-> applySearch());
+        Platform.runLater(()-> {
+            loadTable();
+        });
+        btnLamMoi.setOnAction(e-> LamMoi());
     }
 
     private void configureFilters() {
@@ -210,15 +215,22 @@ public class TKHoatDong_Ctrl extends javafx.application.Application {
             if (ctrl instanceof ChiTietHoatDong_Ctrl) {
                 ((ChiTietHoatDong_Ctrl) ctrl).loadData(hd);
             }
-            Scene scene = new Scene(root);
-            chiTiet.setScene(scene);
-            chiTiet.setTitle("Chi tiết hoạt động");
-            chiTiet.show();
+            Stage dialog = new Stage();
+            dialog.initOwner(btnLamMoi.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Chi tiết hoạt động");
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+            dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
+    @FXML
+    private void LamMoi() {
+        tfTim.clear();
+        loadTable();
+    }
 
     @Override
     public void start(Stage stage) throws Exception {

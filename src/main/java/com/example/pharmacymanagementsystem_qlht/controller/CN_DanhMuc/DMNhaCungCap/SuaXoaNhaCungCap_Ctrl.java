@@ -19,10 +19,15 @@ public class SuaXoaNhaCungCap_Ctrl {
     public TextField txtMaSoThue;
     public TextArea txtGhiChu;
     private NhaCungCap ncc;
+    private DanhMucNhaCungCap_Ctrl danhMucNhaCungCap_ctrl;
 
     public void initialize(NhaCungCap ncc) {
         this.ncc = ncc;
         ThemDuLieuThuoc(ncc);
+    }
+
+    public void setDanhMucNhaCungCap_ctrl(DanhMucNhaCungCap_Ctrl ctrl) {
+        this.danhMucNhaCungCap_ctrl = ctrl;
     }
 
     private void ThemDuLieuThuoc(NhaCungCap ncc) {

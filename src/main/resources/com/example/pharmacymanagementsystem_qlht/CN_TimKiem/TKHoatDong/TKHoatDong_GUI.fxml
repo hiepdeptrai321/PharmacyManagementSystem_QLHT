@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -13,45 +14,60 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="895" prefWidth="1646" style="-fx-font-size: 14 px;" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoatDong.TKHoatDong_Ctrl">
+<AnchorPane prefHeight="895" prefWidth="1646" style="-fx-font-size: 14 px;" stylesheets="@../../css/TimKiemNhanVien.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoatDong.TKHoatDong_Ctrl">
     <children>
-        <TextField fx:id="tfTim" layoutX="12.0" layoutY="58.0" prefHeight="40.0" prefWidth="353.0" promptText="Tìm theo mã, tên nhân viên" AnchorPane.topAnchor="58.0" />
-        <Button id="btntim" fx:id="btnTim" layoutX="754.0" layoutY="58.0" minWidth="35.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="69.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" AnchorPane.topAnchor="58.0" />
-        <TableView id="tablethuoc" fx:id="tbHoatDong" layoutX="12.0" layoutY="107.0" prefHeight="772.0" prefWidth="1617.0">
+        <TextField fx:id="tfTim" layoutX="14.0" layoutY="87.0" prefHeight="40.0" prefWidth="353.0" promptText="Tìm theo mã, tên nhân viên" AnchorPane.topAnchor="87.0" />
+        <Button id="btntim" fx:id="btnTim" layoutX="756.0" layoutY="87.0" minWidth="35.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="69.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" AnchorPane.topAnchor="87.0" />
+        <TableView id="tablethuoc" fx:id="tbHoatDong" layoutX="5.0" layoutY="142.0" prefHeight="772.0" prefWidth="1617.0">
             <columns>
                 <TableColumn fx:id="colSTT" prefWidth="68.0" style="-fx-alignment: CENTER;" text="STT" />
                 <TableColumn fx:id="colMa" prefWidth="266.0" style="-fx-alignment: CENTER;" text="Mã hoạt động" />
                 <TableColumn fx:id="colLoai" prefWidth="315.0" style="-fx-alignment: CENTER;" text="Loại hoạt động" />
                 <TableColumn fx:id="colBang" minWidth="0.0" prefWidth="248.3333740234375" style="-fx-alignment: CENTER;" text="Bảng dữ liệu" />
                 <TableColumn fx:id="colThoiGian" minWidth="0.0" prefWidth="265.33331298828125" style="-fx-alignment: CENTER;" text="Thời gian" />
-                <TableColumn fx:id="colNguoi" minWidth="0.0" prefWidth="377.0" text="Người thực hiện" />
-                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="79.0" style="-fx-alignment: CENTER;" />
+                <TableColumn fx:id="colNguoi" minWidth="0.0" prefWidth="337.0" text="Người thực hiện" />
+                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="100.0" style="-fx-alignment: CENTER;" />
             </columns>
         </TableView>
-      <ImageView fitHeight="32.0" fitWidth="36.0" layoutX="379.0" layoutY="62.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="32.0" fitWidth="36.0" layoutX="381.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../img/time-2623.png" />
          </image>
       </ImageView>
-      <Label layoutX="417.0" layoutY="62.0" prefHeight="32.0" prefWidth="28.0" styleClass="tftim" text="Từ: ">
+      <Label layoutX="419.0" layoutY="91.0" prefHeight="32.0" prefWidth="28.0" styleClass="tftim" text="Từ: ">
          <font>
             <Font size="14.0" />
          </font></Label>
-      <DatePicker fx:id="dpTuNgay" layoutX="445.0" layoutY="58.0" prefHeight="40.0" prefWidth="125.0" styleClass="tftim" />
-      <Label layoutX="583.0" layoutY="61.0" prefHeight="34.0" prefWidth="32.0" styleClass="tftim" text="Đến: ">
+      <DatePicker fx:id="dpTuNgay" layoutX="447.0" layoutY="87.0" prefHeight="40.0" prefWidth="125.0" styleClass="tftim" />
+      <Label layoutX="585.0" layoutY="90.0" prefHeight="34.0" prefWidth="32.0" styleClass="tftim" text="Đến: ">
          <font>
             <Font size="14.0" />
          </font></Label>
-      <DatePicker fx:id="dpDenNgay" layoutX="617.0" layoutY="58.0" minHeight="14.0" prefHeight="40.0" prefWidth="125.0" styleClass="tftim" />
-      <ComboBox fx:id="cbBoLoc" layoutX="1455.0" layoutY="58.0" prefHeight="40.0" prefWidth="173.0" promptText="⌛ Bộ lọc nhanh" styleClass="btntim" />
+      <DatePicker fx:id="dpDenNgay" layoutX="619.0" layoutY="87.0" minHeight="14.0" prefHeight="40.0" prefWidth="125.0" styleClass="tftim" />
+      <ComboBox fx:id="cbBoLoc" layoutX="1449.0" layoutY="85.0" prefHeight="40.0" prefWidth="173.0" promptText="⌛ Bộ lọc nhanh" styleClass="btntim" />
       <Pane id="lblpaneTitle" layoutX="11.0" layoutY="8.0" prefHeight="40.0" prefWidth="1617.0">
          <children>
-            <Label id="lbtitle" layoutY="2.0" prefHeight="26.0" prefWidth="405.0" text="Tìm kiếm hoạt động">
+            <Label id="lbtitle" layoutY="2.0" prefHeight="70.0" prefWidth="457.0" text="Tìm kiếm hoạt động">
                <font>
-                  <Font size="48.0" />
+                  <Font name="System Bold" size="36.0" />
                </font>
             </Label>
+            <ImageView fitHeight="53.0" fitWidth="61.0" layoutX="351.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/log.png" />
+               </image>
+            </ImageView>
+            <Separator layoutX="6.0" layoutY="71.0" prefHeight="3.0" prefWidth="1624.0" />
          </children>
       </Pane>
+      <Button id="btnReset" fx:id="btnLamMoi" layoutX="837.0" layoutY="87.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="50.0" stylesheets="@../../css/QuanLyThuoc.css">
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/refresh-3104.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
     </children>
 </AnchorPane>

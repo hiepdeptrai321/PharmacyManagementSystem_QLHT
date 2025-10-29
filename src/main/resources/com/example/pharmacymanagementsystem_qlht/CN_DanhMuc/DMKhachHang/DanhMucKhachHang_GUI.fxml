@@ -21,6 +21,11 @@
                <font>
                   <Font size="48.0" />
                </font></Label>
+            <ImageView fitHeight="37.0" fitWidth="46.0" layoutX="273.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/three_16725211.png" />
+               </image>
+            </ImageView>
             </children>
         </Pane>
         <Button id="btnthemthuoc" fx:id="btnthemKH" layoutX="1477.0" layoutY="47.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="158.0" text="✚Thêm khách hàng" AnchorPane.topAnchor="47.0" />
@@ -30,14 +35,14 @@
                 <TableColumn fx:id="cotMaKH" prefWidth="261.0" style="-fx-alignment: CENTER;" text="Mã khách hàng" />
                 <TableColumn fx:id="cotTenKH" prefWidth="401.0" text="Tên khách hàng" />
                 <TableColumn fx:id="cotGioiTinh" minWidth="0.0" prefWidth="172.33331298828125" text="Giới tính" />
-                <TableColumn fx:id="cotSDT" minWidth="0.0" prefWidth="327.33331298828125" style="-fx-alignment: CENTER;" text="SĐT" />
-                <TableColumn fx:id="cotDiaChi" minWidth="0.0" prefWidth="278.0" text="Địa chỉ" />
-            <TableColumn fx:id="cotChiTiet" prefWidth="92.6666259765625" style="-fx-alignment: CENTER;" />
+                <TableColumn fx:id="cotSDT" minWidth="0.0" prefWidth="294.0" style="-fx-alignment: CENTER;" text="SĐT" />
+                <TableColumn fx:id="cotDiaChi" minWidth="0.0" prefWidth="287.0" text="Địa chỉ" />
+            <TableColumn fx:id="cotChiTiet" prefWidth="97.0" style="-fx-alignment: CENTER;" />
             </columns>
         </TableView>
-      <Button id="btnReset" fx:id="btnLamMoi" layoutX="893.0" layoutY="48.0" minHeight="39.0" minWidth="57.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="60.0" stylesheets="@../../css/QuanLyThuoc.css">
+      <Button id="btnReset" fx:id="btnLamMoi" layoutX="881.0" layoutY="48.0" minHeight="39.0" minWidth="43.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="43.0" stylesheets="@../../css/QuanLyThuoc.css">
          <graphic>
-            <ImageView fitHeight="34.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="20.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../img/refresh-3104.png" />
                </image>

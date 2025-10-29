@@ -27,8 +27,8 @@ public class ThongKe_Dao {
             case "Tháng này":
                 sql = "{call sp_ThongKeBanHang_ThangNay}";
                 break;
-            case "Quý này":
-                sql = "{call sp_ThongKeBanHang_QuyNay}";
+            case "Năm Nay":
+                sql = "{call sp_ThongKeBanHang_NamNay}";
                 break;
             default:
                 sql = "{call sp_ThongKeBanHang_HomNay}"; // Mặc định
@@ -72,8 +72,8 @@ public class ThongKe_Dao {
             case "Tháng này":
                 sql = "{call sp_Top5SanPham_ThangNay}";
                 break;
-            case "Quý này":
-                sql = "{call sp_Top5SanPham_QuyNay}";
+            case "Năm Nay":
+                sql = "{call sp_Top5SanPham_NamNay}";
                 break;
             default:
                 sql = "{call sp_Top5SanPham_HomNay}";

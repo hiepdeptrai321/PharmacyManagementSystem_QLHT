@@ -5,16 +5,23 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
 <AnchorPane prefHeight="895.0" prefWidth="1646.0" style="-fx-font-size: 14;" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhanVien.DanhMucNhanVien_Ctrl">
     <children>
-        <TextField layoutX="12.0" layoutY="47.0" prefHeight="40.0" prefWidth="766.0" promptText="Tìm theo mã, tên nhân viên" />
-        <Button id="btntim" layoutX="790.0" layoutY="47.0" minWidth="35.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="69.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" />
+        <TextField fx:id="txtTim" layoutX="12.0" layoutY="47.0" prefHeight="40.0" prefWidth="766.0" promptText="Tìm theo mã, tên nhân viên" />
+        <Button id="btntim" fx:id="btnTim" layoutX="790.0" layoutY="47.0" minWidth="35.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="69.0" stylesheets="@../../css/QuanLyThuoc.css" text="🔍 Tìm" />
         <Pane id="lblpaneTitle" prefHeight="40.0" prefWidth="1632.0">
             <children>
                 <Label id="lbtitle" layoutX="12.0" layoutY="2.0" prefHeight="36.0" prefWidth="244.0" text="Danh mục nhân viên" />
+            <ImageView fitHeight="36.0" fitWidth="40.0" layoutX="265.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/officer.png" />
+               </image>
+            </ImageView>
             </children>
         </Pane>
         <Button id="btnthemthuoc" layoutX="1488.0" layoutY="47.0" mnemonicParsing="false" onAction="#btnThemNhanVien" prefHeight="30.0" prefWidth="144.0" text="✚Thêm nhân viên" AnchorPane.topAnchor="47.0" />
@@ -25,12 +32,22 @@
                 <TableColumn fx:id="colTenNV" prefWidth="224.0" text="Tên nhân viên" />
                 <TableColumn fx:id="colGioiTinh" minWidth="0.0" prefWidth="134.0" text="Giới tính" />
                 <TableColumn fx:id="colSDT" minWidth="0.0" prefWidth="191.0" style="-fx-alignment: CENTER;" text="SDT" />
-                <TableColumn fx:id="colNgaySinh" minWidth="0.0" prefWidth="244.0" style="-fx-alignment: CENTER;" text="Ngày sinh" />
-                <TableColumn fx:id="colEmail" minWidth="0.0" prefWidth="205.0" text="Email" />
-                <TableColumn fx:id="colDiaChi" minWidth="0.0" prefWidth="214.0" text="Địa chỉ" />
-            <TableColumn fx:id="colTrangThai" prefWidth="142.0" text="Trạng thái" />
-            <TableColumn fx:id="colCapNhat" prefWidth="94.666748046875" style="-fx-alignment: CENTER;" text="Cập nhật" />
+                <TableColumn fx:id="colNgaySinh" minWidth="0.0" prefWidth="197.0" style="-fx-alignment: CENTER;" text="Ngày sinh" />
+                <TableColumn fx:id="colEmail" minWidth="0.0" prefWidth="236.0" text="Email" />
+                <TableColumn fx:id="colDiaChi" minWidth="0.0" prefWidth="210.0" text="Địa chỉ" />
+            <TableColumn fx:id="colTrangThai" prefWidth="135.0" text="Trạng thái" />
+            <TableColumn fx:id="colCapNhat" prefWidth="108.0" style="-fx-alignment: CENTER;" text="Cập nhật" />
             </columns>
         </TableView>
+      <Button id="btnReset" fx:id="btnLamMoi" layoutX="874.0" layoutY="47.0" minWidth="35.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="47.0" stylesheets="@../../css/QuanLyThuoc.css">
+         <graphic>
+            <ImageView fitHeight="21.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../img/refresh-3104.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
     </children>
 </AnchorPane>

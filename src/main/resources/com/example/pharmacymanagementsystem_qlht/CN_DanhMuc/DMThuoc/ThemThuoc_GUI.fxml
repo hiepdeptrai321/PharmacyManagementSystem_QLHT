@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="690.0" prefWidth="1004.0" stylesheets="@../../css/ThemThuoc.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMThuoc.ThemThuoc_Ctrl">
+<AnchorPane prefHeight="690.0" prefWidth="1004.0" stylesheets="@../../css/ThemThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMThuoc.ThemThuoc_Ctrl">
     <children>
         <Label layoutX="14.0" layoutY="8.0" prefHeight="31.0" prefWidth="977.0" styleClass="lbtitle" text="Thông tin chung">
             <font>
@@ -91,7 +91,7 @@
                                 <Font size="11.0" />
                             </font>
                         </Label>
-                        <ComboBox fx:id="cbxNhomDuocLy" layoutX="4.0" layoutY="142.0" prefHeight="25.0" prefWidth="380.0" style="-fx-max-height: 30;" />
+                        <ComboBox fx:id="cbxNhomDuocLy" layoutX="4.0" layoutY="142.0" prefHeight="25.0" prefWidth="370.0" style="-fx-max-height: 30;" />
                         <Label layoutX="4.0" layoutY="125.0" prefHeight="16.0" prefWidth="102.0" text="Nhóm dược lý">
                             <font>
                                 <Font size="11.0" />
@@ -121,6 +121,12 @@
                             </font>
                         </Label>
                         <TextField fx:id="txtDuongDung" layoutX="272.0" layoutY="45.0" prefHeight="25.0" prefWidth="120.0" style="-fx-max-height: 30;" />
+                  <ComboBox fx:id="cbDVTCB" layoutX="386.0" layoutY="142.0" prefHeight="25.0" prefWidth="257.0" promptText="Chọn đơn vị " style="-fx-max-height: 30;" />
+                  <Label layoutX="386.0" layoutY="125.0" prefHeight="16.0" prefWidth="102.0" text="Đơn vị tính (cơ bản)">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
                     </children>
                 </Pane>
             </children>

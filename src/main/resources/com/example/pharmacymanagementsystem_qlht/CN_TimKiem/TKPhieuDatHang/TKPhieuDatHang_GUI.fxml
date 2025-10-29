@@ -29,9 +29,6 @@
                             <font>
                                 <Font size="36.0" />
                             </font>
-                            <cursor>
-                                <Cursor fx:constant="NONE" />
-                            </cursor>
                         </Label>
                         <Label />
                         <ImageView fitHeight="46.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
@@ -99,7 +96,7 @@
                                 </ImageView>
                             </graphic>
                         </Button>
-                        <Button fx:id="btnHuyBo" mnemonicParsing="false" prefHeight="40.0" prefWidth="52.0" styleClass="btntim">
+                        <Button id="btnReset" fx:id="btnHuyBo" mnemonicParsing="false" prefHeight="40.0" prefWidth="52.0" styleClass="btntim" stylesheets="@../../css/QuanLyThuoc.css">
                             <HBox.margin>
                                 <Insets left="8.0" top="10.0" />
                             </HBox.margin>
@@ -127,13 +124,14 @@
                         <TableView fx:id="tblPD" prefHeight="738.0" prefWidth="1620.0">
                             <columns>
                                 <TableColumn fx:id="colSTT" minWidth="0.0" prefWidth="51.0" style="-fx-alignment: CENTER;" text="STT" />
-                                <TableColumn fx:id="colMaPD" minWidth="0.0" prefWidth="156.0" style="-fx-alignment: CENTER;" text="Mã phiếu đặt" />
+                                <TableColumn fx:id="colMaPD" minWidth="0.0" prefWidth="156.0" style="-fx-alignment: CENTER;" text="Mã PĐH" />
                                 <TableColumn fx:id="colNgayLap" minWidth="6.0" prefWidth="195.0" style="-fx-alignment: CENTER;" text="Ngày lập" />
-                                <TableColumn fx:id="colTenKH" prefWidth="352.8000183105469" text="Khách hàng" />
-                                <TableColumn fx:id="colSdtKH" prefWidth="231.199951171875" style="-fx-alignment: CENTER;" text="Số điện thoại" />
-                                <TableColumn fx:id="colSoTienCoc" minWidth="0.0" prefWidth="223.99993896484375" style="-fx-alignment: CENTER;" text="Số tiền cọc" />
-                                <TableColumn fx:id="colTenNV" prefWidth="335.0" text="Nhân viên" />
-                                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="76.0" style="-fx-alignment: CENTER;" />
+                                <TableColumn fx:id="colTenKH" prefWidth="311.0" text="Khách hàng" />
+                                <TableColumn fx:id="colSdtKH" prefWidth="211.0" style="-fx-alignment: CENTER;" text="Số điện thoại" />
+                                <TableColumn fx:id="colSoTienCoc" minWidth="0.0" prefWidth="228.0" style="-fx-alignment: CENTER;" text="Số tiền cọc" />
+                        <TableColumn fx:id="colTenNV" prefWidth="243.0" text="Nhân viên" />
+                                <TableColumn fx:id="colTT" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Trạng thái" />
+                                <TableColumn fx:id="colChiTiet" minWidth="0.0" prefWidth="88.0" style="-fx-alignment: CENTER;" />
                             </columns>
                         </TableView>
                     </content>

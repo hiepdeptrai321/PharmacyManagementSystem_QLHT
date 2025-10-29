@@ -7,7 +7,6 @@ import com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKNhaCung
 import com.example.pharmacymanagementsystem_qlht.dao.ChiTietDonViTinh_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.ChiTietDonViTinh;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
-import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -57,7 +56,7 @@ public class ThemThuoc_LapPhieuNhapHang_Ctrl{
     private Thuoc_SanPham thuoc;
     private ObservableList<ChiTietDonViTinh> listGia = FXCollections.observableArrayList();
     private final ChiTietDonViTinh_Dao ctDVTDao = new ChiTietDonViTinh_Dao();
-
+    private LapPhieuNhapHang_Ctrl parentCtrl;
 
     // 2. KHỞI TẠO (INITIALIZE)
 
@@ -73,6 +72,10 @@ public class ThemThuoc_LapPhieuNhapHang_Ctrl{
         addDetailButtonToTable();
 
         tbDVT.setItems(listGia);
+    }
+
+    public void setParentCtrl(LapPhieuNhapHang_Ctrl parentCtrl) {
+        this.parentCtrl = parentCtrl;
     }
 
     // Set thuốc lên tf và load bảng giá
@@ -211,6 +214,9 @@ public class ThemThuoc_LapPhieuNhapHang_Ctrl{
             loadListGia(this.thuoc.getMaThuoc());
             tbDVT.refresh();
             new Alert(Alert.AlertType.INFORMATION, "Lưu thành công.").showAndWait();
+            if (parentCtrl != null) {
+                parentCtrl.timKiemDonViTinh();
+            }
             Stage stage = (Stage) btnLuu.getScene().getWindow();
             stage.close();
         } catch (Exception ex) {

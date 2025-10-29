@@ -126,15 +126,12 @@ public class SuaXoaNhanVien_Ctrl {
 
     public void btnSuaTaiKhoan(ActionEvent actionEvent) {
         try {
-            Stage stage = new Stage();
+            Stage dialog = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNhanVien/SuataiKhoan_GUI.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
 
             SuaTaiKhoan_Ctrl ctrl = loader.getController();
             ctrl.initialize(nhanVien);
-
-            stage.setScene(scene);
 
             if(ctrl.isSaved){
                 NhanVien updatedNV = ctrl.getUpdatedNhanVien();
@@ -144,7 +141,12 @@ public class SuaXoaNhanVien_Ctrl {
             }
 
 
-            stage.show();
+            dialog.initOwner(txtDiaChi.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Sửa tài khoản nhân viên");
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+            dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -152,10 +154,9 @@ public class SuaXoaNhanVien_Ctrl {
 
     public void btnThayDoiLuong(ActionEvent actionEvent) {
         try {
-            Stage stage = new Stage();
+            Stage dialog = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNhanVien/ThietLapLuongNV_GUI.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
 
             ThietLapLuongNV_Ctrl ctrl = loader.getController();
             LuongNhanVien luongNhanVienTemp = new LuongNhanVien();
@@ -174,9 +175,8 @@ public class SuaXoaNhanVien_Ctrl {
                 }
             }
             ctrl.initialize(nhanVien, luongNhanVienTemp);
-            stage.setScene(scene);
 
-            stage.setOnHidden(event -> {
+            dialog.setOnHidden(event -> {
                 if(!ctrl.isSaved){
                     return;
                 }
@@ -197,7 +197,12 @@ public class SuaXoaNhanVien_Ctrl {
                 tblLuongNV.refresh();
             });
 
-            stage.show();
+            dialog.initOwner(txtDiaChi.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Thay đổi lương nhân viên");
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+            dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }

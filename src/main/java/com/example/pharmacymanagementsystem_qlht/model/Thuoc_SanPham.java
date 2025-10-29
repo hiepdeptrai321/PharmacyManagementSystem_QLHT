@@ -20,6 +20,7 @@ public class Thuoc_SanPham {
     private KeHang vitri;
     private List<ChiTietDonViTinh> dsCTDVT = new ArrayList<>();
     private List<Thuoc_SP_TheoLo> dsTS_TheoLo = new ArrayList<>();
+    private ChiTietDonViTinh dvcb;
 
     public Thuoc_SanPham(){
     }
@@ -156,6 +157,14 @@ public class Thuoc_SanPham {
 
     public void setDsCTDVT(List<ChiTietDonViTinh> dsCTDVT) {
         this.dsCTDVT = dsCTDVT;
+    }
+
+    public ChiTietDonViTinh getDvcb() {
+        return dvcb;
+    }
+
+    public void setDvcb(ChiTietDonViTinh dvcb) {
+        this.dvcb = dvcb;
     }
 
     public Double getGiaNhapCoBan() {

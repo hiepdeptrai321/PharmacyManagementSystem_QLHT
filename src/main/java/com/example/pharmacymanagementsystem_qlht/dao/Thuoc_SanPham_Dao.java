@@ -3,28 +3,46 @@ package com.example.pharmacymanagementsystem_qlht.dao;
 import com.example.pharmacymanagementsystem_qlht.connectDB.ConnectDB;
 import com.example.pharmacymanagementsystem_qlht.model.*;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
-    private final String INSERT_SQL = "INSERT INTO Thuoc_SanPham (MaThuoc,TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaNDL, MaLoaiHang, HinhAnh, ViTri) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private final String UPDATE_SQL = "UPDATE Thuoc_SanPham SET TenThuoc=?, HamLuong=?, DonViHL=?, DuongDung=?, QuyCachDongGoi=?, SDK_GPNK=?, HangSX=?, NuocSX=?, MaNDL=?, MaLoaiHang=?, HinhAnh=?, ViTri=? WHERE MaThuoc=?";
+    private final String INSERT_SQL = "INSERT INTO Thuoc_SanPham (MaThuoc,TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi, SDK_GPNK, HangSX, NuocSX, MaNDL, MaLoaiHang, HinhAnh, ViTri, TrangThaiXoa) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private final String UPDATE_SQL =
+            "UPDATE Thuoc_SanPham SET " +
+                    "TenThuoc=?, HamLuong=?, DonViHL=?, DuongDung=?, QuyCachDongGoi=?, SDK_GPNK=?, HangSX=?, NuocSX=?, " +
+                    "HinhAnh=?, MaLoaiHang=?, MaNDL=?, ViTri=? " +
+                    "WHERE MaThuoc=?";
     private final String DELETE_SQL = "DELETE FROM Thuoc_SanPham WHERE MaThuoc=?";
-    private final String SELECT_ALL_SQL = "SELECT * FROM Thuoc_SanPham";
+    private final String SELECT_ALL_SQL = "SELECT * FROM Thuoc_SanPham WHERE TrangThaiXoa = 0";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM Thuoc_SanPham WHERE MaThuoc=?";
     private final String SELECT_BY_TUKHOA_SQL = "SELECT * FROM Thuoc_SanPham WHERE TenThuoc LIKE ? OR MaThuoc LIKE ?";
     private final String SELECT_THUOC_SANPHAM_DONVICOBAN_SQL =
-            "SELECT * FROM Thuoc_SanPham ts " +
+            "SELECT DISTINCT ts.* FROM Thuoc_SanPham ts " +
                     "JOIN ChiTietDonViTinh ctdvt ON ts.MaThuoc = ctdvt.MaThuoc " +
+                    "WHERE ctdvt.DonViCoBan = 1";
+    private final String SELECT_THUOC_SANPHAM_DONVICOBAN_SQL_VER2 =
+            "SELECT DISTINCT * FROM Thuoc_SanPham ts " +
+                    "JOIN ChiTietDonViTinh ctdvt ON ts.MaThuoc = ctdvt.MaThuoc " +
+                    "JOIN DonViTinh dvt ON ctdvt.MaDVT = dvt.MaDVT " +
                     "WHERE ctdvt.DonViCoBan = 1";
 
     private final String SELECT_THUOC_SANPHAM_DONVICOBAN_BYTUKHOA_SQL =
             "SELECT * FROM Thuoc_SanPham ts " +
             "JOIN ChiTietDonViTinh ctdvt ON ts.MaThuoc = ctdvt.MaThuoc " +
             "WHERE ctdvt.DonViCoBan = 1 AND (ts.TenThuoc LIKE ? OR ts.MaThuoc LIKE ?)";
+    private final String SELECT_THUOC_SANPHAM_DONVICOBAN_BYTUKHOA_SQL_VER2 =
+            "SELECT DISTINCT * FROM Thuoc_SanPham ts " +
+                    "JOIN ChiTietDonViTinh ctdvt ON ts.MaThuoc = ctdvt.MaThuoc " +
+                    "JOIN DonViTinh dvt ON ctdvt.MaDVT = dvt.MaDVT " +
+                    "WHERE ctdvt.DonViCoBan = 1 AND (ts.TenThuoc LIKE ? OR ts.MaThuoc LIKE ?)";
+
 
     private final String SELECT_TENDVT_BYMA_SQL = "SELECT TenDonViTinh FROM ChiTietDonViTinh ctdvt JOIN DonViTinh dvt ON ctdvt.MaDVT = dvt.MaDVT WHERE MaThuoc = ? AND DonViCoBan = 1";
     private final String SELECT_TOP1_MATHUOC = "SELECT TOP 1 MaThuoc FROM Thuoc_SanPham ORDER BY MaThuoc DESC";
@@ -39,13 +57,29 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
                     "ORDER BY ts.TenThuoc";
     @Override
     public boolean insert(Thuoc_SanPham e) {
-        return ConnectDB.update(INSERT_SQL,e.getMaThuoc(), e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(),e.getNhomDuocLy()!=null?e.getNhomDuocLy().getMaNDL():null, e.getLoaiHang().getMaLoaiHang(), e.getHinhAnh(),e.getVitri().getMaKe())>0;
+        return ConnectDB.update(INSERT_SQL,e.getMaThuoc(), e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(),e.getNhomDuocLy()!=null?e.getNhomDuocLy().getMaNDL():null, e.getLoaiHang()!=null?e.getLoaiHang().getMaLoaiHang():null, e.getHinhAnh(),e.getVitri()!=null?e.getVitri().getMaKe():null,0)>0;
     }
 
     @Override
     public boolean update(Thuoc_SanPham thuoc) {
-        return ConnectDB.update(UPDATE_SQL, thuoc.getTenThuoc(), thuoc.getHamLuong(), thuoc.getDonViHamLuong(), thuoc.getDuongDung(), thuoc.getQuyCachDongGoi(), thuoc.getSDK_GPNK(), thuoc.getHangSX(), thuoc.getNuocSX(), thuoc.getNhomDuocLy()!=null?thuoc.getNhomDuocLy().getMaNDL():null, thuoc.getLoaiHang().getMaLoaiHang(), thuoc.getHinhAnh(), thuoc.getVitri().getMaKe(), thuoc.getMaThuoc()) > 0;
+        return ConnectDB.update(
+                UPDATE_SQL,
+                thuoc.getTenThuoc(),
+                thuoc.getHamLuong(),
+                thuoc.getDonViHamLuong(),
+                thuoc.getDuongDung(),
+                thuoc.getQuyCachDongGoi(),
+                thuoc.getSDK_GPNK(),
+                thuoc.getHangSX(),
+                thuoc.getNuocSX(),
+                thuoc.getHinhAnh(), // ⚡ Đặt đúng chỗ thứ 9
+                thuoc.getLoaiHang() != null ? thuoc.getLoaiHang().getMaLoaiHang() : null,
+                thuoc.getNhomDuocLy() != null ? thuoc.getNhomDuocLy().getMaNDL() : null,
+                thuoc.getVitri() != null ? thuoc.getVitri().getMaKe() : null,
+                thuoc.getMaThuoc()
+        ) > 0;
     }
+
 
     @Override
     public boolean deleteById(Object... keys) {
@@ -133,6 +167,36 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
         }
         return list;
     }
+    // Only join ChiTietDonViTinh (unit info)
+    public List<Thuoc_SanPham> selectAllSLTheoDonViCoBan_ChiTietDVT_Ver2() {
+        List<Thuoc_SanPham> list = new ArrayList<>();
+        try {
+            ResultSet rs = ConnectDB.query(SELECT_THUOC_SANPHAM_DONVICOBAN_SQL_VER2);
+            while (rs.next()) {
+                Thuoc_SanPham sp = new Thuoc_SanPham();
+                String maThuoc = rs.getString("MaThuoc");
+                sp.setMaThuoc(maThuoc);
+                sp.setTenThuoc(rs.getString("TenThuoc"));
+                sp.setHamLuong(rs.getInt("HamLuong"));
+                sp.setDonViHamLuong(rs.getString("DonViHL"));
+                sp.setDuongDung(rs.getString("DuongDung"));
+                sp.setQuyCachDongGoi(rs.getString("QuyCachDongGoi"));
+                sp.setSDK_GPNK(rs.getString("SDK_GPNK"));
+                sp.setHangSX(rs.getString("HangSX"));
+                sp.setNuocSX(rs.getString("NuocSX"));
+                sp.setNhomDuocLy(new NhomDuocLy_Dao().selectById(rs.getString("MaNDL")));
+                sp.setLoaiHang(new LoaiHang_Dao().selectById(rs.getString("MaLoaiHang")));
+                sp.setHinhAnh(rs.getBytes("HinhAnh"));
+                sp.setVitri(new KeHang_Dao().selectById(rs.getString("ViTri")));
+                sp.setDvcb(new ChiTietDonViTinh_Dao().selectById(maThuoc,rs.getString("MaDVT")));
+                list.add(sp);
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
 
     // By keyword, only join ChiTietDonViTinh
     public List<Thuoc_SanPham> selectSLTheoDonViCoBanByTuKhoa_ChiTietDVT(String tuKhoa) {
@@ -141,6 +205,37 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
         for (Thuoc_SanPham sp : list) {
             List<ChiTietDonViTinh> dsCTDVT = ctdvtDao.selectByMaThuoc(sp.getMaThuoc());
             sp.setDsCTDVT(dsCTDVT);
+        }
+        return list;
+    }
+
+    // By keyword, only join ChiTietDonViTinh
+    public List<Thuoc_SanPham> selectSLTheoDonViCoBanByTuKhoa_ChiTietDVT_Ver2(String tuKhoa) {
+        List<Thuoc_SanPham> list = new ArrayList<>();
+        try {
+            ResultSet rs = ConnectDB.query(SELECT_THUOC_SANPHAM_DONVICOBAN_BYTUKHOA_SQL_VER2,  "%" + tuKhoa + "%", "%" + tuKhoa + "%");
+            while (rs.next()) {
+                Thuoc_SanPham sp = new Thuoc_SanPham();
+                String maThuoc = rs.getString("MaThuoc");
+                sp.setMaThuoc(maThuoc);
+                sp.setTenThuoc(rs.getString("TenThuoc"));
+                sp.setHamLuong(rs.getInt("HamLuong"));
+                sp.setDonViHamLuong(rs.getString("DonViHL"));
+                sp.setDuongDung(rs.getString("DuongDung"));
+                sp.setQuyCachDongGoi(rs.getString("QuyCachDongGoi"));
+                sp.setSDK_GPNK(rs.getString("SDK_GPNK"));
+                sp.setHangSX(rs.getString("HangSX"));
+                sp.setNuocSX(rs.getString("NuocSX"));
+                sp.setNhomDuocLy(new NhomDuocLy_Dao().selectById(rs.getString("MaNDL")));
+                sp.setLoaiHang(new LoaiHang_Dao().selectById(rs.getString("MaLoaiHang")));
+                sp.setHinhAnh(rs.getBytes("HinhAnh"));
+                sp.setVitri(new KeHang_Dao().selectById(rs.getString("ViTri")));
+                sp.setDvcb(new ChiTietDonViTinh_Dao().selectById(maThuoc,rs.getString("MaDVT")));
+                list.add(sp);
+            }
+            rs.getStatement().getConnection().close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
         return list;
     }
@@ -261,6 +356,14 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
         }
         return suggestions;
     }
+    public int getTongTonCoBan(String maThuoc) {
+        String sql = "SELECT COALESCE(SUM(SoLuongTon), 0) FROM Thuoc_SP_TheoLo WHERE MaThuoc = ?";
+        try (ResultSet rs = ConnectDB.query(sql, maThuoc)) {
+            return rs.next() ? rs.getInt(1) : 0;
+        } catch (Exception e) {
+            throw new RuntimeException("Lỗi lấy tổng tồn: " + e.getMessage(), e);
+        }
+    }
 
     public List<String> timTheoTen(String keyword, int limit) {
         if (keyword == null) keyword = "";
@@ -343,5 +446,41 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
             throw new RuntimeException(e);
         }
         return key;
+    }
+
+    public String insertThuocProc(Thuoc_SanPham sp) {
+        String maMoi = null;
+        try {
+            // Gọi stored procedure thêm thuốc
+            ResultSet rs = ConnectDB.query(
+                    "{CALL sp_InsertThuoc_SanPham(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}",
+                    sp.getTenThuoc(),
+                    sp.getHamLuong(),
+                    sp.getDonViHamLuong(),
+                    sp.getDuongDung(),
+                    sp.getQuyCachDongGoi(),
+                    sp.getSDK_GPNK(),
+                    sp.getHangSX(),
+                    sp.getNuocSX(),
+                    (sp.getLoaiHang() != null) ? sp.getLoaiHang().getMaLoaiHang() : null,
+                    (sp.getNhomDuocLy() != null) ? sp.getNhomDuocLy().getMaNDL() : null,
+                    (sp.getVitri() != null) ? sp.getVitri().getMaKe() : null
+            );
+
+            if (rs.next()) {
+                maMoi = rs.getString(1);
+            }
+
+            rs.getStatement().getConnection().close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return maMoi;
+    }
+
+    public boolean xoaThuoc_SanPham(String maThuoc) {
+        String sql = "UPDATE Thuoc_SanPham SET TrangThaiXoa = 1 WHERE MaThuoc = ?";
+        return ConnectDB.update(sql, maThuoc) > 0;
     }
 }

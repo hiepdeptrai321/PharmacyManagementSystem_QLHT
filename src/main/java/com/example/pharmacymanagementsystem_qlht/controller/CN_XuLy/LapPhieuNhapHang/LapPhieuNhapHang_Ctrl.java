@@ -1,6 +1,8 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_XuLy.LapPhieuNhapHang;
 
 import com.example.pharmacymanagementsystem_qlht.TienIch.VNDFormatter;
+import com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhaCungCap.ThemNhaCungCap_Ctrl;
+import com.example.pharmacymanagementsystem_qlht.controller.DangNhap_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.dao.*;
 import com.example.pharmacymanagementsystem_qlht.model.*;
 import javafx.application.Application;
@@ -17,20 +19,20 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-public class LapPhieuNhapHang_Ctrl extends Application {
+public class LapPhieuNhapHang_Ctrl {
+
+//  1. KHAI BÁO THÀNH PHẦN GIAO DIỆN (FXML)
     public TableColumn<CTPN_TSPTL_CHTDVT, String> colSTT;
     public TableColumn<CTPN_TSPTL_CHTDVT, String> colMaThuoc;
     public TableColumn<CTPN_TSPTL_CHTDVT, String> colTenThuoc;
     public TableColumn<CTPN_TSPTL_CHTDVT, String> colLoHang;
-    @FXML
-    public TableColumn<CTPN_TSPTL_CHTDVT, LocalDate> colHanSuDung;
+    @FXML public TableColumn<CTPN_TSPTL_CHTDVT, LocalDate> colHanSuDung;
     public TableColumn<CTPN_TSPTL_CHTDVT, Integer> colSoLuong;
     public TableColumn<CTPN_TSPTL_CHTDVT, Double> colDonGiaNhap;
     public TableColumn<CTPN_TSPTL_CHTDVT, Float> colChietKhau;
@@ -39,55 +41,48 @@ public class LapPhieuNhapHang_Ctrl extends Application {
     public TableColumn<CTPN_TSPTL_CHTDVT, String> colDonViNhap;
     public TableColumn<CTPN_TSPTL_CHTDVT, LocalDate> colNSX;
     public TableColumn<CTPN_TSPTL_CHTDVT, String> colThanhTien;
-    @FXML
-    private TableView<CTPN_TSPTL_CHTDVT> tblNhapThuoc;
-    @FXML
-    private ComboBox<String> cbxNCC;
-    @FXML
-    private TextField txtMaPhieuNhap;
-    @FXML
-    private DatePicker txtNgayNhap;
-    @FXML
-    private TextArea txtGhiChu;
-    @FXML
-    private TextField txtTongGiaNhap;
-    @FXML
-    private TextField txtTongTienChietKhau;
-    @FXML
-    private TextField txtTongTienThue;
-    @FXML
-    private TextField txtThanhTien;
-    @FXML
-    private TextField txtTimKiemChiTietDonViTinh;
-    @FXML
-    private ListView<String> listViewNhaCungCap;
-    @FXML
-    private ListView<ChiTietDonViTinh> listViewChiTietDonViTinh;
+    @FXML private TableView<CTPN_TSPTL_CHTDVT> tblNhapThuoc;
+    @FXML private ComboBox<String> cbxNCC;
+    @FXML private TextField txtMaPhieuNhap;
+    @FXML private DatePicker txtNgayNhap;
+    @FXML private TextArea txtGhiChu;
+    @FXML private TextField txtTongGiaNhap;
+    @FXML private TextField txtTongTienChietKhau;
+    @FXML private TextField txtTongTienThue;
+    @FXML private TextField txtThanhTien;
+    @FXML private TextField txtTimKiemChiTietDonViTinh;
+    @FXML private ListView<String> listViewNhaCungCap;
+    @FXML private ListView<ChiTietDonViTinh> listViewChiTietDonViTinh;
 
+//  2. KHAI BÁO BIẾN TOÀN CỤC
     private ObservableList<ChiTietDonViTinh> allChiTietDonViTinh;
     private ObservableList<NhaCungCap> listNCC;
     private NhaCungCap ncc = new NhaCungCap();
+    private NhaCungCap ncc2 = new NhaCungCap();
     private int maLoHienTai = 0;
     private ChiTietPhieuNhap_Dao ctpn_dao = new ChiTietPhieuNhap_Dao();
     private ObservableList<CTPN_TSPTL_CHTDVT> listNhapThuoc = FXCollections.observableArrayList();
     private PhieuNhap_Dao phieuNhapDao = new PhieuNhap_Dao();
     private List<PhieuNhap> allPhieuNhaps = phieuNhapDao.selectAll();
 
-    //  ============================================================================================phương thức initialize
+//  3. PHƯƠNG THỨC KHỞI TẠO
     public void initialize() {
-        taiDanhSachNCC();
+        Platform.runLater(()->{
+            loadTable();
+            taiDanhSachNCC();
+//          Khởi tạo mã lô hàng hiện tại từ DB
+            String lastMaLH = ctpn_dao.generateMaLH();
+            if (lastMaLH != null && lastMaLH.startsWith("LH")) {
+                maLoHienTai = Integer.parseInt(lastMaLH.substring(2)) - 1;
+            } else {
+                maLoHienTai = 0;
+            }
+        });
         timKiemNhaCungCap();
         timKiemDonViTinh();
-        loadTable();
-//      Khởi tạo mã lô hàng hiện tại từ DB
-        String lastMaLH = ctpn_dao.generateMaLH();
-        if (lastMaLH != null && lastMaLH.startsWith("LH")) {
-            maLoHienTai = Integer.parseInt(lastMaLH.substring(2)) - 1;
-        } else {
-            maLoHienTai = 0;
-        }
         suKienThemChiTietDonViTinhVaoBang();
         suKienThemMotDongMoiVaoBang();
+
         listNhapThuoc.addListener((javafx.collections.ListChangeListener<CTPN_TSPTL_CHTDVT>) change -> {
             boolean shouldUpdate = false;
             while (change.next()) {
@@ -100,20 +95,11 @@ public class LapPhieuNhapHang_Ctrl extends Application {
                 Platform.runLater(this::suKienThemMotDongMoiVaoBang);
             }
         });
-
-
     }
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_XuLy/LapPhieuNhapHang/LapPhieuNhapHang_GUI.fxml"));
-        Parent root = loader.load();
-        stage.setScene(new Scene(root));
-        stage.show();
-    }
-
-    //  ============================================================================================Tải danh sách nhà cung cấp vào ComboBox
-    private void taiDanhSachNCC() {
+//  4. PHƯƠNG THỨC XỬ LÝ SỰ KIỆN VÀ HÀM HỖ TRỢ
+//  4.1. Tải danh sách nhà cung cấp vào ComboBox
+    public void taiDanhSachNCC() {
 
 //      lấy danh sách nhà cung cấp từ cơ sở dữ liệu
         listNCC = FXCollections.observableArrayList(new NhaCungCap_Dao().selectAll());
@@ -129,8 +115,8 @@ public class LapPhieuNhapHang_Ctrl extends Application {
         cbxNCC.setEditable(true);
     }
 
-    //  ============================================================================================Tìm kiếm nhà cung cấp trong ComboBox
-    private void timKiemNhaCungCap() {
+//  4.2. Tìm kiếm nhà cung cấp trong ComboBox
+    public void timKiemNhaCungCap() {
 
 //      Chỉnh style cho list view nhà cung cấp
         listViewNhaCungCap.setVisible(false);
@@ -151,7 +137,7 @@ public class LapPhieuNhapHang_Ctrl extends Application {
             }
         });
 
-//      =======================Thêm listener cho txt của ComboBox
+//      Thêm listener cho txt của ComboBox
         cbxNCC.getEditor().textProperty().addListener((obs, oldVal, newVal) -> {
 
 //          Nếu txt rỗng thì ẩn list view
@@ -182,7 +168,7 @@ public class LapPhieuNhapHang_Ctrl extends Application {
             listViewNhaCungCap.setVisible(!danhSachDaLoc.isEmpty());
         });
 
-//      =======================Xử lý sự kiện khi chọn một nhà cung cấp từ list view
+//      Xử lý sự kiện khi chọn một nhà cung cấp từ list view
         listViewNhaCungCap.setOnMouseClicked(e -> {
             String selected = listViewNhaCungCap.getSelectionModel().getSelectedItem();
             if (selected != null) {
@@ -203,15 +189,15 @@ public class LapPhieuNhapHang_Ctrl extends Application {
         });
 
 
-//      =======================Ẩn list view khi ComboBox mất focus
+//      Ẩn list view khi ComboBox mất focus
         cbxNCC.showingProperty().addListener((obs, wasShowing, isShowing) -> {
             if (isShowing) listViewNhaCungCap.setVisible(false);
         });
 
     }
 
-    //  ============================================================================================Thiết lập chức năng tìm kiếm chi tiết đơn vị tính
-    private void timKiemDonViTinh() {
+//  4.3. Thiết lập chức năng tìm kiếm chi tiết đơn vị tính
+    public void timKiemDonViTinh() {
 
 //      Lấy tất cả chi tiết đơn vị tính từ cơ sở dữ liệu và chỉnh style cho list view Chi Tiết Đơn Vị Tính
         allChiTietDonViTinh = FXCollections.observableArrayList(new ChiTietDonViTinh_Dao().selectAll());
@@ -219,7 +205,7 @@ public class LapPhieuNhapHang_Ctrl extends Application {
         listViewChiTietDonViTinh.setVisible(false);
         listViewChiTietDonViTinh.setStyle("-fx-background-color: white; -fx-border-color: #dcdcdc; " + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 6, 0, 0, 2);" + "-fx-border-color: #cccccc;" + "-fx-border-width: 1;");
 
-//      =======================Hiển thị trong list view Chi Tiết Đơn Vị Tính
+//      Hiển thị trong list view Chi Tiết Đơn Vị Tính
         listViewChiTietDonViTinh.setCellFactory(data -> new ListCell<>() {
             @Override
             protected void updateItem(ChiTietDonViTinh item, boolean empty) {
@@ -234,7 +220,7 @@ public class LapPhieuNhapHang_Ctrl extends Application {
             }
         });
 
-//      =======================Thêm listener cho txt tìm kiếm Chi Tiết Đơn Vị Tính
+//      Thêm listener cho txt tìm kiếm Chi Tiết Đơn Vị Tính
         txtTimKiemChiTietDonViTinh.textProperty().addListener((obs, oldVal, newVal) -> {
 
 //          Nếu txt rỗng thì ẩn list view
@@ -261,6 +247,7 @@ public class LapPhieuNhapHang_Ctrl extends Application {
         });
     }
 
+//  4.4. Chuyển giao diện xử lý thêm thuốc
     public void btnThemThuocClick(MouseEvent mouseEvent) {
         try {
             Stage stage = new Stage();
@@ -268,6 +255,8 @@ public class LapPhieuNhapHang_Ctrl extends Application {
             Parent root = loader.load();
             Scene scene = new Scene(root);
             ThemThuoc_LapPhieuNhapHang_Ctrl ctrl = loader.getController();
+            ctrl.setParentCtrl(this);
+
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {
@@ -275,28 +264,22 @@ public class LapPhieuNhapHang_Ctrl extends Application {
         }
     }
 
+//  4.5. Thiết lập bảng nhập thuốc
     public void loadTable() {
-//      Cột STT
         colSTT.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(tblNhapThuoc.getItems().indexOf(cellData.getValue()) + 1)));
-//      Cột mã thuốc
         colMaThuoc.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getChiTietDonViTinh().getThuoc().getMaThuoc()));
-
-//      Cột tên thuốc
         colTenThuoc.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getChiTietDonViTinh().getThuoc().getTenThuoc()));
-
-//      Cột đơn vị nhập
         colDonViNhap.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getChiTietDonViTinh().getDvt().getTenDonViTinh()));
-
-//      Cột mã lô hàng
         colLoHang.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getChiTietSP_theoLo().getMaLH()));
 
-//      Cột ngày sản xuất
         colNSX.setCellFactory(column -> new TableCell<CTPN_TSPTL_CHTDVT, LocalDate>() {
             private final DatePicker datePicker = new DatePicker();
 
             {
                 datePicker.setEditable(false);
                 setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+
+//              Định dạng ngày tháng cho DatePicker
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 datePicker.setConverter(new StringConverter<LocalDate>() {
                     @Override
@@ -317,6 +300,7 @@ public class LapPhieuNhapHang_Ctrl extends Application {
             protected void updateItem(LocalDate item, boolean empty) {
                 super.updateItem(item, empty);
 
+//              Kiểm tra nếu ô trống hoặc dòng trống
                 if (empty || getTableRow() == null || getTableRow().getItem() == null) {
                     setGraphic(null);
                     return;
@@ -354,6 +338,7 @@ public class LapPhieuNhapHang_Ctrl extends Application {
                     }
                 });
 
+//              Hiển thị DatePicker trong ô
                 setGraphic(datePicker);
             }
 
@@ -363,7 +348,7 @@ public class LapPhieuNhapHang_Ctrl extends Application {
                 Platform.runLater(() -> datePicker.requestFocus());
             }
         });
-//      Cột hạn sử dụng
+
         colHanSuDung.setCellFactory(column -> new TableCell<CTPN_TSPTL_CHTDVT, LocalDate>() {
             private final DatePicker datePicker = new DatePicker();
 
@@ -371,6 +356,7 @@ public class LapPhieuNhapHang_Ctrl extends Application {
                 datePicker.setEditable(false);
                 setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 
+//              Định dạng ngày tháng cho DatePicker
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 datePicker.setConverter(new StringConverter<LocalDate>() {
                     @Override
@@ -437,7 +423,6 @@ public class LapPhieuNhapHang_Ctrl extends Application {
             }
         });
 
-//      Cột nút Xóa
         colXoa.setCellFactory(cellData -> new TableCell<CTPN_TSPTL_CHTDVT, String>() {
             private final Button btn = new Button("Xóa");
 
@@ -447,6 +432,8 @@ public class LapPhieuNhapHang_Ctrl extends Application {
                     getTableView().getItems().remove(item);
                     suKienThemMotDongMoiVaoBang();
                 });
+                btn.setStyle("-fx-background-color:#de2c2c ; -fx-text-fill: white;");
+                btn.getStyleClass().add("btn");
 
             }
 
@@ -481,6 +468,30 @@ public class LapPhieuNhapHang_Ctrl extends Application {
                             } catch (NumberFormatException ex) {
                                 Integer cur = rowItem.getChiTietPhieuNhap().getSoLuong();
                                 textField.setText(cur != null ? cur.toString() : "0");
+                            }
+                        }
+                    }
+                });
+
+                textField.setOnKeyPressed(event -> {
+                    switch (event.getCode()) {
+                        case ENTER, TAB -> {
+                            CTPN_TSPTL_CHTDVT rowItem = getTableRow() != null ? getTableRow().getItem() : null;
+                            if (rowItem != null) {
+                                String txt = textField.getText();
+                                try {
+                                    int sl = Integer.parseInt(txt);
+                                    if (sl < 0) {
+                                        textField.setText("0");
+                                    } else {
+                                        rowItem.getChiTietPhieuNhap().setSoLuong(sl);
+                                        suKienThemMotDongMoiVaoBang();
+                                        tblNhapThuoc.refresh();
+                                    }
+                                } catch (NumberFormatException ex) {
+                                    Integer cur = rowItem.getChiTietPhieuNhap().getSoLuong();
+                                    textField.setText(cur != null ? cur.toString() : "0");
+                                }
                             }
                         }
                     }
@@ -538,6 +549,35 @@ public class LapPhieuNhapHang_Ctrl extends Application {
                         }
                     }
                 });
+                textField.setOnKeyPressed(event -> {
+                    switch (event.getCode()) {
+                        case ENTER, TAB -> {
+                            CTPN_TSPTL_CHTDVT rowItem = getTableRow() != null ? getTableRow().getItem() : null;
+                            if (rowItem != null) {
+                                String txt = textField.getText();
+                                try {
+                                    double gia = vndFormatter.parseFormattedNumber(txt);
+                                    if (gia < 0) {
+                                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                        alert.setTitle("Thông báo");
+                                        alert.setHeaderText(null);
+                                        alert.setContentText("Giá nhập phải lớn hơn hoặc bằng 0");
+                                        alert.getButtonTypes().setAll(ButtonType.OK);
+                                        alert.showAndWait();
+                                    } else {
+                                        rowItem.getChiTietPhieuNhap().setGiaNhap(gia);
+                                        suKienThemMotDongMoiVaoBang();
+                                        tblNhapThuoc.refresh();
+                                    }
+                                } catch (NumberFormatException ex) {
+                                    // revert về giá model cũ
+                                    Double current = rowItem.getChiTietPhieuNhap().getGiaNhap();
+                                    textField.setText(current != null ? String.format("%.0f", current) : "0");
+                                }
+                            }
+                        }
+                    }
+                });
             }
 
             @Override
@@ -586,6 +626,36 @@ public class LapPhieuNhapHang_Ctrl extends Application {
                                 // nếu nhập không hợp lệ → revert
                                 float cur = rowItem.getChiTietPhieuNhap().getChietKhau();
                                 textField.setText(String.valueOf(cur));
+                            }
+                        }
+                    }
+                });
+                textField.setOnKeyPressed(event -> {
+                    switch (event.getCode()) {
+                        case ENTER, TAB -> {
+                            CTPN_TSPTL_CHTDVT rowItem = getTableRow() != null ? getTableRow().getItem() : null;
+                            if (rowItem != null) {
+                                String txt = textField.getText().trim();
+                                try {
+                                    float ck = Float.parseFloat(txt);
+                                    if (ck < 0 || ck > 100) {
+                                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                        alert.setTitle("Thông báo");
+                                        alert.setHeaderText(null);
+                                        alert.setContentText("Chiết khấu phải nằm trong khoảng 0 - 100%");
+                                        alert.showAndWait();
+                                        // reset về giá trị cũ
+                                        textField.setText(String.valueOf(rowItem.getChiTietPhieuNhap().getChietKhau()));
+                                    } else {
+                                        rowItem.getChiTietPhieuNhap().setChietKhau(ck);
+                                        suKienThemMotDongMoiVaoBang(); // Cập nhật tổng sau khi chỉnh xong
+                                        tblNhapThuoc.refresh();
+                                    }
+                                } catch (NumberFormatException ex) {
+                                    // nếu nhập không hợp lệ → revert
+                                    float cur = rowItem.getChiTietPhieuNhap().getChietKhau();
+                                    textField.setText(String.valueOf(cur));
+                                }
                             }
                         }
                     }
@@ -639,6 +709,34 @@ public class LapPhieuNhapHang_Ctrl extends Application {
                         }
                     }
                 });
+                textField.setOnKeyPressed(event -> {
+                    switch (event.getCode()) {
+                        case ENTER, TAB -> {
+                            CTPN_TSPTL_CHTDVT rowItem = getTableRow() != null ? getTableRow().getItem() : null;
+                            if (rowItem != null) {
+                                String txt = textField.getText().trim();
+                                try {
+                                    float thue = Float.parseFloat(txt);
+                                    if (thue < 0 || thue > 100) {
+                                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                        alert.setTitle("Thông báo");
+                                        alert.setHeaderText(null);
+                                        alert.setContentText("Thuế phải nằm trong khoảng 0 - 100%");
+                                        alert.showAndWait();
+                                        textField.setText(String.valueOf(rowItem.getChiTietPhieuNhap().getThue()));
+                                    } else {
+                                        rowItem.getChiTietPhieuNhap().setThue(thue);
+                                        suKienThemMotDongMoiVaoBang(); // Gọi lại hàm tổng
+                                        tblNhapThuoc.refresh();
+                                    }
+                                } catch (NumberFormatException ex) {
+                                    float cur = rowItem.getChiTietPhieuNhap().getThue();
+                                    textField.setText(String.valueOf(cur));
+                                }
+                            }
+                        }
+                    }
+                });
             }
 
             @Override
@@ -670,8 +768,8 @@ public class LapPhieuNhapHang_Ctrl extends Application {
 
             // Tính tiền hàng, chiết khấu, thuế và tổng
             double tienHang = giaNhap * soLuong;
-            double tienCK = tienHang * ck;
-            double tienThue = (tienHang - tienCK) * thue;
+            double tienCK = tienHang * (ck/100);
+            double tienThue = (tienHang - tienCK) * (thue/100);
             double tong = tienHang - tienCK + tienThue;
 
             VNDFormatter vndFormatter = new VNDFormatter();
@@ -682,31 +780,24 @@ public class LapPhieuNhapHang_Ctrl extends Application {
         tblNhapThuoc.setItems(listNhapThuoc);
     }
 
-
+//  4.6. Thiết lập sự kiện thêm chi tiết đơn vị tính vào bảng
     public void suKienThemChiTietDonViTinhVaoBang() {
         listViewChiTietDonViTinh.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
+
                 ChiTietDonViTinh chiTietDonViTinh = (ChiTietDonViTinh) newVal;
                 txtTimKiemChiTietDonViTinh.clear();
                 listViewChiTietDonViTinh.setVisible(false);
 
-                // Kiểm tra nếu DVT đã có trong bảng chưa
-                boolean daTonTai = listNhapThuoc.stream().anyMatch(item ->
-                        item.getChiTietDonViTinh().getDvt().getMaDVT()
-                                .equals(chiTietDonViTinh.getDvt().getMaDVT())
-                );
-
-                if (!daTonTai) {
-                    // Tạo 3 đối tượng con
+//                  Tạo 3 đối tượng con
                     ChiTietDonViTinh ctdvt = new ChiTietDonViTinh();
                     ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
                     Thuoc_SP_TheoLo tsptl = new Thuoc_SP_TheoLo();
 
-                    // Sinh mã lô mới
                     maLoHienTai++;
                     String maLH = String.format("LH%05d", maLoHienTai);
 
-                    // Gán thông tin vào từng đối tượng
+//                  Gán thông tin vào từng đối tượng
                     ctdvt.setDvt(chiTietDonViTinh.getDvt());
                     ctdvt.setThuoc(chiTietDonViTinh.getThuoc());
 
@@ -716,25 +807,16 @@ public class LapPhieuNhapHang_Ctrl extends Application {
                     ctpn.setThuoc(chiTietDonViTinh.getThuoc());
                     ctpn.setMaLH(maLH);
 
-                    // Gộp vào 1 đối tượng model tổng hợp
+//                  Gộp vào 1 đối tượng model tổng hợp
                     CTPN_TSPTL_CHTDVT newItem = new CTPN_TSPTL_CHTDVT();
                     newItem.setChiTietDonViTinh(ctdvt);
                     newItem.setChiTietPhieuNhap(ctpn);
                     newItem.setChiTietSP_theoLo(tsptl);
 
-                    // Thêm vào danh sách chính
+//                  Thêm vào danh sách chính
                     listNhapThuoc.add(newItem);
                     tblNhapThuoc.setItems(listNhapThuoc);
                     tblNhapThuoc.refresh();
-
-                } else {
-                    // Thông báo khi đã tồn tại
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Thông báo");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Chi tiết đơn vị tính đã tồn tại trong danh sách!");
-                    alert.showAndWait();
-                }
 
                 Platform.runLater(() -> {
                     listViewChiTietDonViTinh.getSelectionModel().clearSelection();
@@ -745,26 +827,29 @@ public class LapPhieuNhapHang_Ctrl extends Application {
 
     }
 
+//  4.7. Thiết lập sự kiện tính tổng khi thêm một dòng mới vào bảng
     public void suKienThemMotDongMoiVaoBang() {
         double tongGiaNhap = 0.0;
         double tongTienChietKhau = 0.0;
         double tongTienThue = 0.0;
         double thanhTien = 0.0;
 
+//      Tính tổng từ danh sách nhập thuốc
         for (CTPN_TSPTL_CHTDVT item : listNhapThuoc) {
             if (item == null || item.getChiTietPhieuNhap() == null) continue;
 
             ChiTietPhieuNhap ctpn = item.getChiTietPhieuNhap();
 
+//          Lấy các giá trị cần thiết
             double giaNhap = ctpn.getGiaNhap();
             int soLuong = ctpn.getSoLuong();
             float ck = ctpn.getChietKhau();
             float thue = ctpn.getThue();
 
-            // Tính tiền hàng, chiết khấu, thuế và tổng
+//          Tính tiền hàng, chiết khấu, thuế và tổng
             double tienHang = giaNhap * soLuong;
-            double tienCK = tienHang * ck;
-            double tienThue = (tienHang - tienCK) * thue;
+            double tienCK = tienHang * (ck/100);
+            double tienThue = (tienHang - tienCK) * (thue/100);
             double tong = tienHang - tienCK + tienThue;
 
             tongGiaNhap += tienHang;
@@ -773,16 +858,20 @@ public class LapPhieuNhapHang_Ctrl extends Application {
             thanhTien += tong;
         }
 
-        // Dùng VNDFormatter của bạn để hiển thị tiền theo định dạng
         VNDFormatter vndFormatter = new VNDFormatter();
 
+//      Cập nhật các trường tổng
         txtTongGiaNhap.setText(vndFormatter.format(tongGiaNhap));
         txtTongTienChietKhau.setText(vndFormatter.format(tongTienChietKhau));
         txtTongTienThue.setText(vndFormatter.format(tongTienThue));
         txtThanhTien.setText(vndFormatter.format(thanhTien));
     }
 
+//  4.8. Lưu phiếu nhập
     public void btnLuu(MouseEvent mouseEvent) {
+
+//      Kiểm tra điều kiện trước khi lưu
+//      Kiểm tra danh sách nhập thuốc không được rỗng
         if (listNhapThuoc.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Cảnh báo");
@@ -792,7 +881,8 @@ public class LapPhieuNhapHang_Ctrl extends Application {
             return;
         }
 
-        if (ncc == null) {
+//      Kiểm tra nhà cung cấp đã được chọn
+        if (cbxNCC.getValue() == null || cbxNCC.getValue().trim().isEmpty() || ncc == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Cảnh báo");
             alert.setHeaderText(null);
@@ -802,6 +892,7 @@ public class LapPhieuNhapHang_Ctrl extends Application {
         }
 
         for (CTPN_TSPTL_CHTDVT item : listNhapThuoc) {
+//          Kiểm tra ngày sản xuất & hạn sử dụng
             if (item.getChiTietSP_theoLo().getNsx() == null || item.getChiTietSP_theoLo().getHsd() == null) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Cảnh báo");
@@ -810,6 +901,7 @@ public class LapPhieuNhapHang_Ctrl extends Application {
                 alert.showAndWait();
                 return;
             }
+//          Kiểm tra hạn sử dụng phải sau ngày sản xuất
             if (item.getChiTietPhieuNhap().getSoLuong() == 0 || item.getChiTietPhieuNhap().getSoLuong() <= 0) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Cảnh báo");
@@ -818,6 +910,7 @@ public class LapPhieuNhapHang_Ctrl extends Application {
                 alert.showAndWait();
                 return;
             }
+//          Kiểm tra giá nhập phải lớn hơn hoặc bằng 0
             if (item.getChiTietPhieuNhap().getGiaNhap() == 0 || item.getChiTietPhieuNhap().getGiaNhap() < 0) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Cảnh báo");
@@ -828,6 +921,7 @@ public class LapPhieuNhapHang_Ctrl extends Application {
             }
         }
 
+//      Xác nhận lưu
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Xác nhận lưu");
         confirm.setHeaderText(null);
@@ -835,20 +929,18 @@ public class LapPhieuNhapHang_Ctrl extends Application {
 
         Optional<ButtonType> resultConfirm = confirm.showAndWait();
 
+//      Kiểm tra kết quả xác nhận
         if (resultConfirm.isEmpty() || resultConfirm.get() != ButtonType.OK) {
             return;
         }
         try {
+//          Tạo đối tượng phiếu nhập
             PhieuNhap phieuNhap = new PhieuNhap();
             phieuNhap.setNhaCungCap(ncc);
-            phieuNhap.setNgayNhap(
-                    txtNgayNhap.getEditor().getText().isEmpty()
-                            ? LocalDate.now()
-                            : txtNgayNhap.getValue()
-            );
-
+            phieuNhap.setNgayNhap(txtNgayNhap.getEditor().getText().isEmpty() ? LocalDate.now() : txtNgayNhap.getValue());
             String maPN = txtMaPhieuNhap.getText().trim();
 
+//          Kiểm tra mã phiếu nhập đã tồn tại chưa
             for (PhieuNhap pn : allPhieuNhaps) {
                 if (pn.getMaPN().equals(maPN)) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -861,19 +953,23 @@ public class LapPhieuNhapHang_Ctrl extends Application {
                 }
             }
 
+//          Tự động sinh mã nếu người dùng không nhập
             if (maPN.isEmpty()) {
                 maPN = phieuNhapDao.generateMaPN();
             }
 
+//          Gán các thông tin còn lại
             phieuNhap.setMaPN(maPN);
             phieuNhap.setGhiChu(txtGhiChu.getText());
             phieuNhap.setTrangThai(true);
 
-            // Nhân viên tạm thời
-            NhanVien nvTemp = new NhanVien_Dao().selectById("NV001");
-            phieuNhap.setNhanVien(nvTemp);
+//          Lấy nhân viên hiện tại (giả sử là NV001)
+            NhanVien nv = new NhanVien();
+            nv.setMaNV(DangNhap_Ctrl.user.getMaNV());
+            nv.setTenNV(DangNhap_Ctrl.user.getTenNV());
+            phieuNhap.setNhanVien(nv);
 
-            // 🧾 Lưu từng chi tiết phiếu nhập
+//          Lưu từng chi tiết phiếu nhập
             boolean allSuccess = true;
             for (CTPN_TSPTL_CHTDVT itemTemp : listNhapThuoc) {
                 ChiTietPhieuNhap ctpn = new ChiTietPhieuNhap();
@@ -894,13 +990,14 @@ public class LapPhieuNhapHang_Ctrl extends Application {
 
                 String maDVT = itemTemp.getChiTietDonViTinh().getDvt().getMaDVT();
 
-                // ⚙️ Gọi DAO để lưu
+//              Gọi DAO để lưu
                 boolean result = phieuNhapDao.luuPhieuNhap(phieuNhap, ctpn, lo, maDVT);
                 if (!result) {
                     allSuccess = false;
                 }
             }
 
+//          Thông báo kết quả lưu
             if (allSuccess) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Thông báo");
@@ -926,7 +1023,7 @@ public class LapPhieuNhapHang_Ctrl extends Application {
         }
     }
 
-
+//  4.9. Hàm xóa tất cả dữ liệu và reset form
     private void clearAll() {
         txtMaPhieuNhap.clear();
         txtGhiChu.clear();
@@ -938,13 +1035,14 @@ public class LapPhieuNhapHang_Ctrl extends Application {
         suKienThemMotDongMoiVaoBang();
     }
 
+//  4.10. Hủy phiếu nhập
     public void btnHuy(MouseEvent mouseEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Xác nhận hủy");
         alert.setHeaderText(null);
         alert.setContentText("Bạn có chắc chắn muốn hủy phiếu nhập này không? Tất cả dữ liệu sẽ bị xóa!");
 
-        // Hiển thị hộp thoại và chờ người dùng chọn
+//      Hiển thị hộp thoại và chờ người dùng chọn
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -955,6 +1053,23 @@ public class LapPhieuNhapHang_Ctrl extends Application {
             info.setHeaderText(null);
             info.setContentText("Phiếu nhập đã được hủy.");
             info.showAndWait();
+        }
+    }
+
+//  4.11. Thêm nhà cung cấp mới
+    public void btnThemNCCClick(MouseEvent mouseEvent) {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNCC/ThemNhaCungCap_GUI.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            ThemNhaCungCap_Ctrl ctrl = loader.getController();
+            ctrl.setLapPhieuNhapHang_Ctrl(this);
+
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

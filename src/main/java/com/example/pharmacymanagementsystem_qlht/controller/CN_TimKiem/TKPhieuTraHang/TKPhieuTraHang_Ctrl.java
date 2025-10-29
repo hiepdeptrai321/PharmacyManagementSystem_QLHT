@@ -5,6 +5,7 @@ import com.example.pharmacymanagementsystem_qlht.model.PhieuDatHang;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuTraHang;
 import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -80,7 +81,9 @@ public class TKPhieuTraHang_Ctrl extends Application {
         btnTimKiem.setOnAction(e -> timKiem());
         btnHuyBo.setOnAction(e -> lamMoi());
         cbLoc.setOnAction(e -> boLocNhanh());
-        loadTable();
+        Platform.runLater(()->{
+            loadTable();
+        });
     }
 
     public void loadTable() {
@@ -150,16 +153,20 @@ public class TKPhieuTraHang_Ctrl extends Application {
 
     private void btnChiTietClick(PhieuTraHang pTra) {
         try {
-            Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuTraHang/ChiTietPhieuTraHang_GUI.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
 
             this.getClass();
             ChiTietPhieuTraHang_Ctrl ctrl = loader.getController();
             ctrl.setPhieuTraHang(pTra);
-            stage.setScene(scene);
-            stage.show();
+
+            Stage dialog = new Stage();
+            dialog.initOwner(tblPT.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Chi tiết hoạt động");
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+            dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }

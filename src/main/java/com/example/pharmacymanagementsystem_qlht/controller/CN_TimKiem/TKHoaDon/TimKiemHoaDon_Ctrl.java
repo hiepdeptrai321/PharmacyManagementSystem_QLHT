@@ -6,6 +6,7 @@ import com.example.pharmacymanagementsystem_qlht.dao.PhieuTraHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.HoaDon;
 import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -100,7 +101,9 @@ public class TimKiemHoaDon_Ctrl extends Application {
             });
             return row;
         });
-        loadTable();
+        Platform.runLater(()->{
+            loadTable();
+        });
     }
     @Override
     public void start(Stage stage) throws Exception {
@@ -205,10 +208,13 @@ public class TimKiemHoaDon_Ctrl extends Application {
             com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKHoaDon.ChiTietHoaDon_Ctrl controller = loader.getController();
             controller.setHoaDon(hoaDon);
 
-            Stage stage = new Stage();
-            stage.setTitle("Chi tiết hóa đơn");
-            stage.setScene(new Scene(root));
-            stage.show();
+            Stage dialog = new Stage();
+            dialog.initOwner(btnTimKiem.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Chi tiết hóa đơn " + hoaDon.getMaHD());
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+            dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }

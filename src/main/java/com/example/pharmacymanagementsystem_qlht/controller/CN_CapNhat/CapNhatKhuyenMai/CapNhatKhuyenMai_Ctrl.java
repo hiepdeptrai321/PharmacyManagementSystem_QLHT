@@ -43,12 +43,18 @@ public class CapNhatKhuyenMai_Ctrl extends Application {
     private TableColumn<KhuyenMai, java.sql.Date> colNBD;
     @FXML
     private TableColumn<KhuyenMai, java.sql.Date> colNKT;
+    @FXML
+    private Button btnReset;
     private KhuyenMai_Dao khuyenMaiDao = new KhuyenMai_Dao();
 
     // 2. KHỞI TẠO (INITIALIZE)
     public void initialize() {
-        loadTable();
         tfTimKM.setOnAction(e -> timKhuyenMai());
+        btnReset.setOnAction(e -> LamMoi());
+
+        Platform.runLater(()->{
+            loadTable();
+        });
     }
 
     @Override
@@ -126,6 +132,10 @@ public class CapNhatKhuyenMai_Ctrl extends Application {
         ObservableList<KhuyenMai> data = FXCollections.observableArrayList(dsKMLoc);
         tbKM.setItems(data);
     }
-
+    @FXML
+    private void LamMoi() {
+        tfTimKM.clear();
+        loadTable();
+    }
 
 }

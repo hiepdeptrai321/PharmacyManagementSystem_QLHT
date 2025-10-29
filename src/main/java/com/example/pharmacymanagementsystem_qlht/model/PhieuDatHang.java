@@ -10,6 +10,7 @@ public class PhieuDatHang {
     private String ghiChu;
     private KhachHang khachHang;
     private NhanVien nhanVien;
+    private int trangthai;
 
     public PhieuDatHang() {
     }
@@ -68,6 +69,14 @@ public class PhieuDatHang {
 
     public void setNhanVien(NhanVien nhanVien) {
         this.nhanVien = nhanVien;
+    }
+
+    public int getTrangthai() {
+        return trangthai;
+    }
+
+    public void setTrangthai(int trangthai) {
+        this.trangthai = trangthai;
     }
 
     @Override

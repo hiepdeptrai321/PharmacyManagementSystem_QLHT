@@ -1,6 +1,7 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhaCungCap;
 
 import com.example.pharmacymanagementsystem_qlht.dao.NhaCungCap_Dao;
+import com.example.pharmacymanagementsystem_qlht.model.KeHang;
 import com.example.pharmacymanagementsystem_qlht.model.NhaCungCap;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,10 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -44,12 +42,23 @@ public class DanhMucNhaCungCap_Ctrl extends Application {
     private TableColumn<NhaCungCap, String> colTenCongTy;
     @FXML
     private TableColumn<NhaCungCap, String> colSTT;
+    @FXML
+    private TextField txtTimKiem;
+    @FXML
+    private Button btnLamMoi;
+    @FXML
+    private NhaCungCap_Dao nhaCungCapDao =  new NhaCungCap_Dao();
+    @FXML
+    private Button btnTim;
 
 
 //  Phương thức khởi tạo
     @FXML
     public void initialize() {
         loadNhaCungCap();
+        btnLamMoi.setOnAction(e-> LamMoi());
+        btnTim.setOnAction(e-> TimKiem());
+        txtTimKiem.setOnAction(e-> TimKiem());
     }
 
 //  Load nhà cung cấp vào bảng
@@ -111,18 +120,21 @@ public class DanhMucNhaCungCap_Ctrl extends Application {
 //  Button mở giao diện sửa xóa nhà cung cấp
     private void suaXoaNhaCungCap(NhaCungCap ncc) {
         try {
-            Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNCC/SuaXoaNhaCungCap_GUI.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
 
 //          Thêm dữ liệu nhà cung cấp vào ctrl sửa xóa
             SuaXoaNhaCungCap_Ctrl ctrl = loader.getController();
             ctrl.initialize(ncc);
+            ctrl.setDanhMucNhaCungCap_ctrl(this);
 
-
-            stage.setScene(scene);
-            stage.show();
+            Stage dialog = new Stage();
+            dialog.initOwner(btnLamMoi.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Chi tiết nhà cung cấp");
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+            dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -131,7 +143,6 @@ public class DanhMucNhaCungCap_Ctrl extends Application {
 //  Button mở giao diện thêm nhà cung cấp
     public void btnThemNCC(ActionEvent actionEvent) {
         try {
-            Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMNCC/ThemNhaCungCap_GUI.fxml"));
             Parent root = loader.load();
 
@@ -139,15 +150,44 @@ public class DanhMucNhaCungCap_Ctrl extends Application {
             ThemNhaCungCap_Ctrl ctrl = loader.getController();
             ctrl.setParentCtrl(this);
 
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            Stage dialog = new Stage();
+            dialog.initOwner(btnLamMoi.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Chi tiết nhà cung cấp");
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+            dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    private void TimKiem() {
+        String keyword = txtTimKiem.getText().trim().toLowerCase();
+        List<NhaCungCap> list = nhaCungCapDao.selectAll();
+        if (keyword.isEmpty()) {
+            tblNhaCungCap.setItems(FXCollections.observableArrayList(list));
+            return;
+        }
+
+
+        List<NhaCungCap> filtered = list.stream()
+                .filter(ncc ->
+                        (ncc.getMaNCC() != null && ncc.getMaNCC().toLowerCase().contains(keyword)) ||
+                                (ncc.getTenNCC() != null && ncc.getTenNCC().toLowerCase().contains(keyword))
+
+                )
+                .toList();
+
+        tblNhaCungCap.setItems(FXCollections.observableArrayList(filtered));
+    }
+
     public void refreshTable() {
+        loadNhaCungCap();
+    }
+    @FXML
+    private void LamMoi() {
+        txtTimKiem.clear();
         loadNhaCungCap();
     }
 }

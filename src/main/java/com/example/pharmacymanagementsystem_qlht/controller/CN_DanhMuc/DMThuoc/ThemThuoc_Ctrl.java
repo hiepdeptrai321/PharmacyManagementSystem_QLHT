@@ -42,6 +42,7 @@ public class ThemThuoc_Ctrl {
     public TextField txtQuyCachDongGoi;
     public TextField txtSDK_GPNK;
     public TextField txtDuongDung;
+    public ComboBox cbDVTCB;
     public TableColumn<ChiTietHoatChat,String> colMaHoatChat;
     public TableColumn<ChiTietHoatChat,String> colTenHoatChat;
     public TableColumn<ChiTietHoatChat,String> colHamLuong;
@@ -67,6 +68,10 @@ public class ThemThuoc_Ctrl {
         cbxViTri.getSelectionModel().selectFirst();
         cbxNhomDuocLy.getItems().addAll( new NhomDuocLy_Dao().getAllTenNhomDuocLy());
         cbxNhomDuocLy.getSelectionModel().selectFirst();
+        List<DonViTinh> list = new DonViTinh_Dao().selectAll();
+        for(DonViTinh donViTinh : list){
+            cbDVTCB.getItems().add(donViTinh.getTenDonViTinh());
+        }
 
 //      Load bảng thuốc để khai báo bảng
         loadBangThuoc();
@@ -99,6 +104,14 @@ public class ThemThuoc_Ctrl {
                     dialog.setHeaderText("Vui lòng nhập hàm lượng cho hoạt chất: " + hoatChat.getTenHoatChat());
                     dialog.setContentText("Hàm lượng:");
                     dialog.showAndWait().ifPresent(hamLuong -> {
+                        if(!hamLuong.matches("\\d+(\\.\\d+)?")) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Lỗi");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Hàm lượng không hợp lệ! Vui lòng nhập số.");
+                            alert.showAndWait();
+                            return;
+                        }
                         chtc.setHamLuong(Float.parseFloat(hamLuong));
 //                      Thêm chiTietHoatChat vào list để lưu lại khi thêm thuốc sẽ được thêm vào chi tiết hoạt chất
                         listChiTietHoatChat.add(chtc);
@@ -186,13 +199,26 @@ public class ThemThuoc_Ctrl {
             thuocThem.setHamLuong(Float.parseFloat(txtHamLuong.getText()));
             thuocThem.setDonViHamLuong(txtDonViHamLuong.getText());
             thuocThem.setHangSX(txtHangSanXuat.getText());
-            thuocThem.setNhomDuocLy(new NhomDuocLy_Dao().selectByTenNhomDuocLy(cbxNhomDuocLy.getSelectionModel().getSelectedItem().toString()));
+            if(cbxNhomDuocLy.getSelectionModel().getSelectedIndex() > 0){
+                thuocThem.setNhomDuocLy(new NhomDuocLy_Dao().selectByTenNhomDuocLy(cbxNhomDuocLy.getSelectionModel().getSelectedItem().toString()));
+            }else{
+                thuocThem.setNhomDuocLy(null);
+            }
             thuocThem.setNuocSX(txtNuocSanXuat.getText());
             thuocThem.setQuyCachDongGoi(txtQuyCachDongGoi.getText());
             thuocThem.setSDK_GPNK(txtSDK_GPNK.getText());
             thuocThem.setDuongDung(txtDuongDung.getText());
-            thuocThem.setLoaiHang(new LoaiHang_Dao().selectByTenLoaiHang(cbxLoaiHang.getSelectionModel().getSelectedItem().toString()));
-            thuocThem.setVitri(new KeHang_Dao().selectByTenKe(cbxViTri.getSelectionModel().getSelectedItem().toString()));
+            if (cbxLoaiHang.getSelectionModel().getSelectedIndex() > 0){
+                thuocThem.setLoaiHang(new LoaiHang_Dao().selectByTenLoaiHang(cbxLoaiHang.getSelectionModel().getSelectedItem().toString()));
+            }else{
+                thuocThem.setLoaiHang(null);
+            }
+            if(cbxViTri.getSelectionModel().getSelectedIndex() > 0){
+                thuocThem.setVitri(new KeHang_Dao().selectByTenKe(cbxViTri.getSelectionModel().getSelectedItem().toString()));
+            }else{
+                thuocThem.setVitri(null);
+            }
+
 
 //          Get image
             Image image = imgThuoc_SanPham.getImage();
@@ -247,6 +273,21 @@ public class ThemThuoc_Ctrl {
                         new ChiTietHoatChat_Dao().insert(chtc);
                     }
                 }
+                //Thêm một dòng của thuốc mới vào bảng Chi tiết đơn vị tính với đơn vị cơ bản
+                if(cbDVTCB.getSelectionModel().getSelectedItem() != null){
+                    DonViTinh dvt = new DonViTinh_Dao().selectByTenDVT(cbDVTCB.getSelectionModel().getSelectedItem().toString());
+                    ChiTietDonViTinh ctdvt = new ChiTietDonViTinh();
+                    ctdvt.setThuoc(thuocThem);
+                    ctdvt.setDvt(dvt);
+                    ctdvt.setHeSoQuyDoi(1.0);
+                    ctdvt.setGiaNhap(0.0);
+                    ctdvt.setGiaBan(0.0);
+                    ctdvt.setDonViCoBan(true);
+                    List<ChiTietDonViTinh> listCTDVT = new ArrayList<>();
+                    listCTDVT.add(ctdvt);
+                    new ChiTietDonViTinh_Dao().insert(ctdvt);
+                }
+
                 if(parentController != null) {
                     Platform.runLater(() -> parentController.refestTable());
                 }
@@ -314,20 +355,6 @@ public class ThemThuoc_Ctrl {
             alert.setContentText("Tên thuốc không được để trống!");
             alert.showAndWait();
             return false;
-        }else if(cbxLoaiHang.getSelectionModel().getSelectedIndex() == 0){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi");
-            alert.setHeaderText(null);
-            alert.setContentText("Vui lòng chọn loại hàng!");
-            alert.showAndWait();
-            return false;
-        }else if(cbxViTri.getSelectionModel().getSelectedIndex() == 0) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Lỗi");
-            alert.setHeaderText(null);
-            alert.setContentText("Vui lòng chọn vị trí!");
-            alert.showAndWait();
-            return false;
         }else if(txtHamLuong.getText().isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Lỗi");
@@ -361,6 +388,20 @@ public class ThemThuoc_Ctrl {
             alert.setTitle("Lỗi");
             alert.setHeaderText(null);
             alert.setContentText("SĐK/GPNK không được để trống!");
+            alert.showAndWait();
+            return false;
+        } else if (txtHamLuong.getText().equals("/d+")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Hàm lượng không hợp lệ! Vui lòng nhập số.");
+            alert.showAndWait();
+            return false;
+        } else if (cbDVTCB.getSelectionModel().getSelectedItem() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng chọn đơn vị tính cơ bản!");
             alert.showAndWait();
             return false;
         }

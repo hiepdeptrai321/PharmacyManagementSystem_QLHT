@@ -4,6 +4,7 @@ import com.example.pharmacymanagementsystem_qlht.dao.LoaiHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SanPham_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -54,39 +55,46 @@ public class TimKiemThuoc_Ctrl extends Application {
 //  phương thức khởi tạo
     @FXML
     public void initialize() {
-        duLieuChinh.addAll(new Thuoc_SanPham_Dao().selectAll());
+
         duLieu = new FilteredList<>(duLieuChinh, sp -> true);
         tbl_Thuoc.setItems(duLieu);
-        ThemThuocVaoCot();
         cboTimKiem.getItems().addAll("Loại tìm kiếm", "Mã thuốc", "Tên thuốc", "Nước sản xuất", "Loại hàng", "Vị trí");
         cboTimKiem.setValue("Loại tìm kiếm");
         txtTimKiem.textProperty().addListener((obs, oldVal, newVal) -> TimKiemTxt());
         cboTimKiem.valueProperty().addListener((obs, oldVal, newVal) -> TimKiemTxt());
-        cbxLoaiHang.getItems().addAll(new LoaiHang_Dao().getAllTenLH());
         cbxLoaiHang.getItems().addFirst("Chọn loại hàng");
         cbxLoaiHang.setValue("Chọn loại hàng");
-        cbxXuatSu.getItems().addAll(new Thuoc_SanPham_Dao().getAllXuatXu());
         cbxXuatSu.getItems().addFirst("Chọn xuất xứ");
         cbxXuatSu.setValue("Chọn xuất xứ");
+        cbxLoaiHang.getItems().addAll(new LoaiHang_Dao().getAllTenLH());
+        cbxXuatSu.getItems().addAll(new Thuoc_SanPham_Dao().getAllXuatXu());
         cbxLoaiHang.setOnAction(e -> TimKiemLoc());
         cbxXuatSu.setOnAction(e -> TimKiemLoc());
         txtHamLuongMin.textProperty().addListener((obs, oldVal, newVal) -> TimKiemLoc());
         txtHamLuongMax.textProperty().addListener((obs, oldVal, newVal) -> TimKiemLoc());
+        Platform.runLater(()->{
+            duLieuChinh.addAll(new Thuoc_SanPham_Dao().selectAll());
+            loadTable();
+        });
     }
 
 //  button chuyển sang giao diện chi tiết thuốc
     private void btnChiTietClick(Thuoc_SanPham sp) {
         try {
-            Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKThuoc/ChiTietThuoc_GUI.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
 
             this.getClass();
             ChiTietThuoc_Ctrl ctrl = loader.getController();
-            ctrl.load(sp);
-            stage.setScene(scene);
-            stage.show();
+            ctrl.initialize(sp);
+
+            Stage dialog = new Stage();
+            dialog.initOwner(txtTimKiem.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Chi tiết hoạt động");
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+            dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -102,7 +110,7 @@ public class TimKiemThuoc_Ctrl extends Application {
         TimKiemLoc();
     }
 
-    private void ThemThuocVaoCot() {
+    private void loadTable() {
         colMaThuoc.setCellValueFactory(new PropertyValueFactory<>("maThuoc"));
         colTenThuoc.setCellValueFactory(new PropertyValueFactory<>("tenThuoc"));
         colHamLuong.setCellValueFactory(new PropertyValueFactory<>("HamLuongDonVi"));

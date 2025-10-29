@@ -4,9 +4,11 @@ import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SanPham_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SP_TheoLo;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SanPham;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -32,6 +34,7 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
     public TableColumn<Thuoc_SanPham,String> colGiaNhap;
     public TableColumn<Thuoc_SanPham,String> colGiaBan;
     public TableColumn<Thuoc_SanPham,String> colChiTiet;
+    public Button btnReset;
 
     // 2. KHỞI TẠO (INITIALIZE)
 
@@ -43,17 +46,20 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
         stage.show();
 
     }
-
     public void initialize() {
-        loadTable();
         tfTimThuoc.setOnAction(e-> timThuoc());
+        btnReset.setOnAction(e-> LamMoi());
+
+        Platform.runLater(()->{
+            loadTable();
+        });
     }
 
     // 3. XỬ LÝ SỰ KIỆN GIAO DIỆN
 
     public void loadTable() {
         Thuoc_SanPham_Dao thuocDao = new Thuoc_SanPham_Dao();
-        List<Thuoc_SanPham> list = thuocDao.selectAllSLTheoDonViCoBan_ChiTietDVT();
+        List<Thuoc_SanPham> list = thuocDao.selectAllSLTheoDonViCoBan_ChiTietDVT_Ver2();
         ObservableList<Thuoc_SanPham> data = FXCollections.observableArrayList(list);
 
         colSTT.setCellValueFactory(cellData ->
@@ -66,7 +72,7 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
         vnFormat.setMaximumFractionDigits(0);
 
         colGiaNhap.setCellValueFactory(cd -> {
-            Object val = cd.getValue().getGiaNhapCoBan();
+            Object val = cd.getValue().getDvcb().getGiaNhap();
             if (val == null) return new SimpleStringProperty("");
             Number num;
             if (val instanceof Number) num = (Number) val;
@@ -78,7 +84,7 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
         });
 
         colGiaBan.setCellValueFactory(cd -> {
-            Object val = cd.getValue().getGiaBanCoBan();
+            Object val = cd.getValue().getDvcb().getGiaBan();
             if (val == null) return new SimpleStringProperty("");
             Number num;
             if (val instanceof Number) num = (Number) val;
@@ -88,7 +94,10 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
             }
             return new SimpleStringProperty(vnFormat.format(num));
         });
-        colDVT.setCellValueFactory(new PropertyValueFactory<>("tenDVTCoBan"));
+        colDVT.setCellValueFactory(cd->{
+            String tenDVT = cd.getValue().getDvcb().getDvt().getTenDonViTinh();
+            return new SimpleStringProperty(tenDVT != null ? tenDVT : "");
+        });
         colChiTiet.setCellFactory(col -> new TableCell<Thuoc_SanPham, String>() {
             private final Button btn = new Button("Chi tiết");
             {
@@ -116,9 +125,9 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
         Thuoc_SanPham_Dao ts_dao = new Thuoc_SanPham_Dao();
         List<Thuoc_SanPham> dsTSLoc;
         if (keyword.isEmpty()) {
-            dsTSLoc = ts_dao.selectAllSLTheoDonViCoBan_ChiTietDVT();
+            dsTSLoc = ts_dao.selectAllSLTheoDonViCoBan_ChiTietDVT_Ver2();
         } else {
-            dsTSLoc = ts_dao.selectSLTheoDonViCoBanByTuKhoa_ChiTietDVT(keyword);
+            dsTSLoc = ts_dao.selectSLTheoDonViCoBanByTuKhoa_ChiTietDVT_Ver2(keyword);
         }
         ObservableList<Thuoc_SanPham> data = FXCollections.observableArrayList(dsTSLoc);
         tbThuoc.setItems(data);
@@ -140,5 +149,9 @@ public class CapNhatGiaThuoc_Ctrl extends Application {
             e.printStackTrace();
         }
     }
-
+    @FXML
+    private void LamMoi() {
+        tfTimThuoc.clear();
+        loadTable();
+    }
 }

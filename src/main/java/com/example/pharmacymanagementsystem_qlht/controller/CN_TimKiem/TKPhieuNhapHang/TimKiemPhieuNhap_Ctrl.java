@@ -75,7 +75,6 @@ public class TimKiemPhieuNhap_Ctrl extends Application {
         duLieuChinh.addAll(new PhieuNhap_Dao().selectAll());
         duLieu = new FilteredList<>(duLieuChinh, sp -> true);
         tblPhieuNhap.setItems(duLieu);
-        ThemPhieuNhapVaoCot();
         cbxTimKiem.getItems().addAll("Loại tìm kiếm", "Mã phiếu nhập", "Nhà cung cấp", "Nhân viên");
         cbxTimKiem.setValue("Loại tìm kiếm");
         txtTimKiem.textProperty().addListener((observable, oldValue, newValue) -> TimKiemtxt());
@@ -99,10 +98,12 @@ public class TimKiemPhieuNhap_Ctrl extends Application {
             }
             tpBoLoc.requestLayout(); // ép VBox tính lại layout
         });
-
+        Platform.runLater(()->{
+            loadTable();
+        });
     }
 
-    public void ThemPhieuNhapVaoCot() {
+    public void loadTable() {
         colMaPN.setCellValueFactory(new PropertyValueFactory<>("maPN"));
         colNhaCungCap.setCellValueFactory(cd ->
                 new SimpleStringProperty(cd.getValue().getNhaCungCap().getTenNCC())
@@ -173,15 +174,19 @@ public class TimKiemPhieuNhap_Ctrl extends Application {
     }
     private void btnChiTietClick(PhieuNhap pn) {
         try {
-            Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_TimKiem/TKPhieuNhapHang/ChiTietPhieuNhapHang_GUI.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
 
             ChiTietPhieuNhap_Ctrl ctrl = loader.getController();
             ctrl.load(pn);
-            stage.setScene(scene);
-            stage.show();
+
+            Stage dialog = new Stage();
+            dialog.initOwner(txtTimKiem.getScene().getWindow());
+            dialog.initModality(javafx.stage.Modality.WINDOW_MODAL);
+            dialog.setScene(new Scene(root));
+            dialog.setTitle("Chi tiết phiếu nhập hàng");
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+            dialog.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }

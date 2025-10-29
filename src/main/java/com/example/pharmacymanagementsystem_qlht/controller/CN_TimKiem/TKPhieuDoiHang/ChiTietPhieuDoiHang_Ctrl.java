@@ -4,7 +4,9 @@ import com.example.pharmacymanagementsystem_qlht.dao.ChiTietPhieuDoiHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.ChiTietPhieuDoiHang;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuDoiHang;
 import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,71 +17,22 @@ import javafx.stage.Stage;
 import java.util.List;
 
 public class ChiTietPhieuDoiHang_Ctrl  {
-    @FXML
-    private Button btnDong;
+    @FXML private Button btnDong;
+    @FXML private Button btnInPhieuDoi;
+    @FXML private TableColumn<ChiTietPhieuDoiHang, String> colLyDo;
+    @FXML private TableColumn<ChiTietPhieuDoiHang, String> colSTT;
+    @FXML private TableColumn<ChiTietPhieuDoiHang, String> colSoLuong;
+    @FXML private TableColumn<ChiTietPhieuDoiHang, String> colDonVi;
+    @FXML private TableColumn<ChiTietPhieuDoiHang, String> colTenSP;
 
-    @FXML
-    private Button btnInPhieuDoi;
 
-    @FXML
-    private TableColumn<ChiTietPhieuDoiHang, String> colLyDo;
+    @FXML private Label lblGhiChuValue;
+    @FXML private Label lblMaPhieuDoiValue;
+    @FXML private Label lblNgayLapValue;
+    @FXML private Label lblSDTKhachHangValue;
+    @FXML private Label lblTenKhachHangValue;
+    @FXML private Label lblTenNhanVienValue;
 
-    @FXML
-    private TableColumn<ChiTietPhieuDoiHang, String> colSTT;
-
-    @FXML
-    private TableColumn<ChiTietPhieuDoiHang, String> colSoLuong;
-
-    @FXML
-    private TableColumn<ChiTietPhieuDoiHang, String> colTenSP;
-
-    @FXML
-    private Label lblChietKhauPDoiValue;
-
-    @FXML
-    private Label lblGhiChuValue;
-
-    @FXML
-    private Label lblMaPhieuDoiValue;
-
-    @FXML
-    private Label lblNgayLapValue;
-
-    @FXML
-    private Label lblPTTTValue;
-
-    @FXML
-    private Label lblSDTKH;
-
-    @FXML
-    private Label lblSDTKhachHangValue;
-
-    @FXML
-    private Label lblTenKH;
-
-    @FXML
-    private Label lblTenKhachHangValue;
-
-    @FXML
-    private Label lblTenNV;
-
-    @FXML
-    private Label lblTenNhanVienValue;
-
-    @FXML
-    private Label lblThueVATValue;
-
-    @FXML
-    private Label lblTienConLaiValue;
-
-    @FXML
-    private Label lblTienDaThanhToanValue;
-
-    @FXML
-    private Label lblTongTienDoiValue;
-
-    @FXML
-    private Label lblTongTienPhaiDoiValue;
 
     @FXML
     private TableView<ChiTietPhieuDoiHang> tblChiTietPhieuDoi;
@@ -89,6 +42,10 @@ public class ChiTietPhieuDoiHang_Ctrl  {
     @FXML
     public void initialize() {
         btnDong.setOnAction(e -> ((Stage) btnDong.getScene().getWindow()).close());
+        Platform.runLater(()->{
+            Stage dialog = (Stage) btnDong.getScene().getWindow();
+            dialog.getIcons().add(new javafx.scene.image.Image(getClass().getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/logoNguyenBan.png")));
+        });
     }
     public void setPhieuDoiHang(PhieuDoiHang pDoi) {
         this.phieuDoiHang = pDoi;
@@ -101,13 +58,6 @@ public class ChiTietPhieuDoiHang_Ctrl  {
             lblTenNhanVienValue.setText(phieuDoiHang.getNhanVien().getTenNV());
             lblTenKhachHangValue.setText(phieuDoiHang.getKhachHang() != null ? phieuDoiHang.getKhachHang().getTenKH() : "Khách lẻ");
             lblSDTKhachHangValue.setText(phieuDoiHang.getKhachHang() != null ? phieuDoiHang.getKhachHang().getSdt() : "");
-            //lblPTTTValue.setText(phieuDoiHang.get());
-            //lblChietKhauPDoiValue.setText(String.valueOf(phieuDoiHang.getChietKhau()) + "%");
-            //lblTongTienPhaiDoiValue.setText(String.format("%.2f", phieuDoiHang.tinhTongTienPhaiDoi()));
-            //lblTongTienDoiValue.setText(String.format("%.2f", phieuDoiHang.tinhTongTienDoi()));
-            //lblTienDaThanhToanValue.setText(String.format("%.2f", phieuDoiHang.getTienDaThanhToan()));
-            //lblTienConLaiValue.setText(String.format("%.2f", phieuDoiHang.tinhTienConLai()));
-            //lblThueVATValue.setText(String.format("%.2f", phieuDoiHang.tinhThueVAT()));
             lblGhiChuValue.setText(phieuDoiHang.getGhiChu() != null ? phieuDoiHang.getGhiChu() : "");
             //tblChiTietPhieuDoi.setItems(phieuDoiHang.getChiTietPhieuDoiHang());
 
@@ -122,7 +72,21 @@ public class ChiTietPhieuDoiHang_Ctrl  {
             );
             colSoLuong.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(cellData.getValue().getSoLuong()))
             );
-            colLyDo.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPhieuDoiHang().getLyDoDoi()));
+            colDonVi.setCellValueFactory(cel -> {
+                if (cel.getValue().getDvt() != null && cel.getValue().getDvt().getTenDonViTinh() != null) {
+                    return new SimpleStringProperty(cel.getValue().getDvt().getTenDonViTinh());
+                }
+                return new SimpleStringProperty("");
+            });
+            colLyDo.setCellValueFactory(cellData ->
+                    new SimpleStringProperty(cellData.getValue().getLyDoDoi())
+            );
         }
+    }
+
+    public void xuLyInPhieu(ActionEvent actionEvent) {
+    }
+
+    public void xuLyDong(ActionEvent actionEvent) {
     }
 }

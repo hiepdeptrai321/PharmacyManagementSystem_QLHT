@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChiTietPhieuDatHang_Dao implements DaoInterface<ChiTietPhieuDatHang> {
-    private final String INSERT_SQL = "INSERT INTO ChiTietPhieuDatHang (MaPDat, MaThuoc, SoLuong, DonGia, GiamGia) VALUES (?, ?, ?, ?, ?)";
+    private final String INSERT_SQL = "INSERT INTO ChiTietPhieuDatHang (MaPDat, MaThuoc, SoLuong, DonGia, GiamGia, MaDVT) VALUES (?, ?, ?, ?, ?, ?)";
     private final String UPDATE_SQL = "UPDATE ChiTietPhieuDatHang SET SoLuong=?, DonGia=?, GiamGia=? WHERE MaPDat=? AND MaThuoc=?";
     private final String DELETE_BY_ID_SQL = "DELETE FROM ChiTietPhieuDatHang WHERE MaPDat=? AND MaThuoc=?";
     private final String SELECT_BY_ID_SQL = "SELECT * FROM ChiTietPhieuDatHang WHERE MaPDat=? AND MaThuoc=?";
@@ -16,7 +16,7 @@ public class ChiTietPhieuDatHang_Dao implements DaoInterface<ChiTietPhieuDatHang
 
     @Override
     public boolean insert(ChiTietPhieuDatHang e) {
-        return ConnectDB.update(INSERT_SQL, e.getPhieuDatHang().getMaPDat(), e.getThuoc().getMaThuoc(), e.getSoLuong(), e.getDonGia(), e.getGiamGia())>0;
+        return ConnectDB.update(INSERT_SQL, e.getPhieuDatHang().getMaPDat(), e.getThuoc().getMaThuoc(), e.getSoLuong(), e.getDonGia(), e.getGiamGia(), e.getDvt())>0;
     }
 
     @Override
@@ -47,6 +47,8 @@ public class ChiTietPhieuDatHang_Dao implements DaoInterface<ChiTietPhieuDatHang
                 ct.setSoLuong(rs.getInt("SoLuong"));
                 ct.setDonGia(rs.getDouble("DonGia"));
                 ct.setGiamGia(rs.getDouble("GiamGia"));
+                ct.setDvt(rs.getString("MaDVT"));
+                ct.setTrangThai(rs.getBoolean("TrangThai"));
                 list.add(ct);
             }
             rs.getStatement().close();

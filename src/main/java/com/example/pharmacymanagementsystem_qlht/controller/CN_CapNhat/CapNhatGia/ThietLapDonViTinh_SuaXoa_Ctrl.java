@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class ThietLapDonViTinh_SuaXoa_Ctrl extends Application {
+public class ThietLapDonViTinh_SuaXoa_Ctrl {
 
     // 1. KHAI BÁO THÀNH PHẦN GIAO DIỆN (FXML)
 
@@ -33,13 +33,6 @@ public class ThietLapDonViTinh_SuaXoa_Ctrl extends Application {
 
     // 2. KHỞI TẠO (INITIALIZE)
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatGia/ThietLapDonViTinh_SuaXoa_GUI.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
     public void initialize(){
         loadCbDVT();
         cbDVCBCheck();
@@ -237,7 +230,27 @@ public class ThietLapDonViTinh_SuaXoa_Ctrl extends Application {
         String s = raw.trim();
         if (s.isEmpty()) return null;
 
+        // remove internal spaces
         s = s.replaceAll("\\s+", "");
+
+        // handle fraction forms "num/den" or "num:den"
+        if (s.contains("/") || s.contains(":")) {
+            String delim = s.contains("/") ? "/" : ":";
+            String[] parts = s.split(java.util.regex.Pattern.quote(delim), 2);
+            if (parts.length != 2) return null;
+            String a = parts[0].replace(",", ".").trim();
+            String b = parts[1].replace(",", ".").trim();
+            try {
+                double num = Double.parseDouble(a);
+                double den = Double.parseDouble(b);
+                if (den == 0.0) return null;
+                return (float) (num / den);
+            } catch (NumberFormatException ex) {
+                return null;
+            }
+        }
+
+        // fallback: handle thousand separators and decimal comma
         if (s.contains(",") && s.contains(".")) {
             s = s.replace(".", "").replace(",", ".");
         } else {

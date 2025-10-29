@@ -18,16 +18,14 @@
 
 <!-- Wider GridPane layout: increased prefWidth for tab/window, error labels fixed width and ellipsis, compact spacing -->
 
-<GridPane hgap="12" vgap="6" prefHeight="324.0" prefWidth="688.0" maxWidth="Infinity" maxHeight="Infinity"
-          xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhachHang.ThemKhachHang_Ctrl">
+<GridPane hgap="12" maxHeight="Infinity" maxWidth="Infinity" prefHeight="324.0" prefWidth="688.0" style="-fx-font-size: 13;" vgap="6" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhachHang.ThemKhachHang_Ctrl">
     <padding>
         <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
     </padding>
     <columnConstraints>
-        <ColumnConstraints percentWidth="37.0" hgrow="ALWAYS" />
-        <ColumnConstraints percentWidth="36.0" hgrow="ALWAYS" />
-        <ColumnConstraints percentWidth="27.0" hgrow="ALWAYS" />
+        <ColumnConstraints hgrow="ALWAYS" percentWidth="37.0" />
+        <ColumnConstraints hgrow="ALWAYS" percentWidth="36.0" />
+        <ColumnConstraints hgrow="ALWAYS" percentWidth="27.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints vgrow="ALWAYS" />
@@ -48,18 +46,18 @@
     <VBox spacing="2" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
         <Label text="Tên khách hàng" />
         <TextField fx:id="txtTenKH" maxWidth="Infinity" />
-        <Label fx:id="errTenKH" maxWidth="Infinity" wrapText="true" style="-fx-font-size:11px;" textFill="red" />
+        <Label fx:id="errTenKH" maxWidth="Infinity" style="-fx-font-size:11px;" textFill="red" wrapText="true" />
     </VBox>
 
     <VBox spacing="2" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
         <Label text="Ngày sinh" />
         <DatePicker fx:id="dpNgaySinh" maxWidth="Infinity" />
-        <Label fx:id="errNgaySinh" maxWidth="Infinity" wrapText="true" style="-fx-font-size:11px;" textFill="red" />
+        <Label fx:id="errNgaySinh" maxWidth="Infinity" style="-fx-font-size:11px;" textFill="red" wrapText="true" />
     </VBox>
 
     <VBox spacing="2" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
         <Label text="Giới tính" />
-        <ComboBox fx:id="cbGioiTinh" promptText="Chọn giới tính" maxWidth="Infinity">
+        <ComboBox fx:id="cbGioiTinh" maxWidth="Infinity" promptText="Chọn giới tính">
             <items>
                 <FXCollections fx:factory="observableArrayList">
                     <String fx:value="Nam" />
@@ -67,27 +65,27 @@
                 </FXCollections>
             </items>
         </ComboBox>
-        <Label fx:id="errGioiTinh" maxWidth="Infinity" wrapText="true" style="-fx-font-size:11px;" textFill="red" />
+        <Label fx:id="errGioiTinh" maxWidth="Infinity" style="-fx-font-size:11px;" textFill="red" wrapText="true" />
     </VBox>
 
     <!-- Row 2: SĐT (col0), Email (col1) -->
     <VBox spacing="2" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
         <Label text="Số điện thoại" />
         <TextField fx:id="txtSDT" maxWidth="Infinity" />
-        <Label fx:id="errSDT" maxWidth="Infinity" wrapText="true" style="-fx-font-size:11px;" textFill="red" />
+        <Label fx:id="errSDT" maxWidth="Infinity" style="-fx-font-size:11px;" textFill="red" wrapText="true" />
     </VBox>
 
     <VBox spacing="2" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
         <Label text="Email" />
-        <TextField fx:id="txtEmail" maxWidth="Infinity" />
-        <Label fx:id="errEmail" maxWidth="Infinity" wrapText="true" style="-fx-font-size:11px;" textFill="red" />
+        <TextField fx:id="txtEmail" maxWidth="Infinity" prefHeight="25.0" prefWidth="208.0" />
+        <Label fx:id="errEmail" maxWidth="Infinity" style="-fx-font-size:11px;" textFill="red" wrapText="true" />
     </VBox>
 
     <!-- Row 3: Address spans two columns -->
     <VBox spacing="2" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
         <Label text="Địa chỉ" />
         <TextField fx:id="txtDiaChi" maxWidth="Infinity" />
-        <Label fx:id="errDiaChi" maxWidth="Infinity" wrapText="true" style="-fx-font-size:11px;" textFill="red" />
+        <Label fx:id="errDiaChi" maxWidth="Infinity" style="-fx-font-size:11px;" textFill="red" wrapText="true" />
     </VBox>
 
     <!-- Row 4: summary message and buttons -->

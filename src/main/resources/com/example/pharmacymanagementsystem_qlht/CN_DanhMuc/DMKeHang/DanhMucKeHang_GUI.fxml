@@ -11,17 +11,17 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="895.0" prefWidth="1646.0" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKeHang.DanhMucKeHang_Ctrl">
+<AnchorPane prefHeight="895.0" prefWidth="1646.0" style="-fx-font-size: 14;" stylesheets="@../../css/QuanLyThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKeHang.DanhMucKeHang_Ctrl">
     <children>
         <TextField fx:id="txtTimKiem" layoutX="11.0" layoutY="51.0" prefHeight="40.0" prefWidth="772.0" promptText="Tìm theo mã, tên kệ" />
         <Button id="btntim" fx:id="btnTim" layoutX="794.0" layoutY="51.0" minWidth="35.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="77.0" styleClass="btn" text="🔍 Tìm" />
         <Button id="btnthemthuoc" fx:id="btnThem" layoutX="1482.0" layoutY="52.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="144.0" styleClass="btn" text="✚Thêm kệ hàng" />
         <TableView id="tablethuoc" fx:id="tblKeHang" layoutX="12.0" layoutY="102.0" prefHeight="785.0" prefWidth="1624.0">
             <columns>
-                <TableColumn fx:id="cotSTT" prefWidth="90.33333587646484" text="STT" />
-                <TableColumn fx:id="cotMaKe" prefWidth="260.66666412353516" text="Mã Kệ" />
+                <TableColumn fx:id="cotSTT" prefWidth="90.33333587646484" style="-fx-alignment: CENTER;" text="STT" />
+                <TableColumn fx:id="cotMaKe" prefWidth="260.66666412353516" style="-fx-alignment: CENTER;" text="Mã Kệ" />
                 <TableColumn fx:id="cotTenKe" minWidth="0.0" prefWidth="1169.0" text="Tên Kệ" />
-            <TableColumn fx:id="colChiTiet" prefWidth="103.6666259765625" />
+            <TableColumn fx:id="colChiTiet" prefWidth="103.6666259765625" style="-fx-alignment: CENTER;" />
             </columns>
         </TableView>
       <Button id="btnReset" fx:id="btnLamMoi" layoutX="879.0" layoutY="51.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="45.0" />

@@ -28,14 +28,23 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
 
     private final String SELECT_TENDVT_BYMA_SQL = "SELECT TenDonViTinh FROM ChiTietDonViTinh ctdvt JOIN DonViTinh dvt ON ctdvt.MaDVT = dvt.MaDVT WHERE MaThuoc = ? AND DonViCoBan = 1";
     private final String SELECT_TOP1_MATHUOC = "SELECT TOP 1 MaThuoc FROM Thuoc_SanPham ORDER BY MaThuoc DESC";
+    private final String SELECT_THONG_TIN_GOI_Y_SQL =
+            "SELECT TOP ? ts.MaThuoc, ts.TenThuoc, SUM(tspl.SoLuongTon) AS TongSoLuongTon, dvt.TenDonViTinh " +
+                    "FROM Thuoc_SanPham ts " +
+                    "LEFT JOIN ChiTietDonViTinh ctdvt ON ts.MaThuoc = ctdvt.MaThuoc AND ctdvt.DonViCoBan = 1 " +
+                    "LEFT JOIN DonViTinh dvt ON ctdvt.MaDVT = dvt.MaDVT " +
+                    "LEFT JOIN Thuoc_SP_TheoLo tspl ON ts.MaThuoc = tspl.MaThuoc " +
+                    "WHERE ts.TenThuoc LIKE ? OR ts.MaThuoc LIKE ? " +
+                    "GROUP BY ts.MaThuoc, ts.TenThuoc, dvt.TenDonViTinh " +
+                    "ORDER BY ts.TenThuoc";
     @Override
     public boolean insert(Thuoc_SanPham e) {
-        return ConnectDB.update(INSERT_SQL,e.getMaThuoc(), e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(),e.getNhomDuocLy().getMaNDL(), e.getLoaiHang().getMaLoaiHang(), e.getHinhAnh(),e.getVitri().getMaKe())>0;
+        return ConnectDB.update(INSERT_SQL,e.getMaThuoc(), e.getTenThuoc(), e.getHamLuong(), e.getDonViHamLuong(), e.getDuongDung(), e.getQuyCachDongGoi(), e.getSDK_GPNK(), e.getHangSX(), e.getNuocSX(),e.getNhomDuocLy()!=null?e.getNhomDuocLy().getMaNDL():null, e.getLoaiHang().getMaLoaiHang(), e.getHinhAnh(),e.getVitri().getMaKe())>0;
     }
 
     @Override
     public boolean update(Thuoc_SanPham thuoc) {
-        return ConnectDB.update(UPDATE_SQL, thuoc.getTenThuoc(), thuoc.getHamLuong(), thuoc.getDonViHamLuong(), thuoc.getDuongDung(), thuoc.getQuyCachDongGoi(), thuoc.getSDK_GPNK(), thuoc.getHangSX(), thuoc.getNuocSX(), thuoc.getNhomDuocLy().getMaNDL(), thuoc.getLoaiHang().getMaLoaiHang(), thuoc.getHinhAnh(), thuoc.getVitri().getMaKe(), thuoc.getMaThuoc()) > 0;
+        return ConnectDB.update(UPDATE_SQL, thuoc.getTenThuoc(), thuoc.getHamLuong(), thuoc.getDonViHamLuong(), thuoc.getDuongDung(), thuoc.getQuyCachDongGoi(), thuoc.getSDK_GPNK(), thuoc.getHangSX(), thuoc.getNuocSX(), thuoc.getNhomDuocLy()!=null?thuoc.getNhomDuocLy().getMaNDL():null, thuoc.getLoaiHang().getMaLoaiHang(), thuoc.getHinhAnh(), thuoc.getVitri().getMaKe(), thuoc.getMaThuoc()) > 0;
     }
 
     @Override
@@ -149,6 +158,110 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
         }
         return tenDVT;
     }
+    public List<String> timTheoTenChiTietAll(String keyword, int limit) {
+        if (keyword == null) keyword = "";
+        keyword = keyword.trim();
+        if (keyword.isEmpty()) return new ArrayList<>();
+
+        if (limit <= 0) limit = 10;
+        if (limit > 50) limit = 50;
+
+        // chèn trực tiếp limit vào SQL — vì limit đã được kiểm soát ở trên
+        String sql = "SELECT TOP " + limit + " " +
+                "ts.MaThuoc, ts.TenThuoc, COALESCE(SUM(tspl.SoLuongTon), 0) AS TongSoLuongTon " +
+                "FROM Thuoc_SanPham ts " +
+                "LEFT JOIN Thuoc_SP_TheoLo tspl ON ts.MaThuoc = tspl.MaThuoc " +
+                "WHERE ts.TenThuoc COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? " +
+                "   OR ts.MaThuoc COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? " +
+                "GROUP BY ts.MaThuoc, ts.TenThuoc " +
+                "ORDER BY ts.TenThuoc";
+
+        List<String> suggestions = new ArrayList<>();
+        try (ResultSet rs = ConnectDB.query(sql, "%" + keyword + "%", "%" + keyword + "%")) {
+            ChiTietDonViTinh_Dao ctdvtDao = new ChiTietDonViTinh_Dao();
+
+            while (rs.next()) {
+                String maThuoc = rs.getString("MaThuoc");
+                String tenThuoc = rs.getString("TenThuoc");
+                int tongTonCoBan = rs.getInt("TongSoLuongTon");
+
+                for (ChiTietDonViTinh ctdvt : ctdvtDao.selectByMaThuoc(maThuoc)) {
+                    double heSo = ctdvt.getHeSoQuyDoi();
+                    if (heSo <= 0) continue;
+                    int soLuongTheoDVT = (int) Math.floor(tongTonCoBan / heSo);
+                    String tenDVT = (ctdvt.getDvt() != null && ctdvt.getDvt().getTenDonViTinh() != null)
+                            ? ctdvt.getDvt().getTenDonViTinh()
+                            : "ĐVT";
+                    suggestions.add(tenThuoc + " | Số lượng tồn: " + soLuongTheoDVT + " " + tenDVT);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Lỗi khi tìm kiếm chi tiết thuốc: " + e.getMessage(), e);
+        }
+        return suggestions;
+    }
+
+
+
+    public List<String> timTheoTenChiTiet(String keyword, int limit) {
+        if (keyword == null) keyword = "";
+        keyword = keyword.trim();
+        if (keyword.isEmpty()) return new ArrayList<>();
+
+        // Clamp limit to number of products to fetch
+        if (limit <= 0) limit = 10;
+        if (limit > 50) limit = 50;
+
+        // Lấy tổng tồn theo sản phẩm, không join đơn vị để tránh nhân bản dữ liệu
+        String sql =
+                "SELECT ts.MaThuoc, ts.TenThuoc, COALESCE(SUM(tspl.SoLuongTon), 0) AS TongSoLuongTon " +
+                        "FROM Thuoc_SanPham ts " +
+                        "LEFT JOIN Thuoc_SP_TheoLo tspl ON ts.MaThuoc = tspl.MaThuoc " +
+                        "WHERE ts.TenThuoc LIKE ? OR ts.MaThuoc LIKE ? " +
+                        "GROUP BY ts.MaThuoc, ts.TenThuoc " +
+                        "ORDER BY ts.TenThuoc " +
+                        "OFFSET 0 ROWS FETCH NEXT " + limit + " ROWS ONLY";
+
+        List<String> suggestions = new ArrayList<>();
+        try (ResultSet rs = ConnectDB.query(sql, "%" + keyword + "%", "%" + keyword + "%")) {
+            ChiTietDonViTinh_Dao ctdvtDao = new ChiTietDonViTinh_Dao();
+
+            while (rs.next()) {
+                String maThuoc = rs.getString("MaThuoc");
+                String tenThuoc = rs.getString("TenThuoc");
+                int tongTonCoBan = rs.getInt("TongSoLuongTon"); // tồn theo đơn vị cơ bản
+
+                // Lấy tất cả DVT của thuốc và sắp xếp: đơn vị lớn -> nhỏ (cơ bản ở cuối)
+                List<ChiTietDonViTinh> dsCTDVT = ctdvtDao.selectByMaThuoc(maThuoc);
+                dsCTDVT.sort((a, b) -> {
+                    int cmp = Double.compare(b.getHeSoQuyDoi(), a.getHeSoQuyDoi());
+                    if (cmp != 0) return cmp;
+                    // Đưa đơn vị cơ bản (DonViCoBan=true, hệ số nhỏ nhất) về cuối nếu hệ số bằng nhau
+                    return Boolean.compare(a.isDonViCoBan(), b.isDonViCoBan());
+                });
+
+                for (ChiTietDonViTinh ctdvt : dsCTDVT) {
+                    double heSo = ctdvt.getHeSoQuyDoi(); // ví dụ: 1 hộp = 10 vỉ => heSo= số đơn vị cơ bản/1 đơn vị này
+                    if (heSo <= 0) continue;
+
+                    int soLuongTheoDVT = (int) Math.floor(tongTonCoBan / heSo);
+                    if (soLuongTheoDVT <= 0) continue; // không hiển thị dòng 0
+
+                    String tenDVT = (ctdvt.getDvt() != null && ctdvt.getDvt().getTenDonViTinh() != null)
+                            ? ctdvt.getDvt().getTenDonViTinh()
+                            : "ĐVT";
+
+                    // Mỗi đơn vị là một dòng: "<Tên thuốc> | Số lượng tồn: <n> <đvt>"
+                    suggestions.add(tenThuoc + " | Số lượng tồn: " + soLuongTheoDVT + " " + tenDVT);
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Lỗi khi tìm kiếm chi tiết thuốc: " + e.getMessage(), e);
+        }
+        return suggestions;
+    }
+
     public List<String> timTheoTen(String keyword, int limit) {
         if (keyword == null) keyword = "";
         keyword = keyword.trim();
@@ -218,13 +331,13 @@ public class Thuoc_SanPham_Dao implements DaoInterface<Thuoc_SanPham> {
     }
 
     public String generatekeyThuocSanPham() {
-        String key = "TH001";
+        String key = "TS001";
         try {
             String lastKey = ConnectDB.queryTaoMa(SELECT_TOP1_MATHUOC);
-                if (lastKey != null && lastKey.startsWith("TH")) {
+                if (lastKey != null && lastKey.startsWith("TS")) {
                     int stt = Integer.parseInt(lastKey.substring(2));
                     stt++;
-                    key = String.format("TH%03d", stt);
+                    key = String.format("TS%03d", stt);
                 }
         } catch (Exception e) {
             throw new RuntimeException(e);

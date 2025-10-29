@@ -5,12 +5,10 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -23,11 +21,11 @@
     <children>
         <HBox layoutX="14.0" layoutY="14.0">
             <children>
-                <VBox prefHeight="863.0" prefWidth="454.0">
+                <VBox prefHeight="863.0" prefWidth="394.0">
                     <children>
                   <HBox prefHeight="41.0" prefWidth="281.0">
                      <children>
-                              <Label prefHeight="34.0" prefWidth="219.0" text="Xuất-Nhập-Tồn">
+                              <Label prefHeight="34.0" prefWidth="316.0" text="Báo cáo Xuất-Nhập-Tồn">
                                   <font>
                                       <Font size="28.0" />
                                   </font>
@@ -52,25 +50,12 @@
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <TextField prefHeight="40.0" prefWidth="439.0" promptText="Nhập mã, tên" />
+                  <TextField fx:id="txtTimNhanh" prefHeight="40.0" prefWidth="369.0" promptText="Nhập mã, tên" />
                         <HBox alignment="CENTER">
                             <VBox.margin>
                                 <Insets top="5.0" />
                             </VBox.margin>
                         </HBox>
-                        <Label layoutX="10.0" layoutY="53.0" prefHeight="27.0" prefWidth="243.0" text="Mối quan tâm">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                            <VBox.margin>
-                                <Insets top="5.0" />
-                            </VBox.margin>
-                        </Label>
-                        <ComboBox fx:id="btnMQT" prefHeight="49.0" prefWidth="451.0" promptText="Xuất-Nhập-Tồn">
-                            <VBox.margin>
-                                <Insets top="5.0" />
-                            </VBox.margin>
-                        </ComboBox>
                         <Label layoutX="10.0" layoutY="53.0" prefHeight="27.0" prefWidth="221.0" text="Thời gian">
                             <font>
                                 <Font size="18.0" />
@@ -79,34 +64,19 @@
                                 <Insets top="10.0" />
                             </VBox.margin>
                         </Label>
-                        <RadioButton mnemonicParsing="false">
-                            <graphic>
-                                <ComboBox fx:id="btnThoiGian" prefHeight="49.0" prefWidth="426.0" promptText="Hôm nay" />
-                            </graphic>
-                            <VBox.margin>
-                                <Insets top="10.0" />
-                            </VBox.margin>
-                            <toggleGroup>
-                                <ToggleGroup fx:id="date" />
-                            </toggleGroup>
-                        </RadioButton>
-                        <RadioButton mnemonicParsing="false" prefHeight="39.0" prefWidth="442.0" toggleGroup="$date">
-                            <graphic>
-                                <DatePicker prefHeight="39.0" prefWidth="419.0" />
-                            </graphic>
-                            <VBox.margin>
-                                <Insets top="10.0" />
-                            </VBox.margin>
-                        </RadioButton>
-                  <Label layoutX="10.0" layoutY="131.0" prefHeight="27.0" prefWidth="221.0" text="Nhóm Hàng">
+                  <ComboBox fx:id="cboThoiGian" prefHeight="49.0" prefWidth="378.0" />
+                  <Label fx:id="lblTu" prefHeight="27.0" prefWidth="221.0" text="Từ:">
                      <font>
                         <Font size="18.0" />
                      </font>
-                     <VBox.margin>
-                        <Insets bottom="10.0" top="10.0" />
-                     </VBox.margin>
                   </Label>
-                  <ComboBox fx:id="btnNhomHang" prefHeight="49.0" prefWidth="441.0" promptText="Thuốc Tây" />
+                  <DatePicker fx:id="dateTu" prefHeight="52.0" prefWidth="377.0" />
+                  <Label fx:id="lblDen" prefHeight="27.0" prefWidth="221.0" text="Đến:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="dateDen" prefHeight="52.0" prefWidth="376.0" />
                         <Label text="Xuất file">
                             <font>
                                 <Font size="18.0" />
@@ -115,8 +85,8 @@
                                 <Insets top="10.0" />
                             </VBox.margin>
                         </Label>
-                        <ComboBox fx:id="btnXuatFile" prefHeight="49.0" prefWidth="437.0" promptText="Excel" />
-                        <Button mnemonicParsing="false" prefHeight="62.0" prefWidth="438.0" text="Xuất File 💾">
+                        <ComboBox fx:id="cboXuat" prefHeight="49.0" prefWidth="375.0" promptText="Chọn đinh dạng " />
+                        <Button fx:id="btnXuat" mnemonicParsing="false" prefHeight="62.0" prefWidth="438.0" text="Xuất File 💾">
                             <VBox.margin>
                                 <Insets top="10.0" />
                             </VBox.margin>
@@ -125,20 +95,15 @@
                 </VBox>
                 <VBox>
                     <children>
-                        <Label alignment="CENTER" prefHeight="17.0" prefWidth="934.0" text="Báo cáo xuất-nhập-tồn">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Label>
-                  <TableView prefHeight="538.0" prefWidth="1161.0">
+                  <TableView fx:id="tbTon" prefHeight="538.0" prefWidth="1223.0">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
-                        <TableColumn prefWidth="75.0" text="Column X" />
-                        <TableColumn prefWidth="75.0" text="Column X" />
-                        <TableColumn prefWidth="75.0" text="Column X" />
-                        <TableColumn prefWidth="75.0" text="Column X" />
-                        <TableColumn prefWidth="75.0" text="Column X" />
+                      <TableColumn fx:id="colMaThuoc" prefWidth="92.33331298828125" text="Mã thuốc" />
+                      <TableColumn fx:id="colTenThuoc" prefWidth="186.0" text="Tên thuốc" />
+                        <TableColumn fx:id="colDVT" prefWidth="112.0" text="ĐVT" />
+                        <TableColumn fx:id="ColTDK" prefWidth="184.6666259765625" text="Tồn đầu kỳ" />
+                        <TableColumn fx:id="colNTK" prefWidth="173.66668701171875" text="Nhập trong kỳ" />
+                        <TableColumn fx:id="colXTK" prefWidth="224.3333740234375" text="Xuất trong kỳ" />
+                        <TableColumn fx:id="colTCK" prefWidth="246.0" text="Tồn cuối kỳ" />
                     </columns>
                   </TableView>
                   <Label text="Những sản phẩm đã hết hạn⚠" textFill="#c42323">
@@ -149,10 +114,12 @@
                         <Insets bottom="10.0" left="10.0" top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <TableView prefHeight="259.0" prefWidth="1161.0">
+                  <TableView fx:id="tbHetHan" prefHeight="259.0" prefWidth="1161.0">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
+                      <TableColumn fx:id="colMaThuocHH" prefWidth="197.66668701171875" text="Mã Thuốc" />
+                      <TableColumn fx:id="cotTenThuocHH" prefWidth="478.33331298828125" text="Tên Thuốc" />
+                        <TableColumn fx:id="colSoLuong" prefWidth="164.6666259765625" text="Số Lượng" />
+                        <TableColumn fx:id="colNgayHH" prefWidth="379.0" text="Ngày hết hạn" />
                     </columns>
                   </TableView>
                     </children>

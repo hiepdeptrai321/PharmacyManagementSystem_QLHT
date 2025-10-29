@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -55,7 +56,7 @@ public class DanhMucThuoc_Ctrl extends Application {
 
 //  3. Tải bảng
     public void loadTable() {
-        list = thuocDao.selectAllSLTheoDonViCoBan_ChiTietDVT();
+        list = thuocDao.selectAll();
         ObservableList<Thuoc_SanPham> data = FXCollections.observableArrayList(list);
 
         colSTT.setCellValueFactory(cellData ->
@@ -63,10 +64,62 @@ public class DanhMucThuoc_Ctrl extends Application {
         );
         colMaThuoc.setCellValueFactory(new PropertyValueFactory<Thuoc_SanPham,String>("maThuoc"));
         colTenThuoc.setCellValueFactory(new PropertyValueFactory<Thuoc_SanPham,String>("tenThuoc"));
+        colTenThuoc.setCellFactory(col -> new TableCell<Thuoc_SanPham, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colHamLuong.setCellValueFactory(new PropertyValueFactory<Thuoc_SanPham,String>("hamLuongDonVi"));
+        colHamLuong.setCellFactory(col -> new TableCell<Thuoc_SanPham, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colSDK_GPNK.setCellValueFactory(new PropertyValueFactory<Thuoc_SanPham,String>("SDK_GPNK"));
         colXuatXu.setCellValueFactory(new PropertyValueFactory<Thuoc_SanPham,String>("nuocSX"));
+        colXuatXu.setCellFactory(col -> new TableCell<Thuoc_SanPham, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colLoaiHang.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLoaiHang().getTenLoaiHang()));
+        colLoaiHang.setCellFactory(col -> new TableCell<Thuoc_SanPham, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colViTri.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getVitri().getTenKe()));
         colChiTiet.setCellFactory(col -> new TableCell<Thuoc_SanPham, String>() {
             private final Button btn = new Button("Chi tiết");
@@ -97,11 +150,16 @@ public class DanhMucThuoc_Ctrl extends Application {
     }
 
 //  Thêm thuốc
-    public void btnThemThuocClick() {
+    public void themthuoc(ActionEvent actionEvent) {
         try {
             Stage stage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/ThemThuoc_GUI.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMThuoc/ThemThuoc_GUI.fxml"));
+            Parent root = loader.load();
             Scene scene = new Scene(root);
+
+            ThemThuoc_Ctrl ctrl = loader.getController();
+            ctrl.setParent(this);
+
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {
@@ -128,12 +186,9 @@ public class DanhMucThuoc_Ctrl extends Application {
         }
     }
 
-
-    public void themthuoc(ActionEvent actionEvent) {
-
-    }
-
     public void refestTable(){
         loadTable();
     }
+
+
 }

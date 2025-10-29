@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="239.0" prefWidth="407.0" stylesheets="@../../css/SuaXoaNhanVien.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhanVien.SuaTaiKhoan_Ctrl">
+<AnchorPane prefHeight="182.0" prefWidth="407.0" stylesheets="@../../css/SuaXoaNhanVien.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhanVien.SuaTaiKhoan_Ctrl">
     <children>
-        <Label id="lbtitle" layoutX="157.0" layoutY="7.0" prefHeight="26.0" prefWidth="180.0" text="Sửa tài khoản" textFill="#0623ff">
+        <Label id="lbtitle" layoutX="157.0" layoutY="10.0" prefHeight="26.0" prefWidth="180.0" text="Sửa tài khoản" textFill="#0623ff">
             <font>
                 <Font name="System Bold" size="17.0" />
             </font>
@@ -21,16 +21,16 @@
             <Insets bottom="10.0" />
          </padding>
         </Label>
-        <VBox layoutX="25.0" layoutY="43.0" prefHeight="159.0" prefWidth="365.0">
+        <VBox layoutX="25.0" layoutY="46.0" prefHeight="81.0" prefWidth="365.0">
             <children>
                 <HBox prefHeight="34.0" prefWidth="365.0">
                     <children>
-                        <Label prefHeight="30.0" prefWidth="100.0" text="Tài khoản" textFill="#005711">
+                        <Label prefHeight="26.0" prefWidth="89.0" text="Tài khoản:" textFill="#005711">
                             <font>
                                 <Font size="15.0" />
                             </font>
                         </Label>
-                        <TextField prefHeight="25.0" prefWidth="287.0" styleClass="tf" />
+                  <TextField fx:id="txtTaiKhoan" prefHeight="25.0" prefWidth="303.0" styleClass="tf" />
                     </children>
                     <VBox.margin>
                         <Insets bottom="10.0" />
@@ -38,48 +38,25 @@
                 </HBox>
                 <HBox>
                     <children>
-                        <Label prefHeight="41.0" prefWidth="99.0" text="Mật khẩu" textFill="#005711">
+                        <Label prefHeight="25.0" prefWidth="99.0" text="Mật khẩu:" textFill="#005711">
                             <font>
                                 <Font size="15.0" />
                             </font>
                         </Label>
-                        <TextField prefHeight="31.0" prefWidth="289.0" styleClass="tf" />
+                        <TextField fx:id="txtMatKhau" prefHeight="25.0" prefWidth="312.0" styleClass="tf" />
                     </children>
-                    <VBox.margin>
-                        <Insets bottom="10.0" />
-                    </VBox.margin>
-                </HBox>
-                <HBox>
-                    <children>
-                        <Label prefHeight="32.0" prefWidth="181.0" text="Xác nhận mật khẩu" textFill="#005711">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Label>
-                        <TextField prefHeight="18.0" prefWidth="270.0" styleClass="tf" />
-                    </children>
-                    <VBox.margin>
-                        <Insets bottom="10.0" />
-                    </VBox.margin>
-                </HBox>
-                <HBox>
-                    <VBox.margin>
-                        <Insets bottom="10.0" />
-                    </VBox.margin>
-                </HBox>
-                <HBox>
                     <VBox.margin>
                         <Insets bottom="10.0" />
                     </VBox.margin>
                 </HBox>
             </children>
         </VBox>
-        <ImageView fitHeight="46.0" fitWidth="31.0" layoutX="117.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="46.0" fitWidth="31.0" layoutX="117.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@../../img/free-icon-user-login-5867.png" />
             </image>
         </ImageView>
-        <Button id="btnLuu" layoutX="330.0" layoutY="195.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="Lưu" />
-        <Button id="btnXoa" layoutX="255.0" layoutY="195.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="Hủy" />
+        <Button id="btnLuu" layoutX="330.0" layoutY="141.0" mnemonicParsing="false" onAction="#btnLuu" prefHeight="25.0" prefWidth="60.0" text="Lưu" />
+        <Button id="btnXoa" layoutX="260.0" layoutY="141.0" mnemonicParsing="false" onAction="#btnHuy" prefHeight="25.0" prefWidth="60.0" text="Hủy" />
     </children>
 </AnchorPane>

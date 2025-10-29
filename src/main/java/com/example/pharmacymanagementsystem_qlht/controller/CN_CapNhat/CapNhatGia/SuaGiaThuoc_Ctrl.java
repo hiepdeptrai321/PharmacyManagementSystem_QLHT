@@ -16,11 +16,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import javafx.util.Callback;
+
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class SuaGiaThuoc_Ctrl extends Application {
+public class SuaGiaThuoc_Ctrl {
 
     // 1. KHAI BÁO THÀNH PHẦN GIAO DIỆN (FXML)
 
@@ -40,11 +43,11 @@ public class SuaGiaThuoc_Ctrl extends Application {
     @FXML
     private TableColumn<ChiTietDonViTinh, Object> colHeSo;
     @FXML
-    private TableColumn<ChiTietDonViTinh, Object> colGiaNhap;
+    private TableColumn<ChiTietDonViTinh, String> colGiaNhap;
     @FXML
-    private TableColumn<ChiTietDonViTinh, Object> colGiaBan;
+    private TableColumn<ChiTietDonViTinh, String> colGiaBan;
     @FXML
-    private TableColumn<ChiTietDonViTinh, Object> colDVCB;
+    private TableColumn<ChiTietDonViTinh, String> colDVCB;
     @FXML
     private TableColumn<ChiTietDonViTinh, Void> colXoa;
     public Button btnLuu;
@@ -61,21 +64,42 @@ public class SuaGiaThuoc_Ctrl extends Application {
         colDVT.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDvt().getTenDonViTinh()));
         colKH.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDvt().getKiHieu()));
         colHeSo.setCellValueFactory(new PropertyValueFactory<>("heSoQuyDoi"));
-        colGiaNhap.setCellValueFactory(new PropertyValueFactory<>("giaNhap"));
-        colGiaBan.setCellValueFactory(new PropertyValueFactory<>("giaBan"));
-        colDVCB.setCellValueFactory(new PropertyValueFactory<>("donViCoBan"));
+
+        NumberFormat vnFormat = NumberFormat.getInstance(new Locale("vi", "VN"));
+        vnFormat.setGroupingUsed(true);
+        vnFormat.setMaximumFractionDigits(0);
+        colGiaNhap.setCellValueFactory(cd -> {
+            Object val = cd.getValue().getGiaNhap();
+            if (val == null) return new SimpleStringProperty("");
+            Number num;
+            if (val instanceof Number) num = (Number) val;
+            else {
+                try { num = Double.parseDouble(val.toString()); }
+                catch (Exception e) { return new SimpleStringProperty(""); }
+            }
+            return new SimpleStringProperty(vnFormat.format(num));
+        });
+
+        colGiaBan.setCellValueFactory(cd -> {
+            Object val = cd.getValue().getGiaBan();
+            if (val == null) return new SimpleStringProperty("");
+            Number num;
+            if (val instanceof Number) num = (Number) val;
+            else {
+                try { num = Double.parseDouble(val.toString()); }
+                catch (Exception e) { return new SimpleStringProperty(""); }
+            }
+            return new SimpleStringProperty(vnFormat.format(num));
+        });
+        colDVCB.setCellValueFactory(cd -> {
+            ChiTietDonViTinh item = cd.getValue();
+            if (item == null) return new SimpleStringProperty("");
+            return new SimpleStringProperty(item.isDonViCoBan() ? "X" : "");
+        });
 
         addDetailButtonToTable();
 
         tbDVT.setItems(listGia);
-    }
-
-    @Override
-    public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_CapNhat/CapNhatGia/SuaGiaThuoc_GUI.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
     }
 
     // 3. XỬ LÝ SỰ KIỆN GIAO DIỆN

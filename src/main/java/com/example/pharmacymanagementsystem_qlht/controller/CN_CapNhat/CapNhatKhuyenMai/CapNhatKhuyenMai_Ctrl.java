@@ -2,6 +2,7 @@ package com.example.pharmacymanagementsystem_qlht.controller.CN_CapNhat.CapNhatK
 
 import com.example.pharmacymanagementsystem_qlht.dao.ChiTietKhuyenMai_Dao;
 import com.example.pharmacymanagementsystem_qlht.dao.KhuyenMai_Dao;
+import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SP_TangKem_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.KhuyenMai;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -47,6 +48,7 @@ public class CapNhatKhuyenMai_Ctrl extends Application {
     // 2. KHỞI TẠO (INITIALIZE)
     public void initialize() {
         loadTable();
+        tfTimKM.setOnAction(e -> timKhuyenMai());
     }
 
     @Override
@@ -100,6 +102,8 @@ public class CapNhatKhuyenMai_Ctrl extends Application {
             SuaKhuyenMai_Ctrl ctrl = loader.getController();
             ctrl.loadData(km);
             ctrl.loadDatatbCTKM(new ChiTietKhuyenMai_Dao().selectByMaKM(km.getMaKM()));
+            if("LKM001".equalsIgnoreCase(km.getLoaiKM().getMaLoai()))
+                ctrl.loadDatatbQuaTang(new Thuoc_SP_TangKem_Dao().selectByMaKM(km.getMaKM()));
 
             stage.initOwner(tbKM.getScene().getWindow()); // set owner so modality/parent exists
             stage.setScene(scene);
@@ -107,7 +111,8 @@ public class CapNhatKhuyenMai_Ctrl extends Application {
 
             stage.show();
 
-            // run later to ensure all CSS/layout completed
+            stage.setOnHidden(e -> loadTable());
+
             Platform.runLater(stage::sizeToScene);
         } catch (Exception e) {
             e.printStackTrace();

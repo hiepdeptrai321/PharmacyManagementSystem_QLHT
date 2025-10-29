@@ -1,6 +1,7 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKKhachHang;
 
 import com.example.pharmacymanagementsystem_qlht.dao.KhachHang_Dao;
+import com.example.pharmacymanagementsystem_qlht.model.HoaDon;
 import com.example.pharmacymanagementsystem_qlht.model.KhachHang;
 import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
 import javafx.application.Application;
@@ -9,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -57,6 +59,8 @@ public class TimKiemKhachHang_Ctrl extends Application {
 
     @FXML
     private TableView<KhachHang> tbKhachHang;
+
+
 
     @FXML
     private Pane mainPane;
@@ -114,12 +118,55 @@ public class TimKiemKhachHang_Ctrl extends Application {
         );
         cotMaKH.setCellValueFactory(new PropertyValueFactory<>("maKH"));
         cotTenKH.setCellValueFactory(new PropertyValueFactory<>("tenKH"));
-        cotGT.setCellValueFactory(new PropertyValueFactory<>("gioiTinh"));
+        cotTenKH.setCellFactory(col -> new TableCell<KhachHang, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
+        cotGT.setCellValueFactory(cellData -> {
+            Boolean gt = cellData.getValue().getGioiTinh(); // handles primitive or boxed boolean
+            String text = Boolean.TRUE.equals(gt) ? "Nam" : "Nữ";
+            return new SimpleStringProperty(text);
+        });
         // format date as dd-MM-yyyy
         cotNgaySinh.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.dinhDangNgay(cellData.getValue().getNgaySinh())));
         cotSDT.setCellValueFactory(new PropertyValueFactory<>("sdt"));
         cotEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        cotEmail.setCellFactory(col -> new TableCell<KhachHang, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         cotDiaChi.setCellValueFactory(new PropertyValueFactory<>("diaChi"));
+        cotDiaChi.setCellFactory(col -> new TableCell<KhachHang, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         tbKhachHang.setItems(data);
     }
     @FXML

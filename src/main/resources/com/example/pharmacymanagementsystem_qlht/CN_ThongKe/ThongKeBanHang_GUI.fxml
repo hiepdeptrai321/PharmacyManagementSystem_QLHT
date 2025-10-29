@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.AreaChart?>
+<?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -68,19 +66,6 @@
                         <Insets top="5.0" />
                      </VBox.margin>
                   </HBox>
-                  <Label layoutX="10.0" layoutY="53.0" prefHeight="27.0" prefWidth="243.0" text="Mối quan tâm">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin>
-                  </Label>
-                  <ComboBox fx:id="cboMQT" prefHeight="49.0" prefWidth="445.0" promptText="Lợi nhuận">
-                     <VBox.margin>
-                        <Insets top="5.0" />
-                     </VBox.margin>
-                  </ComboBox>
                   <Label layoutX="10.0" layoutY="53.0" prefHeight="27.0" prefWidth="221.0" text="Thời gian">
                      <font>
                         <Font size="18.0" />
@@ -89,25 +74,19 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <RadioButton mnemonicParsing="false" prefHeight="49.0" prefWidth="437.0">
-                     <graphic>
-                        <ComboBox fx:id="cboThoiGian" prefHeight="49.0" prefWidth="418.0" promptText="Hôm nay" />
-                     </graphic>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                     <toggleGroup>
-                        <ToggleGroup fx:id="date" />
-                     </toggleGroup>
-                  </RadioButton>
-                  <RadioButton mnemonicParsing="false" prefHeight="39.0" prefWidth="435.0" toggleGroup="$date">
-                     <graphic>
-                        <DatePicker prefHeight="39.0" prefWidth="415.0" />
-                     </graphic>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </RadioButton>
+                  <ComboBox fx:id="cboThoiGian" prefHeight="49.0" prefWidth="446.0" promptText="Hôm Nay" />
+                  <Label fx:id="lblTu" layoutX="10.0" layoutY="298.0" text="Từ:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="dateTu" prefHeight="39.0" prefWidth="442.0" />
+                  <Label fx:id="lblDen" layoutX="10.0" layoutY="298.0" text="Đến:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="dateDen" prefHeight="39.0" prefWidth="441.0" />
                   <Label text="Xuất file">
                      <font>
                         <Font size="18.0" />
@@ -116,8 +95,8 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <ComboBox fx:id="cboXuatfile" prefHeight="49.0" prefWidth="441.0" promptText="Excel" />
-                  <Button mnemonicParsing="false" prefHeight="53.0" prefWidth="438.0" text="Xuất File 💾">
+                  <ComboBox fx:id="cboXuatfile" prefHeight="49.0" prefWidth="441.0" promptText="Chọn định dạng file" />
+                  <Button fx:id="btnXuat" mnemonicParsing="false" prefHeight="53.0" prefWidth="438.0" text="Xuất File 💾">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
@@ -133,24 +112,24 @@
                   </Label>
                   <TableView fx:id="tableDoanhThu" prefHeight="510.0" prefWidth="1161.0">
                     <columns>
-                      <TableColumn prefWidth="147.3333740234375" text="Thời gian" />
-                        <TableColumn prefWidth="170.6666259765625" text="Số lượng HĐ" />
-                        <TableColumn prefWidth="129.6666259765625" text="Tổng giá trị" />
-                        <TableColumn prefWidth="142.99993896484375" text="Giảm giá" />
-                        <TableColumn prefWidth="150.6666259765625" text="Số lượng đơn trả" />
-                        <TableColumn prefWidth="193.3333740234375" text="Giá trị đơn trả" />
-                        <TableColumn prefWidth="229.6666259765625" text="Doanh thu" />
+                      <TableColumn fx:id="cotTG" prefWidth="147.3333740234375" style="-fx-alignment: CENTER;" text="Thời gian" />
+                        <TableColumn fx:id="cotSLHoaDon" prefWidth="170.6666259765625" style="-fx-alignment: CENTER;" text="Số lượng HĐ" />
+                        <TableColumn fx:id="cotTongGT" prefWidth="129.6666259765625" style="-fx-alignment: CENTER;" text="Tổng giá trị" />
+                        <TableColumn fx:id="cotGG" prefWidth="142.99993896484375" style="-fx-alignment: CENTER;" text="Giảm giá" />
+                        <TableColumn fx:id="cotDT" prefWidth="150.6666259765625" style="-fx-alignment: CENTER;" text="Số lượng đơn trả" />
+                        <TableColumn fx:id="cotGTDonTra" prefWidth="193.3333740234375" style="-fx-alignment: CENTER;" text="Giá trị đơn trả" />
+                        <TableColumn fx:id="cotDoanhThu" prefWidth="229.6666259765625" style="-fx-alignment: CENTER;" text="Doanh thu" />
                     </columns>
                   </TableView>
-                  <AreaChart fx:id="chartDoanhThu" prefHeight="510.0" prefWidth="1161.0" visible="false">
-                    <xAxis>
-                      <CategoryAxis side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis side="LEFT" />
-                    </yAxis>
-                  </AreaChart>
-                  <Label prefHeight="17.0" prefWidth="898.0" text="Top 5 sản phẩm bán chạy🔥" textFill="#c63131">
+                   <BarChart fx:id="chartDoanhThu" prefHeight="510.0" prefWidth="1161.0" visible="false">
+                       <xAxis>
+                           <CategoryAxis side="BOTTOM" fx:id="xAxis" />
+                       </xAxis>
+                       <yAxis>
+                           <NumberAxis side="LEFT" />
+                       </yAxis>
+                   </BarChart>
+                   <Label prefHeight="17.0" prefWidth="898.0" text="Top 5 sản phẩm bán chạy🔥" textFill="#c63131">
                      <font>
                         <Font size="24.0" />
                      </font>
@@ -158,12 +137,12 @@
                         <Insets bottom="8.0" left="10.0" top="8.0" />
                      </VBox.margin>
                   </Label>
-                  <TableView prefHeight="273.0" prefWidth="1161.0">
+                  <TableView fx:id="tableTopSanPham" prefHeight="273.0" prefWidth="1161.0">
                     <columns>
-                      <TableColumn prefWidth="153.0" text="Mã thuốc" />
-                      <TableColumn prefWidth="507.0" text="Tên thuốc" />
-                        <TableColumn minWidth="0.0" prefWidth="129.0" text="Số lượng" />
-                        <TableColumn prefWidth="370.0" text="Thành tiền" />
+                      <TableColumn fx:id="cotMaThuoc" prefWidth="153.0" style="-fx-alignment: CENTER;" text="Mã thuốc" />
+                      <TableColumn fx:id="cotTenThuoc" prefWidth="507.0" text="Tên thuốc" />
+                        <TableColumn fx:id="cotSL" minWidth="0.0" prefWidth="129.0" style="-fx-alignment: CENTER;" text="Số lượng" />
+                        <TableColumn fx:id="cotThanhTien" prefWidth="370.0" style="-fx-alignment: CENTER;" text="Thành tiền" />
                     </columns>
                   </TableView>
                </children>

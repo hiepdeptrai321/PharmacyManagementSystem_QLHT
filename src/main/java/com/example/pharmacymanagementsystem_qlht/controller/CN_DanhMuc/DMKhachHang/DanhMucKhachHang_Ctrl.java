@@ -1,5 +1,6 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKhachHang;
 
+import com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMKeHang.XoaSuaKeHang_Ctrl;
 import com.example.pharmacymanagementsystem_qlht.dao.KhachHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.KeHang;
 import com.example.pharmacymanagementsystem_qlht.model.KhachHang;
@@ -9,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -20,6 +22,9 @@ import java.util.List;
 public class DanhMucKhachHang_Ctrl extends Application {
     @FXML
     private Button btnTim;
+
+    @FXML
+    private Button btnLamMoi;
 
     @FXML
     private Button btnthemKH;
@@ -34,7 +39,7 @@ public class DanhMucKhachHang_Ctrl extends Application {
     private TableColumn<KhachHang, String> cotMaKH;
 
     @FXML
-    private TableColumn<KhachHang, String> cotNgaySinh;
+    private TableColumn<KhachHang, String> cotDiaChi;
 
     @FXML
     private TableColumn<KhachHang, String> cotSDT;
@@ -61,6 +66,11 @@ public class DanhMucKhachHang_Ctrl extends Application {
     }
     public void initialize() {
         loadTable();
+        btnLamMoi.setOnAction(e -> LamMoi());
+        btnTim.setOnAction(e -> TimKiem());
+        btnthemKH.setOnAction(e -> btnThemClick(new KhachHang()));
+
+
     }
     public void loadTable() {
         List<KhachHang> list = khachHangDao.selectAll();
@@ -68,26 +78,129 @@ public class DanhMucKhachHang_Ctrl extends Application {
         cotSTT.setCellValueFactory(cellData ->
                 new SimpleStringProperty(String.valueOf(tbKhachHang.getItems().indexOf(cellData.getValue()) + 1))
         );
-       // cotMaKe.setCellValueFactory(new PropertyValueFactory<>("maKe"));
-        //cotTenKe.setCellValueFactory(new PropertyValueFactory<>("tenKe"));
-       // colChiTiet.setCellFactory(col -> new TableCell<KeHang, String>() {
-            //private final Button btn = new Button("Chi tiết");
-            //{
-             //   btn.setOnAction(event -> {
-                  //  KeHang kh = getTableView().getItems().get(getIndex());
-                   // btnChiTietClick(kh);
-              //  });
-              //  btn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white;");
-             //   btn.getStyleClass().add("btn");
-            //}
-            //@Override
-            //protected void updateItem(String item, boolean empty) {
-             //   super.updateItem(item, empty);
-             //   setGraphic(empty ? null : btn);
-        //    }
-       // });
-       // tblKeHang.setItems(data);
+        cotMaKH.setCellValueFactory(new PropertyValueFactory<>("MaKH"));
+        cotTenKH.setCellValueFactory(new PropertyValueFactory<>("TenKH"));
+        cotTenKH.setCellFactory(col -> new TableCell<KhachHang, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
+        cotGioiTinh.setCellValueFactory(cellData -> {
+            Boolean gt = cellData.getValue().getGioiTinh();
+            String gioiTinhText = (gt != null && gt) ? "Nam" : "Nữ";
+            return new SimpleStringProperty(gioiTinhText);
+        });
+        cotGioiTinh.setCellFactory(col -> new TableCell<KhachHang, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
 
+        cotDiaChi.setCellValueFactory(new PropertyValueFactory<>("DiaChi"));
+        cotDiaChi.setCellFactory(col -> new TableCell<KhachHang, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
+        cotSDT.setCellValueFactory(new PropertyValueFactory<>("sdt"));
+
+        cotChiTiet.setCellFactory(col -> new TableCell<KhachHang, String>() {
+            private final Button btn = new Button("Chi tiết");
+            {
+                btn.setOnAction(event -> {
+                    KhachHang kh = getTableView().getItems().get(getIndex());
+                    btnChiTietClick(kh);
+               });
+               btn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white;");
+                btn.getStyleClass().add("btn");
+            }
+            @Override
+            protected void updateItem(String item, boolean empty) {
+               super.updateItem(item, empty);
+                setGraphic(empty ? null : btn);
+           }
+        });
+        tbKhachHang.setItems(data);
+    }
+    public void btnChiTietClick(KhachHang kh) {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhachHang/SuaXoaKhachHang_GUI.fxml"));
+            Parent root = loader.load();
+            ChiTietKhachHang_Ctrl ctrl = loader.getController();
+            ctrl.hienThiThongTin(kh);
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.showAndWait();
+            loadTable();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void btnThemClick(KhachHang kh) {
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader =  new FXMLLoader(getClass().getResource("/com/example/pharmacymanagementsystem_qlht/CN_DanhMuc/DMKhachHang/ThemKhachHang_GUI.fxml"));
+            Parent root = loader.load();
+            //ChiTietNhaCungCap_Ctrl ctrl = loader.getController();
+            //ctrl.hienThiThongTin(ncc);
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.showAndWait();
+            loadTable();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void LamMoi() {
+        txtTim.clear();
+        loadTable();
+    }
+    private void TimKiem() {
+        String keyword = txtTim.getText().trim().toLowerCase();
+        List<KhachHang> list = khachHangDao.selectAll();
+        if (keyword.isEmpty()) {
+            tbKhachHang.setItems(FXCollections.observableArrayList(list));
+            return;
+        }
+
+
+        List<KhachHang> filtered = list.stream()
+                .filter(keHang ->
+                        (keHang.getMaKH() != null && keHang.getMaKH().toLowerCase().contains(keyword)) ||
+                                (keHang.getTenKH() != null && keHang.getTenKH().toLowerCase().contains(keyword))
+
+                )
+                .toList();
+
+        tbKhachHang.setItems(FXCollections.observableArrayList(filtered));
     }
 
 }

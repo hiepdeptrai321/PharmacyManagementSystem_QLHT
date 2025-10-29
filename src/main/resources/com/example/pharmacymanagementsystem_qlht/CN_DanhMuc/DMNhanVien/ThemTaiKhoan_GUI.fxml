@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="239.0" prefWidth="407.0" stylesheets="@../../css/SuaXoaNhanVien.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhanVien.ThemTaiKhoan_Ctrl">
+<AnchorPane prefHeight="171.0" prefWidth="407.0" stylesheets="@../../css/SuaXoaNhanVien.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pharmacymanagementsystem_qlht.controller.CN_DanhMuc.DMNhanVien.ThemTaiKhoan_Ctrl">
     <children>
         <Label id="lbtitle" layoutX="157.0" layoutY="7.0" prefHeight="26.0" prefWidth="180.0" text="Thêm tài khoản" textFill="#0623ff">
             <font>
@@ -21,7 +21,7 @@
                 <Insets bottom="10.0" />
             </padding>
         </Label>
-        <VBox layoutX="25.0" layoutY="43.0" prefHeight="159.0" prefWidth="365.0">
+        <VBox layoutX="25.0" layoutY="43.0" prefHeight="98.0" prefWidth="365.0">
             <children>
                 <HBox prefHeight="34.0" prefWidth="365.0">
                     <children>
@@ -30,7 +30,7 @@
                                 <Font size="15.0" />
                             </font>
                         </Label>
-                        <TextField prefHeight="25.0" prefWidth="287.0" styleClass="tf" />
+                        <TextField prefHeight="30.0" prefWidth="287.0" styleClass="tf" />
                     </children>
                     <VBox.margin>
                         <Insets bottom="10.0" />
@@ -38,36 +38,13 @@
                 </HBox>
                 <HBox>
                     <children>
-                        <Label prefHeight="41.0" prefWidth="99.0" text="Mật khẩu" textFill="#005711">
+                        <Label prefHeight="30.0" prefWidth="99.0" text="Mật khẩu" textFill="#005711">
                             <font>
                                 <Font size="15.0" />
                             </font>
                         </Label>
                         <TextField prefHeight="31.0" prefWidth="289.0" styleClass="tf" />
                     </children>
-                    <VBox.margin>
-                        <Insets bottom="10.0" />
-                    </VBox.margin>
-                </HBox>
-                <HBox>
-                    <children>
-                        <Label prefHeight="32.0" prefWidth="181.0" text="Xác nhận mật khẩu" textFill="#005711">
-                            <font>
-                                <Font size="15.0" />
-                            </font>
-                        </Label>
-                        <TextField prefHeight="18.0" prefWidth="270.0" styleClass="tf" />
-                    </children>
-                    <VBox.margin>
-                        <Insets bottom="10.0" />
-                    </VBox.margin>
-                </HBox>
-                <HBox>
-                    <VBox.margin>
-                        <Insets bottom="10.0" />
-                    </VBox.margin>
-                </HBox>
-                <HBox>
                     <VBox.margin>
                         <Insets bottom="10.0" />
                     </VBox.margin>
@@ -79,7 +56,7 @@
                 <Image url="@../../img/free-icon-user-login-5867.png" />
             </image>
         </ImageView>
-        <Button id="btnLuu" layoutX="330.0" layoutY="195.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="Lưu" />
-        <Button id="btnXoa" layoutX="255.0" layoutY="195.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="Hủy" />
+        <Button id="btnLuu" layoutX="330.0" layoutY="129.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="Lưu" />
+        <Button id="btnXoa" layoutX="257.0" layoutY="129.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="Hủy" />
     </children>
 </AnchorPane>

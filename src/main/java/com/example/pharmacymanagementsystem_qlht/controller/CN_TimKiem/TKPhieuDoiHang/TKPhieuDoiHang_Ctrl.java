@@ -3,10 +3,12 @@ package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuD
 import com.example.pharmacymanagementsystem_qlht.dao.PhieuDoiHang_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuDoiHang;
 import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
+import com.example.pharmacymanagementsystem_qlht.model.PhieuTraHang;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -103,6 +105,19 @@ public class TKPhieuDoiHang_Ctrl extends Application {
                 return new SimpleStringProperty("");
             }
         });
+        colTenKH.setCellFactory(col -> new TableCell<PhieuDoiHang, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colSdtKH.setCellValueFactory(cellData -> {
             if (cellData.getValue().getKhachHang() != null) {
                 return new SimpleStringProperty(cellData.getValue().getKhachHang().getSdt());
@@ -111,6 +126,19 @@ public class TKPhieuDoiHang_Ctrl extends Application {
             }
         });
         colTenNV.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNhanVien().getTenNV()));
+        colTenNV.setCellFactory(col -> new TableCell<PhieuDoiHang, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colChiTiet.setCellFactory(col -> new TableCell<PhieuDoiHang, String>() {
             private final Button btn = new Button("Chi tiết");
             {

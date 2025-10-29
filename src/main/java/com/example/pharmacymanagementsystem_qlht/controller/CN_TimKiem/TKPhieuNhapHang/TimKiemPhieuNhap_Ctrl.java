@@ -1,23 +1,32 @@
 package com.example.pharmacymanagementsystem_qlht.controller.CN_TimKiem.TKPhieuNhapHang;
 
+import com.example.pharmacymanagementsystem_qlht.TienIch.DoiNgay;
 import com.example.pharmacymanagementsystem_qlht.dao.PhieuNhap_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.PhieuNhap;
+import com.example.pharmacymanagementsystem_qlht.model.PhieuTraHang;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Objects;
+import  java.sql.Date;
 
 public class TimKiemPhieuNhap_Ctrl extends Application {
     public TableColumn<PhieuNhap, String> colChiTiet;
@@ -35,13 +44,15 @@ public class TimKiemPhieuNhap_Ctrl extends Application {
     @FXML
     private TableColumn<PhieuNhap, String> colNhaCungCap;
     @FXML
-    private TableColumn<PhieuNhap, Timestamp> colNgayNhap;
+    private TableColumn<PhieuNhap, String> colNgayNhap;
     @FXML
     private TableColumn<PhieuNhap, String> colTrangThai;
     @FXML
     private TableColumn<PhieuNhap, String> colGhiChu;
     @FXML
     private TableColumn<PhieuNhap, String> colNhanVien;
+    @FXML
+    private TitledPane tpBoLoc;
     @FXML
     private ObservableList<PhieuNhap> duLieuChinh = FXCollections.observableArrayList();
     @FXML
@@ -74,9 +85,21 @@ public class TimKiemPhieuNhap_Ctrl extends Application {
         chonNhanVien.getItems().addFirst("Chọn nhân viên");
         cbxChonNhaCC.setOnAction(event -> Loc());
         chonNhanVien.setOnAction(event -> Loc());
+        tpBoLoc.setExpanded(false);
         cboxTrangThai.setOnAction(event -> Loc());
         txtNgayNhapMin.setOnAction(event -> Loc());
         txtNgayNhapMax.setOnAction(event -> Loc());
+        tpBoLoc.expandedProperty().addListener((obs, wasExpanded, isNowExpanded) -> {
+            if (isNowExpanded) {
+                tpBoLoc.setMinHeight(Region.USE_COMPUTED_SIZE);
+                tpBoLoc.setPrefHeight(Region.USE_COMPUTED_SIZE);
+            } else {
+                tpBoLoc.setMinHeight(40); // chỉ giữ phần tiêu đề
+                tpBoLoc.setPrefHeight(40);
+            }
+            tpBoLoc.requestLayout(); // ép VBox tính lại layout
+        });
+
     }
 
     public void ThemPhieuNhapVaoCot() {
@@ -84,14 +107,53 @@ public class TimKiemPhieuNhap_Ctrl extends Application {
         colNhaCungCap.setCellValueFactory(cd ->
                 new SimpleStringProperty(cd.getValue().getNhaCungCap().getTenNCC())
         );
-        colNgayNhap.setCellValueFactory(new PropertyValueFactory<>("ngayNhap"));
+        colNhaCungCap.setCellFactory(col -> new TableCell<PhieuNhap, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
+        colNgayNhap.setCellValueFactory(cellData -> new SimpleStringProperty(DoiNgay.dinhDangNgay(cellData.getValue().getNgayNhap())));
         colTrangThai.setCellValueFactory(cd ->
                 new SimpleStringProperty(cd.getValue().getTrangThai() ? "Hoàn tất" : "Chưa hoàn tất")
         );
         colGhiChu.setCellValueFactory(new PropertyValueFactory<>("ghiChu"));
+        colGhiChu.setCellFactory(col -> new TableCell<PhieuNhap, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colNhanVien.setCellValueFactory(cd ->
                 new SimpleStringProperty(cd.getValue().getNhanVien().getTenNV())
         );
+        colNhanVien.setCellFactory(col -> new TableCell<PhieuNhap, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER_LEFT);
+                }
+            }
+        });
         colChiTiet.setCellFactory(cel -> new TableCell<PhieuNhap, String>() {
             private final Button btn = new Button("Chi tiết");
             {
@@ -157,8 +219,8 @@ public class TimKiemPhieuNhap_Ctrl extends Application {
             boolean matchesNCC = (ncc == null || ncc.equals("Chọn nhà cung cấp")) || sp.getNhaCungCap().getTenNCC().equals(ncc);
             boolean matchesNV = (nv == null || nv.equals("Chọn nhân viên")) || sp.getNhanVien().getTenNV().equals(nv);
             boolean matchesTrangThai = (trangThai == null) || sp.getTrangThai() == trangThai;
-            boolean matchesNgayMin = (ngayMin == null) || !sp.getNgayNhap().before(ngayMin);
-            boolean matchesNgayMax = (ngayMax == null) || !sp.getNgayNhap().after(ngayMax);
+            boolean matchesNgayMin = (ngayMin == null) || !Date.valueOf(sp.getNgayNhap()).before(ngayMin);
+            boolean matchesNgayMax = (ngayMax == null) || !Date.valueOf(sp.getNgayNhap()).after(ngayMax);
 
             return matchesNCC && matchesNV && matchesTrangThai && matchesNgayMin && matchesNgayMax;
         });

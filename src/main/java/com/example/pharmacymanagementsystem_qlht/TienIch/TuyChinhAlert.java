@@ -33,14 +33,10 @@ public class TuyChinhAlert {
 
             case INFORMATION:
                 pane.getStyleClass().add("info-alert");
-//                stage.getIcons().add(new Image(
-//                        TuyChinhAlert.class.getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/)));
                 break;
 
             case ERROR:
                 pane.getStyleClass().add("error-alert");
-//                stage.getIcons().add(new Image(
-//                        TuyChinhAlert.class.getResourceAsStream("/com/example/pharmacymanagementsystem_qlht/img/")));
                 break;
         }
 

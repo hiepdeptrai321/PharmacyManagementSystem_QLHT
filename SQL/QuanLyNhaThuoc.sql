@@ -6,7 +6,7 @@ USE QuanLyNhaThuoc;
 GO
 
 --Link thư mục hình ảnh thuốc
-DECLARE @path NVARCHAR(255) = N'C:\Users\Hiep\Desktop\hk1_2025-2026\QLHT\SQL\imgThuoc\';
+DECLARE @path NVARCHAR(255) = N'D:\IUH\hk5\PTUD_Java\Project\PharmacyManagementSystem_QLHT\SQL\imgThuoc\';
 
 -- =========================
 -- Bảng KhachHang
@@ -2248,7 +2248,7 @@ BEGIN
 END;
 GO
 
-CREATE PROCEDURE sp_InsertThuoc_SanPham
+CREATE OR ALTER PROCEDURE sp_InsertThuoc_SanPham
     @TenThuoc NVARCHAR(100),
     @HamLuong INT,
     @DonViHL VARCHAR(20),
@@ -2268,9 +2268,11 @@ BEGIN
     DECLARE @MaxMa VARCHAR(10);
     DECLARE @Num INT;
 
-    -- 🔍 Chỉ lấy mã bắt đầu bằng 'TS'
+    BEGIN TRANSACTION;
+
+    -- 🔍 Lấy mã lớn nhất hiện có
     SELECT @MaxMa = MAX(MaThuoc)
-    FROM Thuoc_SanPham
+    FROM Thuoc_SanPham WITH (TABLOCKX)
     WHERE MaThuoc LIKE 'TS%';
 
     -- 🧩 Nếu chưa có dữ liệu, tạo TS001
@@ -2278,28 +2280,34 @@ BEGIN
         SET @NewMaThuoc = 'TS001';
     ELSE
     BEGIN
-        -- Lấy phần số trong mã (bỏ 'TS')
         SET @Num = TRY_CAST(SUBSTRING(@MaxMa, 3, LEN(@MaxMa)) AS INT);
         IF @Num IS NULL SET @Num = 0;
         SET @Num += 1;
-
-        -- Định dạng mã mới (TS + 3 số)
         SET @NewMaThuoc = 'TS' + RIGHT('000' + CAST(@Num AS VARCHAR(3)), 3);
     END;
 
-    -- 🧾 Thêm bản ghi mới
+    -- 🧾 Thêm bản ghi mới vào Thuoc_SanPham
     INSERT INTO Thuoc_SanPham (
         MaThuoc, TenThuoc, HamLuong, DonViHL, DuongDung, QuyCachDongGoi,
-        SDK_GPNK, HangSX, NuocSX, MaLoaiHang, MaNDL, ViTri
+        SDK_GPNK, HangSX, NuocSX, MaLoaiHang, MaNDL, ViTri, TrangThaiXoa
     ) VALUES (
         @NewMaThuoc, @TenThuoc, @HamLuong, @DonViHL, @DuongDung, @QuyCachDongGoi,
-        @SDK_GPNK, @HangSX, @NuocSX, @MaLoaiHang, @MaNDL, @ViTri
+        @SDK_GPNK, @HangSX, @NuocSX, @MaLoaiHang, @MaNDL, @ViTri, 0
     );
 
-    -- ✅ Trả về mã mới để hiển thị hoặc log
+    -- ➕ Thêm luôn vào ChiTietDonViTinh
+    INSERT INTO ChiTietDonViTinh (
+        MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan
+    ) VALUES (
+        @NewMaThuoc, 'DVT01', 1, 0, 0, 1
+    );
+
+    COMMIT TRANSACTION;
+
     SELECT @NewMaThuoc AS MaThuoc;
 END;
 GO
+
 ALTER TABLE HoaDon
     ADD LoaiHoaDon VARCHAR(3) NOT NULL DEFAULT 'OTC';
 go

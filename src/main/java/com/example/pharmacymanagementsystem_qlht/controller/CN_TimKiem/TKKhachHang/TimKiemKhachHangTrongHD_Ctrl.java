@@ -87,6 +87,18 @@ public class TimKiemKhachHangTrongHD_Ctrl extends Application {
         tbKhachHang.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
             chonKhachHang(newSel);
         });
+        tbKhachHang.setRowFactory(tv -> {
+            TableRow<KhachHang> row = new TableRow<>();
+            row.setOnMouseEntered(e -> {
+                if (!row.isEmpty()) {
+                    row.setStyle("-fx-background-color: #f2f2f2;");
+                }
+            });
+            row.setOnMouseExited(e -> {
+                row.setStyle("");
+            });
+            return row;
+        });
 
         tbKhachHang.setRowFactory(tv -> {
             TableRow<KhachHang> row = new TableRow<>();

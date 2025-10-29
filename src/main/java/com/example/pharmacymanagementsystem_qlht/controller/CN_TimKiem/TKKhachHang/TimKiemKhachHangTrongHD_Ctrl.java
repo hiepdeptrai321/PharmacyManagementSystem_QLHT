@@ -88,6 +88,19 @@ public class TimKiemKhachHangTrongHD_Ctrl extends Application {
             chonKhachHang(newSel);
         });
 
+        tbKhachHang.setRowFactory(tv -> {
+            TableRow<KhachHang> row = new TableRow<>();
+            row.setOnMouseEntered(e -> {
+                if (!row.isEmpty()) {
+                    row.setStyle("-fx-background-color: #f2f2f2;");
+                }
+            });
+            row.setOnMouseExited(e -> {
+                row.setStyle("");
+            });
+            return row;
+        });
+
     }
     public void chonKhachHang(KhachHang kh) {
         if (kh == null) return;

@@ -6,7 +6,7 @@ USE QuanLyNhaThuoc;
 GO
 
 --Link thư mục hình ảnh thuốc
-DECLARE @path NVARCHAR(255) = N'C:\Users\Nhut Hao\Desktop\New folder (2)\PharmacyManagementSystem_QLHT\SQL\imgThuoc\';
+DECLARE @path NVARCHAR(255) = N'C:\Users\Hiep\Desktop\hk1_2025-2026\QLHT\SQL\imgThuoc\';
 
 -- =========================
 -- Bảng KhachHang
@@ -203,7 +203,7 @@ CREATE TABLE ChiTietHoaDon (
 	MaDVT      VARCHAR(10),
     DonGia     FLOAT NOT NULL,
     GiamGia    FLOAT NOT NULL,
-	PRIMARY KEY (MaHD, MaLH)
+	PRIMARY KEY (MaHD, MaLH, MaDVT)
 );
 
 -- =========================
@@ -697,105 +697,94 @@ VALUES
 ('TS564',N'Mặt nạ dưỡng da Green Tea',25,'ml',N'Đắp mặt',N'Hộp 10 miếng','MP-0009-23','The Face Shop',N'Hàn Quốc','LH05',null,'KE001',0),
 ('TS565',N'Nước hoa nữ Eau de Parfum',50,'ml',N'Xịt',N'Chai 50ml','MP-0010-23','Chanel',N'Pháp','LH05',null,'KE001',0);
 
+-- CẬP NHẬT CHI TIẾT ĐƠN VỊ TÍNH
+-- ========================================
 
-INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
-('TS001', 'DVT01', 1, 800, 1000, 1),      -- Viên
-('TS001', 'DVT02', 10, 7800, 9800, 0),     -- Vỉ
-('TS001', 'DVT03', 100, 75000, 95000, 0);  -- Hộp
+-- Paracetamol 500mg (TS001) - Hộp 10 vỉ x 10 viên
+INSERT INTO ChiTietDonViTinh VALUES
+('TS001','DVT01',1,800,1000,1),     -- Viên (đơn vị cơ bản)
+('TS001','DVT02',10,7800,9500,0),   -- Vỉ
+('TS001','DVT03',100,75000,92000,0);-- Hộp
 
--- Thuốc: Amoxicillin 500mg (TS002) - Hộp 2 vỉ x 10 viên
-INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
-('TS002', 'DVT01', 1, 1200, 1500, 1),     -- Viên
-('TS002', 'DVT02', 10, 11800, 14500, 0),    -- Vỉ
-('TS002', 'DVT03', 20, 23000, 28000, 0);   -- Hộp
+-- Amoxicillin 500mg (TS002) - Hộp 2 vỉ x 10 viên
+INSERT INTO ChiTietDonViTinh VALUES
+('TS002','DVT01',1,1200,1500,1),
+('TS002','DVT02',10,11800,14500,0),
+('TS002','DVT03',20,23000,28000,0);
 
--- Thuốc: Cefuroxime 250mg (TS003) - Hộp 2 vỉ x 10 viên
-INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
-('TS003', 'DVT01', 1, 2000, 2500, 1),     -- Viên
-('TS003', 'DVT02', 10, 19500, 24000, 0),    -- Vỉ
-('TS003', 'DVT03', 20, 38000, 47000, 0);   -- Hộp
+-- Ibuprofen 400mg (TS005) - Hộp 1 vỉ x 10 viên
+INSERT INTO ChiTietDonViTinh VALUES
+('TS005','DVT01',1,900,1200,1),
+('TS005','DVT03',10,8500,11000,0);
 
--- Thuốc: Vitamin C 1000mg (TS004) - Hộp 10 ống
-INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
-('TS004', 'DVT08', 1, 2500, 3200, 1),      -- Ống
-('TS004', 'DVT03', 10, 24000, 30000, 0);   -- Hộp
+-- Aspirin 81mg (TS006) - Hộp 3 vỉ x 10 viên
+INSERT INTO ChiTietDonViTinh VALUES
+('TS006','DVT01',1,500,700,1),
+('TS006','DVT02',10,4800,6800,0),
+('TS006','DVT03',30,14000,19500,0);
 
--- Thuốc: Ibuprofen 400mg (TS005) - Hộp 1 vỉ x 10 viên
-INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
-('TS005', 'DVT01', 1, 900, 1200, 1),       -- Viên
-('TS005', 'DVT03', 10, 8500, 11000, 0);    -- Hộp
+-- Vitamin C 1000mg (TS004) - Hộp 10 ống
+INSERT INTO ChiTietDonViTinh VALUES
+('TS004','DVT08',1,2500,3200,1),
+('TS004','DVT03',10,24000,30000,0);
 
--- Thuốc: Aspirin 81mg (TS006) - Hộp 3 vỉ x 10 viên
-INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
-('TS006', 'DVT01', 1, 500, 700, 1),        -- Viên
-('TS006', 'DVT02', 10, 4800, 6800, 0),      -- Vỉ
-('TS006', 'DVT03', 30, 14000, 19500, 0);   -- Hộp
+-- Atorvastatin 20mg (TS010) - Hộp 2 vỉ x 10 viên
+INSERT INTO ChiTietDonViTinh VALUES
+('TS010','DVT01',1,3000,3800,1),
+('TS010','DVT02',10,29000,37000,0),
+('TS010','DVT03',20,57000,72000,0);
 
--- Thuốc: Loratadine 10mg (TS007) - Hộp 1 vỉ x 10 viên
-INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
-('TS007', 'DVT01', 1, 1500, 2000, 1),     -- Viên
-('TS007', 'DVT03', 10, 14500, 19000, 0);   -- Hộp
+-- Hoạt huyết dưỡng não (TS226) - Hộp 3 vỉ x 10 viên
+INSERT INTO ChiTietDonViTinh VALUES
+('TS226','DVT01',1,900,1100,1),
+('TS226','DVT02',10,8800,10800,0),
+('TS226','DVT03',30,26000,32000,0);
 
--- Thuốc: Omeprazole 20mg (TS008) - Hộp 2 vỉ x 7 viên
-INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
-('TS008', 'DVT01', 1, 1800, 2300, 1),     -- Viên
-('TS008', 'DVT02', 7, 12000, 15500, 0),     -- Vỉ
-('TS008', 'DVT03', 14, 23500, 30000, 0);   -- Hộp
+-- Siro ho Bảo Thanh (TS229) - Chai 125ml
+INSERT INTO ChiTietDonViTinh VALUES
+('TS229','DVT04',1,35000,42000,1),
+('TS229','DVT09',20,680000,800000,0);
 
--- Thuốc: Metformin 500mg (TS009) - Hộp 3 vỉ x 10 viên
-INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
-('TS009', 'DVT01', 1, 700, 900, 1),       -- Viên
-('TS009', 'DVT02', 10, 6800, 8800, 0),      -- Vỉ
-('TS009', 'DVT03', 30, 20000, 26000, 0);  -- Hộp
+-- Cao ích mẫu (TS231) - Lọ 100 viên
+INSERT INTO ChiTietDonViTinh VALUES
+('TS231','DVT01',1,1000,1300,1),
+('TS231','DVT05',100,95000,120000,0);
 
--- Thuốc: Atorvastatin 20mg (TS010) - Hộp 2 vỉ x 10 viên
-INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
-('TS010', 'DVT01', 1, 3000, 3800, 1),     -- Viên
-('TS010', 'DVT02', 10, 29000, 37000, 0),    -- Vỉ
-('TS010', 'DVT03', 20, 57000, 72000, 0);   -- Hộp
+-- Nhất nhất thống phong (TS234) - Hộp 3 vỉ x 10 viên
+INSERT INTO ChiTietDonViTinh VALUES
+('TS234','DVT01',1,900,1100,1),
+('TS234','DVT02',10,8800,10500,0),
+('TS234','DVT03',30,25500,31000,0);
 
--- Thuốc: Hoạt huyết dưỡng não (TS226) - Hộp 3 vỉ x 10 viên
-INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
-('TS226', 'DVT01', 1, 900, 1100, 1),      -- Viên
-('TS226', 'DVT02', 10, 8800, 10800, 0),     -- Vỉ
-('TS226', 'DVT03', 30, 26000, 32000, 0);   -- Hộp
+-- Vitamin D3 1000IU (TS336) - Lọ 100 viên
+INSERT INTO ChiTietDonViTinh VALUES
+('TS336','DVT01',1,1500,2000,1),
+('TS336','DVT05',100,145000,190000,0);
 
--- Thuốc: Siro ho Bảo Thanh (TS229) - Chai 125 ml
-INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
-('TS229', 'DVT04', 1, 35000, 42000, 1),    -- Chai
-('TS229', 'DVT09', 20, 680000, 800000, 0); -- Thùng (Giả định 1 thùng 20 chai)
+-- Probiotic 10 strains (TS340) - Hộp 30 gói
+INSERT INTO ChiTietDonViTinh VALUES
+('TS340','DVT07',1,4000,5000,1),
+('TS340','DVT03',30,115000,145000,0);
 
--- Thuốc: Viên ngậm Strepsils thảo dược (TS230) - Hộp 2 vỉ x 12 viên
-INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
-('TS230', 'DVT01', 1, 2000, 2500, 1),     -- Viên ngậm
-('TS230', 'DVT02', 12, 23000, 29000, 0),    -- Vỉ
-('TS230', 'DVT03', 24, 45000, 56000, 0);   -- Hộp
+-- Nhiệt kế điện tử (TS446) - Hộp 1 cái
+INSERT INTO ChiTietDonViTinh VALUES
+('TS446','DVT10',1,75000,99000,1),
+('TS446','DVT03',10,720000,950000,0);
 
--- TPCN: Vitamin D3 1000IU (TS336) - Lọ 100 viên
-INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
-('TS336', 'DVT01', 1, 1500, 2000, 1),     -- Viên
-('TS336', 'DVT05', 100, 145000, 190000, 0); -- Lọ
+-- Găng tay y tế (TS451) - Hộp 100 cái
+INSERT INTO ChiTietDonViTinh VALUES
+('TS451','DVT10',1,350,500,1),
+('TS451','DVT03',100,32000,45000,0);
 
--- TPCN: Omega-3 Fish Oil 1000mg (TS337) - Lọ 120 viên
-INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
-('TS337', 'DVT01', 1, 2500, 3200, 1),     -- Viên
-('TS337', 'DVT05', 120, 290000, 370000, 0);-- Lọ
+-- Kem chống nắng SPF50 (TS556) - Tuýp 50ml
+INSERT INTO ChiTietDonViTinh VALUES
+('TS556','DVT06',1,180000,230000,1),
+('TS556','DVT09',20,3400000,4400000,0);
 
--- TPCN: Probiotic 10 strains (TS340) - Hộp 30 gói
-INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
-('TS340', 'DVT07', 1, 4000, 5000, 1),      -- Gói
-('TS340', 'DVT03', 30, 115000, 145000, 0); -- Hộp
-
--- TPCN: Vitamin C + Zinc (TS344) - Lọ 20 viên sủi
-INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
-('TS344', 'DVT01', 1, 3500, 4500, 1),     -- Viên sủi
-('TS344', 'DVT05', 20, 68000, 85000, 0);   -- Lọ
-
--- TPCN: Glucosamine 1500mg (TS345) - Lọ 60 viên
-INSERT INTO ChiTietDonViTinh (MaThuoc, MaDVT, HeSoQuyDoi, GiaNhap, GiaBan, DonViCoBan) VALUES
-('TS345', 'DVT01', 1, 4000, 5500, 1),     -- Viên
-('TS345', 'DVT05', 60, 235000, 310000, 0);-- Lọ
-GO
+-- Kem dưỡng ẩm ban đêm (TS560) - Hũ 50ml
+INSERT INTO ChiTietDonViTinh VALUES
+('TS560','DVT11',1,200000,260000,1),
+('TS560','DVT09',20,3800000,4900000,0);
 
 
 
@@ -908,7 +897,7 @@ INSERT INTO KhuyenMai
 VALUES
 -- Giảm theo sản phẩm
 ('KM011', N'Paracetamol giảm 10%', 10, 0, '%', '2025-10-01', '2025-10-31', N'Giảm 10% cho Paracetamol 500mg', 'LKM003'),
-('KM012', N'Amoxicillin giảm 20k', 20000, 0, 'VND', '2025-10-05', '2025-10-25', N'Giảm 20.000đ khi mua Amoxicillin 500mg', 'LKM002'),
+('KM012', N'Amoxicillin giảm 500/viên', 500, 0, 'VND', '2025-10-05', '2025-10-25', N'Giảm 20.000đ khi mua Amoxicillin 500mg', 'LKM002'),
 ('KM013', N'Cefuroxime giảm 15%', 15, 0, '%', '2025-10-01', '2025-10-20', N'Giảm 15% cho Cefuroxime 250mg', 'LKM003'),
 ('KM014', N'Vitamin C tặng Ibu + Para', NULL, 0, NULL, '2025-10-01', '2025-10-31', N'Mua Vitamin C 1000mg tặng Ibuprofen 400mg và Paracetamol 500mg', 'LKM001'),
 ('KM015', N'Ibuprofen giảm 10k', 10000, 0, 'VND', '2025-10-10', '2025-11-10', N'Giảm 10.000đ cho Ibuprofen 400mg', 'LKM002'),

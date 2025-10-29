@@ -118,7 +118,7 @@ public class LapPhieuDatHang_Ctrl extends Application {
         tfMa.setEditable(false);
 
         xuLyGoiYSanPham();
-        xuLyCssGoiY();
+        Platform.runLater(this::xuLyCssGoiY);
         loadCbLoaiDon();
         kiemTraLoaiDon();
         initTienCocEvents();

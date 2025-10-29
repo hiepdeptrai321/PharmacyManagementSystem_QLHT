@@ -5,15 +5,20 @@ import com.example.pharmacymanagementsystem_qlht.dao.ThongKe_Dao;
 import com.example.pharmacymanagementsystem_qlht.dao.Thuoc_SP_TheoLo_Dao;
 import com.example.pharmacymanagementsystem_qlht.model.ThongKeBanHang;
 import com.example.pharmacymanagementsystem_qlht.model.Thuoc_SP_TheoLo;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.sql.Date;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class TrangChu_Ctrl {
@@ -22,11 +27,11 @@ public class TrangChu_Ctrl {
     public TableView<Thuoc_SP_TheoLo> tblThuocHetHan;
     public TableColumn<Thuoc_SP_TheoLo, String> colMaThuocHetHan;
     public TableColumn<Thuoc_SP_TheoLo, String> colLoHangHetHan;
-    public TableColumn<Thuoc_SP_TheoLo, String> colHSDHetHan;
+    public TableColumn<Thuoc_SP_TheoLo, Date> colHSDHetHan;
     public TableView<Thuoc_SP_TheoLo> tblThuocSapHetHan;
     public TableColumn<Thuoc_SP_TheoLo, String> colMaThuocSapHetHan;
     public TableColumn<Thuoc_SP_TheoLo, String> colLoHangSapHetHan;
-    public TableColumn<Thuoc_SP_TheoLo, String> colHSDSapHetHan;
+    public TableColumn<Thuoc_SP_TheoLo, Date> colHSDSapHetHan;
     public Label lbl_SoLuongHangHetHan;
     public Label lbl_SoLuongHangSapHetHan;
     public LineChart chartDoanhThuThangNay;
@@ -53,7 +58,19 @@ public class TrangChu_Ctrl {
         lbl_SoLuongHangHetHan.setText("Số lượng hàng hết hạn: " +listThuocHetHan.size());
         colMaThuocHetHan.setCellValueFactory(new PropertyValueFactory<>("maThuoc"));
         colLoHangHetHan.setCellValueFactory(new PropertyValueFactory<>("maLH"));
-        colHSDSapHetHan.setCellValueFactory(new PropertyValueFactory<>("hsd"));
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        colHSDHetHan.setCellValueFactory(new PropertyValueFactory<>("hsd"));
+        colHSDHetHan.setCellFactory(column -> new TableCell<Thuoc_SP_TheoLo, Date>() {
+            @Override
+            protected void updateItem(java.sql.Date item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(dateFormatter.format(item.toLocalDate()));
+                }
+            }
+        });
     }
 //  3.2 Load dữ liệu vào bảng thuốc sắp hết hạn
     public void loadTableThuocSapHetHan(){
@@ -61,9 +78,21 @@ public class TrangChu_Ctrl {
         data.clear();
         data.addAll(listThuocSapHetHan);
         lbl_SoLuongHangSapHetHan.setText("Số lượng hàng sắp hết hạn: " +listThuocSapHetHan.size());
-        colLoHangSapHetHan.setCellValueFactory(new PropertyValueFactory<>("maThuoc"));
+        colMaThuocSapHetHan.setCellValueFactory(cellData ->new SimpleStringProperty(cellData.getValue().getThuoc().getMaThuoc()));
         colLoHangSapHetHan.setCellValueFactory(new PropertyValueFactory<>("maLH"));
-        colLoHangSapHetHan.setCellValueFactory(new PropertyValueFactory<>("hsd"));
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        colHSDSapHetHan.setCellValueFactory(new PropertyValueFactory<>("hsd"));
+        colHSDSapHetHan.setCellFactory(column -> new TableCell<Thuoc_SP_TheoLo, Date>() {
+            @Override
+            protected void updateItem(java.sql.Date item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(dateFormatter.format(item.toLocalDate()));
+                }
+            }
+        });
     }
 
 //  3.3 Thiết lập các nhãn thống kê và biểu đồ
